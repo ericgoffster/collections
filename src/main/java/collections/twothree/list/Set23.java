@@ -12,7 +12,7 @@ import java.util.function.BiFunction;
 
 import org.granitesoft.requirement.Requirements;
 
-final class Set23<E> implements Iterable<E> {
+public final class Set23<E> implements Iterable<E> {
 	final Comparator<E> keyComparator;
 	final List23<E> keys;
 	final boolean reversed;

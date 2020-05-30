@@ -117,6 +117,33 @@ public class List23Test {
 		}
 	}
 
+    @Test
+    public void testRemoveRange() {
+        List23<Integer> l = List23.of(1,2,3,4,5,6);
+        assertEquals(l.removeRange(2,4), List23.of(1,2,5,6));
+        assertEquals(l.removeRange(0,4), List23.of(5,6));
+        assertEquals(l.removeRange(2, 6), List23.of(1,2));
+        assertEquals(l.removeRange(0, 6), List23.of());
+    }
+
+    @Test
+    public void testInsertList() {
+        List23<Integer> l = List23.of(1,2,3,4,5,6);
+        assertEquals(l.insertList(2, List23.of(7,8)), List23.of(1,2,7,8,3,4,5,6));
+        assertEquals(l.insertList(0, List23.of(7,8)), List23.of(7,8,1,2,3,4,5,6));
+        assertEquals(l.insertList(6, List23.of(7,8)), List23.of(1,2,3,4,5,6,7,8));
+    }
+
+    @Test
+    public void testReplace() {
+        List23<Integer> l = List23.of(1,2,3,4,5,6);
+        assertEquals(l.replace(0,2, List23.of(7,8)), List23.of(7,8,3,4,5,6));
+        assertEquals(l.replace(1,4, List23.of(7,8)), List23.of(1,7,8,5,6));
+        assertEquals(l.replace(1,4, List23.of()), List23.of(1,5,6));
+        assertEquals(l.replace(1,6, List23.of(7)), List23.of(1,7));
+        assertEquals(l.replace(0,6, List23.of(7)), List23.of(7));
+    }
+
 	@Test
 	public void testReversed() {
 		List23<Integer> l = List23.of(1,2,3,4,5,6);
