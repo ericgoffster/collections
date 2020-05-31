@@ -9,7 +9,7 @@ class List23List<E> extends AbstractList<E> {
 		super();
 		this.list23 = list23;
 	}
-
+	
 	@Override
 	public E get(int index) {
 		return list23.get(index);

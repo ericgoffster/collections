@@ -50,4 +50,15 @@ final class Branch3<E> implements Node23<E> {
 	public Node23<E> b_last() {
 		return b3;
 	}
+
+    @Override
+    public boolean isLeaf() {
+        return false;
+    }
+
+    @Override
+    public String toString() {
+        return "["+b1+" "+b2+" "+b3+"]";
+    }
+    
 }

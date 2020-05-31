@@ -39,4 +39,23 @@ final class Branch1<E> implements Node23<E> {
 	public Node23<E> b_last() {
 		return b1;
 	}
+
+    @Override
+    public Node23<E> r_b2() {
+        return null;
+    }
+
+    @Override
+    public Node23<E> r_b3() {
+        return null;
+    }
+
+    @Override
+    public boolean isLeaf() {
+        return false;
+    }
+    @Override
+    public String toString() {
+        return "["+b1+"]";
+    }
 }
