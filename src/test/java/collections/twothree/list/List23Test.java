@@ -111,10 +111,10 @@ public class List23Test {
     @Test
     public void testRemoveRange() {
         List23<Integer> l = List23.of(1,2,3,4,5,6);
-        assertEquals(l.removeRange(2,4), List23.of(1,2,5,6));
-        assertEquals(l.removeRange(0,4), List23.of(5,6));
-        assertEquals(l.removeRange(2, 6), List23.of(1,2));
-        assertEquals(l.removeRange(0, 6), List23.of());
+        assertEquals(l.exclude(2,4), List23.of(1,2,5,6));
+        assertEquals(l.exclude(0,4), List23.of(5,6));
+        assertEquals(l.exclude(2, 6), List23.of(1,2));
+        assertEquals(l.exclude(0, 6), List23.of());
     }
 
     @Test

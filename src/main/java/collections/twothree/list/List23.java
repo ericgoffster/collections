@@ -387,16 +387,16 @@ public final class List23<E> implements Iterable<E> {
      * <p> This operation is O(log n).
      * <pre>
      * Example:
-     *     List23.of(6, 1, 6 , 8).removeRange(1,3) == [6,8]
-     *     List23.of(6, 1, 6 , 8).removeRange(1,1) == [6, 1, 6 , 8]
-     *     List23.of(6, 1, 6 , 8).removeRange(0,4) == []
+     *     List23.of(6, 1, 6 , 8).exclude(1,3) == [6,8]
+     *     List23.of(6, 1, 6 , 8).exclude(1,1) == [6, 1, 6 , 8]
+     *     List23.of(6, 1, 6 , 8).exclude(0,4) == []
      * </pre>
      * @param low The low index (inclusive).   Must be &gt;= 0 and &lt;= high.
      * @param high The high index (exclusive).    Must be &gt;= 0 and &lt;= size.
      * @return A list with the given list appended to the end
      * @throws IndexOutOfBoundsException if low &lt; 0 or low &gt; high or high &gt; size
      */
-    public List23<E> removeRange(final int low, final int high) {
+    public List23<E> exclude(final int low, final int high) {
         verifyIndex(high, 0, size());
         verifyIndex(low, 0, high);
         return replace(low, high, empty());

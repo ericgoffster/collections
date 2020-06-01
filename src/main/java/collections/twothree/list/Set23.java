@@ -13,9 +13,11 @@ import org.granitesoft.requirement.Requirements;
 
 /**
  * Represents a set of elements using a {@link List23} as a backing store.
+ * <p>
  * Since operations on a List23 are log n, we can represent a set
  * relatively easily as a sorted list of elements, doing straightforward
  * binary searches.
+ * <p>
  * This version of a set is immutable.   All operations on a set, leave the original
  * set unchanged.
  *
@@ -43,22 +45,69 @@ public final class Set23<E> implements Iterable<E> {
 		this.reversed = reversed;
 	}
 	
+	/**
+	 * Returns a set of exactly one element.
+	 * @param <E> The element type
+	 * @param element The singleton element
+	 * @return A set of exactly one element
+	 */
+    public static <E extends Comparable<E>> Set23<E> of(E element) {
+        return new Set23<E>(Set23::naturalCompare, List23.of(element), false);
+    }
+
+    /**
+     * Returns the empty set.
+     * @param <E> The element type
+     * @return An empty set.
+     */
+    public static <E extends Comparable<E>> Set23<E> empty() {
+        return new Set23<E>(Set23::naturalCompare, List23.empty(), false);
+    }
+
+    /**
+     * Returns a set containing an initial list of elements, using natural ordering.
+     * Elements are stored in natural order.
+     * @param <E> The element type
+     * @param elements The array of elements
+     * @return A set containing an initial list of elements
+     */
 	@SafeVarargs
     @SuppressWarnings("varargs")
     public static <E extends Comparable<E>> Set23<E> of(E ... elements) {
     	return of(Arrays.asList(elements));
     }
 
+    /**
+     * Returns a set containing an initial list of elements, using a custom order.
+     * @param <E> The element type
+     * @param keyComparator The comparator for elements
+     * @param elements The array of elements
+     * @return A set containing an initial list of elements
+     */
     @SafeVarargs
     @SuppressWarnings("varargs")
     public static <E> Set23<E> of(Comparator<E> keyComparator, E ... elements) {
     	return of(keyComparator, Arrays.asList(elements));
     }
 
+    /**
+     * Returns a set containing an initial list of elements, using natural ordering.
+     * Elements are stored in natural order.
+     * @param <E> The element type
+     * @param elements The array of elements
+     * @return A set containing an initial list of elements
+     */
     public static <E extends Comparable<E>> Set23<E> of(Iterable<E> elements) {
     	return of(Set23::naturalCompare, elements);
     }
 
+    /**
+     * Returns a set containing an initial list of elements, using a custom order.
+     * @param <E> The element type
+     * @param keyComparator The comparator for elements
+     * @param elements The array of elements
+     * @return A set containing an initial list of elements
+     */
     public static <E> Set23<E> of(Comparator<E> keyComparator, Iterable<E> elements) {
     	TreeSet<E> list = new TreeSet<>(keyComparator);
     	for(E e: elements) {
@@ -113,22 +162,22 @@ public final class Set23<E> implements Iterable<E> {
 
     /**
      * Returns the set of all elements in this set &lt; from or &gt;= to
-     * @param from The low element (exclusive)
-     * @param to The high element (inclusive)
+     * @param low The low element (exclusive)
+     * @param high The high element (inclusive)
      * @return the set of all elements in this set &lt; from or &gt;= to
      */
-    public Set23<E> exclude(E from, E to) {
-        return new Set23<E>(keyComparator, keys.removeRange(findFirstElement(from), findFirstElement(to)), reversed);
+    public Set23<E> exclude(E low, E high) {
+        return new Set23<E>(keyComparator, keys.exclude(findFirstElement(low), findFirstElement(high)), reversed);
     }
 
     /**
      * Returns the set of all elements in this set &gt;= from and &lt; to
-     * @param from The low element (inclusive)
-     * @param to The high element (exclusive)
+     * @param low The low element (inclusive)
+     * @param high The high element (exclusive)
      * @return the set of all elements in this set &lt; element
      */
-	public Set23<E> subSet(E from, E to) {
-		return new Set23<E>(keyComparator, keys.subList(findFirstElement(from), findFirstElement(to)), reversed);
+	public Set23<E> subSet(E low, E high) {
+		return new Set23<E>(keyComparator, keys.subList(findFirstElement(low), findFirstElement(high)), reversed);
 	}
 
 	/**
@@ -139,7 +188,7 @@ public final class Set23<E> implements Iterable<E> {
 	 */
 	public Set23<E> add(E element) {
 	    Node23<E> n = keys.root;
-	    return n == null ? new Set23<>(keyComparator, keys.insertAt(0, element), reversed) :
+	    return n == null ? new Set23<>(keyComparator, keys.add(element), reversed) :
 	        visit(n, element, 0, (leaf, i) -> {
 	            int cmp = compare(element, leaf);
 	            return cmp == 0 ? this :
