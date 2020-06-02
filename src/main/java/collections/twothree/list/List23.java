@@ -20,7 +20,7 @@ import org.granitesoft.requirement.Requirements;
  * This version of a 23-tree is immutable.   All operations on a tree leave the original
  * tree unchanged.
  * <p>
- * The following operations are all O(log n) worst case
+ * The following operations are all O(log n) worst case:
  * <ul>
  *     <li>{@link List23#removeAt(int)}</li>
  *     <li>{@link List23#insertAt(int, Object)}</li>
@@ -54,7 +54,7 @@ public final class List23<E> implements Iterable<E> {
 
     /**
      * Construction of list with a single element.
-     *  <p>This operation is O(1).
+     * <p>This operation is O(1).
      * <pre>
      * Example:
      *     List23.of(5) == [5]
@@ -69,7 +69,7 @@ public final class List23<E> implements Iterable<E> {
 
 	/**
 	 * Easy construction of list.
-	 *  <p>This operation is O(n log n).
+	 * <p>This operation is O(n log n).
      * <pre>
      * Example:
      *     List23.of() == []
@@ -90,7 +90,7 @@ public final class List23<E> implements Iterable<E> {
 
 	/**
 	 * Easy construction of list.
-	 *  <p>This operation is O(n log n).
+	 * <p>This operation is O(n log n).
      * <pre>
      * Example:
      *     List23.of(Arrays.asList()) == []
@@ -116,10 +116,10 @@ public final class List23<E> implements Iterable<E> {
 	/**
 	 * Easy construction of sorted list.
 	 * Creates a list23 represents of the elements sorted by a comparator.
-	 *  <p>This operation is O(n log n).
+	 * <p>This operation is O(n log n).
      * <pre>
      * Example:
-     *     List23.ofSorted(Integer::compare, Arrays.asList(6, 1, 6 , 8)) == [1, 6, 6, 8]
+     *     List23.ofSorted(Integer::compare, Arrays.asList(6, 1, 6, 8)) == [1, 6, 6, 8]
      * </pre>
      * @param <E> The type of the elements.
      * @param comparator The element comparator
@@ -143,10 +143,10 @@ public final class List23<E> implements Iterable<E> {
 	/**
 	 * Easy construction of a sorted list.
 	 * Creates a List23 representation of elements sorted by a comparator.
-	 *  <p>This operation is O(n log n).
+	 * <p>This operation is O(n log n).
      * <pre>
      * Example:
-     *     List23.&lt;Integer&gt;ofSorted(Integer::compare, 6, 1, 6 , 8) == [1, 6, 6, 8]
+     *     List23.&lt;Integer&gt;ofSorted(Integer::compare, 6, 1, 6, 8) == [1, 6, 6, 8]
      * </pre>
      * @param <E> The type of the elements
      * @param comparator The element comparator
@@ -167,7 +167,7 @@ public final class List23<E> implements Iterable<E> {
 	 * <p> This operation is O(n log n).
      * <pre>
      * Example:
-     *     List23.ofSorted(Arrays.asList(6, 1, 6 , 8)) == [1, 6, 6, 8]
+     *     List23.ofSorted(Arrays.asList(6, 1, 6, 8)) == [1, 6, 6, 8]
      * </pre>
      * @param <E> The type of the elements
 	 * @param elements The collection of elements
@@ -184,7 +184,7 @@ public final class List23<E> implements Iterable<E> {
 	 * <p> This operation is O(n log n).
      * <pre>
      * Example:
-     *     List23.ofSorted(6, 1, 6 , 8) == [1, 6, 6, 8]
+     *     List23.ofSorted(6, 1, 6, 8) == [1, 6, 6, 8]
      * </pre>
      * @param <E> The type of the elements
 	 * @param elements The array of elements
@@ -202,7 +202,7 @@ public final class List23<E> implements Iterable<E> {
 	 * <p> This operation is O(1).
      * <pre>
      * Example:
-     *     List23.of(6, 1, 6 , 8).asList() == [6,1,6,8]
+     *     List23.of(6, 1, 6, 8).asList() == [6, 1, 6, 8]
      * </pre>
 	 * @return A classic "read only java List" view of the list
 	 */
@@ -215,7 +215,7 @@ public final class List23<E> implements Iterable<E> {
 	 * <p> This operation is O(1).
      * <pre>
      * Example:
-     *     List23.of(6, 1, 6 , 8).size() == 4
+     *     List23.of(6, 1, 6, 8).size() == 4
      * </pre>
 	 * @return The number of elements in the list
 	 */
@@ -228,14 +228,14 @@ public final class List23<E> implements Iterable<E> {
 	 * <p> This operation is O(log n).
      * <pre>
      * Example:
-     *     List23.of(6, 1, 6 , 8).get(2) == 6
+     *     List23.of(6, 1, 6, 8).get(2) == 6
      * </pre>
 	 * @param index The index. Must be &gt;= 0 and &lt; size.
 	 * @return <code>list[index]</code>
 	 * @throws IndexOutOfBoundsException if index &lt; 0 or index &gt;= size.
 	 */
 	public E get(final int index) {
-		return get(root, verifyIndex(index, 0, size() - 1));
+		return get(root, verifyIndex("index", index, 0, size() - 1));
 	}
 	
 	/**
@@ -243,8 +243,8 @@ public final class List23<E> implements Iterable<E> {
 	 * <p> This is O(n)!!  Not fast!
      * <pre>
      * Example:
-     *     List23.of(6, 1, 6 , 8).contains(2) == false
-     *     List23.of(6, 1, 6 , 8).contains(6) == true
+     *     List23.of(6, 1, 6, 8).contains(2) == false
+     *     List23.of(6, 1, 6, 8).contains(6) == true
      * </pre>
 	 * @param element The element to look for
 	 * @return true if this list contains <code>element</code>
@@ -258,9 +258,9 @@ public final class List23<E> implements Iterable<E> {
      * <p> This is O(n)!!  Not fast!
      * <pre>
      * Example:
-     *     List23.of(6, 1, 6 , 8).indexOf(1) == 1
-     *     List23.of(6, 1, 6 , 8).indexOf(6) == 0
-     *     List23.of(6, 1, 6 , 8).indexOf(7) == -1
+     *     List23.of(6, 1, 6, 8).indexOf(1) == 1
+     *     List23.of(6, 1, 6, 8).indexOf(6) == 0
+     *     List23.of(6, 1, 6, 8).indexOf(7) == -1
      * </pre>
      * @param element The element to look for
      * @return The index of <code>element</code>, -1 if not found
@@ -274,9 +274,9 @@ public final class List23<E> implements Iterable<E> {
      * <p> This is O(n)!!  Not fast!
      * <pre>
      * Example:
-     *     List23.of(6, 1, 6 , 8).lastIndexOf(1) == 1
-     *     List23.of(6, 1, 6 , 8).lastIndexOf(6) == 2
-     *     List23.of(6, 1, 6 , 8).lastIndexOf(7) == -1
+     *     List23.of(6, 1, 6, 8).lastIndexOf(1) == 1
+     *     List23.of(6, 1, 6, 8).lastIndexOf(6) == 2
+     *     List23.of(6, 1, 6, 8).lastIndexOf(7) == -1
      * </pre>
      * @param element The element to look for
      * @return The last index of <code>element</code>, -1 if not found
@@ -292,9 +292,9 @@ public final class List23<E> implements Iterable<E> {
      * <p> This is O(n)!!  Not fast!
      * <pre>
      * Example:
-     *     List23.of(6, 1, 6 , 8).remove(1) == [6,6,8]
-     *     List23.of(6, 1, 6 , 8).remove(6) == [1,6,8]
-     *     List23.of(6, 1, 6 , 8).remove(7) == [6,1,6,8]
+     *     List23.of(6, 1, 6, 8).remove(1) == [6, 6, 8]
+     *     List23.of(6, 1, 6, 8).remove(6) == [1, 6, 8]
+     *     List23.of(6, 1, 6, 8).remove(7) == [6, 1, 6, 8]
      * </pre>
      * @param element The element to remove
      * @return A list with <code>element</code> removed
@@ -310,8 +310,8 @@ public final class List23<E> implements Iterable<E> {
 	 * <p> This operation is O(log n).
      * <pre>
      * Example:
-     *     List23.of(6, 1, 6 , 8).add(9) == [6,1,6,8,9]
-     *     List23.of(6, 1, 6 , 8).add(1) == [6,1,6,8,1]
+     *     List23.of(6, 1, 6, 8).add(9) == [6, 1, 6, 8, 9]
+     *     List23.of(6, 1, 6, 8).add(1) == [6, 1, 6, 8, 1]
      * </pre>
 	 * @param element The element to add.
 	 * @return A list with <code>element</code> added to the end
@@ -326,7 +326,7 @@ public final class List23<E> implements Iterable<E> {
 	 * <p> This operation is O(log n).
      * <pre>
      * Example:
-     *     List23.of(6, 1, 6 , 8).set(2, 3) == [6,1,3,8]
+     *     List23.of(6, 1, 6, 8).set(2, 3) == [6, 1, 3, 8]
      * </pre>
      * @param index The index. Must be &gt;= 0 and &lt; size.
 	 * @param element The element to set
@@ -334,7 +334,7 @@ public final class List23<E> implements Iterable<E> {
      * @throws IndexOutOfBoundsException if index &lt; 0 or index &gt;= size.
 	 */
 	public List23<E> set(final int index, final E element) {
-	    verifyIndex(index, 0, size() - 1);
+	    verifyIndex("index", index, 0, size() - 1);
 	    return replace(index, index + 1, List23.of(element));
 	}
 	
@@ -344,7 +344,7 @@ public final class List23<E> implements Iterable<E> {
 	 * <p> This operation is O(log n).
      * <pre>
      * Example:
-     *     List23.of(6, 1, 6 , 8).insertAt(2, 3) == [6,1,3,6,8]
+     *     List23.of(6, 1, 6, 8).insertAt(2, 3) == [6, 1, 3, 6, 8]
      * </pre>
      * @param index The index. Must be &gt;= 0 and &lt;= size.
 	 * @param element The element to insert
@@ -352,7 +352,7 @@ public final class List23<E> implements Iterable<E> {
      * @throws IndexOutOfBoundsException if index &lt; 0 or index &gt; size.
 	 */
 	public List23<E> insertAt(final int index, final E element) {
-        verifyIndex(index, 0, size());
+        verifyIndex("index", index, 0, size());
         return replace(index, index, List23.of(element));
 	}
 	
@@ -362,14 +362,14 @@ public final class List23<E> implements Iterable<E> {
 	 * <p> This operation is O(log n).
      * <pre>
      * Example:
-     *     List23.of(6, 1, 6 , 8).removeAt(2) == [6,1,8]
+     *     List23.of(6, 1, 6, 8).removeAt(2) == [6, 1, 8]
      * </pre>
      * @param index The index. Must be &gt;= 0 and &lt; size.
 	 * @return A list with the given index removed
      * @throws IndexOutOfBoundsException if index &lt; 0 or index &gt;= size.
 	 */
 	public List23<E> removeAt(final int index) {
-       verifyIndex(index, 0, size() - 1);
+       verifyIndex("index", index, 0, size() - 1);
        return replace(index, index + 1, empty());
 	}
 	
@@ -379,9 +379,9 @@ public final class List23<E> implements Iterable<E> {
      * <p> This operation is O(log n).
      * <pre>
      * Example:
-     *     List23.of(6, 1, 6 , 8).exclude(1,3) == [6,8]
-     *     List23.of(6, 1, 6 , 8).exclude(1,1) == [6, 1, 6 , 8]
-     *     List23.of(6, 1, 6 , 8).exclude(0,4) == []
+     *     List23.of(6, 1, 6, 8).exclude(1,3) == [6, 8]
+     *     List23.of(6, 1, 6, 8).exclude(1,1) == [6, 1, 6, 8]
+     *     List23.of(6, 1, 6, 8).exclude(0,4) == []
      * </pre>
      * @param low The low index (inclusive).   Must be &gt;= 0 and &lt;= high.
      * @param high The high index (exclusive).    Must be &gt;= 0 and &lt;= size.
@@ -389,8 +389,8 @@ public final class List23<E> implements Iterable<E> {
      * @throws IndexOutOfBoundsException if low &lt; 0 or low &gt; high or high &gt; size
      */
     public List23<E> exclude(final int low, final int high) {
-        verifyIndex(high, 0, size());
-        verifyIndex(low, 0, high);
+        verifyIndex("high", high, 0, size());
+        verifyIndex("log", low, 0, high);
         return replace(low, high, empty());
     }
     
@@ -400,8 +400,8 @@ public final class List23<E> implements Iterable<E> {
      * <p> This operation is max(O(log m),O(log n)).
      * <pre>
      * Example:
-     *     List23.of(6, 1, 6 , 8).replace(1,3,List23.of(7)) == [6,7,8]
-     *     List23.of(6, 1, 6 , 8).replace(1,3,List23.of(7,5,3)) == [6,7,5,3,8]
+     *     List23.of(6, 1, 6, 8).replace(1,3,List23.of(7)) == [6, 7, 8]
+     *     List23.of(6, 1, 6, 8).replace(1,3,List23.of(7,5,3)) == [6, 7, 5, 3, 8]
      * </pre>
      * @param low The low index (inclusive).   Must be &gt;= 0 and &lt;= high.
      * @param high The high index (exclusive).    Must be &gt;= 0 and &lt;= size.
@@ -410,8 +410,8 @@ public final class List23<E> implements Iterable<E> {
      * @throws IndexOutOfBoundsException if low &lt; 0 or low &gt; high or high &gt; size
      */
     public List23<E> replace(final int low, final int high, final List23<E> other) {
-        verifyIndex(high, 0, size());
-        verifyIndex(low, 0, high);
+        verifyIndex("high", high, 0, size());
+        verifyIndex("low", low, 0, high);
         Requirements.require(other, Requirements.notNull(), () -> "other");
         return low == high && other.size() == 0 ?
             this:
@@ -424,8 +424,8 @@ public final class List23<E> implements Iterable<E> {
      * <p> This operation is max(O(log m),O(log n)).
      * <pre>
      * Example:
-     *     List23.of(6, 1, 6 , 8).insertList(2,List23.of(7)) == [6,1,7,6,8]
-     *     List23.of(6, 1, 6 , 8).insertList(2,List23.of(7,5,3)) == [6,1,7,5,3,6,8]
+     *     List23.of(6, 1, 6, 8).insertList(2,List23.of(7)) == [6, 1, 7, 6, 8]
+     *     List23.of(6, 1, 6, 8).insertList(2,List23.of(7,5,3)) == [6, 1, 7, 5, 3, 6, 8]
      * </pre>
      * @param index The index. Must be &gt;= 0 and &lt;= size.
      * @param other The list to insert
@@ -433,7 +433,7 @@ public final class List23<E> implements Iterable<E> {
      * @throws IndexOutOfBoundsException if index &lt; 0 or index &gt; size.
      */
     public List23<E> insertList(final int index, final List23<E> other) {
-        verifyIndex(index, 0, size());
+        verifyIndex("index", index, 0, size());
         Requirements.require(other, Requirements.notNull(), () -> "other");
         return replace(index, index, other);
     }
@@ -444,8 +444,8 @@ public final class List23<E> implements Iterable<E> {
 	 * <p> This operation is max(O(log m),O(log n)).
      * <pre>
      * Example:
-     *     List23.of(6, 1, 6 , 8).append(List23.of(7)) == [6,1,6,8,7]
-     *     List23.of(6, 1, 6 , 8).append(List23.of(7,5,3)) == [6,1,6,8,7,5,3]
+     *     List23.of(6, 1, 6, 8).append(List23.of(7)) == [6, 1, 6, 8, 7]
+     *     List23.of(6, 1, 6, 8).append(List23.of(7,5,3)) == [6, 1, 6, 8, 7, 5, 3]
      * </pre>
 	 * @param other The list to append
 	 * @return A list with the given list appended to the end
@@ -462,16 +462,16 @@ public final class List23<E> implements Iterable<E> {
 	 * <p> This operation is O(log n).
      * <pre>
      * Example:
-     *     List23.of(6, 1, 6 , 8).tail(2) == [6,8]
-     *     List23.of(6, 1, 6 , 8).tail(4) == []
-     *     List23.of(6, 1, 6 , 8).tail(0) == [6, 1, 6 , 8]
+     *     List23.of(6, 1, 6, 8).tail(2) == [6,8 ]
+     *     List23.of(6, 1, 6, 8).tail(4) == []
+     *     List23.of(6, 1, 6,  8).tail(0) == [6, 1, 6, 8]
      * </pre>
 	 * @param index The chopping point (inclusive). Must be &gt;= 0 and &lt;= size.
 	 * @return A list with all indexes &gt;= the specified index
      * @throws IndexOutOfBoundsException if index &lt; 0 or index &gt; size.
 	 */
 	public List23<E> tail(final int index) {
-	    verifyIndex(index, 0, size());
+	    verifyIndex("index", index, 0, size());
 	    return index == 0 ? this :
 	           index == size() ? empty() :
 	           reverse().head(size() - index).reverse();
@@ -482,16 +482,16 @@ public final class List23<E> implements Iterable<E> {
 	 * <p> This operation is O(log n).
      * <pre>
      * Example:
-     *     List23.of(6, 1, 6 , 8).head(2) == [6,1]
-     *     List23.of(6, 1, 6 , 8).head(4) == [6, 1, 6 , 8]
-     *     List23.of(6, 1, 6 , 8).head(0) == []
+     *     List23.of(6, 1, 6, 8).head(2) == [6, 1]
+     *     List23.of(6, 1, 6, 8).head(4) == [6, 1, 6, 8]
+     *     List23.of(6, 1, 6, 8).head(0) == []
      * </pre>
 	 * @param index The chopping point (exclusive). Must be &gt;= 0 and &lt;= size.
 	 * @return A list with all indexes &lt; the specified index
      * @throws IndexOutOfBoundsException if index &lt; 0 or index &gt; size.
 	 */
 	public List23<E> head(final int index) {
-        verifyIndex(index, 0, size());
+        verifyIndex("index", index, 0, size());
 		return index == size() ?  this : index == 0 ? empty(): new List23<>(head(root, index));
 	}
 	
@@ -500,7 +500,7 @@ public final class List23<E> implements Iterable<E> {
 	 * <p> This operation is O(log n).
      * <pre>
      * Example:
-     *     List23.of(6, 1, 6 , 8).subList(1, 3) == [1,6]
+     *     List23.of(6, 1, 6, 8).subList(1, 3) == [1, 6]
      * </pre>
      * @param low The low index (inclusive).   Must be &gt;= 0 and &lt;= high.
      * @param high The high index (exclusive).    Must be &gt;= 0 and &lt;= size.
@@ -508,8 +508,8 @@ public final class List23<E> implements Iterable<E> {
      * @throws IndexOutOfBoundsException if low &lt; 0 or low &gt; high or high &gt; size
 	 */
 	public List23<E> subList(final int low, final int high) {
-        verifyIndex(high, 0, size());
-	    verifyIndex(low, 0, high);
+        verifyIndex("high", high, 0, size());
+	    verifyIndex("low", low, 0, high);
 		return tail(low).head(high - low);
 	}
 	
@@ -519,7 +519,7 @@ public final class List23<E> implements Iterable<E> {
 	 * <p> This operation is O(1).
      * <pre>
      * Example:
-     *     List23.of(6, 1, 6 , 8).reverse() == [8,6,1,6]
+     *     List23.of(6, 1, 6, 8).reverse() == [8, 6, 1, 6]
      * </pre>
 	 * @return A list that is the original list reversed
 	 */
@@ -531,51 +531,75 @@ public final class List23<E> implements Iterable<E> {
 		return new List23<E>(root.reverse());
 	}
 
-	int verifyIndex(int index, int low, int high) {
+	@Override
+    public int hashCode() {
+    	return asList().hashCode();
+    }
+
+    @Override
+    public boolean equals(final Object obj) {
+    	if (!(obj instanceof List23)) {
+    		return false;
+    	}
+    	final List23<?> other = (List23<?>)obj;
+    	return asList().equals(other.asList());
+    }
+
+    @Override
+    public String toString() {
+    	return asList().toString();
+    }
+
+    @Override
+    public ListIterator<E> iterator() {
+    	return asList().listIterator();
+    }
+
+    /**
+     * Returns the elements as a stream.
+     * @return The elements as a stream
+     */
+    public Stream<E> stream() {
+        return asList().stream();
+    }
+
+    static int verifyIndex(String name, int index, int low, int high) {
         if (index < low || index > high) {
-            throw new IndexOutOfBoundsException(String.format("Index: %d, Low: %d, High %d", index, low, high));
+            throw new IndexOutOfBoundsException(String.format("%s: %d, Low: %d, High %d", name, index, low, high));
         }
         return index;
     }
 
-    /**
-	 * Compares two elements, allowing for null.
-	 * @param <E> The element type
-	 * @param a left hand side
-	 * @param b right hand side
-	 * @return Negative for less than, zero for equal, positive for greater than
-	 */
+    /// Compares two elements, allowing for null.
 	static <E extends Comparable<E>> int naturalCompare(final E a, final E b) {
 		return a == null ?
-				(b == null) ? 0 : -1:
+				((b == null) ? 0 : -1):
 				(b == null) ? 1 : a.compareTo(b);
 	}
 
-	/**
-	 * Quickly constructs a list from a collection of nodes.
-	 * @param <E> The element type
-	 * @param nodes The list of nodes
-	 * @return The 23 list
-	 */
+	// Quickly constructs a list from a collection of nodes.
+	// O(n log n)
 	static <E> List23<E> quickConstruct(final List<Node23<E>> nodes) {
+        final int numNodes = nodes.size();
+
 		// Just one left?  It is the root
-		if (nodes.size() == 1) {
+        if (numNodes == 1) {
 			return new List23<E>(nodes.get(0));
 		}
 		
-		List<Node23<E>> newNodes = new ArrayList<>(nodes.size() / 2);
+		List<Node23<E>> newNodes = new ArrayList<>(numNodes / 2);
 		int i = 0;
 		
 		// We have >= 2 nodes.
 		// If there are an odd number nodes, bring it down to even
 		// with a 3 node.
-	    if (nodes.size() % 2 == 1) {
+	    if (numNodes % 2 == 1) {
             newNodes.add(new Branch3<E>(nodes.get(i), nodes.get(i + 1), nodes.get(i + 2)));
             i += 3;
 	    }
 	    
 	    // We now have an even number of nodes >= 0, drain them down in pairs.
-	    while(i < nodes.size()) {
+	    while(i < numNodes) {
 	        newNodes.add(new Branch2<E>(nodes.get(i), nodes.get(i + 1)));
 	        i += 2;
 	    }
@@ -584,13 +608,9 @@ public final class List23<E> implements Iterable<E> {
 		return quickConstruct(newNodes);
 	}
 
-	/**
-     * Returns the index of the given element at the specified node.
-     * @param node The starting node
-     * @param element The element to find
-     * @return The index of the given element at the specified node, -1 if not there
-     */
-    int find(final Node23<E> node, final E element) {
+	// Search through the node for an element.
+    // O(n log n)
+	static <E> int find(final Node23<E> node, final E element) {
         if (node.isLeaf()) {
             return Objects.equals(node.leafValue(),element) ? 0: -1;
         }
@@ -606,7 +626,7 @@ public final class List23<E> implements Iterable<E> {
                 return i + node.b1Size();
             }
         }
-        if (node.b3() != null) {
+        if (node.numBranches() == 3) {
             int i = find(node.b3(), element);
             if (i >= 0) {
                 return i + node.b1Size() + node.b2Size();
@@ -615,29 +635,21 @@ public final class List23<E> implements Iterable<E> {
         return -1;
     }
 
-	/**
-	 * Returns the element at the given location starting at a node.
-	 * It is assumed that "index" is already <= node.size.
-	 * @param node The starting node
-	 * @param index The index
-	 * @return The leaf element at the index.
-	 */
-	E get(final Node23<E> node, final int index) {
+    // Get the element at the given index.
+    // O(log n)
+    static <E> E get(final Node23<E> node, final int index) {
         assert index < node.size();
         return
             node.isLeaf()? node.leafValue():
             index < node.b1Size() ? get(node.b1(), index):
-            node.numBranches() < 3 || index - node.b1Size() < node.b2Size() ? get(node.b2(), index - node.b1Size()):
+            index - node.b1Size() < node.b2Size() ? get(node.b2(), index - node.b1Size()):
             get(node.b3(), index - node.b1Size() - node.b2Size());
 	}
 
-	/**
-	 * Returns the concatenation of lhs and rhs
-	 * @param lhs left hand side
-	 * @param rhs right hand side
-	 * @return the concatenation of lhs and rhs
-	 */
-	Node23<E> concat(final Node23<E> lhs, final Node23<E> rhs) {
+	// Returns the concatenation of lhs and rhs.
+    // The returned node will never be degenerate.
+	// O(log max(m,n))
+	static <E>  Node23<E> concat(final Node23<E> lhs, final Node23<E> rhs) {
 	    assert lhs != null;
 	    if (rhs == null) {
 	        return lhs;
@@ -646,18 +658,17 @@ public final class List23<E> implements Iterable<E> {
         return node.numBranches() < 2 ? node.b1(): node;
     }
 
-	/**
-	 * Creates a branch representing the concatenation
-	 *   of 2 nodes.   Result will be a 2 or 1 branch.
-	 * @param lhs The left hand side
-	 * @param rhs The right hand side
-	 * @param depthDelta The delta between the depths
-	 * @return a 2-level branch representing the concatenation
-	 */
-	Node23<E> concat(final Node23<E> lhs, final Node23<E> rhs, int depthDelta) {
+	// Creates a branch representing the concatenation
+	//   of 2 nodes.   Result will be a 2 branch, or a degenerate 1 branch.
+	// The returned node will always have a depth of max(depth(lhs),depth(rhs)) + 1
+    // O(log max(m,n))
+	static <E> Node23<E> concat(final Node23<E> lhs, final Node23<E> rhs, int depthDelta) {
+        assert lhs != null;
+        assert rhs != null;
 	    if (depthDelta < 0) {
             return concat(rhs.reverse(), lhs.reverse(), -depthDelta).reverse();
 	    } else if (depthDelta > 0) {
+	        // Concatenate rhs to the last branch of lhs, and add back to this node.
 	        if (lhs.numBranches() < 3) {
 	            final Node23<E> new_lhs_b2 = concat(lhs.b2(), rhs, depthDelta - 1);
                 return new_lhs_b2.numBranches() < 2 ?
@@ -674,66 +685,45 @@ public final class List23<E> implements Iterable<E> {
 	    }
 	}
 
-	/**
-	 * Returns a node where all indexes are < index.
-	 * Returns null if there are no such elements.
-	 * @param node The node to get a head of
-	 * @param index The chopping point
-	 * @return a node where all indexes are < index
-	 */
-	Node23<E> head(final Node23<E> node, final int index) {
+	// Returns a node where all indexes are < index, null if removing a leaf.
+	// The general idea is this:
+	//    if A = [B / C, D]
+	//    where B is the sliced off portion, you want to return [C, D]
+	//    the problem is what to do when C is no longer of the same depth of D, perhaps by a lot.
+	// O(log n)
+	static <E> Node23<E> head(final Node23<E> node, final int index) {
         assert index < node.size();
         return
            node.isLeaf() ? null:
            index < node.b1Size() ? head(node.b1(), index):
-           node.numBranches() < 3 || index - node.b1Size() < node.b2Size() ? concat(node.b1(), head(node.b2(), index - node.b1Size())):
+           index - node.b1Size() < node.b2Size() ? concat(node.b1(), head(node.b2(), index - node.b1Size())):
            concat(new Branch2<>(node.b1(), node.b2()), head(node.b3(), index - node.b1Size() - node.b2Size()));
 	}
 
-	/**
-	 * Returns depth of the node.
-	 * @param node The node to get a depth of.
-	 * @return depth of the node.
-	 */
+	// Returns depth of the node.
+    // O(log n)
 	static <E> int getDepth(Node23<E> node) {
+        assert node != null;
 		return node.isLeaf() ? 1 : (getDepth(node.b1()) + 1);
 	}
 
-	@Override
-	public int hashCode() {
-		return asList().hashCode();
-	}
-	
-	@Override
-	public boolean equals(final Object obj) {
-		if (!(obj instanceof List23)) {
-			return false;
-		}
-		final List23<?> other = (List23<?>)obj;
-		return asList().equals(other.asList());
-	}
-	
-	@Override
-	public String toString() {
-		return asList().toString();
-	}
-	
-	@Override
-	public ListIterator<E> iterator() {
-		return asList().listIterator();
-	}
-    
-    public Stream<E> stream() {
-        return asList().stream();
-    }
-    
-    boolean isValid() {
+	// Returns true, if the list is valid.
+    // All branches are same height, and no 1 degenerate 1 branches.
+    // O(n log n)
+	boolean isValid() {
         return isValid(root);
     }
 
+    // Returns true, if the node is valid.
+    // All branches are same height, and no 1 degenerate 1 branches.
+    // O(n log n)
     static <E> boolean isValid(Node23<E> n) {
         return n == null || isValid(n, getDepth(n));
     }
+
+    // Returns true, if the node is valid.
+    // All branches are same height, and no 1 degenerate 1 branches.
+    // O(n log n)
     static <E> boolean isValid(Node23<E> n, int depth) {
         if (n == null) {
             return false;
@@ -747,7 +737,7 @@ public final class List23<E> implements Iterable<E> {
         if (!isValid(n.b2(), depth - 1)) {
             return false;
         }
-        if (n.b3() != null && !isValid(n.b3(), depth - 1)) {
+        if (n.numBranches() == 3 && !isValid(n.b3(), depth - 1)) {
             return false;
         }
         return true;
