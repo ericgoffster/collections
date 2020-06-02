@@ -108,10 +108,9 @@ public final class List23<E> implements Iterable<E> {
 		for(E e: elements) {
 			nodes.add(new Leaf<>(e));
 		}
-		if (nodes.isEmpty()) {
-			return empty();
-		}
-		return quickConstruct(nodes);
+		return nodes.isEmpty() ?
+			empty() :
+			quickConstruct(nodes);
 	}
 	
 	/**
@@ -414,10 +413,9 @@ public final class List23<E> implements Iterable<E> {
         verifyIndex(high, 0, size());
         verifyIndex(low, 0, high);
         Requirements.require(other, Requirements.notNull(), () -> "other");
-        if (low == high && other.size() == 0) {
-            return this;
-        }
-        return head(low).append(other).append(tail(high));
+        return low == high && other.size() == 0 ?
+            this:
+            head(low).append(other).append(tail(high));
     }
     
     /**
@@ -474,7 +472,9 @@ public final class List23<E> implements Iterable<E> {
 	 */
 	public List23<E> tail(final int index) {
 	    verifyIndex(index, 0, size());
-	    return index == 0 ? this : index == size() ? empty() : reverse().head(size() - index).reverse();
+	    return index == 0 ? this :
+	           index == size() ? empty() :
+	           reverse().head(size() - index).reverse();
 	}
 	
 	/**
@@ -624,16 +624,11 @@ public final class List23<E> implements Iterable<E> {
 	 */
 	E get(final Node23<E> node, final int index) {
         assert index < node.size();
-        if (node.isLeaf()) {
-            return node.leafValue();
-        }
-        if (index < node.b1Size()) {
-            return get(node.b1(), index);
-        }
-        if (node.numBranches() < 3 || index - node.b1Size() < node.b2Size()) {
-            return get(node.b2(), index - node.b1Size());
-        }
-        return get(node.b3(), index - node.b1Size() - node.b2Size());
+        return
+            node.isLeaf()? node.leafValue():
+            index < node.b1Size() ? get(node.b1(), index):
+            node.numBranches() < 3 || index - node.b1Size() < node.b2Size() ? get(node.b2(), index - node.b1Size()):
+            get(node.b3(), index - node.b1Size() - node.b2Size());
 	}
 
 	/**
@@ -652,8 +647,8 @@ public final class List23<E> implements Iterable<E> {
     }
 
 	/**
-	 * Creates a 2-level branch representing the concatenation
-	 *   of 2 nodes.
+	 * Creates a branch representing the concatenation
+	 *   of 2 nodes.   Result will be a 2 or 1 branch.
 	 * @param lhs The left hand side
 	 * @param rhs The right hand side
 	 * @param depthDelta The delta between the depths
@@ -661,33 +656,18 @@ public final class List23<E> implements Iterable<E> {
 	 */
 	Node23<E> concat(final Node23<E> lhs, final Node23<E> rhs, int depthDelta) {
 	    if (depthDelta < 0) {
-	        final Node23<E> new_rhs_b1 = concat(lhs, rhs.b1(), depthDelta + 1);
-	        if (rhs.numBranches() < 3) {
-	            if (new_rhs_b1.numBranches() < 2) {
-	                return new Branch1<>(new Branch2<>(new_rhs_b1.b1(), rhs.b2()));
-	            }
-                return new Branch1<>(new Branch3<>(new_rhs_b1.b1(), new_rhs_b1.b2(), rhs.b2()));
-	        }
-            if (new_rhs_b1.numBranches() < 2) {
-	            if (rhs.numBranches() < 3) {
-	                return new Branch1<>(new Branch2<>(new_rhs_b1.b1(), rhs.b2()));
-	            }
-                return new Branch1<>(new Branch3<>(new_rhs_b1.b1(), rhs.b2(), rhs.b3()));
-	        }
-	        return new Branch2<>(new_rhs_b1, new Branch2<>(rhs.b2(), rhs.b3()));
+            return concat(rhs.reverse(), lhs.reverse(), -depthDelta).reverse();
 	    } else if (depthDelta > 0) {
 	        if (lhs.numBranches() < 3) {
 	            final Node23<E> new_lhs_b2 = concat(lhs.b2(), rhs, depthDelta - 1);
-                if (new_lhs_b2.numBranches() < 2) {
-	                return new Branch1<>(new Branch2<>(lhs.b1(), new_lhs_b2.b1()));
-	            }
-                return new Branch1<>(new Branch3<>(lhs.b1(), new_lhs_b2.b1(), new_lhs_b2.b2()));
+                return new_lhs_b2.numBranches() < 2 ?
+	                new Branch1<>(new Branch2<>(lhs.b1(), new_lhs_b2.b1())):
+	                new Branch1<>(new Branch3<>(lhs.b1(), new_lhs_b2.b1(), new_lhs_b2.b2()));
 	        } else {
 	            final Node23<E> new_lhs_b3 = concat(lhs.b3(), rhs, depthDelta - 1);
-                if (new_lhs_b3.numBranches() < 2) {
-	                return new Branch1<>(new Branch3<>(lhs.b1(), lhs.b2(), new_lhs_b3.b1()));
-	            }
-	            return new Branch2<>(new Branch2<>(lhs.b1(), lhs.b2()), new_lhs_b3);
+                return new_lhs_b3.numBranches() < 2?
+	                new Branch1<>(new Branch3<>(lhs.b1(), lhs.b2(), new_lhs_b3.b1())):
+	                new Branch2<>(new Branch2<>(lhs.b1(), lhs.b2()), new_lhs_b3);
 	        }
 	    } else {
 	        return new Branch2<>(lhs, rhs);
@@ -703,16 +683,11 @@ public final class List23<E> implements Iterable<E> {
 	 */
 	Node23<E> head(final Node23<E> node, final int index) {
         assert index < node.size();
-		if (node.isLeaf()) {
-			return null;
-		}
-		if (index < node.b1Size()) {
-		    return head(node.b1(), index);
-		}
-		if (node.numBranches() < 3 || index - node.b1Size() < node.b2Size()) {
-		    return concat(node.b1(), head(node.b2(), index - node.b1Size()));
-		}
-		return concat(new Branch2<>(node.b1(), node.b2()), head(node.b3(), index - node.b1Size() - node.b2Size()));
+        return
+           node.isLeaf() ? null:
+           index < node.b1Size() ? head(node.b1(), index):
+           node.numBranches() < 3 || index - node.b1Size() < node.b2Size() ? concat(node.b1(), head(node.b2(), index - node.b1Size())):
+           concat(new Branch2<>(node.b1(), node.b2()), head(node.b3(), index - node.b1Size() - node.b2Size()));
 	}
 
 	/**
