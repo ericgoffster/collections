@@ -38,12 +38,12 @@ public class Set23Test {
 	@Test
 	public void testReverse() {
 		Set23<Integer> l = Set23.of(0, 3, 6, 9, 12);
-		assertTrue(l.reverse().contains(3));
-		assertTrue(l.reverse().contains(6));
-		assertTrue(l.reverse().contains(9));
-		assertTrue(l.reverse().contains(12));
-		assertEquals(l.reverse(), Set23.of(12, 9, 6, 3, 0));
-		assertEquals(l.reverse().subSet(9, 3), Set23.of(9, 6));
+		assertTrue(l.reversed().contains(3));
+		assertTrue(l.reversed().contains(6));
+		assertTrue(l.reversed().contains(9));
+		assertTrue(l.reversed().contains(12));
+		assertEquals(l.reversed(), Set23.of(12, 9, 6, 3, 0));
+		assertEquals(l.reversed().subSet(9, 3), Set23.of(9, 6));
 	}
 	
 	@Test
@@ -118,7 +118,7 @@ public class Set23Test {
 		assertTrue(s.contains(Set23.of("1","2","3","5","4",null)));
 		assertFalse(s.contains(Set23.of("1","2","3","4",null)));
 		assertFalse(s.contains(null));
-		TreeSet<String> t = new TreeSet<>(Set23::naturalCompare);
+		TreeSet<String> t = new TreeSet<>(List23::naturalCompare);
 		t.addAll(Arrays.asList("1", "2", "3", "4", "5", null));
 		assertEquals(l1.toString(), t.toString());
 	}

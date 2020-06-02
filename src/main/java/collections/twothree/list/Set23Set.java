@@ -15,12 +15,12 @@ final class Set23Set<E> extends AbstractSet<E> implements SortedSet<E> {
 
 	@Override
 	public Iterator<E> iterator() {
-		return set.keys.asList().iterator();
+		return set.elements.asList().iterator();
 	}
 
 	@Override
 	public int size() {
-		return set.keys.size();
+		return set.elements.size();
 	}
 
 	@Override
@@ -36,7 +36,7 @@ final class Set23Set<E> extends AbstractSet<E> implements SortedSet<E> {
 
 	@Override
 	public Comparator<? super E> comparator() {
-		return set::compare;
+		return set.comparator;
 	}
 
 	@Override
@@ -56,11 +56,11 @@ final class Set23Set<E> extends AbstractSet<E> implements SortedSet<E> {
 
 	@Override
 	public E first() {
-		return set.keys.get(0);
+		return set.elements.get(0);
 	}
 
 	@Override
 	public E last() {
-		return set.keys.get(set.keys.size() - 1);
+		return set.elements.get(set.elements.size() - 1);
 	}
 }

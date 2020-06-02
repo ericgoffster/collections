@@ -282,7 +282,7 @@ public final class List23<E> implements Iterable<E> {
      * @return The last index of <code>element</code>, -1 if not found
      */
     public int lastIndexOf(E element) {
-        int pos = reverse().indexOf(element);
+        int pos = reversed().indexOf(element);
         return pos < 0 ? -1 : size() - 1 - pos;
     }
     
@@ -474,7 +474,7 @@ public final class List23<E> implements Iterable<E> {
 	    verifyIndex("index", index, 0, size());
 	    return index == 0 ? this :
 	           index == size() ? empty() :
-	           reverse().head(size() - index).reverse();
+	           reversed().head(size() - index).reversed();
 	}
 	
 	/**
@@ -519,11 +519,11 @@ public final class List23<E> implements Iterable<E> {
 	 * <p> This operation is O(1).
      * <pre>
      * Example:
-     *     List23.of(6, 1, 6, 8).reverse() == [8, 6, 1, 6]
+     *     List23.of(6, 1, 6, 8).reversed() == [8, 6, 1, 6]
      * </pre>
 	 * @return A list that is the original list reversed
 	 */
-	public List23<E> reverse() {
+	public List23<E> reversed() {
 	    if (size() < 2) {
 	        return this;
 	    }

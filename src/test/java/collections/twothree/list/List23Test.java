@@ -208,15 +208,15 @@ public class List23Test {
 	@Test
 	public void testReversed() {
 		List23<Integer> l = List23.of(1,2,3,4,5,6);
-		assertEquals(l.reverse(), List23.of(6,5,4,3,2,1));
-        assertEquals(l.reverse().reverse(), l);
-		assertEquals(l.reverse().add(7), List23.of(6,5,4,3,2,1,7));
-		assertEquals(l.reverse().removeAt(0), List23.of(5,4,3,2,1));
-		assertEquals(l.reverse().removeAt(5), List23.of(6,5,4,3,2));
-		assertEquals(l.reverse().subList(1, 3), List23.of(5,4));
-		assertEquals(l.reverse().subList(0, 6), List23.of(6,5,4,3,2,1));
-        assertEquals(l.append(l.reverse()), List23.of(1,2,3,4,5,6,6,5,4,3,2,1));
-        assertEquals(l.reverse().append(l), List23.of(6,5,4,3,2,1,1,2,3,4,5,6));
+		assertEquals(l.reversed(), List23.of(6,5,4,3,2,1));
+        assertEquals(l.reversed().reversed(), l);
+		assertEquals(l.reversed().add(7), List23.of(6,5,4,3,2,1,7));
+		assertEquals(l.reversed().removeAt(0), List23.of(5,4,3,2,1));
+		assertEquals(l.reversed().removeAt(5), List23.of(6,5,4,3,2));
+		assertEquals(l.reversed().subList(1, 3), List23.of(5,4));
+		assertEquals(l.reversed().subList(0, 6), List23.of(6,5,4,3,2,1));
+        assertEquals(l.append(l.reversed()), List23.of(1,2,3,4,5,6,6,5,4,3,2,1));
+        assertEquals(l.reversed().append(l), List23.of(6,5,4,3,2,1,1,2,3,4,5,6));
 	}
 
 	@Test

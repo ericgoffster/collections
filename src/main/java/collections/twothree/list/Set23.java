@@ -27,105 +27,105 @@ public final class Set23<E> implements Iterable<E> {
     /**
      * The comparator for elements in the set.
      */
-	final Comparator<E> keyComparator;
+	final Comparator<E> comparator;
 
 	/**
 	 * The list of elements
 	 */
-	final List23<E> keys;
+	final List23<E> elements;
 
-	/**
-	 * True, if reversed.
-	 */
-	final boolean reversed;
-
-	Set23(Comparator<E> keyComparator, List23<E> keys, boolean reversed) {
-		this.keys = Requirements.require(keys, Requirements.notNull(), () -> "keys");
-		this.keyComparator = Requirements.require(keyComparator, Requirements.notNull(), () -> "keyComparator");
-		this.reversed = reversed;
+	Set23(final Comparator<E> comparator, final List23<E> keys) {
+		this.elements = Requirements.require(keys, Requirements.notNull(), () -> "keys");
+		this.comparator = Requirements.require(comparator, Requirements.notNull(), () -> "comparator");
 	}
 	
 	/**
 	 * Returns a set of exactly one element.
+     * <p>This operation is O(1).
 	 * @param <E> The element type
 	 * @param element The singleton element
 	 * @return A set of exactly one element
 	 */
-    public static <E extends Comparable<E>> Set23<E> of(E element) {
-        return new Set23<E>(Set23::naturalCompare, List23.of(element), false);
+    public static <E extends Comparable<E>> Set23<E> of(final E element) {
+        return new Set23<E>(List23::naturalCompare, List23.of(element));
     }
 
     /**
      * Returns the empty set.
+     * <p>This operation is O(1).
      * @param <E> The element type
      * @return An empty set.
      */
     public static <E extends Comparable<E>> Set23<E> empty() {
-        return new Set23<E>(Set23::naturalCompare, List23.empty(), false);
+        return new Set23<E>(List23::naturalCompare, List23.empty());
     }
 
     /**
      * Returns a set containing an initial list of elements, using natural ordering.
-     * Elements are stored in natural order.
+     * <p>This operation is O(n log n).
      * @param <E> The element type
      * @param elements The array of elements
      * @return A set containing an initial list of elements
      */
 	@SafeVarargs
     @SuppressWarnings("varargs")
-    public static <E extends Comparable<E>> Set23<E> of(E ... elements) {
+    public static <E extends Comparable<E>> Set23<E> of(final E ... elements) {
     	return of(Arrays.asList(elements));
     }
 
     /**
-     * Returns a set containing an initial list of elements, using a custom order.
+     * Returns a set containing an initial list of elements, using custom ordering.
+     * <p>This operation is O(n log n).
      * @param <E> The element type
-     * @param keyComparator The comparator for elements
+     * @param comparator The comparator for elements
      * @param elements The array of elements
      * @return A set containing an initial list of elements
      */
     @SafeVarargs
     @SuppressWarnings("varargs")
-    public static <E> Set23<E> of(Comparator<E> keyComparator, E ... elements) {
-    	return of(keyComparator, Arrays.asList(elements));
+    public static <E> Set23<E> of(final Comparator<E> comparator, final E ... elements) {
+    	return of(comparator, Arrays.asList(elements));
     }
 
     /**
      * Returns a set containing an initial list of elements, using natural ordering.
-     * Elements are stored in natural order.
+     * <p>This operation is O(n log n).
      * @param <E> The element type
      * @param elements The array of elements
      * @return A set containing an initial list of elements
      */
-    public static <E extends Comparable<E>> Set23<E> of(Iterable<E> elements) {
-    	return of(Set23::naturalCompare, elements);
+    public static <E extends Comparable<E>> Set23<E> of(final Iterable<E> elements) {
+    	return of(List23::naturalCompare, elements);
     }
 
     /**
-     * Returns a set containing an initial list of elements, using a custom order.
+     * Returns a set containing an initial list of elements, using custom ordering.
+     * <p>This operation is O(n log n).
      * @param <E> The element type
-     * @param keyComparator The comparator for elements
+     * @param comparator The comparator of elements
      * @param elements The array of elements
      * @return A set containing an initial list of elements
      */
-    public static <E> Set23<E> of(Comparator<E> keyComparator, Iterable<E> elements) {
-    	TreeSet<E> list = new TreeSet<>(keyComparator);
+    public static <E> Set23<E> of(final Comparator<E> comparator, final Iterable<E> elements) {
+        final TreeSet<E> list = new TreeSet<>(comparator);
     	for(E e: elements) {
     		list.add(e);
     	}
-    	return new Set23<E>(keyComparator, List23.of(list), false);
+    	return new Set23<E>(comparator, List23.of(list));
     }
 
     /**
 	 * Returns the size of this set.
-	 * @return the size of this set
+     * <p>This operation is O(1).
+	 * @return The size of this set
 	 */
 	public int size() {
-		return keys.size();
+		return elements.size();
 	}
 	
 	/**
 	 * Returns true if the set contains the given element.
+     * <p>This operation is O(log n).
 	 * @param element The element to look for.
 	 * @return The element to look for.
 	 */
@@ -135,137 +135,126 @@ public final class Set23<E> implements Iterable<E> {
 
     /**
      * Returns the index of the given element in the set.
+     * <p>This operation is O(log n).
      * @param element The element to look for.
      * @return The index of the given element in the set, -1 of not found.
      */
     public int indexOf(final E element) {
-        return keys.root == null ? -1 : visit(keys.root, element, 0, (leaf, i) -> compare(element, leaf) == 0 ? i : -1);
+        return elements.root == null ? -1 : visit(comparator, elements.root, element, 0, (leaf, i) -> comparator.compare(element, leaf) == 0 ? i : -1);
     }
     
     /**
      * Returns the set of all elements in this set &gt;= element
+     * <p>This operation is O(log n).
      * @param element The comparison element (inclusive)
      * @return the set of all elements in this set &gt;= element
      */
-	public Set23<E> tailSet(E element) {
-		return new Set23<E>(keyComparator, keys.tail(findFirstElement(element)), reversed);
+	public Set23<E> tailSet(final E element) {
+		return new Set23<E>(comparator, elements.tail(findFirstElement(element)));
 	}
 
     /**
      * Returns the set of all elements in this set &lt; element
+     * <p>This operation is O(log n).
      * @param element The comparison element (exclusive)
      * @return the set of all elements in this set &lt; element
      */
-	public Set23<E> headSet(E element) {
-		return new Set23<E>(keyComparator, keys.head(findFirstElement(element)), reversed);
+	public Set23<E> headSet(final E element) {
+		return new Set23<E>(comparator, elements.head(findFirstElement(element)));
 	}
 
     /**
      * Returns the set of all elements in this set &lt; from or &gt;= to
+     * <p>This operation is O(log n).
      * @param low The low element (exclusive)
      * @param high The high element (inclusive)
      * @return the set of all elements in this set &lt; from or &gt;= to
      */
-    public Set23<E> exclude(E low, E high) {
-        return new Set23<E>(keyComparator, keys.exclude(findFirstElement(low), findFirstElement(high)), reversed);
+    public Set23<E> exclude(final E low, final E high) {
+        return new Set23<E>(comparator, elements.exclude(findFirstElement(low), findFirstElement(high)));
     }
 
     /**
      * Returns the set of all elements in this set &gt;= from and &lt; to
+     * <p>This operation is O(log n).
      * @param low The low element (inclusive)
      * @param high The high element (exclusive)
      * @return the set of all elements in this set &lt; element
      */
-	public Set23<E> subSet(E low, E high) {
-		return new Set23<E>(keyComparator, keys.subList(findFirstElement(low), findFirstElement(high)), reversed);
+	public Set23<E> subSet(final E low, final E high) {
+		return new Set23<E>(comparator, elements.subList(findFirstElement(low), findFirstElement(high)));
 	}
 
 	/**
 	 * Returns a set with the given element added.
+     * <p>This operation is O(log n).
      * THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
 	 * @param element The element to add.
 	 * @return a set with the given element added.
 	 */
-	public Set23<E> add(E element) {
-	    Node23<E> n = keys.root;
-	    return n == null ? new Set23<>(keyComparator, keys.add(element), reversed) :
-	        visit(n, element, 0, (leaf, i) -> {
-	            int cmp = compare(element, leaf);
+	public Set23<E> add(final E element) {
+	    Node23<E> n = elements.root;
+	    return n == null ? new Set23<>(comparator, List23.of(element)) :
+	        visit(comparator, n, element, 0, (leaf, i) -> {
+	            int cmp = comparator.compare(element, leaf);
 	            return cmp == 0 ? this :
-	                   cmp < 0 ? new Set23<>(keyComparator, keys.insertAt(i, element), reversed) :
-	                   new Set23<>(keyComparator, keys.insertAt(i + 1, element), reversed);
+	                   cmp < 0 ? new Set23<>(comparator, elements.insertAt(i, element)) :
+	                   new Set23<>(comparator, elements.insertAt(i + 1, element));
 	        });
 	}
 
     /**
      * Returns a set with the elements reversed.
+     * <p>This operation is O(1).
      * THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * @return A set with the elements reversed
      */
-	public Set23<E> reverse() {
-		return new Set23<E>(keyComparator, keys.reverse(), !reversed);
+	public Set23<E> reversed() {
+		return new Set23<E>(comparator.reversed(), elements.reversed());
 	}
 
     /**
      * Returns a set with the given element removed.
+     * <p>This operation is O(log n).
      * THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * @param element The element to remove.
      * @return a set with the given element removed.
      */
-	public Set23<E> remove(E element) {
-		Node23<E> n = keys.root;
+	public Set23<E> remove(final E element) {
+		Node23<E> n = elements.root;
 		return n == null ? this:
-			visit(n, element, 0, (leaf, i) -> {
-				return compare(element, leaf) == 0 ?
-						new Set23<>(keyComparator, keys.removeAt(i), reversed) : this;
-			});
+			visit(comparator, n, element, 0, (leaf, i) -> comparator.compare(element, leaf) == 0 ?
+						new Set23<>(comparator, elements.removeAt(i)) : this
+			);
 	}
 	
 	/**
 	 * Return the element at the given index.
+     * <p>This operation is O(log n).
 	 * @param index The index.
 	 * @return the element at the given index.
      * @throws IndexOutOfBoundsException if out of bounds
 	 */
-    public E getAt(int index) {
-        return keys.get(index);
+    public E getAt(final int index) {
+        return elements.get(index);
     }
     
     /**
      * Returns a set with the element at the given index removed.
+     * <p>This operation is O(log n).
      * THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * @param index The index of the element to remove.
      * @return a set with the element at the given index removed
      */
-    public Set23<E> removeAt(int index) {
-        return new Set23<E>(keyComparator, keys.removeAt(index), reversed);
+    public Set23<E> removeAt(final int index) {
+        return new Set23<E>(comparator, elements.removeAt(index));
     }
 
-    /**
-     * Compares two elements, taking reversing into account.
-     * @param a left
-     * @param b right
-     * @return negative if a &lt; b zero if a == b, positive otherwise.
-     */
-	int compare(E a, E b) {
-    	return reversed ? keyComparator.compare(b, a) : keyComparator.compare(a, b);
-    }
-
-	/**
-	 * Returns the last element of a node.
-	 * @param node The starting point.
-	 * @return the last element of a node.
-	 */
-    E last(final Node23<E> node) {
+	static <E> E last(final Node23<E> node) {
     	return node.isLeaf() ? node.leafValue() : last(node.b_last());
     }
 
-    /**
-     * Returns the first element of a node.
-     * @param node The starting point.
-     * @return the last element of a node.
-     */
-    E first(final Node23<E> node) {
+    static <E> E first(final Node23<E> node) {
     	return node.isLeaf() ? node.leafValue() : first(node.b1());
     }
 
@@ -278,11 +267,12 @@ public final class Set23<E> implements Iterable<E> {
      * @param leafVisitor The visit to call
      * @return The return from the leafVisitor
      */
-    <T> T visit(final Node23<E> node, final E element, final int index, final BiFunction<E,Integer,T> leafVisitor) {
-    	return node.isLeaf() ? leafVisitor.apply(node.leafValue(), index) :
-    		compare(element, last(node.b1())) <= 0 ? visit(node.b1(), element, index, leafVisitor):
-    			node.b3() == null || compare(element, last(node.b2())) <= 0 ? visit(node.b2(), element, index + node.b1().size(), leafVisitor):
-    				visit(node.b3(), element, index + node.b1().size() + node.b2().size(), leafVisitor);
+    static <T, E> T visit(final Comparator<E> comparator, final Node23<E> node, final E element, final int index, final BiFunction<E,Integer,T> leafVisitor) {
+        return
+                node.isLeaf() ? leafVisitor.apply(node.leafValue(), index) :
+                comparator.compare(element, last(node.b1())) <= 0 ? visit(comparator, node.b1(), element, index, leafVisitor):
+                node.numBranches() < 3 || comparator.compare(element, last(node.b2())) <= 0 ? visit(comparator, node.b2(), element, index + node.b1Size(), leafVisitor):
+                visit(comparator, node.b3(), element, index + node.b1Size() + node.b2Size(), leafVisitor);
     }
 
     /**
@@ -291,25 +281,12 @@ public final class Set23<E> implements Iterable<E> {
      * @return the index of first element at or before the given element
      */
     int findFirstElement(final E element) {
-    	Node23<E> n = keys.root;
+    	Node23<E> n = elements.root;
     	return n == null ? 0:
-    		   compare(element, first(n)) < 0 ? 0:
-    		   compare(element, last(n)) > 0 ? size():
-    		   visit(n, element, 0, (leaf, i) -> i);
+    		   comparator.compare(element, first(n)) < 0 ? 0:
+    		   comparator.compare(element, last(n)) > 0 ? size():
+    		   visit(comparator, n, element, 0, (leaf, i) -> i);
     }
-
-    /**
-     * Natural compare of two elements.
-     * @param <E> The type of the objects being compared
-     * @param a left
-     * @param b right
-     * @return negative if a &lt; b, zero if a == b positive otherwise
-     */
-    static <E extends Comparable<E>> int naturalCompare(E a, E b) {
-		return a == null ?
-				(b == null) ? 0 : -1:
-				(b == null) ? 1 : a.compareTo(b);
-	}
 
     /**
      * Returns the read-only {@link Set} view of this set.
@@ -324,7 +301,7 @@ public final class Set23<E> implements Iterable<E> {
      * @return the {@link List23} view of this set
      */
 	List23<E> asList() {
-		return keys;
+		return elements;
 	}
 	
     @Override
@@ -333,7 +310,7 @@ public final class Set23<E> implements Iterable<E> {
 	}
 	
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (!(obj instanceof Set23)) {
 			return false;
 		}
@@ -348,10 +325,10 @@ public final class Set23<E> implements Iterable<E> {
 	
 	@Override
 	public ListIterator<E> iterator() {
-		return keys.iterator();
+		return elements.iterator();
 	}
     
-    public Stream<E> strean() {
-        return keys.stream();
+    public Stream<E> stream() {
+        return elements.stream();
     }
 }
