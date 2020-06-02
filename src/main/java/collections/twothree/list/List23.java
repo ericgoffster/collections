@@ -37,16 +37,9 @@ public final class List23<E> implements Iterable<E> {
      */
 	final Node23<E> root;
 	
-	/**
-	 * True if reversed.   If reversed, branches should
-	 * be viewed in reverse order.
-	 */
-	final boolean reversed;
-
-	List23(final Node23<E> root, boolean reversed) {
-	    assert root == null || isValid(root, getDepth(root));
+	List23(final Node23<E> root) {
+	    assert isValid(root);
 		this.root = root;
-		this.reversed = reversed;
 	}
 
     /**
@@ -56,7 +49,7 @@ public final class List23<E> implements Iterable<E> {
      * @return The List23 representation of empty
      */
     public static <E> List23<E> empty() {
-        return new List23<>(null, false);
+        return new List23<>(null);
     }
 
     /**
@@ -71,7 +64,7 @@ public final class List23<E> implements Iterable<E> {
      * @return The List23 representation of the element
      */
     public static <E> List23<E> of(final E element) {
-        return new List23<>(new Leaf<>(element), false);
+        return new List23<>(new Leaf<>(element));
     }
 
 	/**
@@ -463,7 +456,7 @@ public final class List23<E> implements Iterable<E> {
 		Requirements.require(other, Requirements.notNull(), () -> "other");
 		return other.root == null ? this:
 		       root == null ? other:
-		       new List23<>(concat(root, other.root), reversed);
+		       new List23<>(concat(root, other.root));
 	}
 	
 	/**
@@ -499,7 +492,7 @@ public final class List23<E> implements Iterable<E> {
 	 */
 	public List23<E> head(final int index) {
         verifyIndex(index, 0, size());
-		return index == size() ?  this : index == 0 ? empty(): new List23<>(head(root, index), reversed);
+		return index == size() ?  this : index == 0 ? empty(): new List23<>(head(root, index));
 	}
 	
 	/**
@@ -531,7 +524,11 @@ public final class List23<E> implements Iterable<E> {
 	 * @return A list that is the original list reversed
 	 */
 	public List23<E> reverse() {
-		return new List23<E>(root, !reversed);
+	    if (size() < 2) {
+	        return this;
+	    }
+	    
+		return new List23<E>(root.reverse());
 	}
 
 	int verifyIndex(int index, int low, int high) {
@@ -563,7 +560,7 @@ public final class List23<E> implements Iterable<E> {
 	static <E> List23<E> quickConstruct(final List<Node23<E>> nodes) {
 		// Just one left?  It is the root
 		if (nodes.size() == 1) {
-			return new List23<E>(nodes.get(0), false);
+			return new List23<E>(nodes.get(0));
 		}
 		
 		List<Node23<E>> newNodes = new ArrayList<>(nodes.size() / 2);
@@ -588,59 +585,6 @@ public final class List23<E> implements Iterable<E> {
 	}
 
 	/**
-	 * Returns left most branch.   Will only be null if this is a leaf.
-	 * @param node The node
-	 * @return the left most branch.
-	 */
-	Node23<E> b1(final Node23<E> node) {
-		return reversed ? node.r_b1() : node.b1();
-	}
-
-	/**
-	 * Returns the second branch.
-	 * Will be null if a leaf, or a 1-branch.
-	 * @param node The node
-	 * @return the second branch.
-	 */
-	Node23<E> b2(final Node23<E> node) {
-		return reversed ? node.r_b2() : node.b2();
-	}
-
-	/**
-	 * Returns the third branch.
-	 * Will be null if a leaf, or not a 3-branch.
-	 * @param node The node
-	 * @return the third branch.
-	 */
-	Node23<E> b3(final Node23<E> node) {
-		return reversed ? node.r_b3() : node.b3();
-	}
-	
-	/**
-	 * Returns the right most branch.  Will only be null if this is a leaf.
-	 * @param node The node
-	 * @return the right most branch.
-	 */
-	Node23<E> b_last(final Node23<E> node) {
-		return reversed ? node.b1() : node.b_last();
-	}
-	
-	static class Pair<E> {
-	    final Node23<E> b1;
-	    final Node23<E> b2;
-	    
-	    public Pair(Node23<E> b1, Node23<E> b2) {
-            this.b1 = b1;
-            this.b2 = b2;	            
-        }
-        
-        public Pair(Node23<E> b1) {
-            this.b1 = b1;
-            this.b2 = null;               
-        }
-	}
-
-    /**
      * Returns the index of the given element at the specified node.
      * @param node The starting node
      * @param element The element to find
@@ -651,21 +595,21 @@ public final class List23<E> implements Iterable<E> {
             return Objects.equals(node.leafValue(),element) ? 0: -1;
         }
         {
-            int i = find(b1(node), element);
+            int i = find(node.b1(), element);
             if (i >= 0) {
                 return i;
             }
         }
         {
-            int i = find(b2(node), element);
+            int i = find(node.b2(), element);
             if (i >= 0) {
-                return i + b1(node).size();
+                return i + node.b1Size();
             }
         }
-        if (b3(node) != null) {
-            int i = find(b3(node), element);
+        if (node.b3() != null) {
+            int i = find(node.b3(), element);
             if (i >= 0) {
-                return i + b1(node).size() + b2(node).size();
+                return i + node.b1Size() + node.b2Size();
             }
         }
         return -1;
@@ -680,78 +624,18 @@ public final class List23<E> implements Iterable<E> {
 	 */
 	E get(final Node23<E> node, final int index) {
         assert index < node.size();
-        return node.isLeaf() ? node.leafValue():
-		       index < b1(node).size() ? get(b1(node), index):
-		       b3(node) == null || index - b1(node).size() < b2(node).size() ? get(b2(node), index - b1(node).size()):
-		       get(b3(node), index - b1(node).size() - b2(node).size());
+        if (node.isLeaf()) {
+            return node.leafValue();
+        }
+        if (index < node.b1Size()) {
+            return get(node.b1(), index);
+        }
+        if (node.numBranches() < 3 || index - node.b1Size() < node.b2Size()) {
+            return get(node.b2(), index - node.b1Size());
+        }
+        return get(node.b3(), index - node.b1Size() - node.b2Size());
 	}
 
-	/**
-	 * Creates a 1-branch.   Returns null if branch is null.
-	 * @param b0 The singleton branch
-	 * @return A 1-branch.
-	 */
-	Node23<E> makeBranch(final Node23<E> b0) {
-		return b0 == null ? null : new Branch1<>(b0);
-	}
-
-	/**
-	 * Creates a 2-branch.   Returns a 1-branch if one of the branches are null,
-	 *    and null if both branches are null.
-	 * @param b0 The left branch
-	 * @param b1 The right branch
-	 * @return A 2-branch.
-	 */
-	Node23<E> makeBranch(final Node23<E> b0, final Node23<E> b1) {
-	    return b0 == null ? makeBranch(b1):
-	           b1 == null ? makeBranch(b0):
-	           reversed ? new Branch2<>(b1, b0): new Branch2<>(b0, b1);
-	}
-
-	/**
-	 * Creates a 3-branch.   Returns a 2-branch if one of the branches are null,
-	 *    and a 1-branch if two branched are null, and null, if all 3 are null.
-	 * @param b0 The left branch
-	 * @param b1 The middle branch
-	 * @param b2 The right branch
-	 * @return A 3-branch.
-	 */
-	Node23<E> makeBranch(final Node23<E> b0, final Node23<E> b1, final Node23<E> b2) {
-	    return b0 == null ? makeBranch(b1, b2):
-	           b1 == null ? makeBranch(b0, b2):
-	           b2 == null ? makeBranch(b0, b1):
-	           reversed ? new Branch3<>(b2, b1, b0): new Branch3<>(b0, b1, b2);
-	}
-
-    /**
-     * Combines 3 branches into a Pair with one branch.
-     * At least 2 branches must be non-null.
-     * @param b0 branch 1
-     * @param b1 branch 2
-     * @param b2 branch 3
-     * @return A Pair with one branch.
-     */
-    Pair<E> combine(Node23<E> b0, Node23<E> b1,  Node23<E> b2) {
-        return new Pair<E>(makeBranch(b0,b1,b2));
-    }
-   
-	/**
-	 * Combines 4 branches into a Pair with one or two branches.
-	 * At least 2 branches must be non-null.
-	 * @param b0 branch 1
-	 * @param b1 branch 2
-	 * @param b2 branch 3
-	 * @param b3 branch 4
-     * @return A branch of 1 or 2 branches. (never 3)
-	 */
-    Pair<E> combine(Node23<E> b0, Node23<E> b1,  Node23<E> b2,  Node23<E> b3) {
-        return b3 == null ? combine(b0,b1,b2):
-               b2 == null ? combine(b0,b1,b3):
-               b1 == null ? combine(b0,b2,b3):
-               b0 == null ? combine(b1,b2,b3):
-               new Pair<>(makeBranch(b0,b1), makeBranch(b2, b3));
-    }
- 
 	/**
 	 * Returns the concatenation of lhs and rhs
 	 * @param lhs left hand side
@@ -759,13 +643,12 @@ public final class List23<E> implements Iterable<E> {
 	 * @return the concatenation of lhs and rhs
 	 */
 	Node23<E> concat(final Node23<E> lhs, final Node23<E> rhs) {
-	    return rhs == null ? lhs:
-	           lhs == null ? rhs:
-	           collapse(concat(lhs, rhs, getDepth(lhs) - getDepth(rhs)));
-	}
-
-    Node23<E> collapse(Pair<E> node) {
-        return node.b2 == null ? node.b1: makeBranch(node.b1, node.b2);
+	    assert lhs != null;
+	    if (rhs == null) {
+	        return lhs;
+	    }
+	    final Node23<E> node = concat(lhs, rhs, getDepth(lhs) - getDepth(rhs));
+        return node.numBranches() < 2 ? node.b1(): node;
     }
 
 	/**
@@ -776,20 +659,38 @@ public final class List23<E> implements Iterable<E> {
 	 * @param depthDelta The delta between the depths
 	 * @return a 2-level branch representing the concatenation
 	 */
-	Pair<E> concat(final Node23<E> lhs, final Node23<E> rhs, int depthDelta) {
+	Node23<E> concat(final Node23<E> lhs, final Node23<E> rhs, int depthDelta) {
 	    if (depthDelta < 0) {
-	        Pair<E> new_rhs_b1 = concat(lhs, b1(rhs), depthDelta + 1);
-	        return combine(new_rhs_b1.b1, new_rhs_b1.b2, b2(rhs), b3(rhs));
+	        final Node23<E> new_rhs_b1 = concat(lhs, rhs.b1(), depthDelta + 1);
+	        if (rhs.numBranches() < 3) {
+	            if (new_rhs_b1.numBranches() < 2) {
+	                return new Branch1<>(new Branch2<>(new_rhs_b1.b1(), rhs.b2()));
+	            }
+                return new Branch1<>(new Branch3<>(new_rhs_b1.b1(), new_rhs_b1.b2(), rhs.b2()));
+	        }
+            if (new_rhs_b1.numBranches() < 2) {
+	            if (rhs.numBranches() < 3) {
+	                return new Branch1<>(new Branch2<>(new_rhs_b1.b1(), rhs.b2()));
+	            }
+                return new Branch1<>(new Branch3<>(new_rhs_b1.b1(), rhs.b2(), rhs.b3()));
+	        }
+	        return new Branch2<>(new_rhs_b1, new Branch2<>(rhs.b2(), rhs.b3()));
 	    } else if (depthDelta > 0) {
-	        if (b3(lhs) == null) {
-	            Pair<E> new_lhs_b2 = concat(b2(lhs), rhs, depthDelta - 1);
-	            return combine(b1(lhs), new_lhs_b2.b1, new_lhs_b2.b2);
+	        if (lhs.numBranches() < 3) {
+	            final Node23<E> new_lhs_b2 = concat(lhs.b2(), rhs, depthDelta - 1);
+                if (new_lhs_b2.numBranches() < 2) {
+	                return new Branch1<>(new Branch2<>(lhs.b1(), new_lhs_b2.b1()));
+	            }
+                return new Branch1<>(new Branch3<>(lhs.b1(), new_lhs_b2.b1(), new_lhs_b2.b2()));
 	        } else {
-	            Pair<E> new_lhs_b3 = concat(b3(lhs), rhs, depthDelta - 1);
-	            return combine(b1(lhs), b2(lhs), new_lhs_b3.b1, new_lhs_b3.b2);
+	            final Node23<E> new_lhs_b3 = concat(lhs.b3(), rhs, depthDelta - 1);
+                if (new_lhs_b3.numBranches() < 2) {
+	                return new Branch1<>(new Branch3<>(lhs.b1(), lhs.b2(), new_lhs_b3.b1()));
+	            }
+	            return new Branch2<>(new Branch2<>(lhs.b1(), lhs.b2()), new_lhs_b3);
 	        }
 	    } else {
-	        return new Pair<>(lhs, rhs);
+	        return new Branch2<>(lhs, rhs);
 	    }
 	}
 
@@ -805,12 +706,13 @@ public final class List23<E> implements Iterable<E> {
 		if (node.isLeaf()) {
 			return null;
 		}
-		final Node23<E> b1 = b1(node);
-		final Node23<E> b2 = b2(node);
-		final Node23<E> b3 = b3(node);
-		return index < b1.size() ? head(b1, index):
-		       b3 == null || index - b1.size() < b2.size() ? concat(b1, head(b2, index - b1.size())):
-		       concat(makeBranch(b1, b2), head(b3, index - b1.size() - b2.size()));
+		if (index < node.b1Size()) {
+		    return head(node.b1(), index);
+		}
+		if (node.numBranches() < 3 || index - node.b1Size() < node.b2Size()) {
+		    return concat(node.b1(), head(node.b2(), index - node.b1Size()));
+		}
+		return concat(new Branch2<>(node.b1(), node.b2()), head(node.b3(), index - node.b1Size() - node.b2Size()));
 	}
 
 	/**
@@ -851,9 +753,12 @@ public final class List23<E> implements Iterable<E> {
     }
     
     boolean isValid() {
-        return root == null || isValid(root, getDepth(root));
+        return isValid(root);
     }
 
+    static <E> boolean isValid(Node23<E> n) {
+        return n == null || isValid(n, getDepth(n));
+    }
     static <E> boolean isValid(Node23<E> n, int depth) {
         if (n == null) {
             return false;

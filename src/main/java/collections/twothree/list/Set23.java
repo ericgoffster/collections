@@ -257,7 +257,7 @@ public final class Set23<E> implements Iterable<E> {
 	 * @return the last element of a node.
 	 */
     E last(final Node23<E> node) {
-    	return node.isLeaf() ? node.leafValue() : last(keys.b_last(node));
+    	return node.isLeaf() ? node.leafValue() : last(node.b_last());
     }
 
     /**
@@ -266,7 +266,7 @@ public final class Set23<E> implements Iterable<E> {
      * @return the last element of a node.
      */
     E first(final Node23<E> node) {
-    	return node.isLeaf() ? node.leafValue() : first(keys.b1(node));
+    	return node.isLeaf() ? node.leafValue() : first(node.b1());
     }
 
     /**
@@ -278,12 +278,11 @@ public final class Set23<E> implements Iterable<E> {
      * @param leafVisitor The visit to call
      * @return The return from the leafVisitor
      */
-    <T> T visit(Node23<E> node, E element, int index, BiFunction<E,Integer,T> leafVisitor) {
-    	final Node23<E> node1 = node;
-        return node1.isLeaf() ? leafVisitor.apply(node.leafValue(), index) :
-    		compare(element, last(keys.b1(node))) <= 0 ? visit(keys.b1(node), element, index, leafVisitor):
-    			keys.b3(node) == null || compare(element, last(keys.b2(node))) <= 0 ? visit(keys.b2(node), element, index + keys.b1(node).size(), leafVisitor):
-    				visit(keys.b3(node), element, index + keys.b1(node).size() + keys.b2(node).size(), leafVisitor);
+    <T> T visit(final Node23<E> node, final E element, final int index, final BiFunction<E,Integer,T> leafVisitor) {
+    	return node.isLeaf() ? leafVisitor.apply(node.leafValue(), index) :
+    		compare(element, last(node.b1())) <= 0 ? visit(node.b1(), element, index, leafVisitor):
+    			node.b3() == null || compare(element, last(node.b2())) <= 0 ? visit(node.b2(), element, index + node.b1().size(), leafVisitor):
+    				visit(node.b3(), element, index + node.b1().size() + node.b2().size(), leafVisitor);
     }
 
     /**

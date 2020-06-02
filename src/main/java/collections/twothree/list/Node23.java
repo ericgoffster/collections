@@ -5,10 +5,11 @@ interface Node23<E> {
 	int size();
 	boolean isLeaf();
 	Node23<E> b1();
+	int b1Size();
 	Node23<E> b2();
+    int b2Size();
 	Node23<E> b3();
 	Node23<E> b_last();
-	Node23<E> r_b1();
-	Node23<E> r_b2();
-	Node23<E> r_b3();
+	Node23<E> reverse();
+	int numBranches();
 }

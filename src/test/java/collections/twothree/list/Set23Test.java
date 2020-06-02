@@ -105,14 +105,12 @@ public class Set23Test {
 		assertNotEquals(l1.asSet(), new HashSet<>(Arrays.asList("1", "2", "4", "3", "5")));
 		assertTrue(l1.asSet().contains("5"));
 		assertFalse(l1.asSet().contains("6"));
-		assertFalse(l1.asSet().contains(6));
 	}
 	
 	@Test
 	public void testBasic() {
 		Set23<String> l1 = Set23.of("1","2","3","4","5",null);
 		assertTrue(l1.contains(null));
-		assertFalse(l1.equals(6));
 		
 		Set<Set23<String>> s = new HashSet<>();
 		s.add(l1);
@@ -120,7 +118,6 @@ public class Set23Test {
 		assertTrue(s.contains(Set23.of("1","2","3","5","4",null)));
 		assertFalse(s.contains(Set23.of("1","2","3","4",null)));
 		assertFalse(s.contains(null));
-		assertFalse(s.contains(5));
 		TreeSet<String> t = new TreeSet<>(Set23::naturalCompare);
 		t.addAll(Arrays.asList("1", "2", "3", "4", "5", null));
 		assertEquals(l1.toString(), t.toString());
