@@ -10,7 +10,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 
 import org.junit.Test;
@@ -148,8 +147,6 @@ public class List23Test {
         assertEquals(List23.ofSorted(4, 1, 5, 1 , 6, 2), List23.of(1, 1, 2, 4, 5, 6));
         assertEquals(List23.ofSorted(4), List23.of(4));
         assertEquals(List23.ofSorted(), List23.of());
-        Comparator<Integer> comp = (i,j) -> i - j;
-        assertEquals(List23.ofSorted(comp, 4, 1, 5, 1 , 6, 2), List23.of(1, 1, 2, 4, 5, 6));
         assertEquals(List23.ofSorted(4, 1, null, 1 , 6, null), List23.of(null, null, 1, 1, 4, 6));
     }
     
@@ -448,9 +445,7 @@ public class List23Test {
 		assertEquals(new Leaf<Integer>(5).size(), 1);
 		Integer[] x = null;
 		List<Integer> lnull = null;
-        assertThrows(IllegalArgumentException.class, () -> List23.ofSorted(null,x));
         assertThrows(IllegalArgumentException.class, () -> List23.ofSorted(null,lnull));
-        assertThrows(IllegalArgumentException.class, () -> List23.ofSorted(Integer::compare,x));
         assertThrows(IllegalArgumentException.class, () -> List23.ofSorted(Integer::compare,lnull));
         assertThrows(IllegalArgumentException.class, () -> List23.ofSorted(x));
         assertThrows(IllegalArgumentException.class, () -> List23.ofSorted(lnull));

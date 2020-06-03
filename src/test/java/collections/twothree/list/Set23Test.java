@@ -26,8 +26,6 @@ public class Set23Test {
     @Test
     public void testOfSorted() {
         Comparator<Integer> comp = Integer::compare;
-        assertEquals(Set23.of(comp, 4, 6, 5).asList(), List23.of(4, 5, 6));
-        assertEquals(Set23.of(comp.reversed(), 4, 6, 5).asList(), List23.of(6, 5, 4));
         assertEquals(Set23.of(comp, Arrays.asList(4, 6, 5)).asList(), List23.of(4, 5, 6));
         assertEquals(Set23.of(comp.reversed(), Arrays.asList(4, 6, 5)).asList(), List23.of(6, 5, 4));
     }

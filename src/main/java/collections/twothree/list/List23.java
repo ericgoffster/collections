@@ -141,27 +141,6 @@ public final class List23<E> implements Iterable<E> {
 	}
 
 	/**
-	 * Easy construction of a sorted list.
-	 * Creates a List23 representation of elements sorted by a comparator.
-	 * <p>This operation is O(n log n).
-     * <pre>
-     * Example:
-     *     List23.&lt;Integer&gt;ofSorted(Integer::compare, 6, 1, 6, 8) == [1, 6, 6, 8]
-     * </pre>
-     * @param <E> The type of the elements
-     * @param comparator The element comparator
-	 * @param elements The array of elements
-	 * @return The sorted List23 representation of "elements"
-	 */
-	@SafeVarargs
-    @SuppressWarnings("varargs")
-	public static <E> List23<E> ofSorted(final Comparator<E> comparator, final E ... elements) {
-        Requirements.require(comparator, Requirements.notNull(), () -> "comparator");
-        Requirements.require(elements, Requirements.notNull(), () -> "elements");
-		return ofSorted(comparator, Arrays.asList(elements));
-	}
-
-	/**
      * Easy construction of a sorted list.
      * Creates a List23 representation of elements sorted by a comparator.
 	 * <p> This operation is O(n log n).

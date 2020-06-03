@@ -44,6 +44,10 @@ public final class Set23<E> implements Iterable<E> {
 	/**
 	 * Returns a set of exactly one element.
      * <p>This operation is O(1).
+     * <pre>
+     * Example:
+     *     Set23.of(6) == {6}
+     * </pre>
 	 * @param <E> The element type
 	 * @param element The singleton element
 	 * @return A set of exactly one element
@@ -55,6 +59,10 @@ public final class Set23<E> implements Iterable<E> {
     /**
      * Returns the empty set.
      * <p>This operation is O(1).
+     * <pre>
+     * Example:
+     *     Set23.empty() == {}
+     * </pre>
      * @param <E> The element type
      * @return An empty set.
      */
@@ -65,6 +73,10 @@ public final class Set23<E> implements Iterable<E> {
     /**
      * Returns a set containing an initial list of elements, using natural ordering.
      * <p>This operation is O(n log n).
+     * <pre>
+     * Example:
+     *     Set23.of(4, 2, 3) == {2, 3, 4}
+     * </pre>
      * @param <E> The element type
      * @param elements The array of elements
      * @return A set containing an initial list of elements
@@ -76,22 +88,12 @@ public final class Set23<E> implements Iterable<E> {
     }
 
     /**
-     * Returns a set containing an initial list of elements, using custom ordering.
-     * <p>This operation is O(n log n).
-     * @param <E> The element type
-     * @param comparator The comparator for elements
-     * @param elements The array of elements
-     * @return A set containing an initial list of elements
-     */
-    @SafeVarargs
-    @SuppressWarnings("varargs")
-    public static <E> Set23<E> of(final Comparator<E> comparator, final E ... elements) {
-    	return of(comparator, Arrays.asList(elements));
-    }
-
-    /**
      * Returns a set containing an initial list of elements, using natural ordering.
      * <p>This operation is O(n log n).
+     * <pre>
+     * Example:
+     *     Set23.of(Arrays.asList(4, 2, 3)) == {2, 3, 4}
+     * </pre>
      * @param <E> The element type
      * @param elements The array of elements
      * @return A set containing an initial list of elements
@@ -103,6 +105,11 @@ public final class Set23<E> implements Iterable<E> {
     /**
      * Returns a set containing an initial list of elements, using custom ordering.
      * <p>This operation is O(n log n).
+     * <pre>
+     * Example:
+     *     Set23.of(Integer::compare, Arrays.asList(4, 2, 3)) == {2, 3, 4}
+     *     Set23.of(Integer::compare.reversed(), Arrays.asList(4, 2, 3)) == {4, 3, 2}
+     * </pre>
      * @param <E> The element type
      * @param comparator The comparator of elements
      * @param elements The array of elements
@@ -119,6 +126,10 @@ public final class Set23<E> implements Iterable<E> {
     /**
 	 * Returns the size of this set.
      * <p>This operation is O(1).
+     * <pre>
+     * Example:
+     *     Set23.of(4, 2, 3) == 3
+     * </pre>
 	 * @return The size of this set
 	 */
 	public int size() {
@@ -128,6 +139,11 @@ public final class Set23<E> implements Iterable<E> {
 	/**
 	 * Returns true if the set contains the given element.
      * <p>This operation is O(log n).
+     * <pre>
+     * Example:
+     *     Set23.of(4, 2, 3).contains(2) == true
+     *     Set23.of(4, 2, 3).contains(5) == false
+     * </pre>
 	 * @param element The element to look for.
 	 * @return true if the set contains the given element
 	 */
@@ -138,6 +154,12 @@ public final class Set23<E> implements Iterable<E> {
     /**
      * Returns the index of the given element in the set.
      * <p>This operation is O(log n).
+     * <pre>
+     * Example:
+     *     Set23.of(4, 2, 3).indexOf(2) == 0
+     *     Set23.of(4, 2, 3).indexOf(4) == 2
+     *     Set23.of(4, 2, 3).indexOf(5) == -1
+     * </pre>
      * @param element The element to look for.
      * @return The index of the given element in the set, -1 of not found.
      */
@@ -149,6 +171,13 @@ public final class Set23<E> implements Iterable<E> {
     /**
      * Returns the set of all elements in this set &gt;= element
      * <p>This operation is O(log n).
+     * <pre>
+     * Example:
+     *     Set23.of(4, 2, 3).tailSet(2) == {2, 3, 4}
+     *     Set23.of(4, 2, 3).tailSet(4) == {4}
+     *     Set23.of(4, 2, 3).tailSet(0) == {2, 3, 4}
+     *     Set23.of(4, 2, 3).tailSet(5) == {}
+     * </pre>
      * @param element The comparison element (inclusive)
      * @return The set of all elements in this set &gt;= element
      */
@@ -159,6 +188,13 @@ public final class Set23<E> implements Iterable<E> {
     /**
      * Returns the set of all elements in this set &lt; element.
      * <p>This operation is O(log n).
+     * <pre>
+     * Example:
+     *     Set23.of(4, 2, 3).headSet(2) == {}
+     *     Set23.of(4, 2, 3).headSet(4) == {2, 3}
+     *     Set23.of(4, 2, 3).headSet(0) == {}
+     *     Set23.of(4, 2, 3).headSet(5) == {2, 3, 4}
+     * </pre>
      * @param element The comparison element (exclusive)
      * @return The set of all elements in this set &lt; element
      */
@@ -169,6 +205,13 @@ public final class Set23<E> implements Iterable<E> {
     /**
      * Returns the set of all elements in this set &lt; low or &gt;= high.
      * <p>This operation is O(log n).
+     * <pre>
+     * Example:
+     *     Set23.of(4, 2, 3).exclude(2, 3) == {3, 4}
+     *     Set23.of(4, 2, 3).exclude(2, 4) == {4}
+     *     Set23.of(4, 2, 3).exclude(0, 4) == {4}
+     *     Set23.of(4, 2, 3).exclude(0, 5) == {}
+     * </pre>
      * @param low The low element (exclusive)
      * @param high The high element (inclusive)
      * @return The set of all elements in this set &lt; low or &gt;= high
@@ -180,6 +223,14 @@ public final class Set23<E> implements Iterable<E> {
     /**
      * Returns the set of all elements in this set &gt;= low and &lt; high.
      * <p>This operation is O(log n).
+     * <pre>
+     * Example:
+     *     Set23.of(4, 2, 3).subSet(2, 3) == {2}
+     *     Set23.of(4, 2, 3).subSet(2, 4) == {2, 3}
+     *     Set23.of(4, 2, 3).subSet(0, 4) == {2, 3}
+     *     Set23.of(4, 2, 3).subSet(0, 5) == {2, 3, 4}
+     *     Set23.of(4, 2, 3).subSet(3, 3) == {}
+     * </pre>
      * @param low The low element (inclusive)
      * @param high The high element (exclusive)
      * @return The set of all elements in this set &lt; element
@@ -191,6 +242,10 @@ public final class Set23<E> implements Iterable<E> {
 	/**
 	 * Returns a set with the given element added.
      * <p>This operation is O(log n).
+     * <pre>
+     * Example:
+     *     Set23.of(4, 2, 3).add(5) == {2, 3, 4, 5}
+     * </pre>
      * THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
 	 * @param element The element to add.
 	 * @return A set with the given element added.
@@ -210,6 +265,10 @@ public final class Set23<E> implements Iterable<E> {
     /**
      * Returns a set with the elements reversed.
      * <p>This operation is O(1).
+     * <pre>
+     * Example:
+     *     Set23.of(4, 2, 3).reverse() == {4, 3, 2}
+     * </pre>
      * THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * @return A set with the elements reversed
      */
@@ -220,6 +279,11 @@ public final class Set23<E> implements Iterable<E> {
     /**
      * Returns a set with the given element removed.
      * <p>This operation is O(log n).
+     * <pre>
+     * Example:
+     *     Set23.of(4, 2, 3).remove(2) == {3, 4}
+     *     Set23.of(4, 2, 3).remove(5) == {2, 3, 4}
+     * </pre>
      * THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * @param element The element to remove.
      * @return A set with the given element removed.
@@ -235,6 +299,11 @@ public final class Set23<E> implements Iterable<E> {
 	/**
 	 * Return the element at the given index.
      * <p>This operation is O(log n).
+     * <pre>
+     * Example:
+     *     Set23.of(4, 2, 3).getAt(0) == 2
+     *     Set23.of(4, 2, 3).getAt(2) == 4
+     * </pre>
 	 * @param index The index.
 	 * @return The element at the given index.
      * @throws IndexOutOfBoundsException if out of bounds
@@ -246,6 +315,11 @@ public final class Set23<E> implements Iterable<E> {
     /**
      * Returns a set with the element at the given index removed.
      * <p>This operation is O(log n).
+     * <pre>
+     * Example:
+     *     Set23.of(4, 2, 3).removeAt(0) == {3, 4}
+     *     Set23.of(4, 2, 3).removeAt(2) == {2, 3}
+     * </pre>
      * THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * @param index The index of the element to remove.
      * @return A set with the element at the given index removed
@@ -256,6 +330,10 @@ public final class Set23<E> implements Iterable<E> {
 
 	/**
      * Returns the read-only {@link Set} view of this set.
+     * <pre>
+     * Example:
+     *     Set23.of(4, 2, 3).asSet() == {2, 3, 4}
+     * </pre>
      * @return the {@link Set} view of this set
      */
 	public SortedSet<E> asSet() {
@@ -264,6 +342,10 @@ public final class Set23<E> implements Iterable<E> {
 	
     /**
      * Returns the {@link List23} view of this set.
+     * <pre>
+     * Example:
+     *     Set23.of(4, 2, 3).asList() == [2, 3, 4]
+     * </pre>
      * @return the {@link List23} view of this set
      */
 	public List23<E> asList() {
