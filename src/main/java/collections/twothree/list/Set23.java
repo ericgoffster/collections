@@ -128,7 +128,7 @@ public final class Set23<E> implements Iterable<E> {
      * <p>This operation is O(1).
      * <pre>
      * Example:
-     *     Set23.of(4, 2, 3) == 3
+     *     Set23.of(4, 2, 3).size() == 3
      * </pre>
 	 * @return The size of this set
 	 */
@@ -274,7 +274,7 @@ public final class Set23<E> implements Iterable<E> {
      * <p>This operation is O(1).
      * <pre>
      * Example:
-     *     Set23.of(4, 2, 3).reverse() == {4, 3, 2}
+     *     Set23.of(4, 2, 3).reversed() == {4, 3, 2}
      * </pre>
      * THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * @return A set with the elements reversed
