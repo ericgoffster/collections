@@ -83,6 +83,7 @@ public class Set23Test {
 	@Test
 	public void testInsertions() {
 		assertEquals(Set23.<Integer>of().add(1),Set23.of(1));
+        assertEquals(Set23.<Integer>of(1, 3).add(2),Set23.of(1, 2, 3));
 		assertEquals(Set23.<Integer>of(1).add(2),Set23.of(1, 2));
 		assertEquals(Set23.of(0, 3, 6, 9, 12).add(3),Set23.of(0, 3, 6, 9, 12));
 		assertEquals(Set23.of(0, 3, 6, 9, 12).add(5),Set23.of(0, 3, 5, 6, 9, 12));

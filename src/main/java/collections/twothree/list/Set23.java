@@ -182,7 +182,7 @@ public final class Set23<E> implements Iterable<E> {
      * @return The set of all elements in this set &gt;= element
      */
 	public Set23<E> tailSet(final E element) {
-		return new Set23<E>(comparator, elements.tail(findFirstElement(element)));
+		return new Set23<E>(comparator, elements.tail(naturalPosition(element)));
 	}
 
     /**
@@ -199,7 +199,7 @@ public final class Set23<E> implements Iterable<E> {
      * @return The set of all elements in this set &lt; element
      */
 	public Set23<E> headSet(final E element) {
-		return new Set23<E>(comparator, elements.head(findFirstElement(element)));
+		return new Set23<E>(comparator, elements.head(naturalPosition(element)));
 	}
 
     /**
@@ -217,7 +217,13 @@ public final class Set23<E> implements Iterable<E> {
      * @return The set of all elements in this set &lt; low or &gt;= high
      */
     public Set23<E> exclude(final E low, final E high) {
-        return new Set23<E>(comparator, elements.exclude(findFirstElement(low), findFirstElement(high)));
+        if (comparator.compare(low, high) > 0) {
+            throw new IllegalArgumentException("low must be <= high");
+        }
+        if (comparator.compare(low, high) == 0) {
+            return this;
+        }
+        return new Set23<E>(comparator, elements.exclude(naturalPosition(low), naturalPosition(high)));
     }
 
     /**
@@ -236,7 +242,13 @@ public final class Set23<E> implements Iterable<E> {
      * @return The set of all elements in this set &lt; element
      */
 	public Set23<E> subSet(final E low, final E high) {
-		return new Set23<E>(comparator, elements.subList(findFirstElement(low), findFirstElement(high)));
+        if (comparator.compare(low, high) > 0) {
+            throw new IllegalArgumentException("low must be <= high");
+        }
+        if (comparator.compare(low, high) == 0) {
+            return new Set23<E>(comparator, List23.empty());
+        }
+		return new Set23<E>(comparator, elements.subList(naturalPosition(low), naturalPosition(high)));
 	}
 
 	/**
@@ -251,19 +263,14 @@ public final class Set23<E> implements Iterable<E> {
 	 * @return A set with the given element added.
 	 */
 	public Set23<E> add(final E element) {
-	    Node23<E> n = elements.root;
-	    return n == null ? new Set23<>(comparator, List23.of(element)) :
-	        visit(comparator, n, element, 0, (leaf, i) -> {
-	            int cmp = comparator.compare(element, leaf);
-	            return cmp == 0 ? this :
-	                   cmp < 0 ?
-	                           new Set23<>(comparator, elements.insertAt(i, element)) :
-	                           new Set23<>(comparator, elements.insertAt(i + 1, element));
-	        });
+	    if (contains(element)) {
+	        return this;
+	    }
+	    return new Set23<>(comparator, elements.insertAt(naturalPosition(element), element));
 	}
 
     /**
-     * Returns a set with the elements reversed.
+     * Returns a set with the elements in reverse order.
      * <p>This operation is O(1).
      * <pre>
      * Example:
@@ -289,11 +296,8 @@ public final class Set23<E> implements Iterable<E> {
      * @return A set with the given element removed.
      */
 	public Set23<E> remove(final E element) {
-		Node23<E> n = elements.root;
-		return n == null ? this:
-			visit(comparator, n, element, 0, (leaf, i) -> comparator.compare(element, leaf) == 0 ?
-						new Set23<>(comparator, elements.removeAt(i)) : this
-			);
+	    int index = indexOf(element);
+	    return index < 0 ? this : new Set23<>(comparator, elements.removeAt(index));
 	}
 	
 	/**
@@ -399,8 +403,8 @@ public final class Set23<E> implements Iterable<E> {
                 visit(comparator, node.b3(), element, index + node.b1Size() + node.b2Size(), leafVisitor);
     }
 
-    // Returns first element <= element
-    int findFirstElement(final E element) {
+    // Returns the position where the element belongs
+    int naturalPosition(final E element) {
     	Node23<E> n = elements.root;
     	return n == null ? 0:
     		   comparator.compare(element, first(n)) < 0 ? 0:
