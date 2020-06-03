@@ -7,10 +7,6 @@ final class Leaf<E> implements Node23<E> {
 		this.element = leaf;
 	}
 	@Override
-	public boolean isLeaf() {
-	    return true;
-	}
-	@Override
 	public int numBranches() {
 	    return 0;
 	}

@@ -446,6 +446,19 @@ public class List23Test {
 	public void testErrors() {
 		assertTrue(new Leaf<Integer>(5).isLeaf());
 		assertEquals(new Leaf<Integer>(5).size(), 1);
+		Integer[] x = null;
+		List<Integer> lnull = null;
+        assertThrows(IllegalArgumentException.class, () -> List23.ofSorted(null,x));
+        assertThrows(IllegalArgumentException.class, () -> List23.ofSorted(null,lnull));
+        assertThrows(IllegalArgumentException.class, () -> List23.ofSorted(Integer::compare,x));
+        assertThrows(IllegalArgumentException.class, () -> List23.ofSorted(Integer::compare,lnull));
+        assertThrows(IllegalArgumentException.class, () -> List23.ofSorted(x));
+        assertThrows(IllegalArgumentException.class, () -> List23.ofSorted(lnull));
+        assertThrows(IllegalArgumentException.class, () -> List23.of(x));
+        assertThrows(IllegalArgumentException.class, () -> List23.of(lnull));
+        assertThrows(IllegalArgumentException.class, () -> List23.of(1, 2).append(null));
+        assertThrows(IllegalArgumentException.class, () -> List23.of(1, 2).insertList(0, null));
+        assertThrows(IllegalArgumentException.class, () -> List23.of(1, 2).replace(0, 0, null));
         assertThrows(IndexOutOfBoundsException.class, () -> List23.of(1, 2).head(-1));
         assertThrows(IndexOutOfBoundsException.class, () -> List23.of(1, 2).head(3));
         assertThrows(IndexOutOfBoundsException.class, () -> List23.of(1, 2).tail(-1));

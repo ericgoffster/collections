@@ -13,10 +13,12 @@ import org.granitesoft.requirement.Requirements;
 
 /**
  * Represents a set of elements using a {@link List23} as a backing store.
+ * Set membership is implemented with a comparator.
  * <p>
  * Since operations on a List23 are log n, we can represent a set
  * relatively easily as a sorted list of elements, doing straightforward
- * binary searches.
+ * binary searches.   subSet, head, tail, and exclude are also O(log n),
+ * guaranteeing O(log n) operations on their results.
  * <p>
  * This version of a set is immutable.   All operations on a set, leave the original
  * set unchanged.
@@ -127,7 +129,7 @@ public final class Set23<E> implements Iterable<E> {
 	 * Returns true if the set contains the given element.
      * <p>This operation is O(log n).
 	 * @param element The element to look for.
-	 * @return The element to look for.
+	 * @return true if the set contains the given element
 	 */
 	public boolean contains(final E element) {
 	    return indexOf(element) >= 0;
@@ -140,46 +142,47 @@ public final class Set23<E> implements Iterable<E> {
      * @return The index of the given element in the set, -1 of not found.
      */
     public int indexOf(final E element) {
-        return elements.root == null ? -1 : visit(comparator, elements.root, element, 0, (leaf, i) -> comparator.compare(element, leaf) == 0 ? i : -1);
+        return elements.root == null ? -1 :
+            visit(comparator, elements.root, element, 0, (leaf, i) -> comparator.compare(element, leaf) == 0 ? i : -1);
     }
     
     /**
      * Returns the set of all elements in this set &gt;= element
      * <p>This operation is O(log n).
      * @param element The comparison element (inclusive)
-     * @return the set of all elements in this set &gt;= element
+     * @return The set of all elements in this set &gt;= element
      */
 	public Set23<E> tailSet(final E element) {
 		return new Set23<E>(comparator, elements.tail(findFirstElement(element)));
 	}
 
     /**
-     * Returns the set of all elements in this set &lt; element
+     * Returns the set of all elements in this set &lt; element.
      * <p>This operation is O(log n).
      * @param element The comparison element (exclusive)
-     * @return the set of all elements in this set &lt; element
+     * @return The set of all elements in this set &lt; element
      */
 	public Set23<E> headSet(final E element) {
 		return new Set23<E>(comparator, elements.head(findFirstElement(element)));
 	}
 
     /**
-     * Returns the set of all elements in this set &lt; from or &gt;= to
+     * Returns the set of all elements in this set &lt; low or &gt;= high.
      * <p>This operation is O(log n).
      * @param low The low element (exclusive)
      * @param high The high element (inclusive)
-     * @return the set of all elements in this set &lt; from or &gt;= to
+     * @return The set of all elements in this set &lt; low or &gt;= high
      */
     public Set23<E> exclude(final E low, final E high) {
         return new Set23<E>(comparator, elements.exclude(findFirstElement(low), findFirstElement(high)));
     }
 
     /**
-     * Returns the set of all elements in this set &gt;= from and &lt; to
+     * Returns the set of all elements in this set &gt;= low and &lt; high.
      * <p>This operation is O(log n).
      * @param low The low element (inclusive)
      * @param high The high element (exclusive)
-     * @return the set of all elements in this set &lt; element
+     * @return The set of all elements in this set &lt; element
      */
 	public Set23<E> subSet(final E low, final E high) {
 		return new Set23<E>(comparator, elements.subList(findFirstElement(low), findFirstElement(high)));
@@ -190,7 +193,7 @@ public final class Set23<E> implements Iterable<E> {
      * <p>This operation is O(log n).
      * THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
 	 * @param element The element to add.
-	 * @return a set with the given element added.
+	 * @return A set with the given element added.
 	 */
 	public Set23<E> add(final E element) {
 	    Node23<E> n = elements.root;
@@ -198,8 +201,9 @@ public final class Set23<E> implements Iterable<E> {
 	        visit(comparator, n, element, 0, (leaf, i) -> {
 	            int cmp = comparator.compare(element, leaf);
 	            return cmp == 0 ? this :
-	                   cmp < 0 ? new Set23<>(comparator, elements.insertAt(i, element)) :
-	                   new Set23<>(comparator, elements.insertAt(i + 1, element));
+	                   cmp < 0 ?
+	                           new Set23<>(comparator, elements.insertAt(i, element)) :
+	                           new Set23<>(comparator, elements.insertAt(i + 1, element));
 	        });
 	}
 
@@ -218,7 +222,7 @@ public final class Set23<E> implements Iterable<E> {
      * <p>This operation is O(log n).
      * THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * @param element The element to remove.
-     * @return a set with the given element removed.
+     * @return A set with the given element removed.
      */
 	public Set23<E> remove(final E element) {
 		Node23<E> n = elements.root;
@@ -232,7 +236,7 @@ public final class Set23<E> implements Iterable<E> {
 	 * Return the element at the given index.
      * <p>This operation is O(log n).
 	 * @param index The index.
-	 * @return the element at the given index.
+	 * @return The element at the given index.
      * @throws IndexOutOfBoundsException if out of bounds
 	 */
     public E getAt(final int index) {
@@ -244,55 +248,17 @@ public final class Set23<E> implements Iterable<E> {
      * <p>This operation is O(log n).
      * THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * @param index The index of the element to remove.
-     * @return a set with the element at the given index removed
+     * @return A set with the element at the given index removed
      */
     public Set23<E> removeAt(final int index) {
         return new Set23<E>(comparator, elements.removeAt(index));
     }
 
-	static <E> E last(final Node23<E> node) {
-    	return node.isLeaf() ? node.leafValue() : last(node.b_last());
-    }
-
-    static <E> E first(final Node23<E> node) {
-    	return node.isLeaf() ? node.leafValue() : first(node.b1());
-    }
-
-    /**
-     * visits a leaf, calling a function at that point.
-     * @param <T> The type of the object being returned
-     * @param node The node to start from
-     * @param element The element to compare to
-     * @param index The index we are starting from
-     * @param leafVisitor The visit to call
-     * @return The return from the leafVisitor
-     */
-    static <T, E> T visit(final Comparator<E> comparator, final Node23<E> node, final E element, final int index, final BiFunction<E,Integer,T> leafVisitor) {
-        return
-                node.isLeaf() ? leafVisitor.apply(node.leafValue(), index) :
-                comparator.compare(element, last(node.b1())) <= 0 ? visit(comparator, node.b1(), element, index, leafVisitor):
-                node.numBranches() < 3 || comparator.compare(element, last(node.b2())) <= 0 ? visit(comparator, node.b2(), element, index + node.b1Size(), leafVisitor):
-                visit(comparator, node.b3(), element, index + node.b1Size() + node.b2Size(), leafVisitor);
-    }
-
-    /**
-     * Finds the first element at or before the given element.
-     * @param element The element to compare to
-     * @return the index of first element at or before the given element
-     */
-    int findFirstElement(final E element) {
-    	Node23<E> n = elements.root;
-    	return n == null ? 0:
-    		   comparator.compare(element, first(n)) < 0 ? 0:
-    		   comparator.compare(element, last(n)) > 0 ? size():
-    		   visit(comparator, n, element, 0, (leaf, i) -> i);
-    }
-
-    /**
+	/**
      * Returns the read-only {@link Set} view of this set.
      * @return the {@link Set} view of this set
      */
-	SortedSet<E> asSet() {
+	public SortedSet<E> asSet() {
 		return new Set23Set<>(this);
 	}
 	
@@ -300,7 +266,7 @@ public final class Set23<E> implements Iterable<E> {
      * Returns the {@link List23} view of this set.
      * @return the {@link List23} view of this set
      */
-	List23<E> asList() {
+	public List23<E> asList() {
 		return elements;
 	}
 	
@@ -330,5 +296,33 @@ public final class Set23<E> implements Iterable<E> {
     
     public Stream<E> stream() {
         return elements.stream();
+    }
+
+    static <E> E last(final Node23<E> node) {
+    	return node.isLeaf() ? node.leafValue() : last(node.b_last());
+    }
+
+    static <E> E first(final Node23<E> node) {
+    	return node.isLeaf() ? node.leafValue() : first(node.b1());
+    }
+
+    // Visits all leaves, returning an arbitrary result returned from leafVisitor
+    static <T, E> T visit(final Comparator<E> comparator, final Node23<E> node, final E element, final int index, final BiFunction<E,Integer,T> leafVisitor) {
+        return
+                node.isLeaf() ? leafVisitor.apply(node.leafValue(), index) :
+                comparator.compare(element, last(node.b1())) <= 0 ?
+                        visit(comparator, node.b1(), element, index, leafVisitor):
+                node.numBranches() < 3 || comparator.compare(element, last(node.b2())) <= 0 ?
+                        visit(comparator, node.b2(), element, index + node.b1Size(), leafVisitor):
+                visit(comparator, node.b3(), element, index + node.b1Size() + node.b2Size(), leafVisitor);
+    }
+
+    // Returns first element <= element
+    int findFirstElement(final E element) {
+    	Node23<E> n = elements.root;
+    	return n == null ? 0:
+    		   comparator.compare(element, first(n)) < 0 ? 0:
+    		   comparator.compare(element, last(n)) > 0 ? size():
+    		   visit(comparator, n, element, 0, (leaf, i) -> i);
     }
 }

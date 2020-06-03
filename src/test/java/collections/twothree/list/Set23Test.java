@@ -3,9 +3,12 @@ package collections.twothree.list;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
@@ -13,6 +16,21 @@ import java.util.TreeSet;
 import org.junit.Test;
 
 public class Set23Test {
+
+    @Test
+    public void testEmpty() {
+        assertEquals(Set23.empty().asSet(), Collections.emptySet());
+        assertEquals(Set23.of().asSet(), Collections.emptySet());
+    }
+    
+    @Test
+    public void testOfSorted() {
+        Comparator<Integer> comp = Integer::compare;
+        assertEquals(Set23.of(comp, 4, 6, 5).asList(), List23.of(4, 5, 6));
+        assertEquals(Set23.of(comp.reversed(), 4, 6, 5).asList(), List23.of(6, 5, 4));
+        assertEquals(Set23.of(comp, Arrays.asList(4, 6, 5)).asList(), List23.of(4, 5, 6));
+        assertEquals(Set23.of(comp.reversed(), Arrays.asList(4, 6, 5)).asList(), List23.of(6, 5, 4));
+    }
 
 	@Test
 	public void testHeadSet() {
@@ -60,6 +78,8 @@ public class Set23Test {
 		assertEquals(l.subSet(6, 9),Set23.of(6));
 		assertEquals(l.subSet(6, 7),Set23.of(6));
 		assertEquals(l.subSet(6, 6),Set23.of());
+		l = Set23.empty();
+        assertEquals(l.subSet(0, 0),Set23.of());
 	}
 
 	@Test
@@ -79,6 +99,7 @@ public class Set23Test {
 		assertTrue(Set23.<Integer>of(1, 2).contains(1));
 		assertTrue(Set23.<Integer>of(1, 2).contains(2));
 		assertFalse(Set23.<Integer>of(1, 2).contains(3));
+        assertNotEquals(Set23.<Integer>of(1, 2), Arrays.asList(1,2));
 	}
 	
 	@Test
@@ -96,6 +117,44 @@ public class Set23Test {
 		assertEquals(Set23.<Integer>of(2, 1).remove(1),Set23.of(2));
 		assertEquals(Set23.<Integer>of(1).remove(1),Set23.of());
 	}
+	
+    @Test
+    public void testStream() {
+        Set23<Integer> l = Set23.of(1,2,3,4,5,6);
+        Set<Integer> t = new HashSet<>(Arrays.asList(1,2,3,4,5,6));
+        l.stream().forEach(t::remove);
+        assertTrue(t.isEmpty());
+    }
+
+    @Test
+    public void testGetAt() {
+        Set23<Integer> l = Set23.of(3,2,1,4,5,6);
+        assertEquals(l.getAt(0).intValue(), 1);
+        assertEquals(l.getAt(1).intValue(), 2);
+        assertEquals(l.getAt(2).intValue(), 3);
+    }
+
+    @Test
+    public void testRemoveAt() {
+        Set23<Integer> l = Set23.of(3,2,1,4,5,6);
+        assertEquals(l.removeAt(0), Set23.of(2,3,4,5,6));
+    }
+    @Test
+    public void testExclude() {
+        Set23<Integer> l = Set23.of(3,2,1,4,5,6);
+        assertEquals(l.exclude(2,4), Set23.of(1,4,5,6));
+        assertEquals(l.exclude(2,8), Set23.of(1));
+        assertEquals(l.exclude(1,8), Set23.of());
+        assertEquals(l.exclude(-1,8), Set23.of());
+    }
+
+    @Test
+    public void testIterator() {
+        Set23<Integer> l = Set23.of(1,2,3,4,5,6);
+        Set<Integer> t = new HashSet<>(Arrays.asList(1,2,3,4,5,6));
+        l.forEach(t::remove);
+        assertTrue(t.isEmpty());
+    }
 	
 	@Test
 	public void testAsSet() {
@@ -121,5 +180,9 @@ public class Set23Test {
 		TreeSet<String> t = new TreeSet<>(List23::naturalCompare);
 		t.addAll(Arrays.asList("1", "2", "3", "4", "5", null));
 		assertEquals(l1.toString(), t.toString());
+		
+		assertThrows(IllegalArgumentException.class, () -> new Set23<>(null,null));
+        assertThrows(IllegalArgumentException.class, () -> new Set23<>(null,List23.empty()));
+        assertThrows(IllegalArgumentException.class, () -> new Set23<>(Integer::compare,null));
 	}
 }

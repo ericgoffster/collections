@@ -3,7 +3,9 @@ package collections.twothree.list;
 interface Node23<E> {
 	E leafValue();
 	int size();
-	boolean isLeaf();
+	default boolean isLeaf() {
+	    return numBranches() == 0;
+	}
 	Node23<E> b1();
 	int b1Size();
 	Node23<E> b2();

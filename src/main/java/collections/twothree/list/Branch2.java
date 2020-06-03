@@ -51,15 +51,66 @@ final class Branch2<E> implements Node23<E> {
     }
     
     @Override
-    public boolean isLeaf() {
-        return false;
-    }
-    @Override
     public String toString() {
         return "["+b1()+" "+b2()+"]";
     }
     @Override
     public Node23<E> reverse() {
-        return new RevBranch2<>(b1, b2);
+        return new Node23<E>() {
+
+            @Override
+            public E leafValue() {
+                throw new UnsupportedOperationException();
+            }
+
+            @Override
+            public int size() {
+                return size;
+            }
+
+            @Override
+            public Node23<E> b1() {
+                return b2.reverse();
+            }
+
+            @Override
+            public int b1Size() {
+                return b2.size();
+            }
+
+            @Override
+            public Node23<E> b2() {
+                return b1.reverse();
+            }
+
+            @Override
+            public int b2Size() {
+                return b1.size();
+            }
+
+            @Override
+            public Node23<E> b3() {
+                return null;
+            }
+
+            @Override
+            public Node23<E> b_last() {
+                return b2();
+            }
+
+            @Override
+            public Node23<E> reverse() {
+                return Branch2.this;
+            }
+
+            @Override
+            public int numBranches() {
+                return 2;
+            }
+            @Override
+            public String toString() {
+                return "["+b1()+" "+b2()+"]";
+            }
+        };
     }
 }
