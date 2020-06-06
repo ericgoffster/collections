@@ -10,7 +10,9 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.Test;
 
@@ -29,7 +31,7 @@ public class List23Test {
 	}
 	
 	@Test
-	public void testConcat() {
+	public void testAppend() {
 		for(int sz = 0; sz < 20; sz++) {
 			List23<String> l = new List23<String>(null);
 			List23<String> l4 = new List23<String>(null);
@@ -45,8 +47,19 @@ public class List23Test {
 			List23<String> l3 = l.append(l2);
 			assertTrue(l3.isValid());
 			assertEquals(l3, l4);
+			assertEquals(l3, l.addAll(l2));
 		}
 	}
+	
+    @Test
+    public void testRetainAll() {
+        assertEquals(List23.of(0, 3, 6, 9, 12).retainAll(List23.of(6, 7, 9)),List23.of(6, 9));
+    }
+
+    @Test
+    public void testRemoveAll() {
+        assertEquals(List23.of(0, 3, 6, 9, 12).removeAll(List23.of(6, 7, 9)),List23.of(0, 3, 12));
+    }
 
 	@Test
 	public void testTail() {
@@ -439,6 +452,30 @@ public class List23Test {
 		}
 	}
 
+    @Test
+    public void testCompare() {
+        assertTrue(List23.unNaturalCompare(null, null) == 0);
+        assertTrue(List23.unNaturalCompare(2, null) > 0);
+        assertTrue(List23.unNaturalCompare(null, 2) < 0);
+        assertTrue(List23.unNaturalCompare(2, 3) < 0);
+        assertTrue(List23.unNaturalCompare(3, 2) > 0);
+        assertTrue(List23.unNaturalCompare(3, 3) == 00);
+    }
+    
+    @Test
+    public void makeSet() {
+        Set<Integer> s = new HashSet<>();
+        s.add(3);
+        s.add(4);
+        assertTrue(List23.makeSet(Set23.of(3, 4)).equals(s));
+        assertTrue(List23.makeSet(Set23.of(3, 4).asSet()).equals(s));
+        assertTrue(List23.unNaturalCompare(2, null) > 0);
+        assertTrue(List23.unNaturalCompare(null, 2) < 0);
+        assertTrue(List23.unNaturalCompare(2, 3) < 0);
+        assertTrue(List23.unNaturalCompare(3, 2) > 0);
+        assertTrue(List23.unNaturalCompare(3, 3) == 00);
+    }
+   
 	@Test
 	public void testErrors() {
 		assertTrue(new Leaf<Integer>(5).isLeaf());

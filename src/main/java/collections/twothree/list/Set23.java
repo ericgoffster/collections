@@ -3,10 +3,12 @@ package collections.twothree.list;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.ListIterator;
+import java.util.Objects;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.function.BiFunction;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import org.granitesoft.requirement.Requirements;
@@ -29,15 +31,15 @@ public final class Set23<E> implements Iterable<E> {
     /**
      * The comparator for elements in the set.
      */
-	final Comparator<E> comparator;
+	final Comparator<? super E> comparator;
 
 	/**
 	 * The list of elements
 	 */
 	final List23<E> elements;
 
-	Set23(final Comparator<E> comparator, final List23<E> keys) {
-		this.elements = Requirements.require(keys, Requirements.notNull(), () -> "keys");
+	Set23(final Comparator<? super E> comparator, final List23<E> elements) {
+		this.elements = Requirements.require(elements, Requirements.notNull(), () -> "elements");
 		this.comparator = Requirements.require(comparator, Requirements.notNull(), () -> "comparator");
 	}
 	
@@ -101,6 +103,25 @@ public final class Set23<E> implements Iterable<E> {
     public static <E extends Comparable<E>> Set23<E> of(final Iterable<E> elements) {
     	return of(List23::naturalCompare, elements);
     }
+    
+    /**
+     * Returns a set containing an initial list of elements from another sorted set.
+     * <p>This operation is O(n log n).
+     * <pre>
+     * Example:
+     *     Set23.of(Set23.of(4, 2, 3).asSet()) == {2, 3, 4}
+     * </pre>
+     * @param <E> The element type
+     * @param elements The array of elements
+     * @return A set containing an initial list of elements
+     */
+    public static <E> Set23<E> ofSorted(final SortedSet<E> items) {
+        Comparator<? super E> comparator = items.comparator();
+        if (comparator == null) {
+            comparator = List23::unNaturalCompare;
+        }
+        return new Set23<>(comparator, List23.of(items));
+    }
 
     /**
      * Returns a set containing an initial list of elements, using custom ordering.
@@ -115,7 +136,7 @@ public final class Set23<E> implements Iterable<E> {
      * @param elements The array of elements
      * @return A set containing an initial list of elements
      */
-    public static <E> Set23<E> of(final Comparator<E> comparator, final Iterable<E> elements) {
+    public static <E> Set23<E> of(final Comparator<? super E> comparator, final Iterable<E> elements) {
         final TreeSet<E> list = new TreeSet<>(comparator);
     	for(E e: elements) {
     		list.add(e);
@@ -268,6 +289,28 @@ public final class Set23<E> implements Iterable<E> {
 	    }
 	    return new Set23<>(comparator, elements.insertAt(naturalPosition(element), element));
 	}
+	
+    /**
+     * Returns a set with the given elements added.
+     * <p>This operation is O(m * log n).
+     * <pre>
+     * Example:
+     *     Set23.of(4, 2, 3).union(Set23.of(5, 6)) == {2, 3, 4, 5, 6}
+     * </pre>
+     * THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
+     * @param element The element to remove.
+     * @return A set with the given element removed.
+     */
+	public Set23<E> union(Set23<E> elements) {
+	    if (size() == 0) {
+	        return of(comparator, elements);
+	    }
+	    Set23<E> s = this;
+	    for(E e: elements) {
+	        s = s.add(e);
+	    }
+	    return s;
+	}
 
     /**
      * Returns a set with the elements in reverse order.
@@ -300,6 +343,54 @@ public final class Set23<E> implements Iterable<E> {
 	    return index < 0 ? this : new Set23<>(comparator, elements.removeAt(index));
 	}
 	
+    /**
+     * Returns a set with only the elements that match the filter.
+     * <p>This operation is O(n * log n).
+     * <pre>
+     * Example:
+     *     Set23.of(4, 2, 3).filter(e -> e < 4) == {2, 3}
+     * </pre>
+     * THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
+     * @param element The element to remove.
+     * @return A set with the given element removed.
+     */
+    public Set23<E> filter(final Predicate<E> filter) {
+        return new Set23<>(comparator, elements.filter(filter));
+    }
+	
+    /**
+     * Returns a set that is the intersection with the given set.
+     * <p>This operation is O((m + n) * log (m + n)).
+     * <pre>
+     * Example:
+     *     Set23.of(4, 2, 3).intersection(Set.of(1,2,4)) == {2, 4}
+     * </pre>
+     * THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
+     * @param element The element to remove.
+     * @return A set with the given element removed.
+     */
+    public Set23<E> intersection(final Set23<E> elements) {
+        return filter(elements::contains);
+    }
+    /**
+     * Returns a set with the given elements retain.
+     * <p>This operation is O(m * log n).
+     * <pre>
+     * Example:
+     *     Set23.of(4, 2, 3).subtraction(Set.of(2,4)) == {3}
+     * </pre>
+     * THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
+     * @param element The element to remove.
+     * @return A set with the given element removed.
+     */
+    public Set23<E> subtraction(final Set23<E> elements) {
+        Set23<E> m = this;
+        for(E e: elements) {
+            m = m.remove(e);
+        }
+        return m;
+    }
+  
 	/**
 	 * Return the element at the given index.
      * <p>This operation is O(log n).
@@ -393,7 +484,7 @@ public final class Set23<E> implements Iterable<E> {
     }
 
     // Visits all leaves, returning an arbitrary result returned from leafVisitor
-    static <T, E> T visit(final Comparator<E> comparator, final Node23<E> node, final E element, final int index, final BiFunction<E,Integer,T> leafVisitor) {
+    static <T, E> T visit(final Comparator<? super E> comparator, final Node23<E> node, final E element, final int index, final BiFunction<E,Integer,T> leafVisitor) {
         return
                 node.isLeaf() ? leafVisitor.apply(node.leafValue(), index) :
                 comparator.compare(element, last(node.b1())) <= 0 ?
@@ -410,5 +501,16 @@ public final class Set23<E> implements Iterable<E> {
     		   comparator.compare(element, first(n)) < 0 ? 0:
     		   comparator.compare(element, last(n)) > 0 ? size():
     		   visit(comparator, n, element, 0, (leaf, i) -> i);
+    }
+    
+    static <E> int hashCompare(E a, E b) {
+        int cmp = Integer.compare(Objects.hash(a), Objects.hash(b));
+        if (cmp != 0) {
+            return cmp;
+        }
+        if (Objects.equals(a, b)) {
+            return 0;
+        }
+        return Integer.compare(System.identityHashCode(a), System.identityHashCode(b));
     }
 }

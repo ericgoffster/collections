@@ -7,6 +7,9 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Objects;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import org.granitesoft.requirement.Requirements;
@@ -41,6 +44,17 @@ public final class List23<E> implements Iterable<E> {
 	    assert isValid(root);
 		this.root = root;
 	}
+
+    /**
+     * Maps the list to a function of the other list.
+     * <p>This operation is O(1).
+     * @param <F> The new type of the elements.
+     * @param f The mapping function
+     * @return A new List23 representing the map of this one.
+     */
+    public <F> List23<F> map(Function<E, F> f) {
+        return root == null ? empty() : new List23<>(new MappedNode23<E, F>(root, f));
+    }
 
     /**
      * The empty list.
@@ -217,7 +231,7 @@ public final class List23<E> implements Iterable<E> {
 		return get(root, verifyIndex("index", index, 0, size() - 1));
 	}
 	
-	/**
+    /**
 	 * Returns true if this list contains <code>element</code>.
 	 * <p> This is O(n)!!  Not fast!
      * <pre>
@@ -282,8 +296,44 @@ public final class List23<E> implements Iterable<E> {
         int index = indexOf(element);
         return index < 0 ? this : removeAt(index);
     }
+    
+    public List23<E> filter(final Predicate<E> filter) {
+        List<E> values = new ArrayList<>();
+        for(E element: this) {
+            if (filter.test(element)) {
+                values.add(element);
+            }
+        }
+        return List23.of(values);
+    }
 
+    public List23<E> retainAll(final Iterable<E> elements) {
+        Set<E> s = makeSet(elements);
+        return filter(s::contains);
+    }
+    
+    public List23<E> removeAll(final Iterable<E> elements) {
+        Set<E> s = makeSet(elements);
+        return filter(e -> !s.contains(e));
+    }
+    
 	/**
+     * Returns a list with <code>elements</code> appended to the end.
+     * <p> THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
+     * <p> This operation is O(log n + log m).
+     * <pre>
+     * Example:
+     *     List23.of(6, 1, 6, 8).add(9) == [6, 1, 6, 8, 9]
+     *     List23.of(6, 1, 6, 8).add(1) == [6, 1, 6, 8, 1]
+     * </pre>
+     * @param element The element to add.
+     * @return A list with <code>element</code> added to the end
+     */
+    public List23<E> addAll(final Iterable<E> elements) {
+        return append(List23.of(elements));
+    }
+
+    /**
 	 * Returns a list with <code>element</code> added to the end.
 	 * <p> THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
 	 * <p> This operation is O(log n).
@@ -298,8 +348,8 @@ public final class List23<E> implements Iterable<E> {
 	public List23<E> add(final E element) {
         return replace(size(), size(), List23.of(element));
 	}
-
-	/**
+	
+    /**
 	 * Returns a new list with <code>list[index] == element</code>.
 	 * <p> THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
 	 * <p> This operation is O(log n).
@@ -376,7 +426,7 @@ public final class List23<E> implements Iterable<E> {
     /**
      * Returns a list with the given range replaced with another list.
      * <p> THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
-     * <p> This operation is max(O(log m),O(log n)).
+     * <p> This operation is O(log m) + O(log n).
      * <pre>
      * Example:
      *     List23.of(6, 1, 6, 8).replace(1,3,List23.of(7)) == [6, 7, 8]
@@ -400,7 +450,7 @@ public final class List23<E> implements Iterable<E> {
     /**
      * Returns a list with another list inserted at the specified index. 
      * <p> THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
-     * <p> This operation is max(O(log m),O(log n)).
+     * <p> This operation is O(log m) + O(log n).
      * <pre>
      * Example:
      *     List23.of(6, 1, 6, 8).insertList(2,List23.of(7)) == [6, 1, 7, 6, 8]
@@ -420,7 +470,7 @@ public final class List23<E> implements Iterable<E> {
 	/**
 	 * Returns a list with the given list appended to the end.
 	 * <p> THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
-	 * <p> This operation is max(O(log m),O(log n)).
+     * <p> This operation is O(log m) + O(log n).
      * <pre>
      * Example:
      *     List23.of(6, 1, 6, 8).append(List23.of(7)) == [6, 1, 6, 8, 7]
@@ -542,11 +592,35 @@ public final class List23<E> implements Iterable<E> {
         return asList().stream();
     }
 
+    static <E> Set<E> makeSet(Iterable<E> elements) {
+        if (elements instanceof Set23) {
+            return ((Set23<E>)elements).asSet();
+        }
+        if (elements instanceof Set) {
+            return (Set<E>)elements;
+        }
+        return Set23.of(Set23::hashCompare, elements).asSet();
+    }
+
     static int verifyIndex(String name, int index, int low, int high) {
         if (index < low || index > high) {
             throw new IndexOutOfBoundsException(String.format("%s: %d, Low: %d, High %d", name, index, low, high));
         }
         return index;
+    }
+
+    /// Compares two elements, allowing for null.
+    static <E> int unNaturalCompare(final E a, final E b) {
+        if (a == null) {
+            return (b == null) ? 0 : -1;
+        }
+        if (b == null) {
+            return 1;
+        }
+        
+        @SuppressWarnings("unchecked")
+        Comparable<? super E> ea = (Comparable<? super E>) a;
+        return ea.compareTo(b);
     }
 
     /// Compares two elements, allowing for null.
