@@ -12,7 +12,7 @@ class List23List<E> extends AbstractList<E> {
 	
 	@Override
 	public E get(int index) {
-		return list23.get(index);
+		return list23.getAt(index);
 	}
 
 	@Override

@@ -30,6 +30,24 @@ public class List23Test {
        assertTrue(List23.isValid(null));
 	}
 	
+    @Test
+    public void testMap() {
+        assertEquals(List23.of("1","2",null).map(x -> x == null ? null : Integer.parseInt(x)),List23.of(1,2,null));
+        assertEquals(List23.of("1","2",null).map(x -> x == null ? null : Integer.parseInt(x)).indexOf(1),0);
+        assertEquals(List23.of("1","2",null).map(x -> x == null ? null : Integer.parseInt(x)).indexOf(2),1);
+        assertEquals(List23.of("1","2",null).map(x -> x == null ? null : Integer.parseInt(x)).indexOf(null),2);
+        assertEquals(List23.of("1","2",null).map(x -> x == null ? null : Integer.parseInt(x)).reversed(),List23.of(null, 2, 1));
+       
+        assertEquals(List23.of("1","2").map(x -> x == null ? null : Integer.parseInt(x)),List23.of(1,2));
+        assertEquals(List23.of("1","2").map(x -> x == null ? null : Integer.parseInt(x)).indexOf(1),0);
+        assertEquals(List23.of("1","2").map(x -> x == null ? null : Integer.parseInt(x)).indexOf(2),1);
+        assertEquals(List23.of("1","2").map(x -> x == null ? null : Integer.parseInt(x)).reversed(),List23.of(2, 1));
+        
+        assertEquals(List23.of("1").map(x -> x == null ? null : Integer.parseInt(x)),List23.of(1));
+        assertEquals(List23.of("1").map(x -> x == null ? null : Integer.parseInt(x)).indexOf(1),0);
+        assertEquals(List23.of("1").map(x -> x == null ? null : Integer.parseInt(x)).reversed(),List23.of(1));
+    }
+  
 	@Test
 	public void testAppend() {
 		for(int sz = 0; sz < 20; sz++) {
@@ -44,21 +62,20 @@ public class List23Test {
 				l2 = l2.insertAt(i - sz, String.valueOf(i));
 				l4 = l4.insertAt(i, String.valueOf(i));
 			}
-			List23<String> l3 = l.append(l2);
+			List23<String> l3 = l.appendList(l2);
 			assertTrue(l3.isValid());
 			assertEquals(l3, l4);
-			assertEquals(l3, l.addAll(l2));
 		}
 	}
 	
     @Test
     public void testRetainAll() {
-        assertEquals(List23.of(0, 3, 6, 9, 12).retainAll(List23.of(6, 7, 9)),List23.of(6, 9));
+        assertEquals(List23.of(0, 3, 6, 9, 12).retain(Set23.of(6, 7, 9)),List23.of(6, 9));
     }
 
     @Test
     public void testRemoveAll() {
-        assertEquals(List23.of(0, 3, 6, 9, 12).removeAll(List23.of(6, 7, 9)),List23.of(0, 3, 12));
+        assertEquals(List23.of(0, 3, 6, 9, 12).remove(Set23.of(6, 7, 9)),List23.of(0, 3, 12));
     }
 
 	@Test
@@ -68,10 +85,10 @@ public class List23Test {
 			l = l.insertAt(i, String.valueOf(i));
 		}
 		for(int i = 0; i <= 31; i++) {
-			List23<String> l2 = l.tail(i);
+			List23<String> l2 = l.tailAt(i);
             assertTrue(l2.isValid());
 			for(int j = 0; j < 31 - i; j++) {
-				assertEquals(l2.get(j), String.valueOf(j + i));
+				assertEquals(l2.getAt(j), String.valueOf(j + i));
 			}
 		}
 	}
@@ -83,10 +100,10 @@ public class List23Test {
 			l = l.insertAt(i, String.valueOf(i));
 		}
 		for(int i = 0; i <= 31; i++) {
-			List23<String> l2 = l.head(i);
+			List23<String> l2 = l.headAt(i);
             assertTrue(l2.isValid());
 			for(int j = 0; j < i; j++) {
-				assertEquals(l2.get(j), String.valueOf(j));
+				assertEquals(l2.getAt(j), String.valueOf(j));
 			}
 		}
 	}
@@ -98,10 +115,10 @@ public class List23Test {
 			l = l.insertAt(i, String.valueOf(i));
 		}
 		for(int i = 0; i <= 26; i++) {
-			List23<String> l2 = l.subList(i, i + 5);
+			List23<String> l2 = l.getRange(i, i + 5);
             assertTrue(l2.isValid());
 			for(int j = 0; j < 5; j++) {
-				assertEquals(l2.get(j), String.valueOf(i + j));
+				assertEquals(l2.getAt(j), String.valueOf(i + j));
 			}
 		}
 	}
@@ -116,11 +133,11 @@ public class List23Test {
     @Test
     public void testExclude() {
         List23<Integer> l = List23.of(1,2,3,4,5,6);
-        assertEquals(l.exclude(2,4), List23.of(1,2,5,6));
-        assertEquals(l.exclude(0,4), List23.of(5,6));
-        assertEquals(l.exclude(2, 6), List23.of(1,2));
-        assertEquals(l.exclude(0, 6), List23.of());
-        assertEquals(l.exclude(2, 2), l);
+        assertEquals(l.removeRange(2,4), List23.of(1,2,5,6));
+        assertEquals(l.removeRange(0,4), List23.of(5,6));
+        assertEquals(l.removeRange(2, 6), List23.of(1,2));
+        assertEquals(l.removeRange(0, 6), List23.of());
+        assertEquals(l.removeRange(2, 2), l);
     }
 
     @Test
@@ -142,17 +159,17 @@ public class List23Test {
     @Test
     public void testInsertList() {
         List23<Integer> l = List23.of(1,2,3,4,5,6);
-        assertEquals(l.insertList(2, List23.of(7,8)), List23.of(1,2,7,8,3,4,5,6));
-        assertEquals(l.insertList(0, List23.of(7,8)), List23.of(7,8,1,2,3,4,5,6));
-        assertEquals(l.insertList(6, List23.of(7,8)), List23.of(1,2,3,4,5,6,7,8));
+        assertEquals(l.insertListAt(2, List23.of(7,8)), List23.of(1,2,7,8,3,4,5,6));
+        assertEquals(l.insertListAt(0, List23.of(7,8)), List23.of(7,8,1,2,3,4,5,6));
+        assertEquals(l.insertListAt(6, List23.of(7,8)), List23.of(1,2,3,4,5,6,7,8));
     }
 
     @Test
     public void testSet() {
         List23<Integer> l = List23.of(1,2,3,4,5,6);
-        assertEquals(l.set(2, 9), List23.of(1,2,9,4,5,6));
-        assertEquals(l.set(0, 9), List23.of(9,2,3,4,5,6));
-        assertEquals(l.set(5, 9), List23.of(1,2,3,4,5,9));
+        assertEquals(l.setAt(2, 9), List23.of(1,2,9,4,5,6));
+        assertEquals(l.setAt(0, 9), List23.of(9,2,3,4,5,6));
+        assertEquals(l.setAt(5, 9), List23.of(1,2,3,4,5,9));
     }
 
     @Test
@@ -208,11 +225,11 @@ public class List23Test {
     @Test
     public void testReplace() {
         List23<Integer> l = List23.of(1,2,3,4,5,6);
-        assertEquals(l.replace(0,2, List23.of(7,8)), List23.of(7,8,3,4,5,6));
-        assertEquals(l.replace(1,4, List23.of(7,8)), List23.of(1,7,8,5,6));
-        assertEquals(l.replace(1,4, List23.of()), List23.of(1,5,6));
-        assertEquals(l.replace(1,6, List23.of(7)), List23.of(1,7));
-        assertEquals(l.replace(0,6, List23.of(7)), List23.of(7));
+        assertEquals(l.replaceRange(0,2, List23.of(7,8)), List23.of(7,8,3,4,5,6));
+        assertEquals(l.replaceRange(1,4, List23.of(7,8)), List23.of(1,7,8,5,6));
+        assertEquals(l.replaceRange(1,4, List23.of()), List23.of(1,5,6));
+        assertEquals(l.replaceRange(1,6, List23.of(7)), List23.of(1,7));
+        assertEquals(l.replaceRange(0,6, List23.of(7)), List23.of(7));
     }
 
 	@Test
@@ -223,10 +240,10 @@ public class List23Test {
 		assertEquals(l.reversed().add(7), List23.of(6,5,4,3,2,1,7));
 		assertEquals(l.reversed().removeAt(0), List23.of(5,4,3,2,1));
 		assertEquals(l.reversed().removeAt(5), List23.of(6,5,4,3,2));
-		assertEquals(l.reversed().subList(1, 3), List23.of(5,4));
-		assertEquals(l.reversed().subList(0, 6), List23.of(6,5,4,3,2,1));
-        assertEquals(l.append(l.reversed()), List23.of(1,2,3,4,5,6,6,5,4,3,2,1));
-        assertEquals(l.reversed().append(l), List23.of(6,5,4,3,2,1,1,2,3,4,5,6));
+		assertEquals(l.reversed().getRange(1, 3), List23.of(5,4));
+		assertEquals(l.reversed().getRange(0, 6), List23.of(6,5,4,3,2,1));
+        assertEquals(l.appendList(l.reversed()), List23.of(1,2,3,4,5,6,6,5,4,3,2,1));
+        assertEquals(l.reversed().appendList(l), List23.of(6,5,4,3,2,1,1,2,3,4,5,6));
 	}
 
 	@Test
@@ -244,11 +261,11 @@ public class List23Test {
 	                assertTrue(l2.isValid());
 					assertEquals(l2.size(), sz + 1);
 					for(int j = 0; j < i; j++) {
-						assertEquals(l2.get(j), String.valueOf(j));
+						assertEquals(l2.getAt(j), String.valueOf(j));
 					}
-					assertEquals(l2.get(i), "abc");
+					assertEquals(l2.getAt(i), "abc");
 					for(int j = i + 1; j < l2.size(); j++) {
-						assertEquals(l2.get(j), String.valueOf(j - 1));
+						assertEquals(l2.getAt(j), String.valueOf(j - 1));
 					}
 				}
 			}
@@ -442,10 +459,10 @@ public class List23Test {
 	                assertTrue(l2.isValid());
 					assertEquals(l2.size(), sz - 1);
 					for(int j = 0; j < i; j++) {
-						assertEquals(l2.get(j), String.valueOf(j));
+						assertEquals(l2.getAt(j), String.valueOf(j));
 					}
 					for(int j = i; j < l2.size(); j++) {
-						assertEquals(l2.get(j), String.valueOf(j + 1));
+						assertEquals(l2.getAt(j), String.valueOf(j + 1));
 					}
 				}
 			}
@@ -467,8 +484,6 @@ public class List23Test {
         Set<Integer> s = new HashSet<>();
         s.add(3);
         s.add(4);
-        assertTrue(List23.makeSet(Set23.of(3, 4)).equals(s));
-        assertTrue(List23.makeSet(Set23.of(3, 4).asSet()).equals(s));
         assertTrue(List23.unNaturalCompare(2, null) > 0);
         assertTrue(List23.unNaturalCompare(null, 2) < 0);
         assertTrue(List23.unNaturalCompare(2, 3) < 0);
@@ -488,26 +503,26 @@ public class List23Test {
         assertThrows(IllegalArgumentException.class, () -> List23.ofSorted(lnull));
         assertThrows(IllegalArgumentException.class, () -> List23.of(x));
         assertThrows(IllegalArgumentException.class, () -> List23.of(lnull));
-        assertThrows(IllegalArgumentException.class, () -> List23.of(1, 2).append(null));
-        assertThrows(IllegalArgumentException.class, () -> List23.of(1, 2).insertList(0, null));
-        assertThrows(IllegalArgumentException.class, () -> List23.of(1, 2).replace(0, 0, null));
-        assertThrows(IndexOutOfBoundsException.class, () -> List23.of(1, 2).head(-1));
-        assertThrows(IndexOutOfBoundsException.class, () -> List23.of(1, 2).head(3));
-        assertThrows(IndexOutOfBoundsException.class, () -> List23.of(1, 2).tail(-1));
-        assertThrows(IndexOutOfBoundsException.class, () -> List23.of(1, 2).tail(3));
-        assertThrows(IndexOutOfBoundsException.class, () -> List23.of(1, 2).subList(0, -1));
-        assertThrows(IndexOutOfBoundsException.class, () -> List23.of(1, 2).subList(0, 3));
-        assertThrows(IndexOutOfBoundsException.class, () -> List23.of(1, 2).subList(-1, 1));
-        assertThrows(IndexOutOfBoundsException.class, () -> List23.of(1, 2).subList(1, 0));
-        assertThrows(IndexOutOfBoundsException.class, () -> List23.of(1, 2).subList(3, 0));
-		assertThrows(IndexOutOfBoundsException.class, () -> new List23<String>(null).get(-1));
+        assertThrows(IllegalArgumentException.class, () -> List23.of(1, 2).appendList(null));
+        assertThrows(IllegalArgumentException.class, () -> List23.of(1, 2).insertListAt(0, null));
+        assertThrows(IllegalArgumentException.class, () -> List23.of(1, 2).replaceRange(0, 0, null));
+        assertThrows(IndexOutOfBoundsException.class, () -> List23.of(1, 2).headAt(-1));
+        assertThrows(IndexOutOfBoundsException.class, () -> List23.of(1, 2).headAt(3));
+        assertThrows(IndexOutOfBoundsException.class, () -> List23.of(1, 2).tailAt(-1));
+        assertThrows(IndexOutOfBoundsException.class, () -> List23.of(1, 2).tailAt(3));
+        assertThrows(IndexOutOfBoundsException.class, () -> List23.of(1, 2).getRange(0, -1));
+        assertThrows(IndexOutOfBoundsException.class, () -> List23.of(1, 2).getRange(0, 3));
+        assertThrows(IndexOutOfBoundsException.class, () -> List23.of(1, 2).getRange(-1, 1));
+        assertThrows(IndexOutOfBoundsException.class, () -> List23.of(1, 2).getRange(1, 0));
+        assertThrows(IndexOutOfBoundsException.class, () -> List23.of(1, 2).getRange(3, 0));
+		assertThrows(IndexOutOfBoundsException.class, () -> new List23<String>(null).getAt(-1));
 		assertThrows(IndexOutOfBoundsException.class, () -> new List23<String>(null).removeAt(-1));
 		assertThrows(IndexOutOfBoundsException.class, () -> new List23<String>(null).insertAt(-1, "abc"));
 		assertThrows(IndexOutOfBoundsException.class, () -> new List23<String>(null).insertAt(1, "abc"));
 		assertThrows(IndexOutOfBoundsException.class, () -> new List23<String>(null).insertAt(0, "abc").insertAt(-1, "abc"));
 		assertThrows(IndexOutOfBoundsException.class, () -> new List23<String>(null).insertAt(0, "abc").insertAt(2, "abc"));
-		assertThrows(IndexOutOfBoundsException.class, () -> new List23<String>(null).insertAt(0, "abc").get(-1));
-		assertThrows(IndexOutOfBoundsException.class, () -> new List23<String>(null).insertAt(0, "abc").get(1));
+		assertThrows(IndexOutOfBoundsException.class, () -> new List23<String>(null).insertAt(0, "abc").getAt(-1));
+		assertThrows(IndexOutOfBoundsException.class, () -> new List23<String>(null).insertAt(0, "abc").getAt(1));
 		assertThrows(IndexOutOfBoundsException.class, () -> new List23<String>(null).insertAt(0, "abc").removeAt(-1));
 		assertThrows(IndexOutOfBoundsException.class, () -> new List23<String>(null).insertAt(0, "abc").removeAt(1));
 	}

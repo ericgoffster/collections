@@ -114,7 +114,7 @@ public final class Map23<K, V> implements Iterable<Entry<K, V>> {
     }
 	
     public Entry<K,V> getAt(final int index) {
-        return entries.get(index);
+        return entries.getAt(index);
     }
     
     public V get(final K key) {
@@ -123,7 +123,7 @@ public final class Map23<K, V> implements Iterable<Entry<K, V>> {
 
     public V getOrDefault(final K key, final Supplier<V> supplier) {
         int index = indexOf(key);
-        return index < 0 ? supplier.get() : entries.get(index).getValue();
+        return index < 0 ? supplier.get() : entries.getAt(index).getValue();
     }
     
     public Map23<K, V> removeAt(final int index) {

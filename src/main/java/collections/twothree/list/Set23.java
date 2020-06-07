@@ -59,6 +59,36 @@ public final class Set23<E> implements Iterable<E> {
     }
 
     /**
+     * Returns a hashed set of exactly one element.
+     * <p>This operation is O(1).
+     * <pre>
+     * Example:
+     *     Set23.of(6) == {6}
+     * </pre>
+     * @param <E> The element type
+     * @param element The singleton element
+     * @return A set of exactly one element
+     */
+    public static <E> Set23<E> hashOf(final E element) {
+        return new Set23<E>(Set23::hashCompare, List23.of(element));
+    }
+
+    /**
+     * Returns the empty set, using a custom ordering.
+     * <p>This operation is O(1).
+     * <pre>
+     * Example:
+     *     Set23.empty(Integer::compare) == {}
+     * </pre>
+     * @param comparator The comparator which defines ordering.
+     * @param <E> The element type
+     * @return An empty set.
+     */
+    public static <E> Set23<E> empty(Comparator<E> comparator) {
+        return new Set23<E>(comparator, List23.empty());
+    }
+
+    /**
      * Returns the empty set.
      * <p>This operation is O(1).
      * <pre>
@@ -69,7 +99,21 @@ public final class Set23<E> implements Iterable<E> {
      * @return An empty set.
      */
     public static <E extends Comparable<E>> Set23<E> empty() {
-        return new Set23<E>(List23::naturalCompare, List23.empty());
+        return empty(List23::naturalCompare);
+    }
+
+    /**
+     * Returns the empty hashed set.
+     * <p>This operation is O(1).
+     * <pre>
+     * Example:
+     *     Set23.emptyHash() == {}
+     * </pre>
+     * @param <E> The element type
+     * @return An empty set.
+     */
+    public static <E> Set23<E> emptyHash() {
+        return empty(Set23::hashCompare);
     }
 
     /**
@@ -94,6 +138,23 @@ public final class Set23<E> implements Iterable<E> {
      * <p>This operation is O(n log n).
      * <pre>
      * Example:
+     *     Set23.hashOf(4, 2, 3) == {2, 3, 4}
+     * </pre>
+     * @param <E> The element type
+     * @param elements The array of elements
+     * @return A set containing an initial list of elements
+     */
+    @SafeVarargs
+    @SuppressWarnings("varargs")
+    public static <E> Set23<E> hashOf(final E ... elements) {
+        return hashOf(Arrays.asList(elements));
+    }
+
+    /**
+     * Returns a set containing an initial list of elements, using natural ordering.
+     * <p>This operation is O(n log n).
+     * <pre>
+     * Example:
      *     Set23.of(Arrays.asList(4, 2, 3)) == {2, 3, 4}
      * </pre>
      * @param <E> The element type
@@ -102,6 +163,9 @@ public final class Set23<E> implements Iterable<E> {
      */
     public static <E extends Comparable<E>> Set23<E> of(final Iterable<E> elements) {
     	return of(List23::naturalCompare, elements);
+    }
+    public static <E> Set23<E> hashOf(final Iterable<E> elements) {
+        return of(Set23::hashCompare, elements);
     }
     
     /**
@@ -112,15 +176,15 @@ public final class Set23<E> implements Iterable<E> {
      *     Set23.of(Set23.of(4, 2, 3).asSet()) == {2, 3, 4}
      * </pre>
      * @param <E> The element type
-     * @param elements The array of elements
+     * @param elements The set of elements
      * @return A set containing an initial list of elements
      */
-    public static <E> Set23<E> ofSorted(final SortedSet<E> items) {
-        Comparator<? super E> comparator = items.comparator();
+    public static <E> Set23<E> ofSorted(final SortedSet<E> elements) {
+        Comparator<? super E> comparator = elements.comparator();
         if (comparator == null) {
             comparator = List23::unNaturalCompare;
         }
-        return new Set23<>(comparator, List23.of(items));
+        return new Set23<>(comparator, List23.of(elements));
     }
 
     /**
@@ -203,7 +267,7 @@ public final class Set23<E> implements Iterable<E> {
      * @return The set of all elements in this set &gt;= element
      */
 	public Set23<E> tailSet(final E element) {
-		return new Set23<E>(comparator, elements.tail(naturalPosition(element)));
+		return new Set23<E>(comparator, elements.tailAt(naturalPosition(element)));
 	}
 
     /**
@@ -220,7 +284,7 @@ public final class Set23<E> implements Iterable<E> {
      * @return The set of all elements in this set &lt; element
      */
 	public Set23<E> headSet(final E element) {
-		return new Set23<E>(comparator, elements.head(naturalPosition(element)));
+		return new Set23<E>(comparator, elements.headAt(naturalPosition(element)));
 	}
 
     /**
@@ -244,7 +308,7 @@ public final class Set23<E> implements Iterable<E> {
         if (comparator.compare(low, high) == 0) {
             return this;
         }
-        return new Set23<E>(comparator, elements.exclude(naturalPosition(low), naturalPosition(high)));
+        return new Set23<E>(comparator, elements.removeRange(naturalPosition(low), naturalPosition(high)));
     }
 
     /**
@@ -269,7 +333,7 @@ public final class Set23<E> implements Iterable<E> {
         if (comparator.compare(low, high) == 0) {
             return new Set23<E>(comparator, List23.empty());
         }
-		return new Set23<E>(comparator, elements.subList(naturalPosition(low), naturalPosition(high)));
+		return new Set23<E>(comparator, elements.getRange(naturalPosition(low), naturalPosition(high)));
 	}
 
 	/**
@@ -298,7 +362,7 @@ public final class Set23<E> implements Iterable<E> {
      *     Set23.of(4, 2, 3).union(Set23.of(5, 6)) == {2, 3, 4, 5, 6}
      * </pre>
      * THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
-     * @param element The element to remove.
+     * @param elements The elements to remove.
      * @return A set with the given element removed.
      */
 	public Set23<E> union(Set23<E> elements) {
@@ -335,8 +399,8 @@ public final class Set23<E> implements Iterable<E> {
      *     Set23.of(4, 2, 3).remove(5) == {2, 3, 4}
      * </pre>
      * THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
-     * @param element The element to remove.
-     * @return A set with the given element removed.
+     * @param element The element to remove
+     * @return A set with the given element removed
      */
 	public Set23<E> remove(final E element) {
 	    int index = indexOf(element);
@@ -348,11 +412,11 @@ public final class Set23<E> implements Iterable<E> {
      * <p>This operation is O(n * log n).
      * <pre>
      * Example:
-     *     Set23.of(4, 2, 3).filter(e -> e < 4) == {2, 3}
+     *     Set23.of(4, 2, 3).filter(e -&gt; e &lt; 4) == {2, 3}
      * </pre>
      * THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
-     * @param element The element to remove.
-     * @return A set with the given element removed.
+     * @param filter The filter to apply
+     * @return A set with the given element removed
      */
     public Set23<E> filter(final Predicate<E> filter) {
         return new Set23<>(comparator, elements.filter(filter));
@@ -366,11 +430,11 @@ public final class Set23<E> implements Iterable<E> {
      *     Set23.of(4, 2, 3).intersection(Set.of(1,2,4)) == {2, 4}
      * </pre>
      * THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
-     * @param element The element to remove.
-     * @return A set with the given element removed.
+     * @param other The set to intersection with
+     * @return A set with the given element removed
      */
-    public Set23<E> intersection(final Set23<E> elements) {
-        return filter(elements::contains);
+    public Set23<E> intersection(final Set23<E> other) {
+        return filter(other::contains);
     }
     /**
      * Returns a set with the given elements retain.
@@ -380,12 +444,12 @@ public final class Set23<E> implements Iterable<E> {
      *     Set23.of(4, 2, 3).subtraction(Set.of(2,4)) == {3}
      * </pre>
      * THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
-     * @param element The element to remove.
+     * @param other The elements to remove.
      * @return A set with the given element removed.
      */
-    public Set23<E> subtraction(final Set23<E> elements) {
+    public Set23<E> subtraction(final Set23<E> other) {
         Set23<E> m = this;
-        for(E e: elements) {
+        for(E e: other) {
             m = m.remove(e);
         }
         return m;
@@ -404,7 +468,7 @@ public final class Set23<E> implements Iterable<E> {
      * @throws IndexOutOfBoundsException if out of bounds
 	 */
     public E getAt(final int index) {
-        return elements.get(index);
+        return elements.getAt(index);
     }
     
     /**

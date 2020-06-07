@@ -7,7 +7,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Objects;
-import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
@@ -25,10 +24,10 @@ import org.granitesoft.requirement.Requirements;
  * <p>
  * The following operations are all O(log n) worst case:
  * <ul>
- *     <li>{@link List23#removeAt(int)}</li>
  *     <li>{@link List23#insertAt(int, Object)}</li>
- *     <li>{@link List23#append(List23)}</li>
- *     <li>{@link List23#get(int)}</li>
+ *     <li>{@link List23#removeRange(int, int)}</li>
+ *     <li>{@link List23#appendList(List23)}</li>
+ *     <li>{@link List23#getAt(int)}</li>
  * </ul>
  * 
  * Which is significant, there is no need for a builder.
@@ -46,19 +45,28 @@ public final class List23<E> implements Iterable<E> {
 	}
 
     /**
-     * Maps the list to a function of the other list.
+     * Returns a new list with <code>function</code> applied to all elements of this list.
      * <p>This operation is O(1).
+     * <p> THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
+     * <pre>
+     * Example:
+     *     List23.of(3, 4, 5).map(a -&gt; a + 1) == [4,5,6]
+     * </pre>
      * @param <F> The new type of the elements.
-     * @param f The mapping function
-     * @return A new List23 representing the map of this one.
+     * @param function The mapping function
+     * @return A new List23 representing the map of this one
      */
-    public <F> List23<F> map(Function<E, F> f) {
-        return root == null ? empty() : new List23<>(new MappedNode23<E, F>(root, f));
+    public <F> List23<F> map(Function<E, F> function) {
+        return root == null ? empty() : new List23<>(new MappedNode23<E, F>(root, function));
     }
 
     /**
      * The empty list.
      * <p>This operation is O(1).
+     * <pre>
+     * Example:
+     *     List23.empty() == []
+     * </pre>
      * @param <E> The type of the elements.
      * @return The List23 representation of empty
      */
@@ -67,7 +75,7 @@ public final class List23<E> implements Iterable<E> {
     }
 
     /**
-     * Construction of list with a single element.
+     * Construction of a single list of <code>element</code>.
      * <p>This operation is O(1).
      * <pre>
      * Example:
@@ -83,11 +91,9 @@ public final class List23<E> implements Iterable<E> {
 
 	/**
 	 * Easy construction of list.
-	 * <p>This operation is O(n log n).
+	 * <p>This operation is O(n log n) where n = |elements|.
      * <pre>
      * Example:
-     *     List23.of() == []
-     *     List23.of(5) == [5]
      *     List23.of(5, 7, 9) == [5, 7, 9]
      *     List23.of(5, 7, 5) == [5, 7, 5]
      * </pre>
@@ -104,11 +110,9 @@ public final class List23<E> implements Iterable<E> {
 
 	/**
 	 * Easy construction of list.
-	 * <p>This operation is O(n log n).
+     * <p>This operation is O(n log n) where n = |elements|.
      * <pre>
      * Example:
-     *     List23.of(Arrays.asList()) == []
-     *     List23.of(Arrays.asList(5)) == [5]
      *     List23.of(Arrays.asList(5, 7, 9)) == [5, 7, 9]
      *     List23.of(Arrays.asList(5, 7, 5)) == [5, 7, 5]
      * </pre>
@@ -128,9 +132,9 @@ public final class List23<E> implements Iterable<E> {
 	}
 	
 	/**
-	 * Easy construction of sorted list.
+	 * Easy construction of a sorted list.
 	 * Creates a list23 represents of the elements sorted by a comparator.
-	 * <p>This operation is O(n log n).
+     * <p>This operation is O(n log n) where n = |elements|.
      * <pre>
      * Example:
      *     List23.ofSorted(Integer::compare, Arrays.asList(6, 1, 6, 8)) == [1, 6, 6, 8]
@@ -157,7 +161,7 @@ public final class List23<E> implements Iterable<E> {
 	/**
      * Easy construction of a sorted list.
      * Creates a List23 representation of elements sorted by a comparator.
-	 * <p> This operation is O(n log n).
+     * <p>This operation is O(n log n) where n = |elements|.
      * <pre>
      * Example:
      *     List23.ofSorted(Arrays.asList(6, 1, 6, 8)) == [1, 6, 6, 8]
@@ -174,7 +178,7 @@ public final class List23<E> implements Iterable<E> {
 	/**
 	 * Easy construction of a sorted list.
 	 * Creates a List23 representation of elements sorted by their natural ordering.
-	 * <p> This operation is O(n log n).
+     * <p>This operation is O(n log n) where n = |elements|.
      * <pre>
      * Example:
      *     List23.ofSorted(6, 1, 6, 8) == [1, 6, 6, 8]
@@ -218,22 +222,22 @@ public final class List23<E> implements Iterable<E> {
 	
 	/**
 	 * Returns <code>list[index]</code>.
-	 * <p> This operation is O(log n).
+	 * <p> This operation is O(log n) where n = |this|.
      * <pre>
      * Example:
-     *     List23.of(6, 1, 6, 8).get(2) == 6
+     *     List23.of(6, 1, 6, 8).getAt(2) == 6
      * </pre>
-	 * @param index The index. Must be &gt;= 0 and &lt; size.
+     * @param index The index. Must be in range <code>[0, size - 1]</code>.
 	 * @return <code>list[index]</code>
-	 * @throws IndexOutOfBoundsException if index &lt; 0 or index &gt;= size.
+	 * @throws IndexOutOfBoundsException if index &lt; 0 or index &gt;= size
 	 */
-	public E get(final int index) {
+	public E getAt(final int index) {
 		return get(root, verifyIndex("index", index, 0, size() - 1));
 	}
 	
     /**
 	 * Returns true if this list contains <code>element</code>.
-	 * <p> This is O(n)!!  Not fast!
+	 * <p> This operation is O(n) where n = |this|.
      * <pre>
      * Example:
      *     List23.of(6, 1, 6, 8).contains(2) == false
@@ -247,8 +251,8 @@ public final class List23<E> implements Iterable<E> {
     }
     
     /**
-     * Returns the index of <code>element</code>.
-     * <p> This is O(n)!!  Not fast!
+     * Returns the index of the first occurrence of <code>element</code>.
+     * <p> This operation is O(n) where n = |this|.
      * <pre>
      * Example:
      *     List23.of(6, 1, 6, 8).indexOf(1) == 1
@@ -263,8 +267,8 @@ public final class List23<E> implements Iterable<E> {
 	}
 	
     /**
-     * Returns the last index of <code>element</code>.
-     * <p> This is O(n)!!  Not fast!
+     * Returns the index of the last occurrence of <code>element</code>.
+     * <p> This operation is O(n) where n = |this|.
      * <pre>
      * Example:
      *     List23.of(6, 1, 6, 8).lastIndexOf(1) == 1
@@ -281,8 +285,8 @@ public final class List23<E> implements Iterable<E> {
     
     /**
      * Returns a list with the first element matching <code>element</code> removed.
+     * <p> This operation is O(n) where n = |this|.
      * <p> THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
-     * <p> This is O(n)!!  Not fast!
      * <pre>
      * Example:
      *     List23.of(6, 1, 6, 8).remove(1) == [6, 6, 8]
@@ -297,6 +301,17 @@ public final class List23<E> implements Iterable<E> {
         return index < 0 ? this : removeAt(index);
     }
     
+    /**
+     * Returns a list with only items that match <code>filter</code>.
+     * <p> This operation is O(n log n + n * k) where n = |this| and k = O(filter.test).
+     * <p> THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
+     * <pre>
+     * Example:
+     *     List23.of(6, 1, 6, 8).filter(e -&gt; e != 6 ) == [1, 8]
+     * </pre>
+     * @param filter The filter to apply
+     * @return A list with <code>filter</code> applied
+     */
     public List23<E> filter(final Predicate<E> filter) {
         List<E> values = new ArrayList<>();
         for(E element: this) {
@@ -307,36 +322,32 @@ public final class List23<E> implements Iterable<E> {
         return List23.of(values);
     }
 
-    public List23<E> retainAll(final Iterable<E> elements) {
-        Set<E> s = makeSet(elements);
-        return filter(s::contains);
-    }
-    
-    public List23<E> removeAll(final Iterable<E> elements) {
-        Set<E> s = makeSet(elements);
-        return filter(e -> !s.contains(e));
-    }
-    
-	/**
-     * Returns a list with <code>elements</code> appended to the end.
+   /**
+     * Returns a list whose items also appear <code>other</code>.
+     * <p> This operation is O(n log n) where n = |this| + |other|.
      * <p> THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
-     * <p> This operation is O(log n + log m).
-     * <pre>
-     * Example:
-     *     List23.of(6, 1, 6, 8).add(9) == [6, 1, 6, 8, 9]
-     *     List23.of(6, 1, 6, 8).add(1) == [6, 1, 6, 8, 1]
-     * </pre>
-     * @param element The element to add.
-     * @return A list with <code>element</code> added to the end
+     * @param other The items to match.
+     * @return a list whose items also appear in another list
      */
-    public List23<E> addAll(final Iterable<E> elements) {
-        return append(List23.of(elements));
+    public List23<E> retain(final Set23<E> other) {
+        return filter(other::contains);
     }
-
+    
+    /**
+     * Returns a list whose items don't appear <code>other</code>.
+     * <p> This operation is O(n log n) where n = |this| + |other|.
+     * <p> THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
+     * @param other The items to match.
+     * @return a list whose items don't appear in another list
+     */
+    public List23<E> remove(final Set23<E> other) {
+        return filter(e -> !other.contains(e));
+    }
+    
     /**
 	 * Returns a list with <code>element</code> added to the end.
+	 * <p> This operation is O(log n) where n = |this|.
 	 * <p> THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
-	 * <p> This operation is O(log n).
      * <pre>
      * Example:
      *     List23.of(6, 1, 6, 8).add(9) == [6, 1, 6, 8, 9]
@@ -346,140 +357,140 @@ public final class List23<E> implements Iterable<E> {
 	 * @return A list with <code>element</code> added to the end
 	 */
 	public List23<E> add(final E element) {
-        return replace(size(), size(), List23.of(element));
+        return replaceRange(size(), size(), List23.of(element));
 	}
 	
     /**
 	 * Returns a new list with <code>list[index] == element</code>.
+     * <p> This operation is O(log n) where n = |this|.
 	 * <p> THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
-	 * <p> This operation is O(log n).
      * <pre>
      * Example:
-     *     List23.of(6, 1, 6, 8).set(2, 3) == [6, 1, 3, 8]
+     *     List23.of(6, 1, 6, 8).setAt(2, 3) == [6, 1, 3, 8]
      * </pre>
-     * @param index The index. Must be &gt;= 0 and &lt; size.
+     * @param index The index. Must be in range <code>[0, size]</code>.
 	 * @param element The element to set
 	 * @return A new list with <code>list[index] == element</code>
      * @throws IndexOutOfBoundsException if index &lt; 0 or index &gt;= size.
 	 */
-	public List23<E> set(final int index, final E element) {
+	public List23<E> setAt(final int index, final E element) {
 	    verifyIndex("index", index, 0, size() - 1);
-	    return replace(index, index + 1, List23.of(element));
+	    return replaceRange(index, index + 1, List23.of(element));
 	}
 	
 	/**
-	 * Returns a list with the given element inserted at a specified position.
+	 * Returns a list with <code>element</code> inserted at <code>index</code>.
+     * <p> This operation is O(log n) where n = |this|.
 	 * <p> THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
-	 * <p> This operation is O(log n).
      * <pre>
      * Example:
      *     List23.of(6, 1, 6, 8).insertAt(2, 3) == [6, 1, 3, 6, 8]
      * </pre>
-     * @param index The index. Must be &gt;= 0 and &lt;= size.
+     * @param index The index. Must be in range <code>[0, size]</code>.
 	 * @param element The element to insert
 	 * @return A list with the given element set at the specified index
      * @throws IndexOutOfBoundsException if index &lt; 0 or index &gt; size.
 	 */
 	public List23<E> insertAt(final int index, final E element) {
         verifyIndex("index", index, 0, size());
-        return replace(index, index, List23.of(element));
+        return replaceRange(index, index, List23.of(element));
 	}
 	
 	/**
-	 * Returns a list with the given index removed.
+	 * Returns a list with <code>index</code> removed.
+     * <p> This operation is O(log n) where n = |this|.
 	 * <p> THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
-	 * <p> This operation is O(log n).
      * <pre>
      * Example:
      *     List23.of(6, 1, 6, 8).removeAt(2) == [6, 1, 8]
      * </pre>
-     * @param index The index. Must be &gt;= 0 and &lt; size.
+     * @param index The index. Must be in range <code>[0, size - 1]</code>
 	 * @return A list with the given index removed
      * @throws IndexOutOfBoundsException if index &lt; 0 or index &gt;= size.
 	 */
 	public List23<E> removeAt(final int index) {
        verifyIndex("index", index, 0, size() - 1);
-       return replace(index, index + 1, empty());
+       return replaceRange(index, index + 1, empty());
 	}
 	
     /**
-     * Returns a list with the given range removed.
+     * Returns a list with range <code>[low, high - 1]</code> removed.
+     * <p> This operation is O(log n) where n = |this|.
      * <p> THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
-     * <p> This operation is O(log n).
      * <pre>
      * Example:
-     *     List23.of(6, 1, 6, 8).exclude(1,3) == [6, 8]
-     *     List23.of(6, 1, 6, 8).exclude(1,1) == [6, 1, 6, 8]
-     *     List23.of(6, 1, 6, 8).exclude(0,4) == []
+     *     List23.of(6, 1, 6, 8).removeRange(1,3) == [6, 8]
+     *     List23.of(6, 1, 6, 8).removeRange(1,1) == [6, 1, 6, 8]
+     *     List23.of(6, 1, 6, 8).removeRange(0,4) == []
      * </pre>
-     * @param low The low index (inclusive).   Must be &gt;= 0 and &lt;= high.
-     * @param high The high index (exclusive).    Must be &gt;= 0 and &lt;= size.
+     * @param low The low index (inclusive).   Must be in range <code>[0, high]</code>
+     * @param high The high index (exclusive).   Must be in range <code>[0, size]</code>
      * @return A list with the given list appended to the end
      * @throws IndexOutOfBoundsException if low &lt; 0 or low &gt; high or high &gt; size
      */
-    public List23<E> exclude(final int low, final int high) {
+    public List23<E> removeRange(final int low, final int high) {
         verifyIndex("high", high, 0, size());
         verifyIndex("log", low, 0, high);
-        return replace(low, high, empty());
+        return replaceRange(low, high, empty());
     }
     
     /**
-     * Returns a list with the given range replaced with another list.
+     * Returns a list with range <code>[low, high - 1]</code> replaced with <code>other</code>.
+     * <p> This operation is O(log n) where n = |this| + |other|.
      * <p> THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
-     * <p> This operation is O(log m) + O(log n).
      * <pre>
      * Example:
-     *     List23.of(6, 1, 6, 8).replace(1,3,List23.of(7)) == [6, 7, 8]
-     *     List23.of(6, 1, 6, 8).replace(1,3,List23.of(7,5,3)) == [6, 7, 5, 3, 8]
+     *     List23.of(6, 1, 6, 8).replaceRange(1,3,List23.of(7)) == [6, 7, 8]
+     *     List23.of(6, 1, 6, 8).replaceRange(1,3,List23.of(7,5,3)) == [6, 7, 5, 3, 8]
      * </pre>
-     * @param low The low index (inclusive).   Must be &gt;= 0 and &lt;= high.
-     * @param high The high index (exclusive).    Must be &gt;= 0 and &lt;= size.
+     * @param low The low index (inclusive).   Must be in range <code>[0, high]</code>
+     * @param high The high index (exclusive).   Must be in range <code>[0, size]</code>
      * @param other The list to insert
      * @return A list with the given range replaced with another list
      * @throws IndexOutOfBoundsException if low &lt; 0 or low &gt; high or high &gt; size
      */
-    public List23<E> replace(final int low, final int high, final List23<E> other) {
+    public List23<E> replaceRange(final int low, final int high, final List23<E> other) {
         verifyIndex("high", high, 0, size());
         verifyIndex("low", low, 0, high);
         Requirements.require(other, Requirements.notNull(), () -> "other");
         return low == high && other.size() == 0 ?
             this:
-            head(low).append(other).append(tail(high));
+            headAt(low).appendList(other).appendList(tailAt(high));
     }
     
     /**
-     * Returns a list with another list inserted at the specified index. 
+     * Returns a list with <code>other</code> inserted at <code>index</code>. 
+     * <p> This operation is O(log n) where n = |this| + |other|.
      * <p> THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
-     * <p> This operation is O(log m) + O(log n).
      * <pre>
      * Example:
-     *     List23.of(6, 1, 6, 8).insertList(2,List23.of(7)) == [6, 1, 7, 6, 8]
-     *     List23.of(6, 1, 6, 8).insertList(2,List23.of(7,5,3)) == [6, 1, 7, 5, 3, 6, 8]
+     *     List23.of(6, 1, 6, 8).insertListAt(2,List23.of(7)) == [6, 1, 7, 6, 8]
+     *     List23.of(6, 1, 6, 8).insertListAt(2,List23.of(7,5,3)) == [6, 1, 7, 5, 3, 6, 8]
      * </pre>
-     * @param index The index. Must be &gt;= 0 and &lt;= size.
+     * @param index The index.   Must be in range <code>[0, size]</code>
      * @param other The list to insert
      * @return A list with another list inserted at the specified index
      * @throws IndexOutOfBoundsException if index &lt; 0 or index &gt; size.
      */
-    public List23<E> insertList(final int index, final List23<E> other) {
+    public List23<E> insertListAt(final int index, final List23<E> other) {
         verifyIndex("index", index, 0, size());
         Requirements.require(other, Requirements.notNull(), () -> "other");
-        return replace(index, index, other);
+        return replaceRange(index, index, other);
     }
 	
 	/**
-	 * Returns a list with the given list appended to the end.
+	 * Returns a list with <code>other</code> appended to the end.
+     * <p> This operation is O(log n) where n = |this| + |other|.
 	 * <p> THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
-     * <p> This operation is O(log m) + O(log n).
      * <pre>
      * Example:
-     *     List23.of(6, 1, 6, 8).append(List23.of(7)) == [6, 1, 6, 8, 7]
-     *     List23.of(6, 1, 6, 8).append(List23.of(7,5,3)) == [6, 1, 6, 8, 7, 5, 3]
+     *     List23.of(6, 1, 6, 8).appendList(List23.of(7)) == [6, 1, 6, 8, 7]
+     *     List23.of(6, 1, 6, 8).appendList(List23.of(7,5,3)) == [6, 1, 6, 8, 7, 5, 3]
      * </pre>
 	 * @param other The list to append
 	 * @return A list with the given list appended to the end
 	 */
-	public List23<E> append(final List23<E> other) {
+	public List23<E> appendList(final List23<E> other) {
 		Requirements.require(other, Requirements.notNull(), () -> "other");
 		return other.root == null ? this:
 		       root == null ? other:
@@ -487,65 +498,68 @@ public final class List23<E> implements Iterable<E> {
 	}
 	
 	/**
-	 * Returns a list with all indexes &gt;= the specified index.
-	 * <p> This operation is O(log n).
+	 * Returns a list with all indexes &gt;= <code>index</code>.
+	 * <p> This operation is O(log n) where n = |this|.
+     * THIS OPERATION IS IMMUTABLE. The original list is left unchanged.
      * <pre>
      * Example:
-     *     List23.of(6, 1, 6, 8).tail(2) == [6,8 ]
-     *     List23.of(6, 1, 6, 8).tail(4) == []
-     *     List23.of(6, 1, 6,  8).tail(0) == [6, 1, 6, 8]
+     *     List23.of(6, 1, 6, 8).tailAt(2) == [6,8 ]
+     *     List23.of(6, 1, 6, 8).tailAt(4) == []
+     *     List23.of(6, 1, 6,  8).tailAt(0) == [6, 1, 6, 8]
      * </pre>
-	 * @param index The chopping point (inclusive). Must be &gt;= 0 and &lt;= size.
+	 * @param index The chopping point (inclusive).  Must be in range <code>[0, size]</code>
 	 * @return A list with all indexes &gt;= the specified index
-     * @throws IndexOutOfBoundsException if index &lt; 0 or index &gt; size.
+     * @throws IndexOutOfBoundsException if index &lt; 0 or index &gt; size
 	 */
-	public List23<E> tail(final int index) {
+	public List23<E> tailAt(final int index) {
 	    verifyIndex("index", index, 0, size());
 	    return index == 0 ? this :
 	           index == size() ? empty() :
-	           reversed().head(size() - index).reversed();
+	           reversed().headAt(size() - index).reversed();
 	}
 	
 	/**
-	 * Returns a list with all indexes &lt; the specified index.
-	 * <p> This operation is O(log n).
+	 * Returns a list with all indexes &lt; <code>index</code>.
+     * <p> This operation is O(log n) where n = |this|.
+     * THIS OPERATION IS IMMUTABLE. The original list is left unchanged.
      * <pre>
      * Example:
-     *     List23.of(6, 1, 6, 8).head(2) == [6, 1]
-     *     List23.of(6, 1, 6, 8).head(4) == [6, 1, 6, 8]
-     *     List23.of(6, 1, 6, 8).head(0) == []
+     *     List23.of(6, 1, 6, 8).headAt(2) == [6, 1]
+     *     List23.of(6, 1, 6, 8).headAt(4) == [6, 1, 6, 8]
+     *     List23.of(6, 1, 6, 8).headAt(0) == []
      * </pre>
-	 * @param index The chopping point (exclusive). Must be &gt;= 0 and &lt;= size.
+	 * @param index The chopping point (exclusive).  Must be in range <code>[0, size]</code>
 	 * @return A list with all indexes &lt; the specified index
-     * @throws IndexOutOfBoundsException if index &lt; 0 or index &gt; size.
+     * @throws IndexOutOfBoundsException if index &lt; 0 or index &gt; size
 	 */
-	public List23<E> head(final int index) {
+	public List23<E> headAt(final int index) {
         verifyIndex("index", index, 0, size());
 		return index == size() ?  this : index == 0 ? empty(): new List23<>(head(root, index));
 	}
 	
 	/**
-	 * Returns a list with all indexes &gt;= from and &lt; to
-	 * <p> This operation is O(log n).
+	 * Returns a list with all indexes that fall in range <code>[low, high - 1]</code>.
+     * <p> This operation is O(log n) where n = |this|.
+     * THIS OPERATION IS IMMUTABLE. The original list is left unchanged.
      * <pre>
      * Example:
-     *     List23.of(6, 1, 6, 8).subList(1, 3) == [1, 6]
+     *     List23.of(6, 1, 6, 8).getRange(1, 3) == [1, 6]
      * </pre>
-     * @param low The low index (inclusive).   Must be &gt;= 0 and &lt;= high.
-     * @param high The high index (exclusive).    Must be &gt;= 0 and &lt;= size.
+     * @param low The low index (inclusive).   Must be in range <code>[0, high]</code>
+     * @param high The high index (exclusive).   Must be in range <code>[0, size]</code>
 	 * @return A list with all indexes &gt;= from and &lt; to
      * @throws IndexOutOfBoundsException if low &lt; 0 or low &gt; high or high &gt; size
 	 */
-	public List23<E> subList(final int low, final int high) {
+	public List23<E> getRange(final int low, final int high) {
         verifyIndex("high", high, 0, size());
 	    verifyIndex("low", low, 0, high);
-		return tail(low).head(high - low);
+		return tailAt(low).headAt(high - low);
 	}
 	
 	/**
 	 * Returns a list that is the original list reversed.
-	 * <p> THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
 	 * <p> This operation is O(1).
+	 * <p> THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
      * <pre>
      * Example:
      *     List23.of(6, 1, 6, 8).reversed() == [8, 6, 1, 6]
@@ -590,16 +604,6 @@ public final class List23<E> implements Iterable<E> {
      */
     public Stream<E> stream() {
         return asList().stream();
-    }
-
-    static <E> Set<E> makeSet(Iterable<E> elements) {
-        if (elements instanceof Set23) {
-            return ((Set23<E>)elements).asSet();
-        }
-        if (elements instanceof Set) {
-            return (Set<E>)elements;
-        }
-        return Set23.of(Set23::hashCompare, elements).asSet();
     }
 
     static int verifyIndex(String name, int index, int low, int high) {

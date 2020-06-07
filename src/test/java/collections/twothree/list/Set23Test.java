@@ -110,35 +110,6 @@ public class Set23Test {
         assertEquals(Set23.<Integer>of().union(Set23.of(2, 4, 6)),Set23.of(2, 4, 6));
 	}
 	
-	public static class Foo {
-	    final int hc;
-	    final boolean eq;
-	    
-	    public Foo(int hc, boolean eq) {
-            super();
-            this.hc = hc;
-            this.eq = eq;
-        }
-        @Override
-	    public int hashCode() {
-	        return hc;
-	    }
-	    @Override
-	    public boolean equals(Object obj) {
-	        return eq;
-	    }
-	}
-
-    @Test
-    public void testHashCompare() {
-        assertFalse(Set23.hashCompare(2, 3) == 0);
-        assertTrue(Set23.hashCompare(2, 2) == 0);
-        assertTrue(Set23.hashCompare(Set23.of(2, 3), Set23.of(3, 2)) == 0);
-        assertFalse(Set23.hashCompare(Set23.of(2), List23.of(2)) == 0);
-        assertTrue(Set23.hashCompare(new Foo(0, true), new Foo(0, true)) == 0);
-        assertFalse(Set23.hashCompare(new Foo(0, false), new Foo(0, false)) == 0);
-        assertFalse(Set23.hashCompare(new Foo(0, true), new Foo(1, true)) == 0);
-    }
 	@Test
 	public void testContains() {
 		assertFalse(Set23.<Integer>of().contains(1));

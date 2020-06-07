@@ -56,11 +56,11 @@ final class Set23Set<E> extends AbstractSet<E> implements SortedSet<E> {
 
 	@Override
 	public E first() {
-		return set.elements.get(0);
+		return set.elements.getAt(0);
 	}
 
 	@Override
 	public E last() {
-		return set.elements.get(set.elements.size() - 1);
+		return set.elements.getAt(set.elements.size() - 1);
 	}
 }
