@@ -35,22 +35,22 @@ public class Set23Test {
 	@Test
 	public void testHeadSet() {
 		Set23<Integer> l = Set23.of(0, 3, 6, 9, 12);
-		assertEquals(l.headSet(13),Set23.of(0, 3, 6, 9, 12));
-		assertEquals(l.headSet(12),Set23.of(0, 3, 6, 9));
-		assertEquals(l.headSet(3),Set23.of(0));
-		assertEquals(l.headSet(2),Set23.of(0));
-		assertEquals(l.headSet(0),Set23.of());
+		assertEquals(l.lt(13),Set23.of(0, 3, 6, 9, 12));
+		assertEquals(l.lt(12),Set23.of(0, 3, 6, 9));
+		assertEquals(l.lt(3),Set23.of(0));
+		assertEquals(l.lt(2),Set23.of(0));
+		assertEquals(l.lt(0),Set23.of());
 	}
 
 	@Test
 	public void testTailSet() {
 		Set23<Integer> l = Set23.of(0, 3, 6, 9, 12);
-		assertEquals(l.tailSet(-1),Set23.of(0, 3, 6, 9, 12));
-		assertEquals(l.tailSet(0),Set23.of(0, 3, 6, 9, 12));
-		assertEquals(l.tailSet(1),Set23.of(3, 6, 9, 12));
-		assertEquals(l.tailSet(11),Set23.of(12));
-		assertEquals(l.tailSet(12),Set23.of(12));
-		assertEquals(l.tailSet(13),Set23.of());
+		assertEquals(l.ge(-1),Set23.of(0, 3, 6, 9, 12));
+		assertEquals(l.ge(0),Set23.of(0, 3, 6, 9, 12));
+		assertEquals(l.ge(1),Set23.of(3, 6, 9, 12));
+		assertEquals(l.ge(11),Set23.of(12));
+		assertEquals(l.ge(12),Set23.of(12));
+		assertEquals(l.ge(13),Set23.of());
 	}
 
 	@Test

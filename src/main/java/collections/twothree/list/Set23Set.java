@@ -46,12 +46,12 @@ final class Set23Set<E> extends AbstractSet<E> implements SortedSet<E> {
 
 	@Override
 	public SortedSet<E> headSet(E toElement) {
-		return set.headSet(toElement).asSet();
+		return set.lt(toElement).asSet();
 	}
 
 	@Override
 	public SortedSet<E> tailSet(E fromElement) {
-		return set.tailSet(fromElement).asSet();
+		return set.ge(fromElement).asSet();
 	}
 
 	@Override

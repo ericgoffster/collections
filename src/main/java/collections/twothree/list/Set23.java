@@ -14,8 +14,8 @@ import java.util.stream.Stream;
 import org.granitesoft.requirement.Requirements;
 
 /**
- * Represents a set of elements using a {@link List23} as a backing store.
- * Set membership is implemented with a comparator.
+ * Represents an ordered set of elements using a {@link List23} as a backing store.
+ * Set membership and ordering is implemented with a comparator.
  * <p>
  * Since operations on a List23 are log n, we can represent a set
  * relatively easily as a sorted list of elements, doing straightforward
@@ -29,7 +29,7 @@ import org.granitesoft.requirement.Requirements;
  */
 public final class Set23<E> implements Iterable<E> {
     /**
-     * The comparator for elements in the set.
+     * The comparator for elements in the set.   Defines the ordering.
      */
 	final Comparator<? super E> comparator;
 
@@ -44,7 +44,7 @@ public final class Set23<E> implements Iterable<E> {
 	}
 	
 	/**
-	 * Returns a set of exactly one element.
+	 * Returns a single set of <code>element</code>.
      * <p>This operation is O(1).
      * <pre>
      * Example:
@@ -59,7 +59,7 @@ public final class Set23<E> implements Iterable<E> {
     }
 
     /**
-     * Returns a hashed set of exactly one element.
+     * Returns a hashed set of <code>element</code>.
      * <p>This operation is O(1).
      * <pre>
      * Example:
@@ -169,22 +169,22 @@ public final class Set23<E> implements Iterable<E> {
     }
     
     /**
-     * Returns a set containing an initial list of elements from another sorted set.
+     * Returns a set containing an initial list of elements from <code>other</code>.
      * <p>This operation is O(n log n).
      * <pre>
      * Example:
      *     Set23.of(Set23.of(4, 2, 3).asSet()) == {2, 3, 4}
      * </pre>
      * @param <E> The element type
-     * @param elements The set of elements
+     * @param other The set of elements
      * @return A set containing an initial list of elements
      */
-    public static <E> Set23<E> ofSorted(final SortedSet<E> elements) {
-        Comparator<? super E> comparator = elements.comparator();
+    public static <E> Set23<E> ofSorted(final SortedSet<E> other) {
+        Comparator<? super E> comparator = other.comparator();
         if (comparator == null) {
             comparator = List23::unNaturalCompare;
         }
-        return new Set23<>(comparator, List23.of(elements));
+        return new Set23<>(comparator, List23.of(other));
     }
 
     /**
@@ -222,7 +222,7 @@ public final class Set23<E> implements Iterable<E> {
 	}
 	
 	/**
-	 * Returns true if the set contains the given element.
+	 * Returns true if the set contains <code>element</code>.
      * <p>This operation is O(log n).
      * <pre>
      * Example:
@@ -237,7 +237,7 @@ public final class Set23<E> implements Iterable<E> {
 	}
 
     /**
-     * Returns the index of the given element in the set.
+     * Returns the index of <code>element</code> in the set.
      * <p>This operation is O(log n).
      * <pre>
      * Example:
@@ -254,41 +254,41 @@ public final class Set23<E> implements Iterable<E> {
     }
     
     /**
-     * Returns the set of all elements in this set &gt;= element
+     * Returns the set of all elements in this set in range &gt;= <code>element</code>.
      * <p>This operation is O(log n).
      * <pre>
      * Example:
-     *     Set23.of(4, 2, 3).tailSet(2) == {2, 3, 4}
-     *     Set23.of(4, 2, 3).tailSet(4) == {4}
-     *     Set23.of(4, 2, 3).tailSet(0) == {2, 3, 4}
-     *     Set23.of(4, 2, 3).tailSet(5) == {}
+     *     Set23.of(4, 2, 3).ge(2) == {2, 3, 4}
+     *     Set23.of(4, 2, 3).ge(4) == {4}
+     *     Set23.of(4, 2, 3).ge(0) == {2, 3, 4}
+     *     Set23.of(4, 2, 3).ge(5) == {}
      * </pre>
      * @param element The comparison element (inclusive)
      * @return The set of all elements in this set &gt;= element
      */
-	public Set23<E> tailSet(final E element) {
+	public Set23<E> ge(final E element) {
 		return new Set23<E>(comparator, elements.tailAt(naturalPosition(element)));
 	}
 
     /**
-     * Returns the set of all elements in this set &lt; element.
+     * Returns the set of all elements in this set &lt; <code>element</code>.
      * <p>This operation is O(log n).
      * <pre>
      * Example:
-     *     Set23.of(4, 2, 3).headSet(2) == {}
-     *     Set23.of(4, 2, 3).headSet(4) == {2, 3}
-     *     Set23.of(4, 2, 3).headSet(0) == {}
-     *     Set23.of(4, 2, 3).headSet(5) == {2, 3, 4}
+     *     Set23.of(4, 2, 3).lt(2) == {}
+     *     Set23.of(4, 2, 3).lt(4) == {2, 3}
+     *     Set23.of(4, 2, 3).lt(0) == {}
+     *     Set23.of(4, 2, 3).lt(5) == {2, 3, 4}
      * </pre>
      * @param element The comparison element (exclusive)
      * @return The set of all elements in this set &lt; element
      */
-	public Set23<E> headSet(final E element) {
+	public Set23<E> lt(final E element) {
 		return new Set23<E>(comparator, elements.headAt(naturalPosition(element)));
 	}
 
     /**
-     * Returns the set of all elements in this set &lt; low or &gt;= high.
+     * Returns the set of all elements not in range <code>[low, high)</code>.
      * <p>This operation is O(log n).
      * <pre>
      * Example:
@@ -312,7 +312,7 @@ public final class Set23<E> implements Iterable<E> {
     }
 
     /**
-     * Returns the set of all elements in this set &gt;= low and &lt; high.
+     * Returns the set of all elements in this set in range <code>[low, high)</code>.
      * <p>This operation is O(log n).
      * <pre>
      * Example:
@@ -337,7 +337,7 @@ public final class Set23<E> implements Iterable<E> {
 	}
 
 	/**
-	 * Returns a set with the given element added.
+	 * Returns a set with <code>element</code> added.
      * <p>This operation is O(log n).
      * <pre>
      * Example:
@@ -355,22 +355,22 @@ public final class Set23<E> implements Iterable<E> {
 	}
 	
     /**
-     * Returns a set with the given elements added.
+     * Returns a set that is the union of this set with <code>other</code>.
      * <p>This operation is O(m * log n).
      * <pre>
      * Example:
      *     Set23.of(4, 2, 3).union(Set23.of(5, 6)) == {2, 3, 4, 5, 6}
      * </pre>
      * THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
-     * @param elements The elements to remove.
+     * @param other The elements to remove.
      * @return A set with the given element removed.
      */
-	public Set23<E> union(Set23<E> elements) {
+	public Set23<E> union(Set23<E> other) {
 	    if (size() == 0) {
-	        return of(comparator, elements);
+	        return of(comparator, other);
 	    }
 	    Set23<E> s = this;
-	    for(E e: elements) {
+	    for(E e: other) {
 	        s = s.add(e);
 	    }
 	    return s;
@@ -391,7 +391,7 @@ public final class Set23<E> implements Iterable<E> {
 	}
 
     /**
-     * Returns a set with the given element removed.
+     * Returns a set with <code>element</code> removed.
      * <p>This operation is O(log n).
      * <pre>
      * Example:
@@ -408,7 +408,7 @@ public final class Set23<E> implements Iterable<E> {
 	}
 	
     /**
-     * Returns a set with only the elements that match the filter.
+     * Returns a set with only the elements that match <code>filter</code>.
      * <p>This operation is O(n * log n).
      * <pre>
      * Example:
@@ -423,7 +423,7 @@ public final class Set23<E> implements Iterable<E> {
     }
 	
     /**
-     * Returns a set that is the intersection with the given set.
+     * Returns a set that is the intersection of this set with <code>other</code>.
      * <p>This operation is O((m + n) * log (m + n)).
      * <pre>
      * Example:
@@ -437,7 +437,7 @@ public final class Set23<E> implements Iterable<E> {
         return filter(other::contains);
     }
     /**
-     * Returns a set with the given elements retain.
+     * Returns a set that is the subtraction of this set with <code>other</code>.
      * <p>This operation is O(m * log n).
      * <pre>
      * Example:
@@ -493,7 +493,7 @@ public final class Set23<E> implements Iterable<E> {
      * Example:
      *     Set23.of(4, 2, 3).asSet() == {2, 3, 4}
      * </pre>
-     * @return the {@link Set} view of this set
+     * @return the {@link SortedSet} view of this set
      */
 	public SortedSet<E> asSet() {
 		return new Set23Set<>(this);
