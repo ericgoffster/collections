@@ -711,34 +711,42 @@ public final class List23<E> implements Iterable<E> {
 	    if (rhs == null) {
 	        return lhs;
 	    }
-	    final Node23<E> node = concat(lhs, rhs, getDepth(lhs) - getDepth(rhs));
-        return node.numBranches() < 2 ? node.b1(): node;
+	    final NodePair<E> node = concat(lhs, rhs, getDepth(lhs) - getDepth(rhs));
+        return node.b2() == null? node.b1(): new Branch2<>(node.b1(), node.b2());
     }
-
+	
 	// Creates a branch representing the concatenation
-	//   of 2 nodes.   Result will be a 2 branch, or a degenerate 1 branch.
-	// The returned node will always have a depth of max(depth(lhs),depth(rhs)) + 1
+	//   of 2 nodes.   Result will be a pair of branches, each of which are at the same depth
+	//   of lhs and rhs.   However, a degenerate case may be returned
+	//   of only 1 branch, which would mean that lhs was capable of
+	//   absorbing rhs with a change of level.
     // O(log max(m,n))
-	static <E> Node23<E> concat(final Node23<E> lhs, final Node23<E> rhs, int depthDelta) {
+	static <E> NodePair<E> concat(final Node23<E> lhs, final Node23<E> rhs, int depthDelta) {
         assert lhs != null;
         assert rhs != null;
+
+        // for simplicity, make sure lhs is always the deeper branch.
 	    if (depthDelta < 0) {
             return concat(rhs.reverse(), lhs.reverse(), -depthDelta).reverse();
+            
+        // Try to concatenate rhs onto the right most branch of lhs
 	    } else if (depthDelta > 0) {
 	        // Concatenate rhs to the last branch of lhs, and add back to this node.
 	        if (lhs.numBranches() < 3) {
-	            final Node23<E> new_lhs_b2 = concat(lhs.b2(), rhs, depthDelta - 1);
-                return new_lhs_b2.numBranches() < 2 ?
-	                new Branch1<>(new Branch2<>(lhs.b1(), new_lhs_b2.b1())):
-	                new Branch1<>(new Branch3<>(lhs.b1(), new_lhs_b2.b1(), new_lhs_b2.b2()));
+	            final NodePair<E> new_lhs_b2 = concat(lhs.b2(), rhs, depthDelta - 1);
+                return new_lhs_b2.b2() == null ?
+	                new NodePair<>(new Branch2<>(lhs.b1(), new_lhs_b2.b1())):
+	                new NodePair<>(new Branch3<>(lhs.b1(), new_lhs_b2.b1(), new_lhs_b2.b2()));
 	        } else {
-	            final Node23<E> new_lhs_b3 = concat(lhs.b3(), rhs, depthDelta - 1);
-                return new_lhs_b3.numBranches() < 2?
-	                new Branch1<>(new Branch3<>(lhs.b1(), lhs.b2(), new_lhs_b3.b1())):
-	                new Branch2<>(new Branch2<>(lhs.b1(), lhs.b2()), new_lhs_b3);
+	            final NodePair<E> new_lhs_b3 = concat(lhs.b3(), rhs, depthDelta - 1);
+                return new_lhs_b3.b2() == null ?
+	                new NodePair<>(new Branch3<>(lhs.b1(), lhs.b2(), new_lhs_b3.b1())):
+	                new NodePair<>(new Branch2<>(lhs.b1(), lhs.b2()), new Branch2<>(new_lhs_b3.b1(), new_lhs_b3.b2()));
 	        }
+	        
+	    // They are same depth, just create a pair.
 	    } else {
-	        return new Branch2<>(lhs, rhs);
+	        return new NodePair<>(lhs, rhs);
 	    }
 	}
 
@@ -782,9 +790,6 @@ public final class List23<E> implements Iterable<E> {
     // All branches are same height, and no 1 degenerate 1 branches.
     // O(n log n)
     static <E> boolean isValid(Node23<E> n, int depth) {
-        if (n == null) {
-            return false;
-        }
         if (n.isLeaf()) {
             return depth == 1;
         }

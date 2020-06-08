@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
@@ -25,8 +24,6 @@ public class List23Test {
        assertFalse(List23.isValid(new Branch3<>(new Leaf<>("1"), new Leaf<>("4"), branch("2","3"))));
        assertFalse(List23.isValid(new Branch2<>(branch("2","3"), new Leaf<>("1"))));
        assertFalse(List23.isValid(new Branch2<>(new Leaf<>("1"), branch("2","3"))));
-       assertFalse(List23.isValid(new Branch1<>(new Leaf<>("1"))));
-       assertFalse(List23.isValid(new Branch1<>(new Leaf<>("1"))));
        assertTrue(List23.isValid(null));
 	}
 	
@@ -182,11 +179,6 @@ public class List23Test {
     
     @Test
     public void testMakeBranch() {
-        {
-            Node23<Integer> l2 = new Branch1<>(new Leaf<>(1));
-            assertNotNull(l2.b1());
-            assertNull(l2.b2());
-        }
         {
             Node23<Integer> l2 = new Branch2<>(new Leaf<>(1), new Leaf<>(2));
             assertNotNull(l2.b1());

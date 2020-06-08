@@ -33,11 +33,7 @@ final class Branch2<E> implements Node23<E> {
     }
 	@Override
 	public Node23<E> b3() {
-		return null;
-	}
-	@Override
-	public E leafValue() {
-		throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException();
 	}
 	
 	@Override
@@ -57,11 +53,6 @@ final class Branch2<E> implements Node23<E> {
     @Override
     public Node23<E> reverse() {
         return new Node23<E>() {
-
-            @Override
-            public E leafValue() {
-                throw new UnsupportedOperationException();
-            }
 
             @Override
             public int size() {
@@ -90,7 +81,7 @@ final class Branch2<E> implements Node23<E> {
 
             @Override
             public Node23<E> b3() {
-                return null;
+                throw new UnsupportedOperationException();
             }
 
             @Override

@@ -1,7 +1,9 @@
 package collections.twothree.list;
 
 interface Node23<E> {
-	E leafValue();
+	default E leafValue() {
+	    throw new UnsupportedOperationException();
+	}
 	int size();
 	default boolean isLeaf() {
 	    return numBranches() == 0;

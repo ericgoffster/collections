@@ -302,7 +302,8 @@ public final class Set23<E> implements Iterable<E> {
      * @return The set of all elements in this set &lt; low or &gt;= high
      */
     public Set23<E> exclude(final E low, final E high) {
-        if (comparator.compare(low, high) > 0) {
+        int cmp = comparator.compare(low, high);
+        if (cmp > 0) {
             throw new IllegalArgumentException("low must be <= high");
         }
         if (comparator.compare(low, high) == 0) {
@@ -327,7 +328,8 @@ public final class Set23<E> implements Iterable<E> {
      * @return The set of all elements in this set &lt; element
      */
 	public Set23<E> subSet(final E low, final E high) {
-        if (comparator.compare(low, high) > 0) {
+        int cmp = comparator.compare(low, high);
+        if (cmp > 0) {
             throw new IllegalArgumentException("low must be <= high");
         }
         if (comparator.compare(low, high) == 0) {
