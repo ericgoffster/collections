@@ -121,8 +121,8 @@ public final class Map23<K, V> implements Iterable<Entry<K, V>> {
 		return entries;
 	}
 	
-	public Set23<Entry<K,V>> asSet() {
-	    return new Set23<>(this::entryCompare, entries);
+	public SortedSet23<Entry<K,V>> asSet() {
+	    return new SortedSet23<>(this::entryCompare, entries);
 	}
 	
 	public int entryCompare(final Entry<K,V> a, final Entry<K,V> b) {
@@ -133,8 +133,8 @@ public final class Map23<K, V> implements Iterable<Entry<K, V>> {
 	    return HashSet23.hashCompare(a.getValue(), b.getValue());
 	}
 	
-	public Set23<K> keys() {
-	    return new Set23<>(keyComparator, entries.map(e -> e.getKey()));
+	public SortedSet23<K> keys() {
+	    return new SortedSet23<>(keyComparator, entries.map(e -> e.getKey()));
 	}
 
     public List23<V> values() {

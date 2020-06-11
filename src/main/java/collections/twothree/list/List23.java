@@ -329,7 +329,7 @@ public final class List23<E> implements Iterable<E> {
      * @param other The items to match.
      * @return a list whose items also appear in another list
      */
-    public List23<E> retain(final Set23<E> other) {
+    public List23<E> retain(final SortedSet23<E> other) {
         return filter(other::contains);
     }
     
@@ -340,7 +340,7 @@ public final class List23<E> implements Iterable<E> {
      * @param other The items to match.
      * @return a list whose items don't appear in another list
      */
-    public List23<E> remove(final Set23<E> other) {
+    public List23<E> remove(final SortedSet23<E> other) {
         return filter(e -> !other.contains(e));
     }
     

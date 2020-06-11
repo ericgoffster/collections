@@ -67,12 +67,12 @@ public class List23Test {
 	
     @Test
     public void testRetainAll() {
-        assertEquals(List23.of(0, 3, 6, 9, 12).retain(Set23.of(6, 7, 9)),List23.of(6, 9));
+        assertEquals(List23.of(0, 3, 6, 9, 12).retain(SortedSet23.of(6, 7, 9)),List23.of(6, 9));
     }
 
     @Test
     public void testRemoveAll() {
-        assertEquals(List23.of(0, 3, 6, 9, 12).remove(Set23.of(6, 7, 9)),List23.of(0, 3, 12));
+        assertEquals(List23.of(0, 3, 6, 9, 12).remove(SortedSet23.of(6, 7, 9)),List23.of(0, 3, 12));
     }
 
 	@Test

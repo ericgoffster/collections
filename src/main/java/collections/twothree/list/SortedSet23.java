@@ -28,7 +28,7 @@ import org.granitesoft.requirement.Requirements;
  *
  * @param <E> The type of the elements.
  */
-public final class Set23<E> implements Iterable<E> {
+public final class SortedSet23<E> implements Iterable<E> {
     /**
      * The comparator for elements in the set.   Defines the ordering.
      */
@@ -39,7 +39,7 @@ public final class Set23<E> implements Iterable<E> {
 	 */
 	final List23<E> elements;
 
-	Set23(final Comparator<? super E> comparator, final List23<E> elements) {
+	SortedSet23(final Comparator<? super E> comparator, final List23<E> elements) {
 		this.elements = Requirements.require(elements, Requirements.notNull(), () -> "elements");
 		this.comparator = Requirements.require(comparator, Requirements.notNull(), () -> "comparator");
 	}
@@ -55,8 +55,8 @@ public final class Set23<E> implements Iterable<E> {
 	 * @param element The singleton element
 	 * @return A set of exactly one element
 	 */
-    public static <E extends Comparable<E>> Set23<E> of(final E element) {
-        return new Set23<E>(List23::naturalCompare, List23.of(element));
+    public static <E extends Comparable<E>> SortedSet23<E> of(final E element) {
+        return new SortedSet23<E>(List23::naturalCompare, List23.of(element));
     }
 
     /**
@@ -70,8 +70,8 @@ public final class Set23<E> implements Iterable<E> {
      * @param <E> The element type
      * @return An empty set.
      */
-    public static <E> Set23<E> empty(Comparator<E> comparator) {
-        return new Set23<E>(comparator, List23.empty());
+    public static <E> SortedSet23<E> empty(Comparator<E> comparator) {
+        return new SortedSet23<E>(comparator, List23.empty());
     }
 
     /**
@@ -84,7 +84,7 @@ public final class Set23<E> implements Iterable<E> {
      * @param <E> The element type
      * @return An empty set.
      */
-    public static <E extends Comparable<E>> Set23<E> empty() {
+    public static <E extends Comparable<E>> SortedSet23<E> empty() {
         return empty(List23::naturalCompare);
     }
 
@@ -101,7 +101,7 @@ public final class Set23<E> implements Iterable<E> {
      */
 	@SafeVarargs
     @SuppressWarnings("varargs")
-    public static <E extends Comparable<E>> Set23<E> of(final E ... elements) {
+    public static <E extends Comparable<E>> SortedSet23<E> of(final E ... elements) {
     	return of(Arrays.asList(elements));
     }
 
@@ -116,7 +116,7 @@ public final class Set23<E> implements Iterable<E> {
      * @param elements The array of elements
      * @return A set containing an initial list of elements
      */
-    public static <E extends Comparable<E>> Set23<E> of(final Iterable<E> elements) {
+    public static <E extends Comparable<E>> SortedSet23<E> of(final Iterable<E> elements) {
     	return of(List23::naturalCompare, elements);
     }
     
@@ -131,12 +131,12 @@ public final class Set23<E> implements Iterable<E> {
      * @param other The set of elements
      * @return A set containing an initial list of elements
      */
-    public static <E> Set23<E> ofSorted(final SortedSet<E> other) {
+    public static <E> SortedSet23<E> ofSorted(final SortedSet<E> other) {
         Comparator<? super E> comparator = other.comparator();
         if (comparator == null) {
             comparator = List23::unNaturalCompare;
         }
-        return new Set23<>(comparator, List23.of(other));
+        return new SortedSet23<>(comparator, List23.of(other));
     }
 
     /**
@@ -152,13 +152,13 @@ public final class Set23<E> implements Iterable<E> {
      * @param elements The array of elements
      * @return A set containing an initial list of elements
      */
-    public static <E> Set23<E> of(final Comparator<? super E> comparator, final Iterable<E> elements) {
+    public static <E> SortedSet23<E> of(final Comparator<? super E> comparator, final Iterable<E> elements) {
         List<E> l = new ArrayList<E>();
         for(E e: elements) {
             l.add(e);
         }
         Collections.sort(l, comparator);
-    	return new Set23<E>(comparator, List23.of(l));
+    	return new SortedSet23<E>(comparator, List23.of(l));
     }
 
     /**
@@ -219,8 +219,8 @@ public final class Set23<E> implements Iterable<E> {
      * @param element The comparison element (inclusive)
      * @return The set of all elements in this set &gt;= element
      */
-	public Set23<E> ge(final E element) {
-		return new Set23<E>(comparator, elements.tailAt(naturalPosition(element)));
+	public SortedSet23<E> ge(final E element) {
+		return new SortedSet23<E>(comparator, elements.tailAt(naturalPosition(element)));
 	}
 
     /**
@@ -236,8 +236,8 @@ public final class Set23<E> implements Iterable<E> {
      * @param element The comparison element (exclusive)
      * @return The set of all elements in this set &lt; element
      */
-	public Set23<E> lt(final E element) {
-		return new Set23<E>(comparator, elements.headAt(naturalPosition(element)));
+	public SortedSet23<E> lt(final E element) {
+		return new SortedSet23<E>(comparator, elements.headAt(naturalPosition(element)));
 	}
 
     /**
@@ -254,7 +254,7 @@ public final class Set23<E> implements Iterable<E> {
      * @param high The high element (inclusive)
      * @return The set of all elements in this set &lt; low or &gt;= high
      */
-    public Set23<E> exclude(final E low, final E high) {
+    public SortedSet23<E> exclude(final E low, final E high) {
         int cmp = comparator.compare(low, high);
         if (cmp > 0) {
             throw new IllegalArgumentException("low must be <= high");
@@ -262,7 +262,7 @@ public final class Set23<E> implements Iterable<E> {
         if (comparator.compare(low, high) == 0) {
             return this;
         }
-        return new Set23<E>(comparator, elements.removeRange(naturalPosition(low), naturalPosition(high)));
+        return new SortedSet23<E>(comparator, elements.removeRange(naturalPosition(low), naturalPosition(high)));
     }
 
     /**
@@ -280,15 +280,15 @@ public final class Set23<E> implements Iterable<E> {
      * @param high The high element (exclusive)
      * @return The set of all elements in this set &lt; element
      */
-	public Set23<E> subSet(final E low, final E high) {
+	public SortedSet23<E> subSet(final E low, final E high) {
         int cmp = comparator.compare(low, high);
         if (cmp > 0) {
             throw new IllegalArgumentException("low must be <= high");
         }
         if (comparator.compare(low, high) == 0) {
-            return new Set23<E>(comparator, List23.empty());
+            return new SortedSet23<E>(comparator, List23.empty());
         }
-		return new Set23<E>(comparator, elements.getRange(naturalPosition(low), naturalPosition(high)));
+		return new SortedSet23<E>(comparator, elements.getRange(naturalPosition(low), naturalPosition(high)));
 	}
 
 	/**
@@ -302,11 +302,11 @@ public final class Set23<E> implements Iterable<E> {
 	 * @param element The element to add.
 	 * @return A set with the given element added.
 	 */
-	public Set23<E> add(final E element) {
+	public SortedSet23<E> add(final E element) {
 	    if (contains(element)) {
 	        return this;
 	    }
-	    return new Set23<>(comparator, elements.insertAt(naturalPosition(element), element));
+	    return new SortedSet23<>(comparator, elements.insertAt(naturalPosition(element), element));
 	}
 	
     /**
@@ -320,11 +320,11 @@ public final class Set23<E> implements Iterable<E> {
      * @param other The elements to remove.
      * @return A set with the given element removed.
      */
-	public Set23<E> union(Set23<E> other) {
+	public SortedSet23<E> union(SortedSet23<E> other) {
 	    if (size() == 0) {
 	        return of(comparator, other);
 	    }
-	    Set23<E> s = this;
+	    SortedSet23<E> s = this;
 	    for(E e: other) {
 	        s = s.add(e);
 	    }
@@ -341,8 +341,8 @@ public final class Set23<E> implements Iterable<E> {
      * THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * @return A set with the elements reversed
      */
-	public Set23<E> reversed() {
-		return new Set23<E>(comparator.reversed(), elements.reversed());
+	public SortedSet23<E> reversed() {
+		return new SortedSet23<E>(comparator.reversed(), elements.reversed());
 	}
 
     /**
@@ -357,9 +357,9 @@ public final class Set23<E> implements Iterable<E> {
      * @param element The element to remove
      * @return A set with the given element removed
      */
-	public Set23<E> remove(final E element) {
+	public SortedSet23<E> remove(final E element) {
 	    int index = indexOf(element);
-	    return index < 0 ? this : new Set23<>(comparator, elements.removeAt(index));
+	    return index < 0 ? this : new SortedSet23<>(comparator, elements.removeAt(index));
 	}
 	
     /**
@@ -373,8 +373,8 @@ public final class Set23<E> implements Iterable<E> {
      * @param filter The filter to apply
      * @return A set with the given element removed
      */
-    public Set23<E> filter(final Predicate<E> filter) {
-        return new Set23<>(comparator, elements.filter(filter));
+    public SortedSet23<E> filter(final Predicate<E> filter) {
+        return new SortedSet23<>(comparator, elements.filter(filter));
     }
 	
     /**
@@ -388,7 +388,7 @@ public final class Set23<E> implements Iterable<E> {
      * @param other The set to intersection with
      * @return A set with the given element removed
      */
-    public Set23<E> intersection(final Set23<E> other) {
+    public SortedSet23<E> intersection(final SortedSet23<E> other) {
         return filter(other::contains);
     }
     /**
@@ -402,8 +402,8 @@ public final class Set23<E> implements Iterable<E> {
      * @param other The elements to remove.
      * @return A set with the given element removed.
      */
-    public Set23<E> subtraction(final Set23<E> other) {
-        Set23<E> m = this;
+    public SortedSet23<E> subtraction(final SortedSet23<E> other) {
+        SortedSet23<E> m = this;
         for(E e: other) {
             m = m.remove(e);
         }
@@ -438,8 +438,8 @@ public final class Set23<E> implements Iterable<E> {
      * @param index The index of the element to remove.
      * @return A set with the element at the given index removed
      */
-    public Set23<E> removeAt(final int index) {
-        return new Set23<E>(comparator, elements.removeAt(index));
+    public SortedSet23<E> removeAt(final int index) {
+        return new SortedSet23<E>(comparator, elements.removeAt(index));
     }
 
 	/**
@@ -451,7 +451,7 @@ public final class Set23<E> implements Iterable<E> {
      * @return the {@link SortedSet} view of this set
      */
 	public SortedSet<E> asSet() {
-		return new Set23Set<>(this);
+		return new SortedSet23Set<>(this);
 	}
 	
     /**
@@ -473,10 +473,10 @@ public final class Set23<E> implements Iterable<E> {
 	
 	@Override
 	public boolean equals(final Object obj) {
-		if (!(obj instanceof Set23)) {
+		if (!(obj instanceof SortedSet23)) {
 			return false;
 		}
-		Set23<?> other = (Set23<?>)obj;
+		SortedSet23<?> other = (SortedSet23<?>)obj;
 		return asSet().equals(other.asSet());
 	}
 	

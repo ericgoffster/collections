@@ -5,10 +5,10 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.SortedSet;
 
-final class Set23Set<E> extends AbstractSet<E> implements SortedSet<E> {
-	final Set23<E> set;
+final class SortedSet23Set<E> extends AbstractSet<E> implements SortedSet<E> {
+	final SortedSet23<E> set;
 
-	public Set23Set(Set23<E> set) {
+	public SortedSet23Set(SortedSet23<E> set) {
 		super();
 		this.set = set;
 	}

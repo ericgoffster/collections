@@ -105,7 +105,7 @@ public class Map23Test {
 
     @Test
     public void testKeys() {
-        assertEquals(Map23.<Integer, Integer>empty().put(1, 2).put(3, 4).keys(), Set23.of(1, 3));
+        assertEquals(Map23.<Integer, Integer>empty().put(1, 2).put(3, 4).keys(), SortedSet23.of(1, 3));
     }
 
     @Test
