@@ -16,34 +16,34 @@ public class HashSet23Test {
 
     @Test
     public void testEmpty() {
-        assertEquals(Set23.emptyHash().asSet(), Collections.emptySet());
-        assertEquals(Set23.hashOf().asSet(), Collections.emptySet());
+        assertEquals(HashSet23.empty().asSet(), Collections.emptySet());
+        assertEquals(HashSet23.of().asSet(), Collections.emptySet());
     }
     
 	@Test
 	public void testFilter() {
-        assertEquals(Set23.hashOf(0, 3, 6, 9, 12).filter(e -> e > 1 && e < 7),Set23.of(3, 6));
+        assertEquals(HashSet23.of(0, 3, 6, 9, 12).filter(e -> e > 1 && e < 7),HashSet23.of(3, 6));
 	}
 	
     @Test
     public void testRetainAll() {
-        assertEquals(Set23.hashOf(0, 3, 6, 9, 12).intersection(Set23.of(6, 7, 9)),Set23.of(6, 9));
+        assertEquals(HashSet23.of(0, 3, 6, 9, 12).intersection(HashSet23.of(6, 7, 9)),HashSet23.of(6, 9));
     }
 
     @Test
     public void testRemoveAll() {
-        assertEquals(Set23.hashOf(0, 3, 6, 9, 12).subtraction(Set23.of(6, 7, 9)),Set23.of(0, 3, 12));
+        assertEquals(HashSet23.of(0, 3, 6, 9, 12).subtraction(HashSet23.of(6, 7, 9)),HashSet23.of(0, 3, 12));
     }
 
 	@Test
 	public void testInsertions() {
-		assertEquals(Set23.<Integer>hashOf().add(1),Set23.of(1));
-        assertEquals(Set23.<Integer>hashOf(1, 3).add(2),Set23.of(1, 2, 3));
-		assertEquals(Set23.<Integer>hashOf(1).add(2),Set23.of(1, 2));
-		assertEquals(Set23.hashOf(0, 3, 6, 9, 12).add(3),Set23.of(0, 3, 6, 9, 12));
-		assertEquals(Set23.hashOf(0, 3, 6, 9, 12).add(5),Set23.of(0, 3, 5, 6, 9, 12));
-        assertEquals(Set23.hashOf(0, 3, 6, 9, 12).union(Set23.of(2, 4, 6)),Set23.of(0, 2, 3, 4, 6, 9, 12));
-        assertEquals(Set23.<Integer>hashOf().union(Set23.of(2, 4, 6)),Set23.of(2, 4, 6));
+		assertEquals(HashSet23.<Integer>of().add(1),HashSet23.of(1));
+        assertEquals(HashSet23.<Integer>of(1, 3).add(2),HashSet23.of(1, 2, 3));
+		assertEquals(HashSet23.<Integer>of(1).add(2),HashSet23.of(1, 2));
+		assertEquals(HashSet23.of(0, 3, 6, 9, 12).add(3),HashSet23.of(0, 3, 6, 9, 12));
+		assertEquals(HashSet23.of(0, 3, 6, 9, 12).add(5),HashSet23.of(0, 3, 5, 6, 9, 12));
+        assertEquals(HashSet23.of(0, 3, 6, 9, 12).union(HashSet23.of(2, 4, 6)),HashSet23.of(0, 2, 3, 4, 6, 9, 12));
+        assertEquals(HashSet23.<Integer>of().union(HashSet23.of(2, 4, 6)),HashSet23.of(2, 4, 6));
 	}
 	
 	public static class Foo {
@@ -68,45 +68,45 @@ public class HashSet23Test {
 
     @Test
     public void testHashCompare() {
-        assertFalse(Set23.hashCompare(2, 3) == 0);
-        assertTrue(Set23.hashCompare(2, 2) == 0);
-        assertTrue(Set23.hashCompare(Set23.of(2, 3), Set23.of(3, 2)) == 0);
-        assertFalse(Set23.hashCompare(Set23.of(2), List23.of(2)) == 0);
-        assertTrue(Set23.hashCompare(new Foo(0, true), new Foo(0, true)) == 0);
-        assertFalse(Set23.hashCompare(new Foo(0, false), new Foo(0, false)) == 0);
-        assertFalse(Set23.hashCompare(new Foo(0, true), new Foo(1, true)) == 0);
+        assertFalse(HashSet23.hashCompare(2, 3) == 0);
+        assertTrue(HashSet23.hashCompare(2, 2) == 0);
+        assertTrue(HashSet23.hashCompare(HashSet23.of(2, 3), HashSet23.of(3, 2)) == 0);
+        assertFalse(HashSet23.hashCompare(HashSet23.of(2), List23.of(2)) == 0);
+        assertTrue(HashSet23.hashCompare(new Foo(0, true), new Foo(0, true)) == 0);
+        assertFalse(HashSet23.hashCompare(new Foo(0, false), new Foo(0, false)) == 0);
+        assertFalse(HashSet23.hashCompare(new Foo(0, true), new Foo(1, true)) == 0);
     }
   
 	@Test
 	public void testContains() {
-		assertFalse(Set23.<Integer>hashOf().contains(1));
-		assertFalse(Set23.<Integer>hashOf(1).contains(2));
-		assertTrue(Set23.<Integer>hashOf(1).contains(1));
-		assertTrue(Set23.<Integer>hashOf(1, 2).contains(1));
-		assertTrue(Set23.<Integer>hashOf(1, 2).contains(2));
-		assertFalse(Set23.<Integer>hashOf(1, 2).contains(3));
-        assertNotEquals(Set23.<Integer>hashOf(1, 2), Arrays.asList(1,2));
+		assertFalse(HashSet23.<Integer>of().contains(1));
+		assertFalse(HashSet23.<Integer>of(1).contains(2));
+		assertTrue(HashSet23.<Integer>of(1).contains(1));
+		assertTrue(HashSet23.<Integer>of(1, 2).contains(1));
+		assertTrue(HashSet23.<Integer>of(1, 2).contains(2));
+		assertFalse(HashSet23.<Integer>of(1, 2).contains(3));
+        assertNotEquals(HashSet23.<Integer>of(1, 2), Arrays.asList(1,2));
 	}
 	
 	@Test
 	public void testSize() {
-		assertEquals(Set23.<Integer>hashOf().size(), 0);
-		assertEquals(Set23.<Integer>hashOf(1).size(), 1);
-		assertEquals(Set23.<Integer>hashOf(1, 2).size(), 2);
+		assertEquals(HashSet23.<Integer>of().size(), 0);
+		assertEquals(HashSet23.<Integer>of(1).size(), 1);
+		assertEquals(HashSet23.<Integer>of(1, 2).size(), 2);
 	}
 	
 	@Test
 	public void testDeletions() {
-		assertEquals(Set23.<Integer>hashOf().remove(1),Set23.of());
-		assertEquals(Set23.<Integer>hashOf(2).remove(1),Set23.of(2));
-		assertEquals(Set23.<Integer>hashOf(2, 3).remove(1),Set23.of(2, 3));
-		assertEquals(Set23.<Integer>hashOf(2, 1).remove(1),Set23.of(2));
-		assertEquals(Set23.<Integer>hashOf(1).remove(1),Set23.of());
+		assertEquals(HashSet23.<Integer>of().remove(1),HashSet23.of());
+		assertEquals(HashSet23.<Integer>of(2).remove(1),HashSet23.of(2));
+		assertEquals(HashSet23.<Integer>of(2, 3).remove(1),HashSet23.of(2, 3));
+		assertEquals(HashSet23.<Integer>of(2, 1).remove(1),HashSet23.of(2));
+		assertEquals(HashSet23.<Integer>of(1).remove(1),HashSet23.of());
 	}
 	
     @Test
     public void testStream() {
-        Set23<Integer> l = Set23.hashOf(1,2,3,4,5,6);
+        HashSet23<Integer> l = HashSet23.of(1,2,3,4,5,6);
         Set<Integer> t = new HashSet<>(Arrays.asList(1,2,3,4,5,6));
         l.stream().forEach(t::remove);
         assertTrue(t.isEmpty());
@@ -114,7 +114,7 @@ public class HashSet23Test {
 
     @Test
     public void testIterator() {
-        Set23<Integer> l = Set23.hashOf(1,2,3,4,5,6);
+        HashSet23<Integer> l = HashSet23.of(1,2,3,4,5,6);
         Set<Integer> t = new HashSet<>(Arrays.asList(1,2,3,4,5,6));
         l.forEach(t::remove);
         assertTrue(t.isEmpty());
@@ -122,7 +122,7 @@ public class HashSet23Test {
 	
 	@Test
 	public void testAsSet() {
-		Set23<String> l1 = Set23.hashOf("1","2","3","4","5",null);
+		HashSet23<String> l1 = HashSet23.of("1","2","3","4","5",null);
 		assertEquals(l1.asSet(), new HashSet<>(Arrays.asList("1", "2", "3", "4", "5", null)));
 		assertEquals(l1.asSet(), new HashSet<>(Arrays.asList("1", "2", "4", "3", "5", null)));
 		assertNotEquals(l1.asSet(), new HashSet<>(Arrays.asList("1", "2", "4", "3", "5")));

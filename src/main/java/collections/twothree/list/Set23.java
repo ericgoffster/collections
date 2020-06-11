@@ -1,12 +1,13 @@
 package collections.twothree.list;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 import java.util.ListIterator;
-import java.util.Objects;
 import java.util.Set;
 import java.util.SortedSet;
-import java.util.TreeSet;
 import java.util.function.BiFunction;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
@@ -59,21 +60,6 @@ public final class Set23<E> implements Iterable<E> {
     }
 
     /**
-     * Returns a hashed set of <code>element</code>.
-     * <p>This operation is O(1).
-     * <pre>
-     * Example:
-     *     Set23.of(6) == {6}
-     * </pre>
-     * @param <E> The element type
-     * @param element The singleton element
-     * @return A set of exactly one element
-     */
-    public static <E> Set23<E> hashOf(final E element) {
-        return new Set23<E>(Set23::hashCompare, List23.of(element));
-    }
-
-    /**
      * Returns the empty set, using a custom ordering.
      * <p>This operation is O(1).
      * <pre>
@@ -103,20 +89,6 @@ public final class Set23<E> implements Iterable<E> {
     }
 
     /**
-     * Returns the empty hashed set.
-     * <p>This operation is O(1).
-     * <pre>
-     * Example:
-     *     Set23.emptyHash() == {}
-     * </pre>
-     * @param <E> The element type
-     * @return An empty set.
-     */
-    public static <E> Set23<E> emptyHash() {
-        return empty(Set23::hashCompare);
-    }
-
-    /**
      * Returns a set containing an initial list of elements, using natural ordering.
      * <p>This operation is O(n log n).
      * <pre>
@@ -138,23 +110,6 @@ public final class Set23<E> implements Iterable<E> {
      * <p>This operation is O(n log n).
      * <pre>
      * Example:
-     *     Set23.hashOf(4, 2, 3) == {2, 3, 4}
-     * </pre>
-     * @param <E> The element type
-     * @param elements The array of elements
-     * @return A set containing an initial list of elements
-     */
-    @SafeVarargs
-    @SuppressWarnings("varargs")
-    public static <E> Set23<E> hashOf(final E ... elements) {
-        return hashOf(Arrays.asList(elements));
-    }
-
-    /**
-     * Returns a set containing an initial list of elements, using natural ordering.
-     * <p>This operation is O(n log n).
-     * <pre>
-     * Example:
      *     Set23.of(Arrays.asList(4, 2, 3)) == {2, 3, 4}
      * </pre>
      * @param <E> The element type
@@ -163,9 +118,6 @@ public final class Set23<E> implements Iterable<E> {
      */
     public static <E extends Comparable<E>> Set23<E> of(final Iterable<E> elements) {
     	return of(List23::naturalCompare, elements);
-    }
-    public static <E> Set23<E> hashOf(final Iterable<E> elements) {
-        return of(Set23::hashCompare, elements);
     }
     
     /**
@@ -201,11 +153,12 @@ public final class Set23<E> implements Iterable<E> {
      * @return A set containing an initial list of elements
      */
     public static <E> Set23<E> of(final Comparator<? super E> comparator, final Iterable<E> elements) {
-        final TreeSet<E> list = new TreeSet<>(comparator);
-    	for(E e: elements) {
-    		list.add(e);
-    	}
-    	return new Set23<E>(comparator, List23.of(list));
+        List<E> l = new ArrayList<E>();
+        for(E e: elements) {
+            l.add(e);
+        }
+        Collections.sort(l, comparator);
+    	return new Set23<E>(comparator, List23.of(l));
     }
 
     /**
@@ -567,16 +520,5 @@ public final class Set23<E> implements Iterable<E> {
     		   comparator.compare(element, first(n)) < 0 ? 0:
     		   comparator.compare(element, last(n)) > 0 ? size():
     		   visit(comparator, n, element, 0, (leaf, i) -> i);
-    }
-    
-    static <E> int hashCompare(E a, E b) {
-        int cmp = Integer.compare(Objects.hash(a), Objects.hash(b));
-        if (cmp != 0) {
-            return cmp;
-        }
-        if (Objects.equals(a, b)) {
-            return 0;
-        }
-        return Integer.compare(System.identityHashCode(a), System.identityHashCode(b));
     }
 }

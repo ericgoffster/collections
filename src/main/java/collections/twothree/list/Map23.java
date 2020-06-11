@@ -7,7 +7,6 @@ import java.util.ListIterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.SortedMap;
-import java.util.function.BiFunction;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
@@ -54,28 +53,12 @@ public final class Map23<K, V> implements Iterable<Entry<K, V>> {
         return put(entry.getKey(), entry.getValue());
     }
 
-    public Map23<K, V> merge(Iterable<Entry<K ,V>> items, BiFunction<V, Entry<K,V>, V> function) {
-        Map23<K, V> m = this;
-        for(Entry<K,V> e: items) {
-            if (!m.containsKey(e.getKey())) {
-                m = m.add(e);
-            } else {
-                m = m.put(e.getKey(), function.apply(m.get(e.getKey()), e));
-            }
-        }
-        return m;
-    }
-
     public Map23<K, V> addAll(Iterable<Entry<K ,V>> items) {
         Map23<K, V> m = this;
         for(Entry<K,V> e: items) {
             m = m.add(e);
         }
         return m;
-    }
-
-    public Map23<K, V> merge(Map<K ,V> items, BiFunction<V, Entry<K,V>, V> function) {
-        return merge(items.entrySet(), function);
     }
 
     public Map23<K, V> addAll(Map<K ,V> items) {
@@ -147,7 +130,7 @@ public final class Map23<K, V> implements Iterable<Entry<K, V>> {
 	    if (cmp != 0) {
 	        return cmp;
 	    }
-	    return Set23.hashCompare(a.getValue(), b.getValue());
+	    return HashSet23.hashCompare(a.getValue(), b.getValue());
 	}
 	
 	public Set23<K> keys() {
