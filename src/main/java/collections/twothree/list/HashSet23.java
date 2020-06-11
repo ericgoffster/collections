@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.SortedSet;
-import java.util.function.BiFunction;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
@@ -27,7 +26,7 @@ import org.granitesoft.requirement.Requirements;
  *
  * @param <E> The type of the elements.
  */
-public final class HashSet23<E> implements Iterable<E> {
+public final class HashSet23<E> implements Set23<E> {
 	/**
 	 * The list of elements
 	 */
@@ -42,7 +41,7 @@ public final class HashSet23<E> implements Iterable<E> {
      * <p>This operation is O(1).
      * <pre>
      * Example:
-     *     Set23.of(6) == {6}
+     *     HashSet23.of(6) == {6}
      * </pre>
 	 * @param <E> The element type
 	 * @param element The singleton element
@@ -57,7 +56,7 @@ public final class HashSet23<E> implements Iterable<E> {
      * <p>This operation is O(1).
      * <pre>
      * Example:
-     *     Set23.empty(Integer::compare) == {}
+     *     HashSet23.empty(Integer::compare) == {}
      * </pre>
      * @param comparator The comparator which defines ordering.
      * @param <E> The element type
@@ -72,7 +71,7 @@ public final class HashSet23<E> implements Iterable<E> {
      * <p>This operation is O(n log n).
      * <pre>
      * Example:
-     *     Set23.of(4, 2, 3) == {2, 3, 4}
+     *     HashSet23.of(4, 2, 3) == {2, 3, 4}
      * </pre>
      * @param <E> The element type
      * @param elements The array of elements
@@ -89,8 +88,8 @@ public final class HashSet23<E> implements Iterable<E> {
      * <p>This operation is O(n log n).
      * <pre>
      * Example:
-     *     Set23.of(Integer::compare, Arrays.asList(4, 2, 3)) == {2, 3, 4}
-     *     Set23.of(Integer::compare.reversed(), Arrays.asList(4, 2, 3)) == {4, 3, 2}
+     *     HashSet23.of(Integer::compare, Arrays.asList(4, 2, 3)) == {2, 3, 4}
+     *     HashSet23.of(Integer::compare.reversed(), Arrays.asList(4, 2, 3)) == {4, 3, 2}
      * </pre>
      * @param <E> The element type
      * @param comparator The comparator of elements
@@ -111,10 +110,11 @@ public final class HashSet23<E> implements Iterable<E> {
      * <p>This operation is O(1).
      * <pre>
      * Example:
-     *     Set23.of(4, 2, 3).size() == 3
+     *     HashSet23.of(4, 2, 3).size() == 3
      * </pre>
 	 * @return The size of this set
 	 */
+    @Override
 	public int size() {
 		return elements.size();
 	}
@@ -124,12 +124,13 @@ public final class HashSet23<E> implements Iterable<E> {
      * <p>This operation is O(log n).
      * <pre>
      * Example:
-     *     Set23.of(4, 2, 3).contains(2) == true
-     *     Set23.of(4, 2, 3).contains(5) == false
+     *     HashSet23.of(4, 2, 3).contains(2) == true
+     *     HashSet23.of(4, 2, 3).contains(5) == false
      * </pre>
 	 * @param element The element to look for.
 	 * @return true if the set contains the given element
 	 */
+    @Override
 	public boolean contains(final E element) {
 	    return indexOf(element) >= 0;
 	}
@@ -139,17 +140,18 @@ public final class HashSet23<E> implements Iterable<E> {
      * <p>This operation is O(log n).
      * <pre>
      * Example:
-     *     Set23.of(4, 2, 3).add(5) == {2, 3, 4, 5}
+     *     HashSet23.of(4, 2, 3).add(5) == {2, 3, 4, 5}
      * </pre>
      * THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
 	 * @param element The element to add.
 	 * @return A set with the given element added.
 	 */
+    @Override
 	public HashSet23<E> add(final E element) {
 	    if (contains(element)) {
 	        return this;
 	    }
-	    return new HashSet23<>(elements.insertAt(naturalPosition(element), element));
+	    return new HashSet23<>(elements.insertAt(elements.naturalPosition(HashSet23::hashCompare, element), element));
 	}
 	
     /**
@@ -157,13 +159,14 @@ public final class HashSet23<E> implements Iterable<E> {
      * <p>This operation is O(m * log n).
      * <pre>
      * Example:
-     *     Set23.of(4, 2, 3).union(Set23.of(5, 6)) == {2, 3, 4, 5, 6}
+     *     HashSet23.of(4, 2, 3).union(HashSet23.of(5, 6)) == {2, 3, 4, 5, 6}
      * </pre>
      * THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * @param other The elements to remove.
      * @return A set with the given element removed.
      */
-	public HashSet23<E> union(HashSet23<E> other) {
+    @Override
+	public HashSet23<E> union(Set23<E> other) {
 	    if (size() == 0) {
 	        return of(other);
 	    }
@@ -179,13 +182,14 @@ public final class HashSet23<E> implements Iterable<E> {
      * <p>This operation is O(log n).
      * <pre>
      * Example:
-     *     Set23.of(4, 2, 3).remove(2) == {3, 4}
-     *     Set23.of(4, 2, 3).remove(5) == {2, 3, 4}
+     *     HashSet23.of(4, 2, 3).remove(2) == {3, 4}
+     *     HashSet23.of(4, 2, 3).remove(5) == {2, 3, 4}
      * </pre>
      * THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * @param element The element to remove
      * @return A set with the given element removed
      */
+    @Override
 	public HashSet23<E> remove(final E element) {
 	    int index = indexOf(element);
 	    return index < 0 ? this : new HashSet23<>(elements.removeAt(index));
@@ -196,12 +200,13 @@ public final class HashSet23<E> implements Iterable<E> {
      * <p>This operation is O(n * log n).
      * <pre>
      * Example:
-     *     Set23.of(4, 2, 3).filter(e -&gt; e &lt; 4) == {2, 3}
+     *     HashSet23.of(4, 2, 3).filter(e -&gt; e &lt; 4) == {2, 3}
      * </pre>
      * THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * @param filter The filter to apply
      * @return A set with the given element removed
      */
+    @Override
     public HashSet23<E> filter(final Predicate<E> filter) {
         return new HashSet23<>(elements.filter(filter));
     }
@@ -211,13 +216,14 @@ public final class HashSet23<E> implements Iterable<E> {
      * <p>This operation is O((m + n) * log (m + n)).
      * <pre>
      * Example:
-     *     Set23.of(4, 2, 3).intersection(Set.of(1,2,4)) == {2, 4}
+     *     HashSet23.of(4, 2, 3).intersection(Set.of(1,2,4)) == {2, 4}
      * </pre>
      * THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * @param other The set to intersection with
      * @return A set with the given element removed
      */
-    public HashSet23<E> intersection(final HashSet23<E> other) {
+    @Override
+    public HashSet23<E> intersection(final Set23<E> other) {
         return filter(other::contains);
     }
     /**
@@ -225,13 +231,14 @@ public final class HashSet23<E> implements Iterable<E> {
      * <p>This operation is O(m * log n).
      * <pre>
      * Example:
-     *     Set23.of(4, 2, 3).subtraction(Set.of(2,4)) == {3}
+     *     HashSet23.of(4, 2, 3).subtraction(Set.of(2,4)) == {3}
      * </pre>
      * THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * @param other The elements to remove.
      * @return A set with the given element removed.
      */
-    public HashSet23<E> subtraction(final HashSet23<E> other) {
+    @Override
+    public HashSet23<E> subtraction(final Set23<E> other) {
         HashSet23<E> m = this;
         for(E e: other) {
             m = m.remove(e);
@@ -243,10 +250,11 @@ public final class HashSet23<E> implements Iterable<E> {
      * Returns the read-only {@link Set} view of this set.
      * <pre>
      * Example:
-     *     Set23.of(4, 2, 3).asSet() == {2, 3, 4}
+     *     HashSet23.of(4, 2, 3).asSet() == {2, 3, 4}
      * </pre>
      * @return the {@link SortedSet} view of this set
      */
+    @Override
 	public Set<E> asSet() {
 		return new HashSet23Set<>(this);
 	}
@@ -275,43 +283,15 @@ public final class HashSet23<E> implements Iterable<E> {
 		return elements.iterator();
 	}
     
+    @Override
     public Stream<E> stream() {
         return elements.stream();
     }
 
     int indexOf(final E element) {
-        return elements.root == null ? -1 :
-            visit(elements.root, element, 0, (leaf, i) -> hashCompare(element, leaf) == 0 ? i : -1);
+        return elements.indexOf(HashSet23::hashCompare, element);
     }
 
-    static <E> E last(final Node23<E> node) {
-    	return node.isLeaf() ? node.leafValue() : last(node.b_last());
-    }
-
-    static <E> E first(final Node23<E> node) {
-    	return node.isLeaf() ? node.leafValue() : first(node.b1());
-    }
-
-    // Visits all leaves, returning an arbitrary result returned from leafVisitor
-    static <T, E> T visit(final Node23<E> node, final E element, final int index, final BiFunction<E,Integer,T> leafVisitor) {
-        return
-                node.isLeaf() ? leafVisitor.apply(node.leafValue(), index) :
-                    hashCompare(element, last(node.b1())) <= 0 ?
-                        visit(node.b1(), element, index, leafVisitor):
-                node.numBranches() < 3 || hashCompare(element, last(node.b2())) <= 0 ?
-                        visit(node.b2(), element, index + node.b1Size(), leafVisitor):
-                visit(node.b3(), element, index + node.b1Size() + node.b2Size(), leafVisitor);
-    }
-
-    // Returns the position where the element belongs
-    int naturalPosition(final E element) {
-    	Node23<E> n = elements.root;
-    	return n == null ? 0:
-    		   hashCompare(element, first(n)) < 0 ? 0:
-    		       hashCompare(element, last(n)) > 0 ? size():
-    		   visit(n, element, 0, (leaf, i) -> i);
-    }
-    
     static <E> int hashCompare(E a, E b) {
         int cmp = Integer.compare(Objects.hash(a), Objects.hash(b));
         if (cmp != 0) {

@@ -67,7 +67,7 @@ public final class Map23<K, V> implements Iterable<Entry<K, V>> {
 
 	public Map23<K, V> put(final K key, final V value) {
         Map23<K, V> m = remove(key);
-        int index = m.keys().naturalPosition(key);
+        int index = m.keys().elements.naturalPosition(keyComparator, key);
         return new Map23<>(keyComparator, m.entries.insertAt(index, new AbstractMap.SimpleImmutableEntry<>(key, value)));
 	}
 	

@@ -7,6 +7,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Objects;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
@@ -803,5 +804,42 @@ public final class List23<E> implements Iterable<E> {
             return false;
         }
         return true;
+    }
+    
+    static <E> E last(final Node23<E> node) {
+        return node.isLeaf() ? node.leafValue() : last(node.b_last());
+    }
+
+    static <E> E first(final Node23<E> node) {
+        return node.isLeaf() ? node.leafValue() : first(node.b1());
+    }
+
+    // Visits all leaves, returning an arbitrary result returned from leafVisitor
+    // Warning, all elements in this list must follow order governed by this comparator
+    static <T, E> T binarySearch(final Comparator<? super E> comparator, final Node23<E> node, final E element, final int index, final BiFunction<E,Integer,T> leafVisitor) {
+        return
+                node.isLeaf() ? leafVisitor.apply(node.leafValue(), index) :
+                comparator.compare(element, last(node.b1())) <= 0 ?
+                        binarySearch(comparator, node.b1(), element, index, leafVisitor):
+                node.numBranches() < 3 || comparator.compare(element, last(node.b2())) <= 0 ?
+                        binarySearch(comparator, node.b2(), element, index + node.b1Size(), leafVisitor):
+                binarySearch(comparator, node.b3(), element, index + node.b1Size() + node.b2Size(), leafVisitor);
+    }
+
+    // Visits all leaves, returning an arbitrary result returned from leafVisitor
+    // Warning, all elements in this list must follow order governed by this comparator
+    <T> T binarySearch(final Comparator<? super E> comparator, final E element, final BiFunction<E,Integer,T> leafVisitor) {
+        return root == null ? leafVisitor.apply(null, -1) : binarySearch(comparator, root, element, 0, leafVisitor);
+    }
+    
+    // Warning, all elements in this list must follow order governed by this comparator
+    int indexOf(final Comparator<? super E> comparator, final E element) {
+        return binarySearch(comparator, element, (leaf, i) -> i < 0 ? -1 : comparator.compare(element, leaf) == 0 ? i : -1);
+    }
+    
+    // Returns the position where the element belongs
+    // Warning, all elements in this list must follow order governed by this comparator
+    int naturalPosition(final Comparator<? super E> comparator, final E element) {
+        return binarySearch(comparator, element, (leaf, i) -> i < 0 ? 0 : comparator.compare(element,leaf) > 0 ? (i + 1) : i);
     }
 }
