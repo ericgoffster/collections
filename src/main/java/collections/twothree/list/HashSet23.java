@@ -2,6 +2,7 @@ package collections.twothree.list;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -90,7 +91,7 @@ public final class HashSet23<E> implements Set23<E> {
      * Example:
      *     HashSet23.of(Arrays.asList(4, 2, 3)) == {2, 3, 4}
      * </pre>
-     * @param <E> The element type
+     * @param <E> The element typer
      * @param elements The array of elements
      * @return A set containing an initial list of elements
      */
@@ -219,8 +220,9 @@ public final class HashSet23<E> implements Set23<E> {
      * @return A set with the given element removed
      */
     @Override
-    public HashSet23<E> intersection(final Set23<E> other) {
-        return filter(other::contains);
+    public HashSet23<E> retain(final Iterable<E> other) {
+        final HashSet23<E> hs = HashSet23.of(other);
+        return filter(hs::contains);
     }
     /**
      * Returns a set that is the subtraction of this set with <code>other</code>.
@@ -234,7 +236,7 @@ public final class HashSet23<E> implements Set23<E> {
      * @return A set with the given element removed.
      */
     @Override
-    public HashSet23<E> subtraction(final Set23<E> other) {
+    public HashSet23<E> removeAllIn(final Iterable<E> other) {
         HashSet23<E> m = this;
         for(E e: other) {
             m = m.remove(e);
@@ -293,5 +295,10 @@ public final class HashSet23<E> implements Set23<E> {
             return 0;
         }
         return Integer.compare(System.identityHashCode(a), System.identityHashCode(b));
+    }
+
+    @Override
+    public Collection<E> asCollection() {
+        return elements.asCollection();
     }
 }

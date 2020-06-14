@@ -27,6 +27,12 @@ public class List23Test {
        assertTrue(List23.isValid(null));
 	}
 	
+	@Test
+	public void testToCollection() {
+        List23<Integer> l = List23.of(1,2,3,4,5,6);
+        assertEquals(new HashSet<Integer>(l.asCollection()), new HashSet<Integer>(Arrays.asList(1,2,3,4,5,6)));
+	}
+	
     @Test
     public void testMap() {
         assertEquals(List23.of("1","2",null).map(x -> x == null ? null : Integer.parseInt(x)),List23.of(1,2,null));
@@ -72,7 +78,7 @@ public class List23Test {
 
     @Test
     public void testRemoveAll() {
-        assertEquals(List23.of(0, 3, 6, 9, 12).remove(SortedSet23.of(6, 7, 9)),List23.of(0, 3, 12));
+        assertEquals(List23.of(0, 3, 6, 9, 12).removeAllIn(SortedSet23.of(6, 7, 9)),List23.of(0, 3, 12));
     }
 
 	@Test

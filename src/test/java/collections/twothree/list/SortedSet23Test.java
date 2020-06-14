@@ -84,12 +84,12 @@ public class SortedSet23Test {
 	
     @Test
     public void testRetainAll() {
-        assertEquals(SortedSet23.of(0, 3, 6, 9, 12).intersection(SortedSet23.of(6, 7, 9)),SortedSet23.of(6, 9));
+        assertEquals(SortedSet23.of(0, 3, 6, 9, 12).retain(SortedSet23.of(6, 7, 9)),SortedSet23.of(6, 9));
     }
 
     @Test
     public void testRemoveAll() {
-        assertEquals(SortedSet23.of(0, 3, 6, 9, 12).subtraction(SortedSet23.of(6, 7, 9)),SortedSet23.of(0, 3, 12));
+        assertEquals(SortedSet23.of(0, 3, 6, 9, 12).removeAllIn(SortedSet23.of(6, 7, 9)),SortedSet23.of(0, 3, 12));
     }
 
 	@Test
@@ -170,6 +170,12 @@ public class SortedSet23Test {
         assertTrue(t.isEmpty());
     }
 	
+    @Test
+    public void testAsCollection() {
+        SortedSet23<Integer> l = SortedSet23.of(1,2,3,4,5,6);
+        assertEquals(new HashSet<>(l.asCollection()), new HashSet<>(Arrays.asList(1,2,3,4,5,6)));
+    }
+    
 	@Test
 	public void testBasic() {
 		SortedSet23<String> l1 = SortedSet23.of("1","2","3","4","5",null);

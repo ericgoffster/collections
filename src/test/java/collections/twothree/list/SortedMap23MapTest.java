@@ -89,12 +89,12 @@ public class SortedMap23MapTest {
     }
     @Test
     public void testRemoveAll() {
-        assertEquals(SortedMap23.of(Arrays.asList(makeEntry(0,1), makeEntry(3,2), makeEntry(6,3), makeEntry(9,4), makeEntry(12,5))).removeAll(SortedSet23.of(6, 7, 9)),
+        assertEquals(SortedMap23.of(Arrays.asList(makeEntry(0,1), makeEntry(3,2), makeEntry(6,3), makeEntry(9,4), makeEntry(12,5))).removeAllKeysIn(SortedSet23.of(6, 7, 9)),
                 SortedMap23.of(Arrays.asList(makeEntry(0,1), makeEntry(3,2), makeEntry(12,5))));
     }
     @Test
     public void testRetainAll() {
-        assertEquals(SortedMap23.of(Arrays.asList(makeEntry(0,1), makeEntry(3,2), makeEntry(6,3), makeEntry(9,4), makeEntry(12,5))).retainAll(SortedSet23.of(6, 7, 9)),
+        assertEquals(SortedMap23.of(Arrays.asList(makeEntry(0,1), makeEntry(3,2), makeEntry(6,3), makeEntry(9,4), makeEntry(12,5))).retainAllKeys(SortedSet23.of(6, 7, 9)),
                 SortedMap23.of(Arrays.asList(makeEntry(6,3), makeEntry(9,4))));
     }
 
@@ -151,9 +151,9 @@ public class SortedMap23MapTest {
 	
 	@Test
 	public void testDeletions() {
-		assertEquals(SortedMap23.<Integer, Integer>empty().remove(1),SortedMap23.<Integer, Integer>empty());
-        assertEquals(SortedMap23.<Integer, Integer>empty().put(1,2).put(3, 4).remove(5),SortedMap23.<Integer, Integer>empty().put(1,2).put(3, 4));
-        assertEquals(SortedMap23.<Integer, Integer>empty().put(1,2).put(3, 4).remove(1),SortedMap23.<Integer, Integer>empty().put(3, 4));
+		assertEquals(SortedMap23.<Integer, Integer>empty().removeKey(1),SortedMap23.<Integer, Integer>empty());
+        assertEquals(SortedMap23.<Integer, Integer>empty().put(1,2).put(3, 4).removeKey(5),SortedMap23.<Integer, Integer>empty().put(1,2).put(3, 4));
+        assertEquals(SortedMap23.<Integer, Integer>empty().put(1,2).put(3, 4).removeKey(1),SortedMap23.<Integer, Integer>empty().put(3, 4));
 	}
 	
     @Test
@@ -164,11 +164,11 @@ public class SortedMap23MapTest {
 
     @Test
     public void testEntries() {
-        assertTrue(SortedMap23.<Integer, Integer>empty().put(1, 2).put(3, 4).asSet().asSet()
+        assertTrue(SortedMap23.<Integer, Integer>empty().put(1, 2).put(3, 4).asSet()
                 .contains(makeEntry(1, 2)));
-        assertFalse(SortedMap23.<Integer, Integer>empty().put(1, 2).put(3, 4).asSet().asSet()
+        assertFalse(SortedMap23.<Integer, Integer>empty().put(1, 2).put(3, 4).asSet()
                 .contains(makeEntry(1, 3)));
-        assertFalse(SortedMap23.<Integer, Integer>empty().put(1, 2).put(3, 4).asSet().asSet()
+        assertFalse(SortedMap23.<Integer, Integer>empty().put(1, 2).put(3, 4).asSet()
                 .contains(makeEntry(2, 2)));
     }
     @Test

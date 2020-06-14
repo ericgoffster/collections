@@ -2,6 +2,7 @@ package collections.twothree.list;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -34,7 +35,7 @@ import org.granitesoft.requirement.Requirements;
  * Which is significant, there is no need for a builder.
  * @param <E> The type of the elements.
  */
-public final class List23<E> implements Iterable<E> {
+public final class List23<E> implements Collection23<E> {
     /**
      * The root of the tree.
      */
@@ -217,6 +218,7 @@ public final class List23<E> implements Iterable<E> {
      * </pre>
 	 * @return The number of elements in the list
 	 */
+	@Override
 	public int size() {
 		return root == null ? 0 : root.size();
 	}
@@ -247,6 +249,7 @@ public final class List23<E> implements Iterable<E> {
 	 * @param element The element to look for
 	 * @return true if this list contains <code>element</code>
 	 */
+    @Override
     public boolean contains(E element) {
         return indexOf(element) >= 0;
     }
@@ -297,6 +300,7 @@ public final class List23<E> implements Iterable<E> {
      * @param element The element to remove
      * @return A list with <code>element</code> removed
      */
+    @Override
     public List23<E> remove(final E element) {
         int index = indexOf(element);
         return index < 0 ? this : removeAt(index);
@@ -313,6 +317,7 @@ public final class List23<E> implements Iterable<E> {
      * @param filter The filter to apply
      * @return A list with <code>filter</code> applied
      */
+    @Override
     public List23<E> filter(final Predicate<E> filter) {
         List<E> values = new ArrayList<>();
         for(E element: this) {
@@ -330,8 +335,10 @@ public final class List23<E> implements Iterable<E> {
      * @param other The items to match.
      * @return a list whose items also appear in another list
      */
-    public List23<E> retain(final SortedSet23<E> other) {
-        return filter(other::contains);
+    @Override
+    public List23<E> retain(final Iterable<E> other) {
+        final HashSet23<E> hs = HashSet23.of(other);
+        return filter(hs::contains);
     }
     
     /**
@@ -341,8 +348,10 @@ public final class List23<E> implements Iterable<E> {
      * @param other The items to match.
      * @return a list whose items don't appear in another list
      */
-    public List23<E> remove(final SortedSet23<E> other) {
-        return filter(e -> !other.contains(e));
+    @Override
+    public List23<E> removeAllIn(final Iterable<E> other) {
+        final HashSet23<E> hs = HashSet23.of(other);
+        return filter(e -> !hs.contains(e));
     }
     
     /**
@@ -357,6 +366,7 @@ public final class List23<E> implements Iterable<E> {
 	 * @param element The element to add.
 	 * @return A list with <code>element</code> added to the end
 	 */
+    @Override
 	public List23<E> add(final E element) {
         return replaceRange(size(), size(), List23.of(element));
 	}
@@ -603,6 +613,7 @@ public final class List23<E> implements Iterable<E> {
      * Returns the elements as a stream.
      * @return The elements as a stream
      */
+    @Override
     public Stream<E> stream() {
         return asList().stream();
     }
@@ -837,5 +848,10 @@ public final class List23<E> implements Iterable<E> {
     // Warning, all elements in this list must follow order governed by this comparator
     int naturalPosition(final Comparator<? super E> comparator, final E element) {
         return binarySearch(comparator, element, (leaf, i) -> i < 0 ? 0 : comparator.compare(element,leaf) > 0 ? (i + 1) : i);
+    }
+
+    @Override
+    public Collection<E> asCollection() {
+        return asList();
     }
 }

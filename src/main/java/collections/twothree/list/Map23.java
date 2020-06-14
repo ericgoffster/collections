@@ -7,7 +7,7 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-public interface Map23<K,V> extends Iterable<Entry<K,V>> {
+public interface Map23<K,V> extends Set23<Entry<K,V>> {
     int size();
 
     SortedMap23<K, V> add(Entry<K ,V> entry);
@@ -20,20 +20,18 @@ public interface Map23<K,V> extends Iterable<Entry<K,V>> {
     
     boolean containsKey(final K key);
 
-    Map23<K, V> remove(final K key);
+    Map23<K, V> removeKey(final K key);
     
-    Map23<K, V> retainAll(final Set23<K> other);
+    Map23<K, V> retainAllKeys(final Iterable<K> other);
 
-    Map23<K, V> removeAll(final Iterable<K> keys);
+    Map23<K, V> removeAllKeysIn(final Iterable<K> keys);
     
     V get(final K key);
 
     V getOrDefault(final K key, final Supplier<V> supplier);
     
     Map<K, V> asMap();
-    
-    Set23<Entry<K,V>> asSet();
-    
+        
     Set23<K> keys();
 
     List23<V> values();

@@ -30,12 +30,12 @@ public class HashSet23Test {
 	
     @Test
     public void testRetainAll() {
-        assertEquals(HashSet23.of(0, 3, 6, 9, 12).intersection(HashSet23.of(6, 7, 9)),HashSet23.of(6, 9));
+        assertEquals(HashSet23.of(0, 3, 6, 9, 12).retain(HashSet23.of(6, 7, 9)),HashSet23.of(6, 9));
     }
 
     @Test
     public void testRemoveAll() {
-        assertEquals(HashSet23.of(0, 3, 6, 9, 12).subtraction(HashSet23.of(6, 7, 9)),HashSet23.of(0, 3, 12));
+        assertEquals(HashSet23.of(0, 3, 6, 9, 12).removeAllIn(HashSet23.of(6, 7, 9)),HashSet23.of(0, 3, 12));
     }
 
 	@Test
@@ -122,6 +122,13 @@ public class HashSet23Test {
         l.forEach(t::remove);
         assertTrue(t.isEmpty());
     }
+
+    @Test
+    public void testAsCollection() {
+        HashSet23<Integer> l = HashSet23.of(1,2,3,4,5,6);
+        assertEquals(new HashSet<Integer>(l.asCollection()), new HashSet<Integer>(Arrays.asList(1,2,3,4,5,6)));
+    }
+    
 	
 	@Test
 	public void testAsSet() {

@@ -1,11 +1,13 @@
 package collections.twothree.list;
 
 import java.util.AbstractMap;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.SortedMap;
 import java.util.function.BiConsumer;
 import java.util.function.Predicate;
@@ -73,7 +75,7 @@ public final class SortedMap23<K, V> implements Map23<K, V> {
 
     @Override
 	public SortedMap23<K, V> put(final K key, final V value) {
-        SortedMap23<K, V> m = remove(key);
+        SortedMap23<K, V> m = removeKey(key);
         int index = m.keys().elements.naturalPosition(keyComparator, key);
         return new SortedMap23<>(keyComparator, m.entries.insertAt(index, new AbstractMap.SimpleImmutableEntry<>(key, value)));
 	}
@@ -129,21 +131,22 @@ public final class SortedMap23<K, V> implements Map23<K, V> {
     }
 
     @Override
-	public SortedMap23<K, V> remove(final K key) {
+	public SortedMap23<K, V> removeKey(final K key) {
         int index = indexOf(key);
         return index < 0 ? this : removeAt(index);
 	}
 	
     @Override
-    public SortedMap23<K, V> retainAll(final Set23<K> other) {
-        return filter(e -> other.contains(e.getKey()));
+    public SortedMap23<K, V> retainAllKeys(final Iterable<K> other) {
+        HashSet23<K> hs = HashSet23.of(other);
+        return filter(e -> hs.contains(e.getKey()));
     }
 
     @Override
-    public SortedMap23<K, V> removeAll(final Iterable<K> keys) {
+    public SortedMap23<K, V> removeAllKeysIn(final Iterable<K> keys) {
         SortedMap23<K, V> m = this;
         for(K key: keys) {
-            m = m.remove(key);
+            m = m.removeKey(key);
         }
         return m;
     }
@@ -174,10 +177,6 @@ public final class SortedMap23<K, V> implements Map23<K, V> {
 	
 	public List23<Entry<K,V>> asList() {
 		return entries;
-	}
-	
-	public SortedSet23<Entry<K,V>> asSet() {
-	    return new SortedSet23<>(this::entryCompare, entries);
 	}
 	
 	public int entryCompare(final Entry<K,V> a, final Entry<K,V> b) {
@@ -229,5 +228,40 @@ public final class SortedMap23<K, V> implements Map23<K, V> {
     
     public void forEach(BiConsumer<K, V> cond) {
         stream().forEach(e -> cond.accept(e.getKey(), e.getValue()));
+    }
+
+    @Override
+    public Set23<Entry<K,V>> union(Set23<Entry<K, V>> other) {
+        return new SortedSet23<>(this::entryCompare, entries).union(other);
+    }
+
+    @Override
+    public Set23<Entry<K, V>> remove(Entry<K, V> element) {
+        return new SortedSet23<>(this::entryCompare, entries).remove(element);
+    }
+
+    @Override
+    public Set23<Entry<K, V>> retain(Iterable<Entry<K, V>> other) {
+        return new SortedSet23<>(this::entryCompare, entries).retain(other);
+    }
+
+    @Override
+    public Set23<Entry<K, V>> removeAllIn(Iterable<Entry<K, V>> other) {
+        return new SortedSet23<>(this::entryCompare, entries).removeAllIn(other);
+    }
+
+    @Override
+    public Set<Entry<K, V>> asSet() {
+        return new SortedSet23<>(this::entryCompare, entries).asSet();
+    }
+
+    @Override
+    public boolean contains(Entry<K, V> element) {
+        return new SortedSet23<>(this::entryCompare, entries).contains(element);
+    }
+
+    @Override
+    public Collection<Entry<K, V>> asCollection() {
+        return new SortedSet23<>(this::entryCompare, entries).asCollection();
     }
 }
