@@ -7,7 +7,7 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-public interface Map23<K,V> extends Set23<Entry<K,V>> {
+public interface Map23<K,V> extends Iterable<Entry<K,V>> {
     int size();
 
     SortedMap23<K, V> add(Entry<K ,V> entry);
@@ -31,7 +31,9 @@ public interface Map23<K,V> extends Set23<Entry<K,V>> {
     V getOrDefault(final K key, final Supplier<V> supplier);
     
     Map<K, V> asMap();
-        
+    
+    Set23<Entry<K,V>> asSet();
+    
     Set23<K> keys();
 
     List23<V> values();

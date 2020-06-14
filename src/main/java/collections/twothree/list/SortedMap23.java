@@ -1,13 +1,11 @@
 package collections.twothree.list;
 
 import java.util.AbstractMap;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 import java.util.SortedMap;
 import java.util.function.BiConsumer;
 import java.util.function.Predicate;
@@ -179,6 +177,10 @@ public final class SortedMap23<K, V> implements Map23<K, V> {
 		return entries;
 	}
 	
+	public SortedSet23<Entry<K,V>> asSet() {
+	    return new SortedSet23<>(this::entryCompare, entries);
+	}
+	
 	public int entryCompare(final Entry<K,V> a, final Entry<K,V> b) {
 	    int cmp = keyComparator.compare(a.getKey(), b.getKey());
 	    if (cmp != 0) {
@@ -228,40 +230,5 @@ public final class SortedMap23<K, V> implements Map23<K, V> {
     
     public void forEach(BiConsumer<K, V> cond) {
         stream().forEach(e -> cond.accept(e.getKey(), e.getValue()));
-    }
-
-    @Override
-    public Set23<Entry<K,V>> union(Set23<Entry<K, V>> other) {
-        return new SortedSet23<>(this::entryCompare, entries).union(other);
-    }
-
-    @Override
-    public Set23<Entry<K, V>> remove(Entry<K, V> element) {
-        return new SortedSet23<>(this::entryCompare, entries).remove(element);
-    }
-
-    @Override
-    public Set23<Entry<K, V>> retain(Iterable<Entry<K, V>> other) {
-        return new SortedSet23<>(this::entryCompare, entries).retain(other);
-    }
-
-    @Override
-    public Set23<Entry<K, V>> removeAllIn(Iterable<Entry<K, V>> other) {
-        return new SortedSet23<>(this::entryCompare, entries).removeAllIn(other);
-    }
-
-    @Override
-    public Set<Entry<K, V>> asSet() {
-        return new SortedSet23<>(this::entryCompare, entries).asSet();
-    }
-
-    @Override
-    public boolean contains(Entry<K, V> element) {
-        return new SortedSet23<>(this::entryCompare, entries).contains(element);
-    }
-
-    @Override
-    public Collection<Entry<K, V>> asCollection() {
-        return new SortedSet23<>(this::entryCompare, entries).asCollection();
     }
 }

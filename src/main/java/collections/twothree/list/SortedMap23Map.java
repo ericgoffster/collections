@@ -16,7 +16,7 @@ final class SortedMap23Map<K, V> extends AbstractMap<K, V> implements SortedMap<
 
     @Override
     public Set<Entry<K, V>> entrySet() {
-        return map.asSet();
+        return map.asSet().asSet();
     }
     
     @Override
