@@ -36,7 +36,7 @@ public interface Map23<K,V> extends Iterable<Entry<K,V>> {
     
     Set23<K> keys();
 
-    List23<V> values();
+    Collection23<V> values();
     
     Map23<K, V> filter(final Predicate<Entry<K,V>> filter);
     
