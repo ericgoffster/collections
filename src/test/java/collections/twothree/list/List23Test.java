@@ -489,6 +489,7 @@ public class List23Test {
 		assertEquals(new Leaf<Integer>(5).size(), 1);
 		Integer[] x = null;
 		List<Integer> lnull = null;
+        assertThrows(UnsupportedOperationException.class, () -> branch("1","2").leafValue());
         assertThrows(IllegalArgumentException.class, () -> List23.ofSorted(null,lnull));
         assertThrows(IllegalArgumentException.class, () -> List23.ofSorted(Integer::compare,lnull));
         assertThrows(IllegalArgumentException.class, () -> List23.ofSorted(x));

@@ -3,12 +3,15 @@ package collections.twothree.list;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.junit.Test;
 
@@ -68,13 +71,13 @@ public class HashSet23Test {
 
     @Test
     public void testHashCompare() {
-        assertFalse(HashSet23.hashCompare(2, 3) == 0);
-        assertTrue(HashSet23.hashCompare(2, 2) == 0);
-        assertTrue(HashSet23.hashCompare(HashSet23.of(2, 3), HashSet23.of(3, 2)) == 0);
-        assertFalse(HashSet23.hashCompare(HashSet23.of(2), List23.of(2)) == 0);
-        assertTrue(HashSet23.hashCompare(new Foo(0, true), new Foo(0, true)) == 0);
-        assertFalse(HashSet23.hashCompare(new Foo(0, false), new Foo(0, false)) == 0);
-        assertFalse(HashSet23.hashCompare(new Foo(0, true), new Foo(1, true)) == 0);
+        assertFalse(HashSet23.compare(2, 3) == 0);
+        assertTrue(HashSet23.compare(2, 2) == 0);
+        assertTrue(HashSet23.compare(HashSet23.of(2, 3), HashSet23.of(3, 2)) == 0);
+        assertFalse(HashSet23.compare(HashSet23.of(2), List23.of(2)) == 0);
+        assertTrue(HashSet23.compare(new Foo(0, true), new Foo(0, true)) == 0);
+        assertFalse(HashSet23.compare(new Foo(0, false), new Foo(0, false)) == 0);
+        assertFalse(HashSet23.compare(new Foo(0, true), new Foo(1, true)) == 0);
     }
   
 	@Test
@@ -129,4 +132,23 @@ public class HashSet23Test {
 		assertTrue(l1.asSet().contains("5"));
 		assertFalse(l1.asSet().contains("6"));
 	}
+    @Test
+    public void testBasic() {
+        assertThrows(IllegalArgumentException.class, () -> HashSet23.of((List<?>)null));
+        assertThrows(IllegalArgumentException.class, () -> HashSet23.of((Integer[])null));
+        HashSet23<String> l1 = HashSet23.of("1","2","3","4","5",null);
+        assertTrue(l1.contains(null));
+        
+        Set<HashSet23<String>> s = new HashSet<>();
+        s.add(l1);
+        assertTrue(s.contains(HashSet23.of("1","2","3","4","5",null)));
+        assertTrue(s.contains(HashSet23.of("1","2","3","5","4",null)));
+        assertFalse(s.contains(HashSet23.of("1","2","3","4",null)));
+        assertFalse(s.contains(null));
+        {
+            TreeSet<String> t = new TreeSet<>(List23::naturalCompare);
+            t.addAll(Arrays.asList("1"));
+            assertEquals(HashSet23.of("1").toString(), t.toString());
+        }
+    }
 }

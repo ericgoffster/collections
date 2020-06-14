@@ -23,12 +23,8 @@ final class HashSet23Set<E> extends AbstractSet<E> {
 
 	@Override
 	public boolean contains(Object o) {
-		try {
-			@SuppressWarnings("unchecked")
-			E element = (E)o;
-			return set.contains(element);
-		} catch (ClassCastException e) {
-			return false;
-		}
+	    @SuppressWarnings("unchecked")
+	    E element = (E)o;
+	    return set.contains(element);
 	}
 }

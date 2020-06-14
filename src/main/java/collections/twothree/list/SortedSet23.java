@@ -327,9 +327,6 @@ public final class SortedSet23<E> implements Set23<E> {
      */
     @Override
 	public SortedSet23<E> union(Set23<E> other) {
-	    if (size() == 0) {
-	        return of(comparator, other);
-	    }
 	    SortedSet23<E> s = this;
 	    for(E e: other) {
 	        s = s.add(e);

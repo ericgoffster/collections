@@ -38,11 +38,6 @@ final class Branch3<E> implements Node23<E> {
         return b3;
 	}
 
-	@Override
-	public Node23<E> b_last() {
-		return b3();
-	}
-
     @Override
     public int numBranches() {
         return 3;
@@ -84,11 +79,6 @@ final class Branch3<E> implements Node23<E> {
             @Override
             public Node23<E> b3() {
                 return b1.reverse();
-            }
-
-            @Override
-            public Node23<E> b_last() {
-                return b3();
             }
 
             @Override

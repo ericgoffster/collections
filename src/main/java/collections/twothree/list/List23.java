@@ -807,11 +807,7 @@ public final class List23<E> implements Iterable<E> {
     }
     
     static <E> E last(final Node23<E> node) {
-        return node.isLeaf() ? node.leafValue() : last(node.b_last());
-    }
-
-    static <E> E first(final Node23<E> node) {
-        return node.isLeaf() ? node.leafValue() : first(node.b1());
+        return node.isLeaf() ? node.leafValue() : last(node.numBranches() == 2 ? node.b2() : node.b3());
     }
 
     // Visits all leaves, returning an arbitrary result returned from leafVisitor

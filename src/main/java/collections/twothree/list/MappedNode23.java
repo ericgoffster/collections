@@ -23,7 +23,7 @@ class MappedNode23<E, F> implements Node23<F> {
     }
     
     Node23<F> xform(Node23<E> b) {
-        return b == null ? null : new MappedNode23<>(b, f);
+        return new MappedNode23<>(b, f);
     }
 
     @Override
@@ -49,11 +49,6 @@ class MappedNode23<E, F> implements Node23<F> {
     @Override
     public Node23<F> b3() {
         return xform(e.b3()) ;
-    }
-
-    @Override
-    public Node23<F> b_last() {
-        return xform(e.b_last()) ;
     }
 
     @Override

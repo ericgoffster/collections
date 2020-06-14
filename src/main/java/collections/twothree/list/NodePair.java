@@ -26,9 +26,4 @@ final class NodePair<E> {
         }
         return new NodePair<E>(b2.reverse(), b1.reverse());
     }
-    @Override
-    public String toString() {
-        return "[" + b1 + "," + b2 + "]";
-    } 
-    
 }

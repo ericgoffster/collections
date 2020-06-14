@@ -33,7 +33,8 @@ public final class HashSet23<E> implements Set23<E> {
 	final List23<E> elements;
 
 	HashSet23(final List23<E> elements) {
-		this.elements = Requirements.require(elements, Requirements.notNull(), () -> "elements");
+	    assert elements != null;
+		this.elements = elements;
 	}
 	
 	/**
@@ -56,9 +57,8 @@ public final class HashSet23<E> implements Set23<E> {
      * <p>This operation is O(1).
      * <pre>
      * Example:
-     *     HashSet23.empty(Integer::compare) == {}
+     *     HashSet23.empty() == {}
      * </pre>
-     * @param comparator The comparator which defines ordering.
      * @param <E> The element type
      * @return An empty set.
      */
@@ -80,7 +80,7 @@ public final class HashSet23<E> implements Set23<E> {
 	@SafeVarargs
     @SuppressWarnings("varargs")
     public static <E> HashSet23<E> of(final E ... elements) {
-    	return of(Arrays.asList(elements));
+    	return of(Arrays.asList(Requirements.require(elements, Requirements.notNull(), () -> "elements")));
     }
 
     /**
@@ -88,20 +88,19 @@ public final class HashSet23<E> implements Set23<E> {
      * <p>This operation is O(n log n).
      * <pre>
      * Example:
-     *     HashSet23.of(Integer::compare, Arrays.asList(4, 2, 3)) == {2, 3, 4}
-     *     HashSet23.of(Integer::compare.reversed(), Arrays.asList(4, 2, 3)) == {4, 3, 2}
+     *     HashSet23.of(Arrays.asList(4, 2, 3)) == {2, 3, 4}
      * </pre>
      * @param <E> The element type
-     * @param comparator The comparator of elements
      * @param elements The array of elements
      * @return A set containing an initial list of elements
      */
     public static <E> HashSet23<E> of(final Iterable<E> elements) {
+        Requirements.require(elements, Requirements.notNull(), () -> "elements");
         List<E> l = new ArrayList<E>();
         for(E e: elements) {
             l.add(e);
         }
-        Collections.sort(l, HashSet23::hashCompare);
+        Collections.sort(l, HashSet23::compare);
         return new HashSet23<E>(List23.of(l));
     }
 
@@ -132,7 +131,7 @@ public final class HashSet23<E> implements Set23<E> {
 	 */
     @Override
 	public boolean contains(final E element) {
-	    return indexOf(element) >= 0;
+	    return elements.indexOf(HashSet23::compare, element) >= 0;
 	}
 
     /**
@@ -151,7 +150,7 @@ public final class HashSet23<E> implements Set23<E> {
 	    if (contains(element)) {
 	        return this;
 	    }
-	    return new HashSet23<>(elements.insertAt(elements.naturalPosition(HashSet23::hashCompare, element), element));
+	    return new HashSet23<>(elements.insertAt(elements.naturalPosition(HashSet23::compare, element), element));
 	}
 	
     /**
@@ -167,9 +166,6 @@ public final class HashSet23<E> implements Set23<E> {
      */
     @Override
 	public HashSet23<E> union(Set23<E> other) {
-	    if (size() == 0) {
-	        return of(other);
-	    }
 	    HashSet23<E> s = this;
 	    for(E e: other) {
 	        s = s.add(e);
@@ -191,7 +187,7 @@ public final class HashSet23<E> implements Set23<E> {
      */
     @Override
 	public HashSet23<E> remove(final E element) {
-	    int index = indexOf(element);
+	    int index = elements.indexOf(HashSet23::compare, element);
 	    return index < 0 ? this : new HashSet23<>(elements.removeAt(index));
 	}
 	
@@ -288,11 +284,7 @@ public final class HashSet23<E> implements Set23<E> {
         return elements.stream();
     }
 
-    int indexOf(final E element) {
-        return elements.indexOf(HashSet23::hashCompare, element);
-    }
-
-    static <E> int hashCompare(E a, E b) {
+    static <E> int compare(E a, E b) {
         int cmp = Integer.compare(Objects.hash(a), Objects.hash(b));
         if (cmp != 0) {
             return cmp;

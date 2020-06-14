@@ -36,11 +36,6 @@ final class Branch2<E> implements Node23<E> {
         throw new UnsupportedOperationException();
 	}
 	
-	@Override
-	public Node23<E> b_last() {
-		return b2();
-	}
-
     @Override
     public int numBranches() {
         return 2;
@@ -77,16 +72,6 @@ final class Branch2<E> implements Node23<E> {
             @Override
             public int b2Size() {
                 return b1.size();
-            }
-
-            @Override
-            public Node23<E> b3() {
-                throw new UnsupportedOperationException();
-            }
-
-            @Override
-            public Node23<E> b_last() {
-                return b2();
             }
 
             @Override

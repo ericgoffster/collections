@@ -185,6 +185,13 @@ public class SortedSet23Test {
 		assertNotEquals(l1.asSet(), new HashSet<>(Arrays.asList("1", "2", "4", "3", "5")));
 		assertTrue(l1.asSet().contains("5"));
 		assertFalse(l1.asSet().contains("6"));
+		
+		assertEquals(SortedSet23.of("1","2","3","4","5").asSet(), new TreeSet<>(Arrays.asList("1","2","3","4","5")));
+        assertEquals(SortedSet23.of("1","2","3","4","5").asSet().subSet("2", "5"), new TreeSet<>(Arrays.asList("1","2","3","4","5")).subSet("2", "5"));
+        assertEquals(SortedSet23.of("1","2","3","4","5").asSet().headSet("3"), new TreeSet<>(Arrays.asList("1","2","3","4","5")).headSet("3"));
+        assertEquals(SortedSet23.of("1","2","3","4","5").asSet().tailSet("3"), new TreeSet<>(Arrays.asList("1","2","3","4","5")).tailSet("3"));
+        assertEquals(SortedSet23.of("1","2","3","4","5").asSet().first(), "1");
+        assertEquals(SortedSet23.of("1","2","3","4","5").asSet().last(), "5");
 	}
 	
 	@Test
