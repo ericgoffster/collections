@@ -177,6 +177,7 @@ public final class SortedMap23<K, V> implements Map23<K, V> {
 		return entries;
 	}
 	
+    @Override
 	public SortedSet23<Entry<K,V>> asSet() {
 	    return new SortedSet23<>(this::entryCompare, entries);
 	}
@@ -189,14 +190,17 @@ public final class SortedMap23<K, V> implements Map23<K, V> {
 	    return HashSet23.compare(a.getValue(), b.getValue());
 	}
 	
+    @Override
 	public SortedSet23<K> keys() {
 	    return new SortedSet23<>(keyComparator, entries.map(e -> e.getKey()));
 	}
 
+    @Override
     public List23<V> values() {
         return entries.map(e -> e.getValue());
     }
 	
+    @Override
     public SortedMap23<K, V> filter(final Predicate<Entry<K,V>> filter) {
         return new SortedMap23<>(keyComparator, entries.filter(filter));
     }
@@ -208,10 +212,10 @@ public final class SortedMap23<K, V> implements Map23<K, V> {
 	
 	@Override
 	public boolean equals(final Object obj) {
-		if (!(obj instanceof SortedMap23)) {
+		if (!(obj instanceof Map23)) {
 			return false;
 		}
-		SortedMap23<?, ?> other = (SortedMap23<?, ?>)obj;
+		Map23<?, ?> other = (Map23<?, ?>)obj;
 		return asMap().equals(other.asMap());
 	}
 	
@@ -220,14 +224,17 @@ public final class SortedMap23<K, V> implements Map23<K, V> {
 		return asMap().toString();
 	}
 	
+    @Override
 	public ListIterator<Entry<K,V>> iterator() {
 		return entries.iterator();
 	}
     
+    @Override
     public Stream<Entry<K,V>> stream() {
         return entries.stream();
     }
     
+    @Override
     public void forEach(BiConsumer<K, V> cond) {
         stream().forEach(e -> cond.accept(e.getKey(), e.getValue()));
     }

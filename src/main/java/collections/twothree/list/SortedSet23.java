@@ -483,10 +483,10 @@ public final class SortedSet23<E> implements Set23<E> {
 	
 	@Override
 	public boolean equals(final Object obj) {
-		if (!(obj instanceof SortedSet23)) {
+		if (!(obj instanceof Set23)) {
 			return false;
 		}
-		SortedSet23<?> other = (SortedSet23<?>)obj;
+		Set23<?> other = (Set23<?>)obj;
 		return asSet().equals(other.asSet());
 	}
 	

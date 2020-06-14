@@ -254,7 +254,7 @@ public final class HashSet23<E> implements Set23<E> {
      */
     @Override
 	public Set<E> asSet() {
-		return new HashSet23Set<>(this);
+		return new Set23Set<>(this);
 	}
 	
     @Override
@@ -264,10 +264,10 @@ public final class HashSet23<E> implements Set23<E> {
 	
 	@Override
 	public boolean equals(final Object obj) {
-		if (!(obj instanceof HashSet23)) {
+		if (!(obj instanceof Set23)) {
 			return false;
 		}
-		HashSet23<?> other = (HashSet23<?>)obj;
+		Set23<?> other = (Set23<?>)obj;
 		return asSet().equals(other.asSet());
 	}
 	
