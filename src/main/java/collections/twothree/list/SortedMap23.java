@@ -12,7 +12,7 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-public final class SortedMap23<K, V> implements Iterable<Entry<K, V>> {
+public final class SortedMap23<K, V> implements Map23<K, V> {
     final Comparator<? super K> keyComparator;
 	final List23<Entry<K, V>> entries;
 
@@ -47,14 +47,17 @@ public final class SortedMap23<K, V> implements Iterable<Entry<K, V>> {
         return of(List23::naturalCompare, items);
     }
 	
+    @Override
 	public int size() {
 		return entries.size();
 	}
 	
+    @Override
     public SortedMap23<K, V> add(Entry<K ,V> entry) {
         return put(entry.getKey(), entry.getValue());
     }
 
+    @Override
     public SortedMap23<K, V> addAll(Iterable<Entry<K ,V>> items) {
         SortedMap23<K, V> m = this;
         for(Entry<K,V> e: items) {
@@ -63,10 +66,12 @@ public final class SortedMap23<K, V> implements Iterable<Entry<K, V>> {
         return m;
     }
 
+    @Override
     public SortedMap23<K, V> addAll(Map<K ,V> items) {
         return addAll(items.entrySet());
     }
 
+    @Override
 	public SortedMap23<K, V> put(final K key, final V value) {
         SortedMap23<K, V> m = remove(key);
         int index = m.keys().elements.naturalPosition(keyComparator, key);
@@ -118,19 +123,23 @@ public final class SortedMap23<K, V> implements Iterable<Entry<K, V>> {
         return keys().indexOf(key);
     }
     
+    @Override
     public boolean containsKey(final K key) {
         return keys().contains(key);
     }
 
+    @Override
 	public SortedMap23<K, V> remove(final K key) {
         int index = indexOf(key);
         return index < 0 ? this : removeAt(index);
 	}
 	
+    @Override
     public SortedMap23<K, V> retainAll(final Set23<K> other) {
         return filter(e -> other.contains(e.getKey()));
     }
 
+    @Override
     public SortedMap23<K, V> removeAll(final Iterable<K> keys) {
         SortedMap23<K, V> m = this;
         for(K key: keys) {
@@ -143,10 +152,12 @@ public final class SortedMap23<K, V> implements Iterable<Entry<K, V>> {
         return entries.getAt(index);
     }
     
+    @Override
     public V get(final K key) {
         return getOrDefault(key, () -> null);
     }
 
+    @Override
     public V getOrDefault(final K key, final Supplier<V> supplier) {
         int index = indexOf(key);
         return index < 0 ? supplier.get() : entries.getAt(index).getValue();
@@ -156,8 +167,9 @@ public final class SortedMap23<K, V> implements Iterable<Entry<K, V>> {
         return new SortedMap23<K, V>(keyComparator, entries.removeAt(index));
     }
 
-	public Map<K, V> asMap() {
-		return new Map23Map<>(this);
+    @Override
+	public SortedMap<K, V> asMap() {
+		return new SortedMap23Map<>(this);
 	}
 	
 	public List23<Entry<K,V>> asList() {

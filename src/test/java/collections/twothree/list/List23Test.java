@@ -281,6 +281,10 @@ public class List23Test {
 		List23<String> l1 = new List23<>(
 				new Branch2<>(branch("1","2","3"),branch("4","5")));
 		assertEquals(l1.toString(), l1.asList().toString());
+        assertEquals(branch("1","2","3").toString(), "[1 2 3]");
+        assertEquals(branch("1","2","3").reverse().toString(), "[3 2 1]");
+        assertEquals(branch("1","2").toString(), "[1 2]");
+        assertEquals(branch("1","2").reverse().toString(), "[2 1]");
 	}
 	@Test
 	public void testEquals() {
@@ -518,5 +522,10 @@ public class List23Test {
 		assertThrows(IndexOutOfBoundsException.class, () -> new List23<String>(null).insertAt(0, "abc").getAt(1));
 		assertThrows(IndexOutOfBoundsException.class, () -> new List23<String>(null).insertAt(0, "abc").removeAt(-1));
 		assertThrows(IndexOutOfBoundsException.class, () -> new List23<String>(null).insertAt(0, "abc").removeAt(1));
+        assertThrows(UnsupportedOperationException.class, () -> new Leaf<String>("abc").b1());
+        assertThrows(UnsupportedOperationException.class, () -> new Leaf<String>("abc").b2());
+        assertThrows(UnsupportedOperationException.class, () -> new Leaf<String>("abc").b3());
+        assertThrows(UnsupportedOperationException.class, () -> new Leaf<String>("abc").b1Size());
+        assertThrows(UnsupportedOperationException.class, () -> new Leaf<String>("abc").b2Size());
 	}
 }

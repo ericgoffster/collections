@@ -3,6 +3,7 @@ package collections.twothree.list;
 import java.util.AbstractSet;
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.SortedSet;
 
 final class SortedSet23Set<E> extends AbstractSet<E> implements SortedSet<E> {
@@ -52,11 +53,17 @@ final class SortedSet23Set<E> extends AbstractSet<E> implements SortedSet<E> {
 
 	@Override
 	public E first() {
+        if (set.size() == 0) {
+            throw new NoSuchElementException();
+        }
 		return set.elements.getAt(0);
 	}
 
 	@Override
 	public E last() {
+        if (set.size() == 0) {
+            throw new NoSuchElementException();
+        }
 		return set.elements.getAt(set.elements.size() - 1);
 	}
 }
