@@ -5,8 +5,7 @@ import java.util.ListIterator;
 final class ArrayIterable<E> implements Iterable<E> {
     final E[] elements;
 
-    @SafeVarargs
-    public ArrayIterable(E ... elements) {
+    public ArrayIterable(E[] elements) {
         super();
         this.elements = elements;
     }
