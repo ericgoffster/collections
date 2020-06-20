@@ -1,12 +1,11 @@
 package collections.twothree.list;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -107,7 +106,7 @@ public final class List23<E> implements Collection23<E> {
     @SuppressWarnings("varargs")
 	public static <E> List23<E> of(final E ... elements) {
         Requirements.require(elements, Requirements.notNull(), () -> "elements");
-		return of(Arrays.asList(elements));
+		return of(new ArrayIterable<>(elements));
 	}
 
 	/**
@@ -124,14 +123,49 @@ public final class List23<E> implements Collection23<E> {
 	 */
 	public static <E> List23<E> of(final Iterable<? extends E> elements) {
         Requirements.require(elements, Requirements.notNull(), () -> "elements");
-		List<Node23<E>> nodes = new ArrayList<>();
-		for(E e: elements) {
-			nodes.add(new Leaf<>(e));
-		}
-		return nodes.isEmpty() ?
-			empty() :
-			quickConstruct(nodes);
+        return quickConstruct(new LeafIterator<>(elements));
 	}
+
+    public static <E> List23<E> ofFiltered(final Predicate<E> filter, final Iterable<? extends E> elements) {
+        Requirements.require(filter, Requirements.notNull(), () -> "filter");
+        Requirements.require(elements, Requirements.notNull(), () -> "elements");
+        return quickConstruct(new FilteredIterator<>(new LeafIterator<>(elements), filter));
+    }
+
+    /**
+     * Easy construction of a sorted list, with dups removed.
+     * Creates a list23 represents of the elements sorted by a comparator.
+     * <p>This operation is O(n log n) where n = |elements|.
+     * <pre>
+     * Example:
+     *     List23.ofSortedUnique(Integer::compare, Arrays.asList(6, 1, 6, 8)) == [1, 6, 8]
+     * </pre>
+     * @param <E> The type of the elements.
+     * @param comparator The element comparator
+     * @param elements The collections of elements
+     * @return The sorted List23 representation of "elements"
+     */
+    public static <E> List23<E> ofSortedUnique(Comparator<? super E> comparator,final Iterable<? extends E> elements) {
+        Requirements.require(comparator, Requirements.notNull(), () -> "comparator");
+        Requirements.require(elements, Requirements.notNull(), () -> "elements");
+        return quickConstruct(new RemoveDupsIterator<>(sortLeaves(comparator, new LeafIterator<>(elements)), comparator));
+    }
+
+    /**
+     * Easy construction of a sorted list, with dups removed.
+     * Creates a list23 represents of the elements sorted by the natural comparator of the elements.
+     * <p>This operation is O(n log n) where n = |elements|.
+     * <pre>
+     * Example:
+     *     List23.ofSortedUnique(Integer::compare, Arrays.asList(6, 1, 6, 8)) == [1, 6, 8]
+     * </pre>
+     * @param <E> The type of the elements.
+     * @param elements The collections of elements
+     * @return The sorted List23 representation of "elements"
+     */
+    public static <E extends Comparable<E>> List23<E> ofSortedUnique(final Iterable<? extends E> elements) {
+        return ofSortedUnique(List23::naturalCompare, elements);
+    }
 	
 	/**
 	 * Easy construction of a sorted list.
@@ -149,15 +183,7 @@ public final class List23<E> implements Collection23<E> {
 	public static <E> List23<E> ofSorted(final Comparator<E> comparator, final Iterable<? extends E> elements) {
 	    Requirements.require(comparator, Requirements.notNull(), () -> "comparator");
         Requirements.require(elements, Requirements.notNull(), () -> "elements");
-		List<Node23<E>> nodes = new ArrayList<>();
-		for(E e: elements) {
-			nodes.add(new Leaf<>(e));
-		}
-		if (nodes.isEmpty()) {
-            return empty();
-		}
-		Collections.sort(nodes, (i,j) -> comparator.compare(i.leafValue(),j.leafValue()));
-		return quickConstruct(nodes);
+        return quickConstruct(sortLeaves(comparator, new LeafIterator<>(elements)));
 	}
 
 	/**
@@ -193,7 +219,7 @@ public final class List23<E> implements Collection23<E> {
     @SuppressWarnings("varargs")
 	public static <E extends Comparable<E>> List23<E> ofSorted(final E ... elements) {
         Requirements.require(elements, Requirements.notNull(), () -> "elements");
-		return ofSorted(Arrays.asList(elements));
+		return ofSorted(new ArrayIterable<>(elements));
 	}
 
 	/**
@@ -319,13 +345,7 @@ public final class List23<E> implements Collection23<E> {
      */
     @Override
     public List23<E> filter(final Predicate<E> filter) {
-        List<E> values = new ArrayList<>();
-        for(E element: this) {
-            if (filter.test(element)) {
-                values.add(element);
-            }
-        }
-        return List23.of(values);
+        return List23.ofFiltered(filter, this);
     }
 
    /**
@@ -605,7 +625,7 @@ public final class List23<E> implements Collection23<E> {
     }
 
     @Override
-    public ListIterator<E> iterator() {
+    public Iterator<E> iterator() {
     	return asList().listIterator();
     }
 
@@ -648,33 +668,15 @@ public final class List23<E> implements Collection23<E> {
 
 	// Quickly constructs a list from a collection of nodes.
 	// O(n log n)
-	static <E> List23<E> quickConstruct(final List<Node23<E>> nodes) {
-        final int numNodes = nodes.size();
-
-		// Just one left?  It is the root
-        if (numNodes == 1) {
-			return new List23<E>(nodes.get(0));
-		}
-		
-		List<Node23<E>> newNodes = new ArrayList<>(numNodes / 2);
-		int i = 0;
-		
-		// We have >= 2 nodes.
-		// If there are an odd number nodes, bring it down to even
-		// with a 3 node.
-	    if (numNodes % 2 == 1) {
-            newNodes.add(new Branch3<E>(nodes.get(i), nodes.get(i + 1), nodes.get(i + 2)));
-            i += 3;
+	static <E> List23<E> quickConstruct(final Iterator<? extends Node23<E>> nodes) {
+	    if (!nodes.hasNext()) {
+	        return List23.empty();
 	    }
-	    
-	    // We now have an even number of nodes >= 0, drain them down in pairs.
-	    while(i < numNodes) {
-	        newNodes.add(new Branch2<E>(nodes.get(i), nodes.get(i + 1)));
-	        i += 2;
-	    }
-		
-		// Create a tree from the new layer of nodes.
-		return quickConstruct(newNodes);
+	    Node23<E> b0 = nodes.next();
+        if (!nodes.hasNext()) {
+            return new List23<>(b0);
+        }
+	    return quickConstruct(new NodeConstructionIterator<E>(nodes, b0, nodes.next()));
 	}
 
 	// Search through the node for an element.
@@ -848,6 +850,14 @@ public final class List23<E> implements Collection23<E> {
     // Warning, all elements in this list must follow order governed by this comparator
     int naturalPosition(final Comparator<? super E> comparator, final E element) {
         return binarySearch(comparator, element, (leaf, i) -> i < 0 ? 0 : comparator.compare(element,leaf) > 0 ? (i + 1) : i);
+    }
+
+    static <E> Iterator<Leaf<E>> sortLeaves(final Comparator<? super E> comparator,
+            final Iterator<Leaf<E>> elements) {
+        final List<Leaf<E>> nodes = new ArrayList<>();
+        elements.forEachRemaining(nodes::add);
+        Collections.sort(nodes, (i,j) -> comparator.compare(i.leafValue(),j.leafValue()));
+        return nodes.iterator();
     }
 
     @Override

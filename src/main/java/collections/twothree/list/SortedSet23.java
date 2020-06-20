@@ -1,12 +1,8 @@
 package collections.twothree.list;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.Iterator;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.function.Predicate;
@@ -102,7 +98,7 @@ public final class SortedSet23<E> implements Set23<E> {
 	@SafeVarargs
     @SuppressWarnings("varargs")
     public static <E extends Comparable<E>> SortedSet23<E> of(final E ... elements) {
-    	return of(Arrays.asList(elements));
+    	return of(new ArrayIterable<>(elements));
     }
 
     /**
@@ -132,11 +128,15 @@ public final class SortedSet23<E> implements Set23<E> {
      * @return A set containing an initial list of elements
      */
     public static <E> SortedSet23<E> ofSorted(final SortedSet<E> other) {
-        Comparator<? super E> comparator = other.comparator();
+        return new SortedSet23<>(getComparator(other), List23.of(other));
+    }
+
+    private static <E> Comparator<? super E> getComparator(final SortedSet<E> other) {
+        final Comparator<? super E> comparator = other.comparator();
         if (comparator == null) {
-            comparator = List23::unNaturalCompare;
+            return List23::unNaturalCompare;
         }
-        return new SortedSet23<>(comparator, List23.of(other));
+        return comparator;
     }
 
     /**
@@ -153,14 +153,9 @@ public final class SortedSet23<E> implements Set23<E> {
      * @return A set containing an initial list of elements
      */
     public static <E> SortedSet23<E> of(final Comparator<? super E> comparator, final Iterable<E> elements) {
-        List<E> l = new ArrayList<E>();
-        for(E e: elements) {
-            l.add(e);
-        }
-        Collections.sort(l, comparator);
-    	return new SortedSet23<E>(comparator, List23.of(l));
+    	return new SortedSet23<E>(comparator, List23.ofSortedUnique(comparator, elements));
     }
-
+    
     /**
 	 * Returns the size of this set.
      * <p>This operation is O(1).
@@ -496,7 +491,7 @@ public final class SortedSet23<E> implements Set23<E> {
 	}
 	
 	@Override
-	public ListIterator<E> iterator() {
+	public Iterator<E> iterator() {
 		return elements.iterator();
 	}
     

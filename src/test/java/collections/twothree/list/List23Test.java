@@ -184,6 +184,14 @@ public class List23Test {
     }
     
     @Test
+    public void testOfSortedUnique() {
+        assertEquals(List23.ofSortedUnique(Arrays.asList(4, 1, 5, 1 , 6, 2)), List23.of(1, 2, 4, 5, 6));
+        assertEquals(List23.ofSortedUnique(Arrays.asList(4)), List23.of(4));
+        assertEquals(List23.ofSortedUnique(Arrays.asList()), List23.of());
+        assertEquals(List23.ofSortedUnique(Arrays.asList(4, 1, null, 1 , 6, null)), List23.of(null, 1, 4, 6));
+    }
+    
+    @Test
     public void testMakeBranch() {
         {
             Node23<Integer> l2 = new Branch2<>(new Leaf<>(1), new Leaf<>(2));

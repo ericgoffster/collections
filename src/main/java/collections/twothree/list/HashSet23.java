@@ -1,11 +1,7 @@
 package collections.twothree.list;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.SortedSet;
@@ -81,7 +77,7 @@ public final class HashSet23<E> implements Set23<E> {
 	@SafeVarargs
     @SuppressWarnings("varargs")
     public static <E> HashSet23<E> of(final E ... elements) {
-    	return of(Arrays.asList(Requirements.require(elements, Requirements.notNull(), () -> "elements")));
+    	return of(new ArrayIterable<>(Requirements.require(elements, Requirements.notNull(), () -> "elements")));
     }
 
     /**
@@ -97,12 +93,7 @@ public final class HashSet23<E> implements Set23<E> {
      */
     public static <E> HashSet23<E> of(final Iterable<E> elements) {
         Requirements.require(elements, Requirements.notNull(), () -> "elements");
-        List<E> l = new ArrayList<E>();
-        for(E e: elements) {
-            l.add(e);
-        }
-        Collections.sort(l, HashSet23::compare);
-        return new HashSet23<E>(List23.of(l));
+        return new HashSet23<E>(List23.ofSortedUnique(HashSet23::compare, elements));
     }
 
     /**

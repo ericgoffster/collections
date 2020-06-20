@@ -3,7 +3,7 @@ package collections.twothree.list;
 import java.util.AbstractMap;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.ListIterator;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.SortedMap;
@@ -26,22 +26,27 @@ public final class SortedMap23<K, V> implements Map23<K, V> {
     public static <K,V> SortedMap23<K,V> empty(final Comparator<? super K> keyComparator) {
         return of(keyComparator, Collections.emptyList());
     }
+
     public static <K extends Comparable<K>,V> SortedMap23<K,V> empty() {
         return empty(List23::naturalCompare);
     }
    
     public static <K,V> SortedMap23<K,V> ofSorted(final SortedMap<K, V> items) {
-        Comparator<? super K> comparator = items.comparator();
+        return of(getComparator(items), items.entrySet());
+    }
+
+    private static <K, V> Comparator<? super K> getComparator(final SortedMap<K, V> items) {
+        final Comparator<? super K> comparator = items.comparator();
         if (comparator == null) {
-            comparator = List23::unNaturalCompare;
+            return List23::unNaturalCompare;
         }
-        return of(comparator, items.entrySet());
+        return comparator;
     }
     public static <K,V> SortedMap23<K,V> of(final Comparator<? super K> keyComparator, final Map<K, V> items) {
         return of(keyComparator, items.entrySet());
     }
 	public static <K,V> SortedMap23<K,V> of(final Comparator<? super K> keyComparator, final Iterable<Entry<K, V>> items) {
-	    return new SortedMap23<K, V>(keyComparator, List23.empty()).addAll(items);
+	    return new SortedMap23<K, V>(keyComparator, List23.ofSortedUnique((a,b) -> keyComparator.compare(a.getKey(), b.getKey()), items));
 	}
     public static <K extends Comparable<K>,V> SortedMap23<K,V> of(final Iterable<Entry<K, V>> items) {
         return of(List23::naturalCompare, items);
@@ -225,7 +230,7 @@ public final class SortedMap23<K, V> implements Map23<K, V> {
 	}
 	
     @Override
-	public ListIterator<Entry<K,V>> iterator() {
+	public Iterator<Entry<K,V>> iterator() {
 		return entries.iterator();
 	}
     

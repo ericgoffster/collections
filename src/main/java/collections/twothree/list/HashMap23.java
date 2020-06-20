@@ -26,7 +26,7 @@ public final class HashMap23<K, V> implements Map23<K, V> {
         return of(items.entrySet());
     }
 	public static <K,V> HashMap23<K,V> of(final Iterable<Entry<K, V>> items) {
-	    return new HashMap23<K, V>(List23.empty()).addAll(items);
+	    return new HashMap23<K, V>(List23.ofSortedUnique((a,b) -> HashSet23.compare(a.getKey(), b.getKey()), items));
 	}
 	
     @Override

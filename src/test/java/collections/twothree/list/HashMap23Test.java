@@ -28,6 +28,14 @@ public class HashMap23Test {
     }
     
     @Test
+    public void testfromMap() {
+        Map<Integer,Integer> m = new HashMap<Integer, Integer>();
+        m.put(0, 1);
+        m.put(3, 2);
+        assertEquals(HashMap23.of(Arrays.asList(makeEntry(0,1), makeEntry(3,2))),
+                HashMap23.of(m));
+    }
+    @Test
     public void testRemoveAll() {
         assertEquals(HashMap23.of(Arrays.asList(makeEntry(0,1), makeEntry(3,2), makeEntry(6,3), makeEntry(9,4), makeEntry(12,5))).removeAllKeysIn(SortedSet23.of(6, 7, 9)),
                 HashMap23.of(Arrays.asList(makeEntry(0,1), makeEntry(3,2), makeEntry(12,5))));
