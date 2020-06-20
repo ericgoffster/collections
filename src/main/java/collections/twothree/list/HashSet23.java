@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.Objects;
 import java.util.Set;
 import java.util.SortedSet;
+import java.util.Spliterator;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
@@ -272,6 +273,11 @@ public final class HashSet23<E> implements Set23<E> {
 		return elements.iterator();
 	}
     
+    @Override
+    public Spliterator<E> spliterator() {
+        return elements.spliterator();
+    }
+
     @Override
     public Stream<E> stream() {
         return elements.stream();

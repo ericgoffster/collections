@@ -3,10 +3,11 @@ package collections.twothree.list;
 import java.util.AbstractMap;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Iterator;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.SortedMap;
+import java.util.Spliterator;
 import java.util.function.BiConsumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -230,7 +231,12 @@ public final class SortedMap23<K, V> implements Map23<K, V> {
 	}
 	
     @Override
-	public Iterator<Entry<K,V>> iterator() {
+    public Spliterator<Entry<K,V>> spliterator() {
+        return entries.spliterator();
+    }
+
+    @Override
+	public ListIterator<Entry<K,V>> iterator() {
 		return entries.iterator();
 	}
     

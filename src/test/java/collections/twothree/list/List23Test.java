@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Set;
 
 import org.junit.Test;
@@ -153,10 +154,50 @@ public class List23Test {
 
     @Test
     public void testIterator() {
-        List23<Integer> l = List23.of(1,2,3,4,5,6);
-        List<Integer> t = new ArrayList<>(Arrays.asList(1,2,3,4,5,6));
-        l.forEach(t::remove);
-        assertTrue(t.isEmpty());
+        {
+            List23<Integer> l = List23.of(1,2,3,4);
+            ListIterator<Integer> i = l.iterator();
+            assertEquals(i.nextIndex(), 0);
+            assertEquals(i.next().intValue(), 1);
+            assertEquals(i.nextIndex(), 1);
+            assertEquals(i.next().intValue(), 2);
+            assertEquals(i.nextIndex(), 2);
+            assertEquals(i.next().intValue(), 3);
+            assertEquals(i.nextIndex(), 3);
+            assertEquals(i.next().intValue(), 4);
+            assertFalse(i.hasNext());
+            assertEquals(i.previousIndex(), 3);
+            assertEquals(i.previous().intValue(), 4);
+            assertEquals(i.previousIndex(), 2);
+            assertEquals(i.previous().intValue(), 3);
+            assertEquals(i.previousIndex(), 1);
+            assertEquals(i.previous().intValue(), 2);
+            assertEquals(i.previousIndex(), 0);
+            assertEquals(i.previous().intValue(), 1);
+            assertFalse(i.hasPrevious());
+        }
+        {
+            List<Integer> l = Arrays.asList(1,2,3,4);
+            ListIterator<Integer> i = l.listIterator();
+            assertEquals(i.nextIndex(), 0);
+            assertEquals(i.next().intValue(), 1);
+            assertEquals(i.nextIndex(), 1);
+            assertEquals(i.next().intValue(), 2);
+            assertEquals(i.nextIndex(), 2);
+            assertEquals(i.next().intValue(), 3);
+            assertEquals(i.nextIndex(), 3);
+            assertEquals(i.next().intValue(), 4);
+            assertFalse(i.hasNext());
+            assertEquals(i.previousIndex(), 3);
+            assertEquals(i.previous().intValue(), 4);
+            assertEquals(i.previousIndex(), 2);
+            assertEquals(i.previous().intValue(), 3);
+            assertEquals(i.previousIndex(), 1);
+            assertEquals(i.previous().intValue(), 2);
+            assertEquals(i.previousIndex(), 0);
+            assertEquals(i.previous().intValue(), 1);
+            assertFalse(i.hasPrevious());
+        }
     }
 
     @Test

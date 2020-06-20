@@ -6,11 +6,15 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Objects;
+import java.util.Spliterator;
+import java.util.Spliterators;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import org.granitesoft.requirement.Requirements;
 
@@ -625,8 +629,13 @@ public final class List23<E> implements Collection23<E> {
     }
 
     @Override
-    public Iterator<E> iterator() {
-    	return asList().listIterator();
+    public ListIterator<E> iterator() {
+    	return new NodeIterator<E>(root);
+    }
+    
+    @Override
+    public Spliterator<E> spliterator() {
+        return Spliterators.spliterator(iterator(), size(), 0);
     }
 
     /**
@@ -635,7 +644,7 @@ public final class List23<E> implements Collection23<E> {
      */
     @Override
     public Stream<E> stream() {
-        return asList().stream();
+        return StreamSupport.stream(spliterator(), false);
     }
 
     static int verifyIndex(String name, int index, int low, int high) {

@@ -4,6 +4,7 @@ import java.util.AbstractMap;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Spliterator;
 import java.util.Map.Entry;
 import java.util.function.BiConsumer;
 import java.util.function.Predicate;
@@ -157,6 +158,11 @@ public final class HashMap23<K, V> implements Map23<K, V> {
 		return asMap().toString();
 	}
 	
+    @Override
+    public Spliterator<Entry<K,V>> spliterator() {
+        return entries.spliterator();
+    }
+
     @Override
 	public Iterator<Entry<K,V>> iterator() {
 		return entries.iterator();

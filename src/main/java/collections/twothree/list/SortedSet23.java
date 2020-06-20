@@ -2,9 +2,10 @@ package collections.twothree.list;
 
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.Iterator;
+import java.util.ListIterator;
 import java.util.Set;
 import java.util.SortedSet;
+import java.util.Spliterator;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
@@ -491,10 +492,15 @@ public final class SortedSet23<E> implements Set23<E> {
 	}
 	
 	@Override
-	public Iterator<E> iterator() {
+	public ListIterator<E> iterator() {
 		return elements.iterator();
 	}
     
+    @Override
+    public Spliterator<E> spliterator() {
+        return elements.spliterator();
+    }
+
     @Override
     public Stream<E> stream() {
         return elements.stream();
