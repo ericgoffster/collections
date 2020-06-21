@@ -1,6 +1,7 @@
 package collections.twothree.list;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -726,11 +727,9 @@ public final class List23<E> implements Collection23<E> {
 	// O(log max(m,n))
 	static <E>  Node23<E> concat(final Node23<E> lhs, final Node23<E> rhs) {
 	    assert lhs != null;
-	    if (rhs == null) {
-	        return lhs;
-	    }
-	    final NodePair<E> node = concat(lhs, rhs, getDepth(lhs) - getDepth(rhs));
-        return node.rhs() == null? node.lhs(): new Branch<>(node.lhs(), node.rhs());
+        assert rhs != null;
+	    final List<Node23<E>> node = concat(lhs, rhs, lhs.getDepth() - rhs.getDepth());
+	    return node.size() == 1 ? node.get(0) : new Branch<>(node.get(0), node.get(1));
     }
 	
 	// Creates a branch representing the concatenation
@@ -739,32 +738,33 @@ public final class List23<E> implements Collection23<E> {
 	//   of only 1 branch, which would mean that lhs was capable of
 	//   absorbing rhs with a change of level.
     // O(log max(m,n))
-	static <E> NodePair<E> concat(final Node23<E> lhs, final Node23<E> rhs, int depthDelta) {
+	static <E> List<Node23<E>> concat(final Node23<E> lhs, final Node23<E> rhs, int depthDelta) {
         assert lhs != null;
         assert rhs != null;
+        
+        if (depthDelta == 0) {
+            return Arrays.asList(lhs, rhs);
+        }
 
-        // for simplicity, make sure lhs is always the deeper branch.
+        List<Node23<E>> arr = new ArrayList<>();
 	    if (depthDelta < 0) {
-            return concat(rhs.reverse(), lhs.reverse(), -depthDelta).reverse();
-            
-        // Try to concatenate rhs onto the right most branch of lhs
-	    } else if (depthDelta > 0) {
-	        // Concatenate rhs to the last branch of lhs, and add back to this node.
-            final NodePair<E> new_lhs_last = concat(lhs.getBranch(lhs.numBranches() - 1), rhs, depthDelta - 1);
-	        if (lhs.numBranches() < 3) {
-                return new_lhs_last.rhs() == null ?
-	                new NodePair<>(new Branch<>(lhs.getBranch(0), new_lhs_last.lhs())):
-	                new NodePair<>(new Branch<>(lhs.getBranch(0), new_lhs_last.lhs(), new_lhs_last.rhs()));
-	        } else {
-                return new_lhs_last.rhs() == null ?
-	                new NodePair<>(new Branch<>(lhs.getBranch(0), lhs.getBranch(1), new_lhs_last.lhs())):
-	                new NodePair<>(new Branch<>(lhs.getBranch(0), lhs.getBranch(1)), new Branch<>(new_lhs_last.lhs(), new_lhs_last.rhs()));
-	        }
-	        
-	    // They are same depth, just create a pair.
-	    } else {
-	        return new NodePair<>(lhs, rhs);
+	        arr.addAll(concat(lhs, rhs.getBranch(0), depthDelta + 1));
+            for(int i = 1; i < rhs.numBranches(); i++) {
+                arr.add(rhs.getBranch(i));
+            }
 	    }
+	    else {
+	        for(int i = 0; i < lhs.numBranches() - 1; i++) {
+                arr.add(lhs.getBranch(i));
+            }
+            arr.addAll(concat(lhs.getBranch(lhs.numBranches() - 1), rhs, depthDelta - 1));
+	    }
+        switch(arr.size()) {
+        case 2: return Arrays.asList(new Branch<>(arr.get(0), arr.get(1)));
+        case 3: return Arrays.asList(new Branch<>(arr.get(0), arr.get(1), arr.get(2)));
+        case 4: return Arrays.asList(new Branch<>(arr.get(0), arr.get(1)), new Branch<>(arr.get(2), arr.get(3)));
+        default: throw new IllegalStateException();
+        }            
 	}
 
 	// Returns a node where all indexes are < index, null if removing a leaf.
@@ -775,18 +775,24 @@ public final class List23<E> implements Collection23<E> {
 	// O(log n)
 	static <E> Node23<E> head(final Node23<E> node, final int index) {
         assert index < node.size();
-        return
-           node.isLeaf() ? null:
-           index < node.getBranchSize(0) ? head(node.getBranch(0), index):
-           index - node.getBranchSize(0) < node.getBranchSize(1) ? concat(node.getBranch(0), head(node.getBranch(1), index - node.getBranchSize(0))):
-           concat(new Branch<>(node.getBranch(0), node.getBranch(1)), head(node.getBranch(2), index - node.getBranchSize(0) - node.getBranchSize(1)));
-	}
-
-	// Returns depth of the node.
-    // O(log n)
-	static <E> int getDepth(Node23<E> node) {
-        assert node != null;
-		return node.isLeaf() ? 1 : (getDepth(node.getBranch(0)) + 1);
+        if (node.isLeaf()) {
+            return null;
+        }
+        if (index < node.getBranchSize(0)) {
+            return head(node.getBranch(0), index);
+        }
+        if (index - node.getBranchSize(0) < node.getBranchSize(1)) {
+            Node23<E> head = head(node.getBranch(1), index - node.getBranchSize(0));
+            if (head == null) {
+                return node.getBranch(0);
+            }
+            return concat(node.getBranch(0), head);
+        }
+        Node23<E> head = head(node.getBranch(2), index - node.getBranchSize(0) - node.getBranchSize(1));
+        if (head == null) {
+            return new Branch<>(node.getBranch(0), node.getBranch(1));
+        }
+        return concat(new Branch<>(node.getBranch(0), node.getBranch(1)), head);
 	}
 
 	// Returns true, if the list is valid.
@@ -800,7 +806,7 @@ public final class List23<E> implements Collection23<E> {
     // All branches are same height, and no 1 degenerate 1 branches.
     // O(n log n)
     static <E> boolean isValid(Node23<E> n) {
-        return n == null || isValid(n, getDepth(n));
+        return n == null || isValid(n, n.getDepth());
     }
 
     // Returns true, if the node is valid.

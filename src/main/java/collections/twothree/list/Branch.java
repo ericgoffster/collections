@@ -13,6 +13,11 @@ final class Branch<E> implements Node23<E> {
         this.size = b0.size() + b1.size() + b2.size();  
         nodes = new Node23[] {b0, b1, b2};
     }
+    
+    @Override
+    public int getDepth() {
+        return nodes[0].getDepth() + 1;
+    }
 		
 	@Override
 	public int size() {
@@ -53,6 +58,11 @@ final class Branch<E> implements Node23<E> {
                 return size;
             }
             
+            @Override
+            public int getDepth() {
+                return nodes[0].getDepth() + 1;
+            }
+                
             @Override
             public Node23<E> getBranch(int which) {
                 return nodes[nodes.length - 1 - which].reverse();

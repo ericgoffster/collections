@@ -110,6 +110,10 @@ public class List23Test {
 				assertEquals(l2.getAt(j), String.valueOf(j));
 			}
 		}
+		
+		List23.head(branch("a", "b", "c"), 0);
+        List23.head(branch("a", "b", "c"), 1);
+        List23.head(branch("a", "b", "c"), 2);
 	}
 
 	@Test

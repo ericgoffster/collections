@@ -13,6 +13,11 @@ class MappedNode23<E, F> implements Node23<F> {
     }
 
     @Override
+    public int getDepth() {
+        return e.getDepth();
+    }
+        
+    @Override
     public F leafValue() {
         return f.apply(e.leafValue());
     }

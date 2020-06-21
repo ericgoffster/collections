@@ -12,4 +12,5 @@ interface Node23<E> {
     int getBranchSize(int which);
 	Node23<E> reverse();
 	int numBranches();
+	int getDepth();
 }

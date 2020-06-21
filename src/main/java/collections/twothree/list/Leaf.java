@@ -11,6 +11,10 @@ final class Leaf<E> implements Node23<E> {
 	    return 0;
 	}
 	@Override
+	public int getDepth() {
+	    return 1;
+	}
+	@Override
 	public int size() {
 		return 1;
 	}
