@@ -297,7 +297,7 @@ public final class List23<E> implements Collection23<E> {
      * @return The index of <code>element</code>, -1 if not found
      */
 	public int indexOf(E element) {
-	    return root == null ? -1: find(root, element);
+	    return root == null ? -1: find(root, element, 0);
 	}
 	
     /**
@@ -690,40 +690,36 @@ public final class List23<E> implements Collection23<E> {
 
 	// Search through the node for an element.
     // O(n log n)
-	static <E> int find(final Node23<E> node, final E element) {
+	static <E> int find(final Node23<E> node, final E element, final int index) {
         if (node.isLeaf()) {
-            return Objects.equals(node.leafValue(),element) ? 0: -1;
+            return Objects.equals(node.leafValue(),element) ? index: -1;
         }
-        {
-            int i = find(node.b1(), element);
+        int pos = 0;
+        int j = 0;
+        while(j < node.numBranches() - 1) {
+            int i = find(node.getBranch(j), element, index + pos);
             if (i >= 0) {
                 return i;
             }
+            pos += node.getBranchSize(j);
+            j++;
         }
-        {
-            int i = find(node.b2(), element);
-            if (i >= 0) {
-                return i + node.b1Size();
-            }
-        }
-        if (node.numBranches() == 3) {
-            int i = find(node.b3(), element);
-            if (i >= 0) {
-                return i + node.b1Size() + node.b2Size();
-            }
-        }
-        return -1;
+        return find(node.getBranch(j), element, index + pos);
     }
 
     // Get the element at the given index.
     // O(log n)
     static <E> E get(final Node23<E> node, final int index) {
         assert index < node.size();
-        return
-            node.isLeaf()? node.leafValue():
-            index < node.b1Size() ? get(node.b1(), index):
-            index - node.b1Size() < node.b2Size() ? get(node.b2(), index - node.b1Size()):
-            get(node.b3(), index - node.b1Size() - node.b2Size());
+        if (node.isLeaf()) {
+            return node.leafValue();
+        }
+        int pos = 0;
+        int j = 0;
+        while(j < node.numBranches() - 1 && index >= pos + node.getBranchSize(j)) {
+            pos += node.getBranchSize(j++);
+        }
+        return get(node.getBranch(j), index - pos);
 	}
 
 	// Returns the concatenation of lhs and rhs.
@@ -735,7 +731,7 @@ public final class List23<E> implements Collection23<E> {
 	        return lhs;
 	    }
 	    final NodePair<E> node = concat(lhs, rhs, getDepth(lhs) - getDepth(rhs));
-        return node.b2() == null? node.b1(): new Branch2<>(node.b1(), node.b2());
+        return node.rhs() == null? node.lhs(): new Branch<>(node.lhs(), node.rhs());
     }
 	
 	// Creates a branch representing the concatenation
@@ -756,15 +752,15 @@ public final class List23<E> implements Collection23<E> {
 	    } else if (depthDelta > 0) {
 	        // Concatenate rhs to the last branch of lhs, and add back to this node.
 	        if (lhs.numBranches() < 3) {
-	            final NodePair<E> new_lhs_b2 = concat(lhs.b2(), rhs, depthDelta - 1);
-                return new_lhs_b2.b2() == null ?
-	                new NodePair<>(new Branch2<>(lhs.b1(), new_lhs_b2.b1())):
-	                new NodePair<>(new Branch3<>(lhs.b1(), new_lhs_b2.b1(), new_lhs_b2.b2()));
+	            final NodePair<E> new_lhs_b2 = concat(lhs.getBranch(1), rhs, depthDelta - 1);
+                return new_lhs_b2.rhs() == null ?
+	                new NodePair<>(new Branch<>(lhs.getBranch(0), new_lhs_b2.lhs())):
+	                new NodePair<>(new Branch<>(lhs.getBranch(0), new_lhs_b2.lhs(), new_lhs_b2.rhs()));
 	        } else {
-	            final NodePair<E> new_lhs_b3 = concat(lhs.b3(), rhs, depthDelta - 1);
-                return new_lhs_b3.b2() == null ?
-	                new NodePair<>(new Branch3<>(lhs.b1(), lhs.b2(), new_lhs_b3.b1())):
-	                new NodePair<>(new Branch2<>(lhs.b1(), lhs.b2()), new Branch2<>(new_lhs_b3.b1(), new_lhs_b3.b2()));
+	            final NodePair<E> new_lhs_b3 = concat(lhs.getBranch(2), rhs, depthDelta - 1);
+                return new_lhs_b3.rhs() == null ?
+	                new NodePair<>(new Branch<>(lhs.getBranch(0), lhs.getBranch(1), new_lhs_b3.lhs())):
+	                new NodePair<>(new Branch<>(lhs.getBranch(0), lhs.getBranch(1)), new Branch<>(new_lhs_b3.lhs(), new_lhs_b3.rhs()));
 	        }
 	        
 	    // They are same depth, just create a pair.
@@ -783,16 +779,16 @@ public final class List23<E> implements Collection23<E> {
         assert index < node.size();
         return
            node.isLeaf() ? null:
-           index < node.b1Size() ? head(node.b1(), index):
-           index - node.b1Size() < node.b2Size() ? concat(node.b1(), head(node.b2(), index - node.b1Size())):
-           concat(new Branch2<>(node.b1(), node.b2()), head(node.b3(), index - node.b1Size() - node.b2Size()));
+           index < node.getBranchSize(0) ? head(node.getBranch(0), index):
+           index - node.getBranchSize(0) < node.getBranchSize(1) ? concat(node.getBranch(0), head(node.getBranch(1), index - node.getBranchSize(0))):
+           concat(new Branch<>(node.getBranch(0), node.getBranch(1)), head(node.getBranch(2), index - node.getBranchSize(0) - node.getBranchSize(1)));
 	}
 
 	// Returns depth of the node.
     // O(log n)
 	static <E> int getDepth(Node23<E> node) {
         assert node != null;
-		return node.isLeaf() ? 1 : (getDepth(node.b1()) + 1);
+		return node.isLeaf() ? 1 : (getDepth(node.getBranch(0)) + 1);
 	}
 
 	// Returns true, if the list is valid.
@@ -816,32 +812,30 @@ public final class List23<E> implements Collection23<E> {
         if (n.isLeaf()) {
             return depth == 1;
         }
-        if (!isValid(n.b1(), depth - 1)) {
-            return false;
-        }
-        if (!isValid(n.b2(), depth - 1)) {
-            return false;
-        }
-        if (n.numBranches() == 3 && !isValid(n.b3(), depth - 1)) {
-            return false;
+        for(int i = 0; i < n.numBranches(); i++) {
+            if (!isValid(n.getBranch(i), depth - 1)) {
+                return false;
+            }
         }
         return true;
     }
     
     static <E> E last(final Node23<E> node) {
-        return node.isLeaf() ? node.leafValue() : last(node.numBranches() == 2 ? node.b2() : node.b3());
+        return node.isLeaf() ? node.leafValue() : last(node.getBranch(node.numBranches() - 1));
     }
 
     // Visits all leaves, returning an arbitrary result returned from leafVisitor
     // Warning, all elements in this list must follow order governed by this comparator
     static <T, E> T binarySearch(final Comparator<? super E> comparator, final Node23<E> node, final E element, final int index, final BiFunction<E,Integer,T> leafVisitor) {
-        return
-                node.isLeaf() ? leafVisitor.apply(node.leafValue(), index) :
-                comparator.compare(element, last(node.b1())) <= 0 ?
-                        binarySearch(comparator, node.b1(), element, index, leafVisitor):
-                node.numBranches() < 3 || comparator.compare(element, last(node.b2())) <= 0 ?
-                        binarySearch(comparator, node.b2(), element, index + node.b1Size(), leafVisitor):
-                binarySearch(comparator, node.b3(), element, index + node.b1Size() + node.b2Size(), leafVisitor);
+        if (node.isLeaf()) {
+            return leafVisitor.apply(node.leafValue(), index);
+        }
+        int pos = 0;
+        int j = 0;
+        while(j < node.numBranches() - 1 && comparator.compare(element, last(node.getBranch(j))) > 0) {
+            pos += node.getBranchSize(j++);
+        }
+        return binarySearch(comparator, node.getBranch(j), element, index + pos, leafVisitor);
     }
 
     // Visits all leaves, returning an arbitrary result returned from leafVisitor

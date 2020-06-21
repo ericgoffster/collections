@@ -14,10 +14,10 @@ final class NodePair<E> {
         this.b1 = b1;
         this.b2 = null;
     }
-    public Node23<E> b1() {
+    public Node23<E> lhs() {
         return b1;
     }
-    public Node23<E> b2() {
+    public Node23<E> rhs() {
         return b2;
     }
     public NodePair<E> reverse() {

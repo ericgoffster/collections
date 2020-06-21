@@ -10,7 +10,7 @@ final class NodeState<E> {
     private NodeState(NodeState<E> parent, int which) {
         super();
         this.parent = parent;
-        this.n = parent.getChild(which);
+        this.n = parent.n.getBranch(which);
         this.which = which;
     }
     private NodeState(NodeState<E> parent, Node23<E> n, int which) {
@@ -19,14 +19,6 @@ final class NodeState<E> {
         this.n = n;
         this.which = which;
     }
-    Node23<E> getChild(int i) {
-        switch(i) {
-        case 0: return n.b1();
-        case 1: return n.b2();
-        case 2: return n.b3();
-        default: throw new IllegalStateException();
-        }
-    };
     NodeState<E> next() {
         if (parent == null) {
             return null;

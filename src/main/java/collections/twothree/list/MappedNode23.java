@@ -25,30 +25,15 @@ class MappedNode23<E, F> implements Node23<F> {
     Node23<F> xform(Node23<E> b) {
         return new MappedNode23<>(b, f);
     }
-
+    
     @Override
-    public Node23<F> b1() {
-        return xform(e.b1()) ;
+    public Node23<F> getBranch(int which) {
+        return xform(e.getBranch(which));
     }
-
+    
     @Override
-    public int b1Size() {
-        return e.b1Size();
-    }
-
-    @Override
-    public Node23<F> b2() {
-        return xform(e.b2()) ;
-    }
-
-    @Override
-    public int b2Size() {
-        return e.b2Size();
-    }
-
-    @Override
-    public Node23<F> b3() {
-        return xform(e.b3()) ;
+    public int getBranchSize(int which) {
+        return e.getBranchSize(which);
     }
 
     @Override

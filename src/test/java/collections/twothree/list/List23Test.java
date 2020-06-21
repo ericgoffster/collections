@@ -20,11 +20,11 @@ public class List23Test {
 	
 	@Test
 	public void testIsValid() {
-	   assertFalse(List23.isValid(new Branch3<>(branch("2","3"), new Leaf<>("1"), new Leaf<>("4"))));
-       assertFalse(List23.isValid(new Branch3<>(new Leaf<>("1"), branch("2","3"), new Leaf<>("4"))));
-       assertFalse(List23.isValid(new Branch3<>(new Leaf<>("1"), new Leaf<>("4"), branch("2","3"))));
-       assertFalse(List23.isValid(new Branch2<>(branch("2","3"), new Leaf<>("1"))));
-       assertFalse(List23.isValid(new Branch2<>(new Leaf<>("1"), branch("2","3"))));
+	   assertFalse(List23.isValid(new Branch<>(branch("2","3"), new Leaf<>("1"), new Leaf<>("4"))));
+       assertFalse(List23.isValid(new Branch<>(new Leaf<>("1"), branch("2","3"), new Leaf<>("4"))));
+       assertFalse(List23.isValid(new Branch<>(new Leaf<>("1"), new Leaf<>("4"), branch("2","3"))));
+       assertFalse(List23.isValid(new Branch<>(branch("2","3"), new Leaf<>("1"))));
+       assertFalse(List23.isValid(new Branch<>(new Leaf<>("1"), branch("2","3"))));
        assertTrue(List23.isValid(null));
 	}
 	
@@ -235,9 +235,9 @@ public class List23Test {
     @Test
     public void testMakeBranch() {
         {
-            Node23<Integer> l2 = new Branch2<>(new Leaf<>(1), new Leaf<>(2));
-            assertNotNull(l2.b1());
-            assertNotNull(l2.b2());
+            Node23<Integer> l2 = new Branch<>(new Leaf<>(1), new Leaf<>(2));
+            assertNotNull(l2.getBranch(0));
+            assertNotNull(l2.getBranch(1));
         }
     }
 
@@ -326,7 +326,7 @@ public class List23Test {
 	@Test
 	public void testAsList() {
 		List23<String> l1 = new List23<>(
-				new Branch2<>(branch("1","2","3"),branch("4","5")));
+				new Branch<>(branch("1","2","3"),branch("4","5")));
 		List<String> l = l1.asList();
 		assertEquals(l, Arrays.asList("1", "2", "3", "4", "5"));
 	}
@@ -334,7 +334,7 @@ public class List23Test {
 	@Test
 	public void testToString() {
 		List23<String> l1 = new List23<>(
-				new Branch2<>(branch("1","2","3"),branch("4","5")));
+				new Branch<>(branch("1","2","3"),branch("4","5")));
 		assertEquals(l1.toString(), l1.asList().toString());
         assertEquals(branch("1","2","3").toString(), "[1 2 3]");
         assertEquals(branch("1","2","3").reverse().toString(), "[3 2 1]");
@@ -345,40 +345,40 @@ public class List23Test {
 	public void testEquals() {
 		{
 			List23<String> l1 = new List23<>(
-					new Branch2<>(branch("1","2","3"),branch("4","5")));
+					new Branch<>(branch("1","2","3"),branch("4","5")));
 			List23<String> l2 = new List23<>(
-					new Branch2<>(branch("1","2"),branch("3","4","5")));
+					new Branch<>(branch("1","2"),branch("3","4","5")));
 			assertEquals(l1, l2);
 			assertEquals(l1.hashCode(), l2.hashCode());
 		}
 		{
 			List23<String> l1 = new List23<>(
-					new Branch2<>(branch("1","2","3"),branch("4","5")));
+					new Branch<>(branch("1","2","3"),branch("4","5")));
 			List23<String> l2 = new List23<>(
-					new Branch2<>(branch("1","2"),branch("3","5","4")));
+					new Branch<>(branch("1","2"),branch("3","5","4")));
 			assertNotEquals(l1, l2);
 			assertNotEquals(l1.hashCode(), l2.hashCode());
 		}
 		{
 			List23<String> l1 = new List23<>(
-					new Branch2<>(branch("1","2"),branch("3","4")));
+					new Branch<>(branch("1","2"),branch("3","4")));
 			List23<String> l2 = new List23<>(
-					new Branch2<>(branch("1","2"),branch("3","4","5")));
+					new Branch<>(branch("1","2"),branch("3","4","5")));
 			assertNotEquals(l1, l2);
 			assertNotEquals(l1.hashCode(), l2.hashCode());
 		}
 		{
 			List23<String> l1 = new List23<>(
-					new Branch2<>(branch("1","2"),branch("3","4")));
+					new Branch<>(branch("1","2"),branch("3","4")));
 			assertNotEquals(l1, Arrays.asList("1","2","3","4"));
 		}
 	}
 	
 	private static Node23<String> branch(String a, String b) {
-	    return new Branch2<>(new Leaf<>(a),new Leaf<>(b));
+	    return new Branch<>(new Leaf<>(a),new Leaf<>(b));
 	}
     private static Node23<String> branch(String a, String b, String c) {
-        return new Branch3<>(new Leaf<>(a),new Leaf<>(b),new Leaf<>(c));
+        return new Branch<>(new Leaf<>(a),new Leaf<>(b),new Leaf<>(c));
     }
 
 	@Test
@@ -398,7 +398,7 @@ public class List23Test {
 		}
 		{
 			List23<String> l = new List23<>(
-					new Branch2<>(branch("1","2"),branch("3","4")));
+					new Branch<>(branch("1","2"),branch("3","4")));
 			assertEquals(makeList(l.removeAt(0)), new ArrayList<>(Arrays.asList("2","3", "4")));
 			assertEquals(makeList(l.removeAt(1)), Arrays.asList("1","3", "4"));
 			assertEquals(makeList(l.removeAt(2)), Arrays.asList("1","2", "4"));
@@ -406,7 +406,7 @@ public class List23Test {
 		}
 		{
 			List23<String> l = new List23<>(
-					new Branch2<>(branch("1","2","3"),branch("4","5")));
+					new Branch<>(branch("1","2","3"),branch("4","5")));
 			assertEquals(makeList(l.removeAt(0)), new ArrayList<>(Arrays.asList("2","3", "4", "5")));
 			assertEquals(makeList(l.removeAt(1)), Arrays.asList("1","3", "4", "5"));
 			assertEquals(makeList(l.removeAt(2)), Arrays.asList("1","2", "4", "5"));
@@ -415,7 +415,7 @@ public class List23Test {
 		}
 		{
 			List23<String> l = new List23<>(
-					new Branch2<>(branch("1","2","3"),branch("4","5","6")));
+					new Branch<>(branch("1","2","3"),branch("4","5","6")));
 			assertEquals(makeList(l.removeAt(0)), new ArrayList<>(Arrays.asList("2","3", "4", "5", "6")));
 			assertEquals(makeList(l.removeAt(1)), Arrays.asList("1","3", "4", "5", "6"));
 			assertEquals(makeList(l.removeAt(2)), Arrays.asList("1","2", "4", "5", "6"));
@@ -425,7 +425,7 @@ public class List23Test {
 		}
 		{
 			List23<String> l = new List23<>(
-					new Branch3<>(branch("1","2"),branch("3","4"),branch("5","6")));
+					new Branch<>(branch("1","2"),branch("3","4"),branch("5","6")));
 			assertEquals(makeList(l.removeAt(0)), new ArrayList<>(Arrays.asList("2","3", "4", "5", "6")));
 			assertEquals(makeList(l.removeAt(1)), Arrays.asList("1","3", "4", "5", "6"));
 			assertEquals(makeList(l.removeAt(2)), Arrays.asList("1","2", "4", "5", "6"));
@@ -435,7 +435,7 @@ public class List23Test {
 		}
 		{
 			List23<String> l = new List23<>(
-					new Branch3<>(branch("1","2","3"),branch("4","5"),branch("6","7")));
+					new Branch<>(branch("1","2","3"),branch("4","5"),branch("6","7")));
 			assertEquals(makeList(l.removeAt(0)), new ArrayList<>(Arrays.asList("2","3", "4", "5", "6", "7")));
 			assertEquals(makeList(l.removeAt(1)), Arrays.asList("1","3", "4", "5", "6", "7"));
 			assertEquals(makeList(l.removeAt(2)), Arrays.asList("1","2", "4", "5", "6", "7"));
@@ -446,7 +446,7 @@ public class List23Test {
 		}
 		{
 			List23<String> l = new List23<>(
-					new Branch3<>(branch("1","2","3"),branch("4","5","6"),branch("7","8")));
+					new Branch<>(branch("1","2","3"),branch("4","5","6"),branch("7","8")));
 			assertEquals(makeList(l.removeAt(0)), new ArrayList<>(Arrays.asList("2","3", "4", "5", "6", "7", "8")));
 			assertEquals(makeList(l.removeAt(1)), Arrays.asList("1","3", "4", "5", "6", "7", "8"));
 			assertEquals(makeList(l.removeAt(2)), Arrays.asList("1","2", "4", "5", "6", "7", "8"));
@@ -458,7 +458,7 @@ public class List23Test {
 		}
 		{
 			List23<String> l = new List23<>(
-					new Branch3<>(branch("1","2","3"),branch("4","5"),branch("6", "7","8")));
+					new Branch<>(branch("1","2","3"),branch("4","5"),branch("6", "7","8")));
 			assertEquals(makeList(l.removeAt(0)), new ArrayList<>(Arrays.asList("2","3", "4", "5", "6", "7", "8")));
 			assertEquals(makeList(l.removeAt(1)), Arrays.asList("1","3", "4", "5", "6", "7", "8"));
 			assertEquals(makeList(l.removeAt(2)), Arrays.asList("1","2", "4", "5", "6", "7", "8"));
@@ -470,7 +470,7 @@ public class List23Test {
 		}
 		{
 			List23<String> l = new List23<>(
-					new Branch3<>(branch("1","2"),branch("3","4","5"),branch("6", "7","8")));
+					new Branch<>(branch("1","2"),branch("3","4","5"),branch("6", "7","8")));
 			assertEquals(makeList(l.removeAt(0)), new ArrayList<>(Arrays.asList("2","3", "4", "5", "6", "7", "8")));
 			assertEquals(makeList(l.removeAt(1)), Arrays.asList("1","3", "4", "5", "6", "7", "8"));
 			assertEquals(makeList(l.removeAt(2)), Arrays.asList("1","2", "4", "5", "6", "7", "8"));
@@ -482,7 +482,7 @@ public class List23Test {
 		}
 		{
 			List23<String> l = new List23<>(
-					new Branch3<>(branch("1","2","3"),branch("4","5","6"),branch("7","8","9")));
+					new Branch<>(branch("1","2","3"),branch("4","5","6"),branch("7","8","9")));
 			assertEquals(makeList(l.removeAt(0)), new ArrayList<>(Arrays.asList("2","3", "4", "5", "6", "7", "8", "9")));
 			assertEquals(makeList(l.removeAt(1)), Arrays.asList("1","3", "4", "5", "6", "7", "8", "9"));
 			assertEquals(makeList(l.removeAt(2)), Arrays.asList("1","2", "4", "5", "6", "7", "8", "9"));
@@ -577,10 +577,10 @@ public class List23Test {
 		assertThrows(IndexOutOfBoundsException.class, () -> new List23<String>(null).insertAt(0, "abc").getAt(1));
 		assertThrows(IndexOutOfBoundsException.class, () -> new List23<String>(null).insertAt(0, "abc").removeAt(-1));
 		assertThrows(IndexOutOfBoundsException.class, () -> new List23<String>(null).insertAt(0, "abc").removeAt(1));
-        assertThrows(UnsupportedOperationException.class, () -> new Leaf<String>("abc").b1());
-        assertThrows(UnsupportedOperationException.class, () -> new Leaf<String>("abc").b2());
-        assertThrows(UnsupportedOperationException.class, () -> new Leaf<String>("abc").b3());
-        assertThrows(UnsupportedOperationException.class, () -> new Leaf<String>("abc").b1Size());
-        assertThrows(UnsupportedOperationException.class, () -> new Leaf<String>("abc").b2Size());
+        assertThrows(UnsupportedOperationException.class, () -> new Leaf<String>("abc").getBranch(0));
+        assertThrows(UnsupportedOperationException.class, () -> new Leaf<String>("abc").getBranch(1));
+        assertThrows(UnsupportedOperationException.class, () -> new Leaf<String>("abc").getBranch(2));
+        assertThrows(UnsupportedOperationException.class, () -> new Leaf<String>("abc").getBranchSize(0));
+        assertThrows(UnsupportedOperationException.class, () -> new Leaf<String>("abc").getBranchSize(1));
 	}
 }

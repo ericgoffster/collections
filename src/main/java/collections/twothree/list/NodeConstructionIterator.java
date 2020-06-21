@@ -44,7 +44,7 @@ final class NodeConstructionIterator<E> implements Iterator<Node23<E>> {
     public Node23<E> next() {
         // If there are 4 or more nodes, then retrieve the top 2, and shift left by 2
         if (b3 != null) {
-            Branch2<E> branch2 = new Branch2<E>(b0, b1);
+            Branch<E> branch2 = new Branch<E>(b0, b1);
             b0 = b2;
             b1 = b3;
             b2 = advance(iterator);
@@ -53,7 +53,7 @@ final class NodeConstructionIterator<E> implements Iterator<Node23<E>> {
         }
         // If there are 3 nodes, then we are done.
         if (b2 != null) {
-            Branch3<E> branch3 = new Branch3<E>(b0, b1, b2);
+            Branch<E> branch3 = new Branch<E>(b0, b1, b2);
             b0 = null;
             b1 = null;
             b2 = null;
@@ -61,7 +61,7 @@ final class NodeConstructionIterator<E> implements Iterator<Node23<E>> {
         }
         // If there are 2 nodes, then we are done.
         if (b1 != null) {
-            Branch2<E> branch2 = new Branch2<E>(b0, b1);
+            Branch<E> branch2 = new Branch<E>(b0, b1);
             b0 = null;
             b1 = null;
             return branch2;

@@ -27,4 +27,14 @@ final class Leaf<E> implements Node23<E> {
     public Node23<E> reverse() {
         return this;
     }
+
+    @Override
+    public Node23<E> getBranch(int which) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public int getBranchSize(int which) {
+        throw new UnsupportedOperationException();
+    }
 }
