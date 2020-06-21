@@ -701,8 +701,7 @@ public final class List23<E> implements Collection23<E> {
             if (i >= 0) {
                 return i;
             }
-            pos += node.getBranchSize(j);
-            j++;
+            pos += node.getBranchSize(j++);
         }
         return find(node.getBranch(j), element, index + pos);
     }
@@ -751,16 +750,15 @@ public final class List23<E> implements Collection23<E> {
         // Try to concatenate rhs onto the right most branch of lhs
 	    } else if (depthDelta > 0) {
 	        // Concatenate rhs to the last branch of lhs, and add back to this node.
+            final NodePair<E> new_lhs_last = concat(lhs.getBranch(lhs.numBranches() - 1), rhs, depthDelta - 1);
 	        if (lhs.numBranches() < 3) {
-	            final NodePair<E> new_lhs_b2 = concat(lhs.getBranch(1), rhs, depthDelta - 1);
-                return new_lhs_b2.rhs() == null ?
-	                new NodePair<>(new Branch<>(lhs.getBranch(0), new_lhs_b2.lhs())):
-	                new NodePair<>(new Branch<>(lhs.getBranch(0), new_lhs_b2.lhs(), new_lhs_b2.rhs()));
+                return new_lhs_last.rhs() == null ?
+	                new NodePair<>(new Branch<>(lhs.getBranch(0), new_lhs_last.lhs())):
+	                new NodePair<>(new Branch<>(lhs.getBranch(0), new_lhs_last.lhs(), new_lhs_last.rhs()));
 	        } else {
-	            final NodePair<E> new_lhs_b3 = concat(lhs.getBranch(2), rhs, depthDelta - 1);
-                return new_lhs_b3.rhs() == null ?
-	                new NodePair<>(new Branch<>(lhs.getBranch(0), lhs.getBranch(1), new_lhs_b3.lhs())):
-	                new NodePair<>(new Branch<>(lhs.getBranch(0), lhs.getBranch(1)), new Branch<>(new_lhs_b3.lhs(), new_lhs_b3.rhs()));
+                return new_lhs_last.rhs() == null ?
+	                new NodePair<>(new Branch<>(lhs.getBranch(0), lhs.getBranch(1), new_lhs_last.lhs())):
+	                new NodePair<>(new Branch<>(lhs.getBranch(0), lhs.getBranch(1)), new Branch<>(new_lhs_last.lhs(), new_lhs_last.rhs()));
 	        }
 	        
 	    // They are same depth, just create a pair.
