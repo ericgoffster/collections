@@ -792,22 +792,8 @@ public final class List23<E> implements Collection23<E> {
 
     // Visits all leaves, returning an arbitrary result returned from leafVisitor
     // Warning, all elements in this list must follow order governed by this comparator
-    static <T, E> T binarySearch(final Comparator<? super E> comparator, final Node23<E> node, final E element, final int index, final BiFunction<E,Integer,T> leafVisitor) {
-        if (node.isLeaf()) {
-            return leafVisitor.apply(node.leafValue(), index);
-        }
-        int pos = 0;
-        int j = 0;
-        while(j < node.numBranches() - 1 && comparator.compare(element, last(node.getBranch(j))) > 0) {
-            pos += node.getBranchSize(j++);
-        }
-        return binarySearch(comparator, node.getBranch(j), element, index + pos, leafVisitor);
-    }
-
-    // Visits all leaves, returning an arbitrary result returned from leafVisitor
-    // Warning, all elements in this list must follow order governed by this comparator
     <T> T binarySearch(final Comparator<? super E> comparator, final E element, final BiFunction<E,Integer,T> leafVisitor) {
-        return root == null ? leafVisitor.apply(null, -1) : binarySearch(comparator, root, element, 0, leafVisitor);
+        return root == null ? leafVisitor.apply(null, -1) : root.binarySearch((Function<? super E, Integer>) e -> comparator.compare(element, e), 0, leafVisitor);
     }
     
     // Warning, all elements in this list must follow order governed by this comparator

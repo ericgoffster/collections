@@ -1,5 +1,8 @@
 package collections.twothree.list;
 
+import java.util.function.BiFunction;
+import java.util.function.Function;
+
 final class Leaf<E> implements Node23<E> {
 	private final E element;
 	public Leaf(E leaf) {
@@ -31,6 +34,12 @@ final class Leaf<E> implements Node23<E> {
     public Node23<E> reverse() {
         return this;
     }
+    
+    @Override
+    public <T> T binarySearch(Function<? super E, Integer> comparator, int index,
+            BiFunction<E, Integer, T> leafVisitor) {
+        return leafVisitor.apply(element, index);
+    }
 
     @Override
     public Node23<E> getBranch(int which) {
@@ -50,5 +59,15 @@ final class Leaf<E> implements Node23<E> {
     @Override
     public boolean isValid(int depth) {
         return depth == 1;
+    }
+    
+    @Override
+    public E last() {
+        return element;
+    }
+    
+    @Override
+    public E first() {
+        return element;
     }
 }

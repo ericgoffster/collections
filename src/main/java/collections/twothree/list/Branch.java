@@ -1,6 +1,8 @@
 package collections.twothree.list;
 
 import java.util.ListIterator;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 final class Branch<E> implements Node23<E> {
 	private final int size;
@@ -79,6 +81,27 @@ final class Branch<E> implements Node23<E> {
     }
     
     @Override
+    public E last() {
+        return nodes[nodes.length - 1].last();
+    }
+    
+    @Override
+    public E first() {
+        return nodes[0].first();
+    }
+    
+    @Override
+    public <T> T binarySearch(Function<? super E, Integer> comparator, int index,
+            BiFunction<E, Integer, T> leafVisitor) {
+        int pos = 0;
+        int j = 0;
+        while(j < nodes.length - 1 && comparator.apply(nodes[j].last()) > 0) {
+            pos += nodes[j++].size();
+        }
+        return nodes[j].binarySearch(comparator, index + pos, leafVisitor);
+    }
+    
+    @Override
     public Node23<E> reverse() {
         return new Node23<E>() {
 
@@ -132,10 +155,31 @@ final class Branch<E> implements Node23<E> {
             public E get(int index) {
                 return Branch.this.get(size - index - 1);
             }
-            
+
             @Override
             public boolean isValid(int depth) {
                 return Branch.this.isValid(depth);
+            }
+            
+            @Override
+            public E last() {
+                return Branch.this.first();
+            }
+            
+            @Override
+            public E first() {
+                return Branch.this.last();
+            }
+            
+            @Override
+            public <T> T binarySearch(Function<? super E, Integer> comparator, int index,
+                    BiFunction<E, Integer, T> leafVisitor) {
+                int pos = 0;
+                int j = 0;
+                while(j < numBranches() - 1 && comparator.apply(getBranch(j).last()) > 0) {
+                    pos += getBranchSize(j++);
+                }
+                return getBranch(j).binarySearch(comparator, index + pos, leafVisitor);
             }
         };
     }

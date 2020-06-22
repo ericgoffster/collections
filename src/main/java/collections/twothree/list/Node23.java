@@ -1,6 +1,8 @@
 package collections.twothree.list;
 
 import java.util.ListIterator;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 interface Node23<E> extends Iterable<E> {
 	default E leafValue() {
@@ -20,4 +22,7 @@ interface Node23<E> extends Iterable<E> {
 	}
     E get(int index);
     boolean isValid(int depth);
+    <T> T binarySearch(final Function<? super E, Integer> comparator, final int index, final BiFunction<E,Integer,T> leafVisitor);
+    E last();
+    E first();
 }
