@@ -41,4 +41,9 @@ final class Leaf<E> implements Node23<E> {
     public int getBranchSize(int which) {
         throw new UnsupportedOperationException();
     }
+
+    public E get(final int index) {
+        assert index < 1;
+        return element;
+    }
 }

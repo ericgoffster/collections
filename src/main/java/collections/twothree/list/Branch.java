@@ -58,6 +58,17 @@ final class Branch<E> implements Node23<E> {
     }
 
     @Override
+    public E get(final int index) {
+        assert index < size;
+        int pos = 0;
+        int j = 0;
+        while(j < nodes.length - 1 && index >= pos + getBranchSize(j)) {
+            pos += getBranchSize(j++);
+        }
+        return getBranch(j).get(index - pos);
+    }
+
+    @Override
     public Node23<E> reverse() {
         return new Node23<E>() {
 
@@ -105,6 +116,11 @@ final class Branch<E> implements Node23<E> {
             @Override
             public ListIterator<E> iterator() {
                 return NodeIterator.atBeginning(this);
+            }
+            
+            @Override
+            public E get(int index) {
+                return Branch.this.get(size - index - 1);
             }
         };
     }

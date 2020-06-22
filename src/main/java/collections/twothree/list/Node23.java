@@ -18,4 +18,5 @@ interface Node23<E> extends Iterable<E> {
 	default ListIterator<E> iterator() {
 	    return NodeIterator.atBeginning(this);
 	}
+    E get(int index);
 }

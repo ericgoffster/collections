@@ -63,7 +63,7 @@ public final class List23<E> implements Collection23<E> {
      * @return A new List23 representing the map of this one
      */
     public <F> List23<F> map(Function<E, F> function) {
-        return root == null ? empty() : new List23<>(new MappedNode23<E, F>(root, function));
+        return root == null ? empty() : new List23<>(MappedNode23.map(root, function));
     }
 
     /**
@@ -266,7 +266,7 @@ public final class List23<E> implements Collection23<E> {
 	 * @throws IndexOutOfBoundsException if index &lt; 0 or index &gt;= size
 	 */
 	public E getAt(final int index) {
-		return get(root, verifyIndex("index", index, 0, size() - 1));
+		return root.get(verifyIndex("index", index, 0, size() - 1));
 	}
 	
     /**
@@ -710,22 +710,7 @@ public final class List23<E> implements Collection23<E> {
         return find(node.getBranch(j), element, index + pos);
     }
 
-    // Get the element at the given index.
-    // O(log n)
-    static <E> E get(final Node23<E> node, final int index) {
-        assert index < node.size();
-        if (node.isLeaf()) {
-            return node.leafValue();
-        }
-        int pos = 0;
-        int j = 0;
-        while(j < node.numBranches() - 1 && index >= pos + node.getBranchSize(j)) {
-            pos += node.getBranchSize(j++);
-        }
-        return get(node.getBranch(j), index - pos);
-	}
-
-	// Returns the concatenation of lhs and rhs.
+    // Returns the concatenation of lhs and rhs.
     // The returned node will never be degenerate.
 	// O(log max(m,n))
 	static <E> Node23<E> concat(final Node23<E> lhs, final Node23<E> rhs) {

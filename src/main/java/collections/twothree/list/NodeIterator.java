@@ -10,7 +10,7 @@ final class NodeIterator<E> implements ListIterator<E>{
     ListIterator<E> curr;
     int index;
 
-    public NodeIterator(Node23<E> n, int which, ListIterator<E> curr, int index) {
+    private NodeIterator(Node23<E> n, int which, ListIterator<E> curr, int index) {
         super();
         this.root = n;
         this.which = which;
