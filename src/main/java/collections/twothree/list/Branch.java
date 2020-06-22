@@ -1,5 +1,7 @@
 package collections.twothree.list;
 
+import java.util.ListIterator;
+
 final class Branch<E> implements Node23<E> {
 	private final int size;
 	private final Node23<E>[] nodes;
@@ -49,6 +51,12 @@ final class Branch<E> implements Node23<E> {
         }
         return sb.append("]").toString();
     }
+
+    @Override
+    public ListIterator<E> iterator() {
+        return NodeIterator.atBeginning(this);
+    }
+
     @Override
     public Node23<E> reverse() {
         return new Node23<E>() {
@@ -92,6 +100,11 @@ final class Branch<E> implements Node23<E> {
                     delim = " ";
                 }
                 return sb.append("]").toString();
+            }
+
+            @Override
+            public ListIterator<E> iterator() {
+                return NodeIterator.atBeginning(this);
             }
         };
     }

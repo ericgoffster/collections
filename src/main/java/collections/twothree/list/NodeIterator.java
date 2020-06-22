@@ -1,56 +1,101 @@
 package collections.twothree.list;
 
 import java.util.ListIterator;
+import java.util.NoSuchElementException;
 
 final class NodeIterator<E> implements ListIterator<E>{
     
     final Node23<E> root;
-    NodeState<E> state;
-    int i = 0;
+    int which;
+    ListIterator<E> curr;
+    int index;
 
-    public NodeIterator(Node23<E> n) {
+    public NodeIterator(Node23<E> n, int which, ListIterator<E> curr, int index) {
         super();
         this.root = n;
-        this.state = n == null ? null : new NodeState<>(n).leftMost();
+        this.which = which;
+        this.curr = curr;
+        this.index = index;
+    }
+    
+    public static <E> ListIterator<E> atBeginning(Node23<E> n) {
+        if (n == null) {
+            return new EmptyIterator<E>();
+        }
+        if (n.isLeaf()) {
+            return new SingletonIterable<>(n.leafValue()).iterator();
+        }
+        return new NodeIterator<>(n, 0, atBeginning(n.getBranch(0)), 0);
+    }
+    
+    public static <E> ListIterator<E> atEnd(Node23<E> n) {
+        if (n == null) {
+            return new EmptyIterator<E>();
+        }
+        if (n.isLeaf()) {
+            ListIterator<E> iterator = new SingletonIterable<>(n.leafValue()).iterator();
+            iterator.next();
+            return iterator;
+        }
+        return new NodeIterator<>(n, n.numBranches() - 1, atEnd(n.getBranch(n.numBranches() - 1)), n.size() - 1);
     }
 
     @Override
     public boolean hasNext() {
-        return state != null;
+        if (curr.hasNext()) {
+            return true;
+        }
+        if (which >= root.numBranches() - 1) {
+            return false;
+        }
+        return true;
     }
-
-    @Override
-    public E next() {
-        E e = state.n.leafValue();
-        state = state.next();
-        i++;
-        return e;
-    }
-
+    
     @Override
     public boolean hasPrevious() {
-        return i > 0;
+        if (curr.hasPrevious()) {
+            return true;
+        }
+        if (which == 0) {
+            return false;
+        }
+        return true;
     }
 
     @Override
     public E previous() {
-        if (state == null) {
-            state = new NodeState<E>(root).rightMost();
-        } else {
-            state = state.prev();
+        if (!curr.hasPrevious()) {
+            if (which == 0) {
+                throw new NoSuchElementException();
+            }
+            which--;
+            this.curr = atEnd(root.getBranch(which));
         }
-        i--;
-        return state.n.leafValue();
+        index--;
+        return curr.previous();
     }
 
+    @Override
+    public E next() {
+        if (!curr.hasNext()) {
+            if (which >= root.numBranches() - 1) {
+                throw new NoSuchElementException();
+            }
+            which++;
+            this.curr = atBeginning(root.getBranch(which));
+        }
+        index++;
+        return curr.next();
+    }
+    
     @Override
     public int nextIndex() {
-        return i;
+        return index;
     }
-
+    
     @Override
     public int previousIndex() {
-        return i - 1;
+        return index - 1;
     }
 
     @Override

@@ -1,6 +1,8 @@
 package collections.twothree.list;
 
-interface Node23<E> {
+import java.util.ListIterator;
+
+interface Node23<E> extends Iterable<E> {
 	default E leafValue() {
 	    throw new UnsupportedOperationException();
 	}
@@ -13,4 +15,7 @@ interface Node23<E> {
 	Node23<E> reverse();
 	int numBranches();
 	int getDepth();
+	default ListIterator<E> iterator() {
+	    return NodeIterator.atBeginning(this);
+	}
 }
