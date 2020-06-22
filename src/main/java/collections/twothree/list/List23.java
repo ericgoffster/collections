@@ -298,7 +298,14 @@ public final class List23<E> implements Collection23<E> {
      * @return The index of <code>element</code>, -1 if not found
      */
 	public int indexOf(E element) {
-	    return root == null ? -1: find(root, element, 0);
+	    int i = 0;
+	    for(E e: this) {
+	        if (Objects.equals(e,element)) {
+	            return i;
+	        }
+	        i++;
+	    }
+	    return -1;
 	}
 	
     /**
@@ -692,25 +699,7 @@ public final class List23<E> implements Collection23<E> {
 	    return quickConstruct(new NodeConstructionIterator<E>(nodes, b0, nodes.next()));
 	}
 
-	// Search through the node for an element.
-    // O(n log n)
-	static <E> int find(final Node23<E> node, final E element, final int index) {
-        if (node.isLeaf()) {
-            return Objects.equals(node.leafValue(),element) ? index: -1;
-        }
-        int pos = 0;
-        int j = 0;
-        while(j < node.numBranches() - 1) {
-            int i = find(node.getBranch(j), element, index + pos);
-            if (i >= 0) {
-                return i;
-            }
-            pos += node.getBranchSize(j++);
-        }
-        return find(node.getBranch(j), element, index + pos);
-    }
-
-    // Returns the concatenation of lhs and rhs.
+	// Returns the concatenation of lhs and rhs.
     // The returned node will never be degenerate.
 	// O(log max(m,n))
 	static <E> Node23<E> concat(final Node23<E> lhs, final Node23<E> rhs) {

@@ -65,7 +65,7 @@ final class Branch<E> implements Node23<E> {
         while(j < nodes.length - 1 && index >= pos + nodes[j].size()) {
             pos += nodes[j++].size();
         }
-        return getBranch(j).get(index - pos);
+        return nodes[j].get(index - pos);
     }
     
     @Override
@@ -78,7 +78,6 @@ final class Branch<E> implements Node23<E> {
         return true;
     }
     
-
     @Override
     public Node23<E> reverse() {
         return new Node23<E>() {

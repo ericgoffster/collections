@@ -1,5 +1,6 @@
 package collections.twothree.list;
 
+import java.util.ListIterator;
 import java.util.function.Function;
 
 class MappedNode23<E, F> implements Node23<F> {
@@ -70,5 +71,10 @@ class MappedNode23<E, F> implements Node23<F> {
     @Override
     public boolean isValid(int depth) {
         return e.isValid(depth);
+    }
+    
+    @Override
+    public ListIterator<F> iterator() {
+        return new MappedIterator<E, F>(e.iterator(), f);
     }
 }
