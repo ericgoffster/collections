@@ -65,5 +65,10 @@ class MappedNode23<E, F> implements Node23<F> {
     @Override
     public int numBranches() {
         return e.numBranches();
-    }    
+    }  
+    
+    @Override
+    public boolean isValid(int depth) {
+        return e.isValid(depth);
+    }
 }

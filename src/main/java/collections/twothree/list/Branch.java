@@ -62,11 +62,22 @@ final class Branch<E> implements Node23<E> {
         assert index < size;
         int pos = 0;
         int j = 0;
-        while(j < nodes.length - 1 && index >= pos + getBranchSize(j)) {
-            pos += getBranchSize(j++);
+        while(j < nodes.length - 1 && index >= pos + nodes[j].size()) {
+            pos += nodes[j++].size();
         }
         return getBranch(j).get(index - pos);
     }
+    
+    @Override
+    public boolean isValid(final int depth) {
+        for(int i = 0; i < nodes.length; i++) {
+            if (!nodes[i].isValid(depth - 1)) {
+                return false;
+            }
+        }
+        return true;
+    }
+    
 
     @Override
     public Node23<E> reverse() {
@@ -121,6 +132,11 @@ final class Branch<E> implements Node23<E> {
             @Override
             public E get(int index) {
                 return Branch.this.get(size - index - 1);
+            }
+            
+            @Override
+            public boolean isValid(int depth) {
+                return Branch.this.isValid(depth);
             }
         };
     }

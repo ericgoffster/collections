@@ -794,24 +794,9 @@ public final class List23<E> implements Collection23<E> {
     // All branches are same height, and no 1 degenerate 1 branches.
     // O(n log n)
     static <E> boolean isValid(final Node23<E> n) {
-        return n == null || isValid(n, n.getDepth());
+        return n == null || n.isValid(n.getDepth());
     }
 
-    // Returns true, if the node is valid.
-    // All branches are same height, and no 1 degenerate 1 branches.
-    // O(n log n)
-    static <E> boolean isValid(final Node23<E> n, final int depth) {
-        if (n.isLeaf()) {
-            return depth == 1;
-        }
-        for(int i = 0; i < n.numBranches(); i++) {
-            if (!isValid(n.getBranch(i), depth - 1)) {
-                return false;
-            }
-        }
-        return true;
-    }
-    
     static <E> E last(final Node23<E> node) {
         return node.isLeaf() ? node.leafValue() : last(node.getBranch(node.numBranches() - 1));
     }

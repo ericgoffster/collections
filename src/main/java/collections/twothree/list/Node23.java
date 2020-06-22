@@ -19,4 +19,5 @@ interface Node23<E> extends Iterable<E> {
 	    return NodeIterator.atBeginning(this);
 	}
     E get(int index);
+    boolean isValid(int depth);
 }

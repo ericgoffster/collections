@@ -46,4 +46,9 @@ final class Leaf<E> implements Node23<E> {
         assert index < 1;
         return element;
     }
+    
+    @Override
+    public boolean isValid(int depth) {
+        return depth == 1;
+    }
 }
