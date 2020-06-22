@@ -3,7 +3,7 @@ package collections.twothree.list;
 import java.util.ListIterator;
 import java.util.function.Function;
 
-class MappedNode23<E, F> implements Node23<F> {
+final class MappedNode23<E, F> implements Node23<F> {
     final Node23<E> e;
     final Function<E, F> f;
 
@@ -44,13 +44,9 @@ class MappedNode23<E, F> implements Node23<F> {
         return e.size();
     }
     
-    Node23<F> xform(Node23<E> b) {
-        return map(b, f);
-    }
-    
     @Override
     public Node23<F> getBranch(int which) {
-        return xform(e.getBranch(which));
+        return map(e.getBranch(which), f);
     }
     
     @Override
@@ -60,7 +56,7 @@ class MappedNode23<E, F> implements Node23<F> {
 
     @Override
     public Node23<F> reverse() {
-        return xform(e.reverse()) ;
+        return map(e.reverse(), f);
     }
 
     @Override
