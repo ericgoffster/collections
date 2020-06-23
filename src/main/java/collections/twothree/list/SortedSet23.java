@@ -200,7 +200,7 @@ public final class SortedSet23<E> implements Set23<E> {
      * @return The index of the given element in the set, -1 of not found.
      */
     public int indexOf(final E element) {
-        return elements.indexOf(comparator, element);
+        return elements.getIndexOf(e -> comparator.compare(element, e));
     }
     
     /**
@@ -217,7 +217,7 @@ public final class SortedSet23<E> implements Set23<E> {
      * @return The set of all elements in this set &gt;= element
      */
 	public SortedSet23<E> ge(final E element) {
-		return new SortedSet23<E>(comparator, elements.tailAt(elements.naturalPosition(comparator, element)));
+		return new SortedSet23<E>(comparator, elements.tailAt(elements.naturalPosition(e -> comparator.compare(element, e))));
 	}
 
     /**
@@ -234,7 +234,7 @@ public final class SortedSet23<E> implements Set23<E> {
      * @return The set of all elements in this set &lt; element
      */
 	public SortedSet23<E> lt(final E element) {
-		return new SortedSet23<E>(comparator, elements.headAt(elements.naturalPosition(comparator, element)));
+		return new SortedSet23<E>(comparator, elements.headAt(elements.naturalPosition(e -> comparator.compare(element, e))));
 	}
 
     /**
@@ -260,8 +260,8 @@ public final class SortedSet23<E> implements Set23<E> {
             return this;
         }
         return new SortedSet23<E>(comparator, elements.removeRange(
-                elements.naturalPosition(comparator, low),
-                elements.naturalPosition(comparator, high)));
+                elements.naturalPosition(e -> comparator.compare(low, e)),
+                elements.naturalPosition(e -> comparator.compare(high, e))));
     }
 
     /**
@@ -288,8 +288,8 @@ public final class SortedSet23<E> implements Set23<E> {
             return new SortedSet23<E>(comparator, List23.empty());
         }
 		return new SortedSet23<E>(comparator, elements.getRange(
-		        elements.naturalPosition(comparator, low),
-		        elements.naturalPosition(comparator, high)));
+		        elements.naturalPosition(e -> comparator.compare(low, e)),
+		        elements.naturalPosition(e -> comparator.compare(high, e))));
 	}
 
 	/**
@@ -308,7 +308,7 @@ public final class SortedSet23<E> implements Set23<E> {
 	    if (contains(element)) {
 	        return this;
 	    }
-	    return new SortedSet23<>(comparator, elements.insertAt(elements.naturalPosition(comparator, element), element));
+	    return new SortedSet23<>(comparator, elements.insertAt(elements.naturalPosition(e -> comparator.compare(element, e)), element));
 	}
 	
     /**

@@ -57,7 +57,7 @@ public final class HashMap23<K, V> implements Map23<K, V> {
     @Override
 	public HashMap23<K, V> put(final K key, final V value) {
         HashMap23<K, V> m = removeKey(key);
-        int index = m.keys().elements.naturalPosition(HashSet23::compare, key);
+        int index = m.keys().elements.naturalPosition(e -> HashSet23.compare(key, e));
         return new HashMap23<>(m.entries.insertAt(index, new AbstractMap.SimpleImmutableEntry<>(key, value)));
 	}
 	

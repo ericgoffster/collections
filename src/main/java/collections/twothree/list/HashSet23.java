@@ -124,7 +124,7 @@ public final class HashSet23<E> implements Set23<E> {
 	 */
     @Override
 	public boolean contains(final E element) {
-	    return elements.indexOf(HashSet23::compare, element) >= 0;
+	    return elements.getIndexOf(e -> compare(element, e)) >= 0;
 	}
 
     /**
@@ -143,7 +143,7 @@ public final class HashSet23<E> implements Set23<E> {
 	    if (contains(element)) {
 	        return this;
 	    }
-	    return new HashSet23<>(elements.insertAt(elements.naturalPosition(HashSet23::compare, element), element));
+	    return new HashSet23<>(elements.insertAt(elements.naturalPosition(e -> compare(element, e)), element));
 	}
 	
     /**
@@ -180,7 +180,7 @@ public final class HashSet23<E> implements Set23<E> {
      */
     @Override
 	public HashSet23<E> remove(final E element) {
-	    int index = elements.indexOf(HashSet23::compare, element);
+	    int index = elements.getIndexOf(e -> compare(element, e));
 	    return index < 0 ? this : new HashSet23<>(elements.removeAt(index));
 	}
 	

@@ -80,16 +80,16 @@ public final class SortedMap23<K, V> implements Map23<K, V> {
     @Override
 	public SortedMap23<K, V> put(final K key, final V value) {
         SortedMap23<K, V> m = removeKey(key);
-        int index = m.keys().elements.naturalPosition(keyComparator, key);
+        int index = m.keys().elements.naturalPosition(e -> keyComparator.compare(key, e));
         return new SortedMap23<>(keyComparator, m.entries.insertAt(index, new AbstractMap.SimpleImmutableEntry<>(key, value)));
 	}
 	
     public SortedMap23<K, V> ge(final K element) {
-        return new SortedMap23<>(keyComparator, entries.tailAt(keys().elements.naturalPosition(keyComparator, element)));
+        return new SortedMap23<>(keyComparator, entries.tailAt(keys().elements.naturalPosition(e -> keyComparator.compare(element, e))));
     }
 
     public SortedMap23<K, V> lt(final K element) {
-        return new SortedMap23<>(keyComparator, entries.headAt(keys().elements.naturalPosition(keyComparator, element)));
+        return new SortedMap23<>(keyComparator, entries.headAt(keys().elements.naturalPosition(e -> keyComparator.compare(element, e))));
     }
 
     public SortedMap23<K, V> exclude(final K low, final K high) {
@@ -102,8 +102,8 @@ public final class SortedMap23<K, V> implements Map23<K, V> {
         }
         SortedSet23<K> keys = keys();
         return new SortedMap23<>(keyComparator, entries.removeRange(
-                keys.elements.naturalPosition(keyComparator, low),
-                keys.elements.naturalPosition(keyComparator, high)));
+                keys.elements.naturalPosition(e -> keyComparator.compare(low, e)),
+                keys.elements.naturalPosition(e -> keyComparator.compare(high, e))));
     }
 
     public SortedMap23<K, V> subSet(final K low, final K high) {
@@ -116,8 +116,8 @@ public final class SortedMap23<K, V> implements Map23<K, V> {
         }
         SortedSet23<K> keys = keys();
         return new SortedMap23<>(keyComparator, entries.getRange(
-                keys.elements.naturalPosition(keyComparator, low),
-                keys.elements.naturalPosition(keyComparator, high)));
+                keys.elements.naturalPosition(e -> keyComparator.compare(low, e)),
+                keys.elements.naturalPosition(e -> keyComparator.compare(high, e))));
     }
 
 	

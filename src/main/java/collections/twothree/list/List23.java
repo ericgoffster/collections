@@ -11,7 +11,6 @@ import java.util.ListIterator;
 import java.util.Objects;
 import java.util.Spliterator;
 import java.util.Spliterators;
-import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
@@ -786,21 +785,21 @@ public final class List23<E> implements Collection23<E> {
         return n == null || n.isValid(n.getDepth());
     }
 
-    // Visits all leaves, returning an arbitrary result returned from leafVisitor
     // Warning, all elements in this list must follow order governed by this comparator
-    <T> T binarySearch(final Comparator<? super E> comparator, final E element, final BiFunction<E,Integer,T> leafVisitor) {
-        return root == null ? leafVisitor.apply(null, -1) : root.binarySearch((Function<? super E, Integer>) e -> comparator.compare(element, e), 0, leafVisitor);
-    }
-    
-    // Warning, all elements in this list must follow order governed by this comparator
-    int indexOf(final Comparator<? super E> comparator, final E element) {
-        return binarySearch(comparator, element, (leaf, i) -> i < 0 ? -1 : comparator.compare(element, leaf) == 0 ? i : -1);
+    int getIndexOf(final Function<? super E, Integer> comparator) {
+        if (root == null) {
+            return -1;
+        }
+        return root.binarySearch(comparator, 0, (leaf, i) -> comparator.apply(leaf) == 0 ? i : -1);
     }
     
     // Returns the position where the element belongs
     // Warning, all elements in this list must follow order governed by this comparator
-    int naturalPosition(final Comparator<? super E> comparator, final E element) {
-        return binarySearch(comparator, element, (leaf, i) -> i < 0 ? 0 : comparator.compare(element,leaf) > 0 ? (i + 1) : i);
+    int naturalPosition(final Function<? super E, Integer> comparator) {
+        if (root == null) {
+            return 0;
+        }
+        return root.binarySearch(comparator, 0, (leaf, i) -> comparator.apply(leaf) > 0 ? (i + 1) : i);
     }
 
     static <E> Iterator<Leaf<E>> sortLeaves(final Comparator<? super E> comparator,
