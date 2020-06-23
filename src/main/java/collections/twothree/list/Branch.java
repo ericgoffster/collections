@@ -112,7 +112,7 @@ final class Branch<E> implements Node23<E> {
             
             @Override
             public int getDepth() {
-                return nodes[0].getDepth() + 1;
+                return Branch.this.getDepth();
             }
                 
             @Override
@@ -132,7 +132,7 @@ final class Branch<E> implements Node23<E> {
 
             @Override
             public int numBranches() {
-                return nodes.length;
+                return Branch.this.numBranches();
             }
             @Override
             public String toString() {
@@ -175,11 +175,11 @@ final class Branch<E> implements Node23<E> {
             public <T> T binarySearch(Function<? super E, Integer> comparator, int index,
                     BiFunction<E, Integer, T> leafVisitor) {
                 int pos = 0;
-                int j = 0;
-                while(j < numBranches() - 1 && comparator.apply(getBranch(j).last()) > 0) {
-                    pos += getBranchSize(j++);
+                int j = nodes.length - 1;
+                while(j > 0 && comparator.apply(nodes[j].first()) > 0) {
+                    pos += nodes[j--].size();
                 }
-                return getBranch(j).binarySearch(comparator, index + pos, leafVisitor);
+                return nodes[j].reverse().binarySearch(comparator, index + pos, leafVisitor);
             }
         };
     }

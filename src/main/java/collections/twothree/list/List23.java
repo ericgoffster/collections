@@ -786,10 +786,6 @@ public final class List23<E> implements Collection23<E> {
         return n == null || n.isValid(n.getDepth());
     }
 
-    static <E> E last(final Node23<E> node) {
-        return node.isLeaf() ? node.leafValue() : last(node.getBranch(node.numBranches() - 1));
-    }
-
     // Visits all leaves, returning an arbitrary result returned from leafVisitor
     // Warning, all elements in this list must follow order governed by this comparator
     <T> T binarySearch(final Comparator<? super E> comparator, final E element, final BiFunction<E,Integer,T> leafVisitor) {
