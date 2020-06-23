@@ -135,7 +135,7 @@ public final class SortedSet23<E> implements Set23<E> {
     private static <E> Comparator<? super E> getComparator(final SortedSet<E> other) {
         final Comparator<? super E> comparator = other.comparator();
         if (comparator == null) {
-            return List23::unNaturalCompare;
+            return SortedSet23::unNaturalCompare;
         }
         return comparator;
     }
@@ -509,5 +509,19 @@ public final class SortedSet23<E> implements Set23<E> {
     @Override
     public Collection<E> asCollection() {
         return elements.asCollection();
+    }
+
+    /// Compares two elements, allowing for null.
+    static <E> int unNaturalCompare(final E a, final E b) {
+        if (a == null) {
+            return (b == null) ? 0 : -1;
+        }
+        if (b == null) {
+            return 1;
+        }
+        
+        @SuppressWarnings("unchecked")
+        final Comparable<? super E> ea = (Comparable<? super E>) a;
+        return ea.compareTo(b);
     }
 }

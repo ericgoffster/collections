@@ -62,7 +62,7 @@ public final class List23<E> implements Collection23<E> {
      * @return A new List23 representing the map of this one
      */
     public <F> List23<F> map(Function<E, F> function) {
-        return root == null ? empty() : new List23<>(MappedNode23.map(root, function));
+        return root == null ? empty() : new List23<>(root.map(function));
     }
 
     /**
@@ -662,20 +662,6 @@ public final class List23<E> implements Collection23<E> {
             throw new IndexOutOfBoundsException(String.format("%s: %d, Low: %d, High %d", name, index, low, high));
         }
         return index;
-    }
-
-    /// Compares two elements, allowing for null.
-    static <E> int unNaturalCompare(final E a, final E b) {
-        if (a == null) {
-            return (b == null) ? 0 : -1;
-        }
-        if (b == null) {
-            return 1;
-        }
-        
-        @SuppressWarnings("unchecked")
-        final Comparable<? super E> ea = (Comparable<? super E>) a;
-        return ea.compareTo(b);
     }
 
     /// Compares two elements, allowing for null.

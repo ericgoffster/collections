@@ -39,7 +39,7 @@ public final class SortedMap23<K, V> implements Map23<K, V> {
     private static <K, V> Comparator<? super K> getComparator(final SortedMap<K, V> items) {
         final Comparator<? super K> comparator = items.comparator();
         if (comparator == null) {
-            return List23::unNaturalCompare;
+            return SortedSet23::unNaturalCompare;
         }
         return comparator;
     }

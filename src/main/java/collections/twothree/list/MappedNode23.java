@@ -8,18 +8,7 @@ final class MappedNode23<E, F> implements Node23<F> {
     final Node23<E> e;
     final Function<E, F> f;
 
-    public static <E, F>  Node23<F> map(Node23<E> e, Function<E, F> f) {
-        if (e == null) {
-            return null;
-        }
-        if (e.isLeaf()) {
-            return new Leaf<F>(f.apply(e.leafValue()));
-        } else {
-            return new MappedNode23<>(e, f);
-        }
-    }
-
-    private MappedNode23(Node23<E> e, Function<E, F> f) {
+    MappedNode23(Node23<E> e, Function<E, F> f) {
         super();
         this.e = e;
         this.f = f;
@@ -47,7 +36,7 @@ final class MappedNode23<E, F> implements Node23<F> {
     
     @Override
     public Node23<F> getBranch(int which) {
-        return map(e.getBranch(which), f);
+        return e.getBranch(which).map(f);
     }
     
     @Override
@@ -57,13 +46,19 @@ final class MappedNode23<E, F> implements Node23<F> {
 
     @Override
     public Node23<F> reverse() {
-        return map(e.reverse(), f);
+        return e.reverse().map(f);
     }
     
     @Override
     public <T> T binarySearch(Function<? super F, Integer> comparator, int index,
             BiFunction<F, Integer, T> leafVisitor) {
         return e.binarySearch(e -> comparator.apply(f.apply(e)), index, (e, i) -> leafVisitor.apply(f.apply(e), i));
+    }
+    
+    @Override
+    public <T> T reverseBinarySearch(Function<? super F, Integer> comparator, int index,
+            BiFunction<F, Integer, T> leafVisitor) {
+        return e.reverseBinarySearch(e -> comparator.apply(f.apply(e)), index, (e, i) -> leafVisitor.apply(f.apply(e), i));
     }
     
     @Override
@@ -88,6 +83,16 @@ final class MappedNode23<E, F> implements Node23<F> {
     
     @Override
     public ListIterator<F> iterator() {
-        return new MappedIterator<E, F>(e.iterator(), f);
+        return new MappedIterator<>(e.iterator(), f);
+    }
+    
+    @Override
+    public boolean isLeaf() {
+        return e.isLeaf();
+    }
+    
+    @Override
+    public <G> Node23<G> map(Function<F, G> f) {
+        return new MappedNode23<F, G>(this, f);
     }
 }

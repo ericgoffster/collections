@@ -526,12 +526,12 @@ public class List23Test {
 
     @Test
     public void testCompare() {
-        assertTrue(List23.unNaturalCompare(null, null) == 0);
-        assertTrue(List23.unNaturalCompare(2, null) > 0);
-        assertTrue(List23.unNaturalCompare(null, 2) < 0);
-        assertTrue(List23.unNaturalCompare(2, 3) < 0);
-        assertTrue(List23.unNaturalCompare(3, 2) > 0);
-        assertTrue(List23.unNaturalCompare(3, 3) == 00);
+        assertTrue(SortedSet23.unNaturalCompare(null, null) == 0);
+        assertTrue(SortedSet23.unNaturalCompare(2, null) > 0);
+        assertTrue(SortedSet23.unNaturalCompare(null, 2) < 0);
+        assertTrue(SortedSet23.unNaturalCompare(2, 3) < 0);
+        assertTrue(SortedSet23.unNaturalCompare(3, 2) > 0);
+        assertTrue(SortedSet23.unNaturalCompare(3, 3) == 00);
     }
     
     @Test
@@ -539,11 +539,11 @@ public class List23Test {
         Set<Integer> s = new HashSet<>();
         s.add(3);
         s.add(4);
-        assertTrue(List23.unNaturalCompare(2, null) > 0);
-        assertTrue(List23.unNaturalCompare(null, 2) < 0);
-        assertTrue(List23.unNaturalCompare(2, 3) < 0);
-        assertTrue(List23.unNaturalCompare(3, 2) > 0);
-        assertTrue(List23.unNaturalCompare(3, 3) == 00);
+        assertTrue(SortedSet23.unNaturalCompare(2, null) > 0);
+        assertTrue(SortedSet23.unNaturalCompare(null, 2) < 0);
+        assertTrue(SortedSet23.unNaturalCompare(2, 3) < 0);
+        assertTrue(SortedSet23.unNaturalCompare(3, 2) > 0);
+        assertTrue(SortedSet23.unNaturalCompare(3, 3) == 00);
     }
    
 	@Test

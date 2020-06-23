@@ -23,7 +23,7 @@ final class NodeIterator<E> implements ListIterator<E>{
             return new EmptyIterator<E>();
         }
         if (n.isLeaf()) {
-            return new SingletonIterable<>(n.leafValue()).iterator();
+            return new SingletonIterator<>(n.leafValue());
         }
         return new NodeIterator<>(n, 0, atBeginning(n.getBranch(0)), 0);
     }
@@ -33,7 +33,7 @@ final class NodeIterator<E> implements ListIterator<E>{
             return new EmptyIterator<E>();
         }
         if (n.isLeaf()) {
-            ListIterator<E> iterator = new SingletonIterable<>(n.leafValue()).iterator();
+            ListIterator<E> iterator = new SingletonIterator<>(n.leafValue());
             iterator.next();
             return iterator;
         }

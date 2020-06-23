@@ -102,85 +102,33 @@ final class Branch<E> implements Node23<E> {
     }
     
     @Override
+    public <T> T reverseBinarySearch(Function<? super E, Integer> comparator, int index,
+            BiFunction<E, Integer, T> leafVisitor) {
+        int pos = 0;
+        int j = nodes.length - 1;
+        while(j > 0 && comparator.apply(nodes[j].first()) > 0) {
+            pos += nodes[j--].size();
+        }
+        return nodes[j].reverseBinarySearch(comparator, index + pos, leafVisitor);
+    }
+    
+    @Override
     public Node23<E> reverse() {
-        return new Node23<E>() {
-
-            @Override
-            public int size() {
-                return size;
-            }
-            
-            @Override
-            public int getDepth() {
-                return Branch.this.getDepth();
-            }
-                
-            @Override
-            public Node23<E> getBranch(int which) {
-                return nodes[nodes.length - 1 - which].reverse();
-            }
-            
-            @Override
-            public int getBranchSize(int which) {
-                return nodes[nodes.length - 1 - which].size();
-            }
-
-            @Override
-            public Node23<E> reverse() {
-                return Branch.this;
-            }
-
-            @Override
-            public int numBranches() {
-                return Branch.this.numBranches();
-            }
-            @Override
-            public String toString() {
-                StringBuilder sb =  new StringBuilder("[");
-                String delim = "";
-                for(int i = nodes.length - 1; i >= 0; i--) {
-                    Node23<E> n = nodes[i];
-                    sb.append(delim).append(n.reverse().toString());
-                    delim = " ";
-                }
-                return sb.append("]").toString();
-            }
-
-            @Override
-            public ListIterator<E> iterator() {
-                return NodeIterator.atBeginning(this);
-            }
-            
-            @Override
-            public E get(int index) {
-                return Branch.this.get(size - index - 1);
-            }
-
-            @Override
-            public boolean isValid(int depth) {
-                return Branch.this.isValid(depth);
-            }
-            
-            @Override
-            public E last() {
-                return Branch.this.first();
-            }
-            
-            @Override
-            public E first() {
-                return Branch.this.last();
-            }
-            
-            @Override
-            public <T> T binarySearch(Function<? super E, Integer> comparator, int index,
-                    BiFunction<E, Integer, T> leafVisitor) {
-                int pos = 0;
-                int j = nodes.length - 1;
-                while(j > 0 && comparator.apply(nodes[j].first()) > 0) {
-                    pos += nodes[j--].size();
-                }
-                return nodes[j].reverse().binarySearch(comparator, index + pos, leafVisitor);
-            }
-        };
+        return new ReversedNode23<>(this);
+    }
+    
+    @Override
+    public boolean isLeaf() {
+        return false;
+    }
+    
+    @Override
+    public E leafValue() {
+        throw new UnsupportedOperationException();
+    }
+    
+    @Override
+    public <F> Node23<F> map(Function<E, F> f) {
+        return new MappedNode23<E, F>(this, f);
     }
 }
