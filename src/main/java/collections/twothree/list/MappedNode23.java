@@ -119,4 +119,12 @@ final class MappedNode23<E, F> implements Node23<F> {
     public Stream<F> stream() {
         return StreamSupport.stream(spliterator(), false);
     }
+    @Override
+    public int hashCode() {
+        return hc();
+    }
+    @Override
+    public boolean equals(Object obj) {
+        return eq(obj);
+    }
 }

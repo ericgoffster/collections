@@ -115,4 +115,12 @@ final class Leaf<E> implements Node23<E> {
     public Stream<E> stream() {
         return StreamSupport.stream(spliterator(), false);
     }
+    @Override
+    public int hashCode() {
+        return hc();
+    }
+    @Override
+    public boolean equals(Object obj) {
+        return eq(obj);
+    }
 }
