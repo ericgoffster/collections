@@ -44,7 +44,7 @@ public final class List23<E> implements Collection23<E> {
 	final Node23<E> root;
 	
 	List23(final Node23<E> root) {
-	    assert isValid(root);
+	    assert root == null || root.isValid(root.getDepth());
 		this.root = root;
 	}
 
@@ -701,16 +701,16 @@ public final class List23<E> implements Collection23<E> {
         }
         @SuppressWarnings("unchecked")
         final Node23<E>[] nodes = new Node23[2];
-        final int pos2;
+        final int nodelen;
 	    if (depthDelta >= 0) {
-	        pos2 = append(lhs, rhs, depthDelta, nodes, 0);
+	        nodelen = append(lhs, rhs, depthDelta, nodes, 0);
 	    } else {
-	        pos2 = prepend(lhs, rhs, -depthDelta, nodes);
+	        nodelen = prepend(lhs, rhs, -depthDelta, nodes);
 	    }
-	    return pos2 == 1 ? nodes[0] : new Branch<>(nodes[0], nodes[1]);
+	    return nodelen == 1 ? nodes[0] : new Branch<>(nodes[0], nodes[1]);
     }
 
-    private static <E> int combine(Node23<E>[] arr, int arrlen, Node23<E>[] nodes, int pos) {
+    private static <E> int combine(final Node23<E>[] arr, final int arrlen, final Node23<E>[] nodes, final int pos) {
         switch(arrlen) {
         case 2: {
             nodes[pos] = new Branch<>(arr[0], arr[1]);
@@ -729,15 +729,17 @@ public final class List23<E> implements Collection23<E> {
 	    }
     }
 
-	static <E> int prepend(final Node23<E> lhs, final Node23<E> rhs, final int depthDelta, Node23<E>[] result) {
+	static <E> int prepend(final Node23<E> lhs, final Node23<E> rhs, final int depthDelta, final Node23<E>[] result) {
 	    assert lhs != null;
 	    assert rhs != null;
+	    assert depthDelta >= 0;
 
 	    if (depthDelta == 0) {
 	        result[0] = lhs;
             result[1] = rhs;
             return 2;
 	    }
+
 	    @SuppressWarnings("unchecked")
         final Node23<E>[] arr = new Node23[4];
 	    int arrlen = prepend(lhs, rhs.getBranch(0), depthDelta - 1, arr);
@@ -747,9 +749,11 @@ public final class List23<E> implements Collection23<E> {
 	    return combine(arr, arrlen, result, 0);            
 	}
 
-	static <E> int append(final Node23<E> lhs, final Node23<E> rhs, final int depthDelta, Node23<E>[] result, int pos) {
+	static <E> int append(final Node23<E> lhs, final Node23<E> rhs, final int depthDelta, final Node23<E>[] result, final int pos) {
         assert lhs != null;
         assert rhs != null;
+        assert depthDelta >= 0;
+
         if (depthDelta == 0) {
             result[pos] = lhs;
             result[pos + 1] = rhs;
@@ -770,14 +774,7 @@ public final class List23<E> implements Collection23<E> {
     // All branches are same height, and no 1 degenerate 1 branches.
     // O(n log n)
 	boolean isValid() {
-        return isValid(root);
-    }
-
-    // Returns true, if the node is valid.
-    // All branches are same height, and no 1 degenerate 1 branches.
-    // O(n log n)
-    static <E> boolean isValid(final Node23<E> n) {
-        return n == null || n.isValid(n.getDepth());
+        return root == null || root.isValid(root.getDepth());
     }
 
     // Warning, all elements in this list must follow order governed by this comparator

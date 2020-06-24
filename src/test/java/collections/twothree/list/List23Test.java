@@ -20,12 +20,12 @@ public class List23Test {
 	
 	@Test
 	public void testIsValid() {
-	   assertFalse(List23.isValid(new Branch<>(branch("2","3"), new Leaf<>("1"), new Leaf<>("4"))));
-       assertFalse(List23.isValid(new Branch<>(new Leaf<>("1"), branch("2","3"), new Leaf<>("4"))));
-       assertFalse(List23.isValid(new Branch<>(new Leaf<>("1"), new Leaf<>("4"), branch("2","3"))));
-       assertFalse(List23.isValid(new Branch<>(branch("2","3"), new Leaf<>("1"))));
-       assertFalse(List23.isValid(new Branch<>(new Leaf<>("1"), branch("2","3"))));
-       assertTrue(List23.isValid(null));
+	   assertFalse(new Branch<>(branch("2","3"), new Leaf<>("1"), new Leaf<>("4")).isValid(3));
+       assertFalse(new Branch<>(new Leaf<>("1"), branch("2","3"), new Leaf<>("4")).isValid(3));
+       assertFalse(new Branch<>(new Leaf<>("1"), new Leaf<>("4"), branch("2","3")).isValid(3));
+       assertFalse(new Branch<>(branch("2","3"), new Leaf<>("1")).isValid(3));
+       assertFalse(new Branch<>(new Leaf<>("1"), branch("2","3")).isValid(3));
+       assertTrue(new Branch<>(branch("2","3"), branch("4","5")).isValid(3));
 	}
 	
 	@Test
