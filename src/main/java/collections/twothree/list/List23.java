@@ -1,7 +1,6 @@
 package collections.twothree.list;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -690,8 +689,8 @@ public final class List23<E> implements Collection23<E> {
 	static <E> Node23<E> concat(final Node23<E> lhs, final Node23<E> rhs) {
 	    assert lhs != null;
         assert rhs != null;
-	    final List<Node23<E>> nodes = concat(lhs, rhs, lhs.getDepth() - rhs.getDepth());
-	    return nodes.size() == 1 ? nodes.get(0) : new Branch<>(nodes.get(0), nodes.get(1));
+	    final Node23<E>[] nodes = concat(lhs, rhs, lhs.getDepth() - rhs.getDepth());
+	    return nodes.length == 1 ? nodes[0] : new Branch<>(nodes[0], nodes[1]);
     }
 	
 	// Creates a branch representing the concatenation
@@ -700,17 +699,21 @@ public final class List23<E> implements Collection23<E> {
 	//   of only 1 branch, which would mean that lhs was capable of
 	//   absorbing rhs with a change of level.
     // O(log max(m,n))
-	static <E> List<Node23<E>> concat(final Node23<E> lhs, final Node23<E> rhs, final int depthDelta) {
+	static <E> Node23<E>[] concat(final Node23<E> lhs, final Node23<E> rhs, final int depthDelta) {
         assert lhs != null;
         assert rhs != null;
         
         if (depthDelta == 0) {
-            return Arrays.asList(lhs, rhs);
+            return new Node23[] {lhs, rhs};
         }
 
         final List<Node23<E>> arr = new ArrayList<>();
 	    if (depthDelta < 0) {
-	        arr.addAll(concat(lhs, rhs.getBranch(0), depthDelta + 1));
+	        Node23<E>[] nodes = concat(lhs, rhs.getBranch(0), depthDelta + 1);
+	        arr.add(nodes[0]);
+	        if (nodes.length > 1) {
+	            arr.add(nodes[1]);
+	        }
             for(int i = 1; i < rhs.numBranches(); i++) {
                 arr.add(rhs.getBranch(i));
             }
@@ -719,12 +722,16 @@ public final class List23<E> implements Collection23<E> {
 	        for(int i = 0; i < lhs.numBranches() - 1; i++) {
                 arr.add(lhs.getBranch(i));
             }
-            arr.addAll(concat(lhs.getBranch(lhs.numBranches() - 1), rhs, depthDelta - 1));
+	        Node23<E>[] nodes = concat(lhs.getBranch(lhs.numBranches() - 1), rhs, depthDelta - 1);
+            arr.add(nodes[0]);
+            if (nodes.length > 1) {
+                arr.add(nodes[1]);
+            }
 	    }
         switch(arr.size()) {
-        case 2: return Arrays.asList(new Branch<>(arr.get(0), arr.get(1)));
-        case 3: return Arrays.asList(new Branch<>(arr.get(0), arr.get(1), arr.get(2)));
-        case 4: return Arrays.asList(new Branch<>(arr.get(0), arr.get(1)), new Branch<>(arr.get(2), arr.get(3)));
+        case 2: return new Node23[] {new Branch<>(arr.get(0), arr.get(1))};
+        case 3: return new Node23[] {new Branch<>(arr.get(0), arr.get(1), arr.get(2))};
+        case 4: return new Node23[] {new Branch<>(arr.get(0), arr.get(1)), new Branch<>(arr.get(2), arr.get(3))};
         default: throw new IllegalStateException();
         }            
 	}
