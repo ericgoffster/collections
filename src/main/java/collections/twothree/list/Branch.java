@@ -1,8 +1,12 @@
 package collections.twothree.list;
 
 import java.util.ListIterator;
+import java.util.Spliterator;
+import java.util.Spliterators;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 final class Branch<E> implements Node23<E> {
 	private final int size;
@@ -174,5 +178,14 @@ final class Branch<E> implements Node23<E> {
             rhs = getBranch(2).head(b2Index);
         }
         return rhs == null ? lhs : List23.concat(lhs, rhs);
+    }
+    
+    @Override
+    public Spliterator<E> spliterator() {
+        return Spliterators.spliterator(iterator(), size(), 0);
+    }
+    @Override
+    public Stream<E> stream() {
+        return StreamSupport.stream(spliterator(), false);
     }
 }

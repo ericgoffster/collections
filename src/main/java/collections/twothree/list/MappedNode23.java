@@ -1,8 +1,12 @@
 package collections.twothree.list;
 
 import java.util.ListIterator;
+import java.util.Spliterator;
+import java.util.Spliterators;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 final class MappedNode23<E, F> implements Node23<F> {
     final Node23<E> e;
@@ -104,5 +108,15 @@ final class MappedNode23<E, F> implements Node23<F> {
     @Override
     public Node23<F> tail(int index) {
         return e.tail(index).map(f);
+    }
+    
+    @Override
+    public Spliterator<F> spliterator() {
+        return Spliterators.spliterator(iterator(), size(), 0);
+    }
+
+    @Override
+    public Stream<F> stream() {
+        return StreamSupport.stream(spliterator(), false);
     }
 }

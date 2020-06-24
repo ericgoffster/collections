@@ -1,8 +1,12 @@
 package collections.twothree.list;
 
 import java.util.ListIterator;
+import java.util.Spliterator;
+import java.util.Spliterators;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 final class Leaf<E> implements Node23<E> {
 	private final E element;
@@ -101,5 +105,14 @@ final class Leaf<E> implements Node23<E> {
     @Override
     public Node23<E> tail(int index) {
         return index > 0 ? null : this;
+    }
+    
+    @Override
+    public Spliterator<E> spliterator() {
+        return Spliterators.spliterator(iterator(), size(), 0);
+    }
+    @Override
+    public Stream<E> stream() {
+        return StreamSupport.stream(spliterator(), false);
     }
 }

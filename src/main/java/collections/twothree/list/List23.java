@@ -644,7 +644,10 @@ public final class List23<E> implements Collection23<E> {
     
     @Override
     public Spliterator<E> spliterator() {
-        return Spliterators.spliterator(iterator(), size(), 0);
+        if (root == null) {
+            return Spliterators.spliterator(new EmptyIterator<>(), 0, 0);
+        }
+        return root.spliterator();
     }
 
     /**
@@ -653,7 +656,10 @@ public final class List23<E> implements Collection23<E> {
      */
     @Override
     public Stream<E> stream() {
-        return StreamSupport.stream(spliterator(), false);
+        if (root == null) {
+            return StreamSupport.stream(Spliterators.spliterator(new EmptyIterator<>(), 0, 0), false);
+        }
+        return root.stream();
     }
 
     static int verifyIndex(final String name, final int index, final int low, final int high) {
@@ -689,51 +695,75 @@ public final class List23<E> implements Collection23<E> {
 	static <E> Node23<E> concat(final Node23<E> lhs, final Node23<E> rhs) {
 	    assert lhs != null;
         assert rhs != null;
-	    final Node23<E>[] nodes = concat(lhs, rhs, lhs.getDepth() - rhs.getDepth());
-	    return nodes.length == 1 ? nodes[0] : new Branch<>(nodes[0], nodes[1]);
+        final int depthDelta = lhs.getDepth() - rhs.getDepth();
+        if (depthDelta == 0) {
+            return new Branch<>(lhs, rhs);
+        }
+        @SuppressWarnings("unchecked")
+        final Node23<E>[] nodes = new Node23[2];
+        final int pos2;
+	    if (depthDelta >= 0) {
+	        pos2 = append(lhs, rhs, depthDelta, nodes, 0);
+	    } else {
+	        pos2 = prepend(lhs, rhs, -depthDelta, nodes);
+	    }
+	    return pos2 == 1 ? nodes[0] : new Branch<>(nodes[0], nodes[1]);
     }
-	
-	// Creates a branch representing the concatenation
-	//   of 2 nodes.   Result will be a pair of branches, each of which are at the same depth
-	//   of lhs and rhs.   However, a degenerate case may be returned
-	//   of only 1 branch, which would mean that lhs was capable of
-	//   absorbing rhs with a change of level.
-    // O(log max(m,n))
-	static <E> Node23<E>[] concat(final Node23<E> lhs, final Node23<E> rhs, final int depthDelta) {
+
+    private static <E> int combine(Node23<E>[] arr, int arrlen, Node23<E>[] nodes, int pos) {
+        switch(arrlen) {
+        case 2: {
+            nodes[pos] = new Branch<>(arr[0], arr[1]);
+            return pos + 1;
+        }
+        case 3: {
+            nodes[pos] = new Branch<>(arr[0], arr[1], arr[2]);
+            return pos + 1;
+        }
+        case 4: {
+            nodes[pos] = new Branch<>(arr[0], arr[1]);
+            nodes[pos + 1] = new Branch<>(arr[2], arr[3]);
+            return pos + 2;
+        }
+	    default: throw new IllegalStateException();
+	    }
+    }
+
+	static <E> int prepend(final Node23<E> lhs, final Node23<E> rhs, final int depthDelta, Node23<E>[] result) {
+	    assert lhs != null;
+	    assert rhs != null;
+
+	    if (depthDelta == 0) {
+	        result[0] = lhs;
+            result[1] = rhs;
+            return 2;
+	    }
+	    @SuppressWarnings("unchecked")
+        final Node23<E>[] arr = new Node23[4];
+	    int arrlen = prepend(lhs, rhs.getBranch(0), depthDelta - 1, arr);
+        for(int i = 1; i < rhs.numBranches(); i++) {
+            arr[arrlen++] = rhs.getBranch(i);
+        }
+	    return combine(arr, arrlen, result, 0);            
+	}
+
+	static <E> int append(final Node23<E> lhs, final Node23<E> rhs, final int depthDelta, Node23<E>[] result, int pos) {
         assert lhs != null;
         assert rhs != null;
-        
         if (depthDelta == 0) {
-            return new Node23[] {lhs, rhs};
+            result[pos] = lhs;
+            result[pos + 1] = rhs;
+            return pos + 2;
         }
 
-        final List<Node23<E>> arr = new ArrayList<>();
-	    if (depthDelta < 0) {
-	        Node23<E>[] nodes = concat(lhs, rhs.getBranch(0), depthDelta + 1);
-	        arr.add(nodes[0]);
-	        if (nodes.length > 1) {
-	            arr.add(nodes[1]);
-	        }
-            for(int i = 1; i < rhs.numBranches(); i++) {
-                arr.add(rhs.getBranch(i));
-            }
-	    }
-	    else {
-	        for(int i = 0; i < lhs.numBranches() - 1; i++) {
-                arr.add(lhs.getBranch(i));
-            }
-	        Node23<E>[] nodes = concat(lhs.getBranch(lhs.numBranches() - 1), rhs, depthDelta - 1);
-            arr.add(nodes[0]);
-            if (nodes.length > 1) {
-                arr.add(nodes[1]);
-            }
-	    }
-        switch(arr.size()) {
-        case 2: return new Node23[] {new Branch<>(arr.get(0), arr.get(1))};
-        case 3: return new Node23[] {new Branch<>(arr.get(0), arr.get(1), arr.get(2))};
-        case 4: return new Node23[] {new Branch<>(arr.get(0), arr.get(1)), new Branch<>(arr.get(2), arr.get(3))};
-        default: throw new IllegalStateException();
-        }            
+        @SuppressWarnings("unchecked")
+        final Node23<E>[] arr = new Node23[4];
+        int arrlen = 0;
+        for(int i = 0; i < lhs.numBranches() - 1; i++) {
+            arr[arrlen++] = lhs.getBranch(i);
+        }
+        arrlen = append(lhs.getBranch(lhs.numBranches() - 1), rhs, depthDelta - 1, arr, arrlen);
+        return combine(arr, arrlen, result, pos);            
 	}
 
 	// Returns true, if the list is valid.

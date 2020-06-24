@@ -3,6 +3,7 @@ package collections.twothree.list;
 import java.util.ListIterator;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 interface Node23<E> extends Iterable<E> {
 	E leafValue();
@@ -23,4 +24,5 @@ interface Node23<E> extends Iterable<E> {
     <F> Node23<F> map(Function<E, F> f);
     Node23<E> head(int index);
     Node23<E> tail(int index);
+    Stream<E> stream();
 }
