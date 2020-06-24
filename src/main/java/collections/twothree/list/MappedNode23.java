@@ -95,4 +95,14 @@ final class MappedNode23<E, F> implements Node23<F> {
     public <G> Node23<G> map(Function<F, G> f) {
         return new MappedNode23<F, G>(this, f);
     }
+    
+    @Override
+    public Node23<F> head(int index) {
+        return e.head(index).map(f);
+    }
+    
+    @Override
+    public Node23<F> tail(int index) {
+        return e.tail(index).map(f);
+    }
 }

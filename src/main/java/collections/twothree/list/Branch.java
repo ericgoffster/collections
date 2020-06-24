@@ -131,4 +131,48 @@ final class Branch<E> implements Node23<E> {
     public <F> Node23<F> map(Function<E, F> f) {
         return new MappedNode23<E, F>(this, f);
     }
+    
+    @Override
+    public Node23<E> tail(int index) {
+        final int b1Index = index - getBranchSize(0);
+        if (b1Index < 0) {
+            final Node23<E> lhs = getBranch(0).tail(index);
+            final Node23<E> rhs;
+            if (numBranches() == 3) {
+                rhs = new Branch<>(getBranch(1), getBranch(2));
+            } else {
+                rhs = getBranch(1);
+            }
+            return lhs == null ? rhs : List23.concat(lhs, rhs);
+        }
+        if (numBranches() == 2) {
+            return getBranch(1).tail(b1Index);
+        }
+        final int b2Index = b1Index - getBranchSize(1);
+        if (b2Index < 0) {
+            final Node23<E> lhs = getBranch(1).tail(b1Index);
+            final Node23<E> rhs = getBranch(2);
+            return lhs == null ? rhs : List23.concat(lhs, rhs);
+        } 
+        return getBranch(2).tail(b2Index);
+    }
+    
+    @Override
+    public Node23<E> head(int index) {
+        final int b1Index = index - getBranchSize(0);
+        if (b1Index < 0) {
+            return getBranch(0).head(index);
+        }
+        final Node23<E> lhs;
+        final Node23<E> rhs;
+        final int b2Index = b1Index - getBranchSize(1);
+        if (b2Index < 0) {
+            lhs = getBranch(0);
+            rhs = getBranch(1).head(b1Index);
+        } else {
+            lhs = new Branch<>(getBranch(0), getBranch(1));
+            rhs = getBranch(2).head(b2Index);
+        }
+        return rhs == null ? lhs : List23.concat(lhs, rhs);
+    }
 }

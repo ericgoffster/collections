@@ -16,9 +16,11 @@ interface Node23<E> extends Iterable<E> {
 	ListIterator<E> iterator();
     E get(int index);
     boolean isValid(int depth);
-    <T> T binarySearch(final Function<? super E, Integer> comparator, final int index, final BiFunction<E,Integer,T> leafVisitor);
-    <T> T reverseBinarySearch(final Function<? super E, Integer> comparator, final int index, final BiFunction<E,Integer,T> leafVisitor);
+    <T> T binarySearch(Function<? super E, Integer> comparator, int index, BiFunction<E,Integer,T> leafVisitor);
+    <T> T reverseBinarySearch(Function<? super E, Integer> comparator, int index, BiFunction<E,Integer,T> leafVisitor);
     E last();
     E first(); 
     <F> Node23<F> map(Function<E, F> f);
+    Node23<E> head(int index);
+    Node23<E> tail(int index);
 }

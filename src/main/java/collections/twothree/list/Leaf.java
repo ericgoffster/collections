@@ -92,4 +92,14 @@ final class Leaf<E> implements Node23<E> {
     public <F> Node23<F> map(Function<E, F> f) {
         return new Leaf<F>(f.apply(element));
     }
+    
+    @Override
+    public Node23<E> head(int index) {
+        return null;
+    }
+    
+    @Override
+    public Node23<E> tail(int index) {
+        return index > 0 ? null : this;
+    }
 }

@@ -104,4 +104,14 @@ final class ReversedNode23<E> implements Node23<E> {
     public <F> Node23<F> map(Function<E, F> f) {
         return new MappedNode23<E, F>(this, f);
     }
+    
+    @Override
+    public Node23<E> head(int index) {
+        return other.tail(size() - index).reverse();
+    }
+    
+    @Override
+    public Node23<E> tail(int index) {
+        return other.head(size() - index).reverse();
+    }
 }

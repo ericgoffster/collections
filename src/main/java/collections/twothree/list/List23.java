@@ -557,7 +557,7 @@ public final class List23<E> implements Collection23<E> {
 	    verifyIndex("index", index, 0, size());
 	    return index == 0 ? this :
 	           index == size() ? empty() :
-	           reversed().headAt(size() - index).reversed();
+	               new List23<>(root.tail(index));
 	}
 	
 	/**
@@ -576,7 +576,7 @@ public final class List23<E> implements Collection23<E> {
 	 */
 	public List23<E> headAt(final int index) {
         verifyIndex("index", index, 0, size());
-		return index == size() ?  this : index == 0 ? empty(): new List23<>(head(root, index));
+		return index == size() ?  this : index == 0 ? empty(): new List23<>(root.head(index));
 	}
 	
 	/**
@@ -727,34 +727,6 @@ public final class List23<E> implements Collection23<E> {
         case 4: return Arrays.asList(new Branch<>(arr.get(0), arr.get(1)), new Branch<>(arr.get(2), arr.get(3)));
         default: throw new IllegalStateException();
         }            
-	}
-
-	// Returns a node where all indexes are < index, null if removing a leaf.
-	// The general idea is this:
-	//    if A = [B / C, D]
-	//    where B is the sliced off portion, you want to return [C, D]
-	//    the problem is what to do when C is no longer of the same depth of D, perhaps by a lot.
-	// O(log n)
-	static <E> Node23<E> head(final Node23<E> node, final int index) {
-        assert index < node.size();
-        if (node.isLeaf()) {
-            return null;
-        }
-        final int b1Index = index - node.getBranchSize(0);
-        if (b1Index < 0) {
-            return head(node.getBranch(0), index);
-        }
-        final Node23<E> lhs;
-        final Node23<E> rhs;
-        final int b2Index = b1Index - node.getBranchSize(1);
-        if (b2Index < 0) {
-            lhs = node.getBranch(0);
-            rhs = head(node.getBranch(1), b1Index);
-        } else {
-            lhs = new Branch<>(node.getBranch(0), node.getBranch(1));
-            rhs = head(node.getBranch(2), b2Index);
-        }
-        return rhs == null ? lhs : concat(lhs, rhs);
 	}
 
 	// Returns true, if the list is valid.
