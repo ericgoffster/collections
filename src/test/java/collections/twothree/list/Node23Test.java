@@ -7,10 +7,10 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 public class Node23Test {
-    private static <T> Node23<T> branch(T a, T b) {
+    private static <T> Branch<T> branch(T a, T b) {
         return new Branch<>(new Leaf<>(a),new Leaf<>(b));
     }
-    private static <T> Node23<T> branch(T a, T b, T c) {
+    private static <T> Branch<T> branch(T a, T b, T c) {
         return new Branch<>(new Leaf<>(a),new Leaf<>(b),new Leaf<>(c));
     }
   
@@ -110,5 +110,16 @@ public class Node23Test {
         assertEquals(branch("2","3").reverse(), branch("3","2"));
         assertEquals(branch("2","3","4").reverse(), branch("4","3","2"));
         assertEquals(new Branch<>(branch("2","3"),branch("4","5")).reverse(), new Branch<>(branch("5","4"),branch("3","2")));
+    }
+
+    @Test
+    public void testBinarySearch() {
+        assertEquals(new Branch<>(branch(2,4),branch(6,8)).binarySearch(i -> Integer.valueOf(2).compareTo(i), (e, i) -> i).intValue(),0);
+        assertEquals(new Branch<>(branch(2,4),branch(6,8)).binarySearch(i -> Integer.valueOf(3).compareTo(i), (e, i) -> i).intValue(),1);
+        assertEquals(new Branch<>(branch(2,4),branch(6,8)).binarySearch(i -> Integer.valueOf(4).compareTo(i), (e, i) -> i).intValue(),1);
+        assertEquals(new Branch<>(branch(2,4),branch(6,8)).binarySearch(i -> Integer.valueOf(5).compareTo(i), (e, i) -> i).intValue(),2);
+        assertEquals(new Branch<>(branch(2,4),branch(6,8)).binarySearch(i -> Integer.valueOf(6).compareTo(i), (e, i) -> i).intValue(),2);
+        assertEquals(new Branch<>(branch(2,4),branch(6,8)).binarySearch(i -> Integer.valueOf(7).compareTo(i), (e, i) -> i).intValue(),3);
+        assertEquals(new Branch<>(branch(2,4),branch(6,8)).binarySearch(i -> Integer.valueOf(8).compareTo(i), (e, i) -> i).intValue(),3);
     }
 }
