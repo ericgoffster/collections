@@ -95,25 +95,27 @@ final class Branch<E> implements Node23<E> {
     }
     
     @Override
-    public <T> T binarySearch(Function<? super E, Integer> comparator, int index,
+    public <T> T binarySearch(Function<? super E, Integer> comparator,
             BiFunction<E, Integer, T> leafVisitor) {
         int pos = 0;
         int j = 0;
         while(j < nodes.length - 1 && comparator.apply(nodes[j].last()) > 0) {
             pos += nodes[j++].size();
         }
-        return nodes[j].binarySearch(comparator, index + pos, leafVisitor);
+        final int p = pos;
+        return nodes[j].binarySearch(comparator, (e, i) -> leafVisitor.apply(e, i + p));
     }
     
     @Override
-    public <T> T reverseBinarySearch(Function<? super E, Integer> comparator, int index,
+    public <T> T reverseBinarySearch(Function<? super E, Integer> comparator,
             BiFunction<E, Integer, T> leafVisitor) {
         int pos = 0;
         int j = nodes.length - 1;
         while(j > 0 && comparator.apply(nodes[j].first()) > 0) {
             pos += nodes[j--].size();
         }
-        return nodes[j].reverseBinarySearch(comparator, index + pos, leafVisitor);
+        final int p = pos;
+        return nodes[j].reverseBinarySearch(comparator, (e, i) -> leafVisitor.apply(e, i + p));
     }
     
     @Override

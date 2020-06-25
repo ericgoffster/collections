@@ -66,4 +66,49 @@ public class Node23Test {
         assertEquals(new Branch<>(branch("2","3"),branch("4","5")).tail(1), branch("3", "4", "5"));
         assertEquals(new Branch<>(branch("2","3"),branch("4","5")).tail(0), new Branch<>(branch("2","3"),branch("4","5")));
     }
+    @Test
+    public void testFirst() {
+        assertEquals(new Leaf<>("1").first(), "1");
+        assertEquals(branch("2","3").first(), "2");
+        assertEquals(branch("2","3","4").first(), "2");
+        assertEquals(new Branch<>(branch("2","3"),branch("4","5")).first(), "2");
+    }
+    @Test
+    public void testLast() {
+        assertEquals(new Leaf<>("1").last(), "1");
+        assertEquals(branch("2","3").last(), "3");
+        assertEquals(branch("2","3","4").last(), "4");
+        assertEquals(new Branch<>(branch("2","3"),branch("4","5")).last(), "5");
+    }
+    @Test
+    public void testMap() {
+        assertEquals(new Leaf<>("1").map(s -> s+s), new Leaf<>("11"));
+        assertEquals(branch("2","3").map(s -> s+s), branch("22","33"));
+        assertEquals(branch("2","3","4").map(s -> s+s), branch("22","33","44"));
+        assertEquals(new Branch<>(branch("2","3"),branch("4","5")).map(s -> s+s), new Branch<>(branch("22","33"),branch("44","55")));
+    }
+
+    @Test
+    public void testGet() {
+        assertEquals(new Leaf<>("1").get(0), "1");
+
+        assertEquals(branch("2","3").get(1), "3");
+        assertEquals(branch("2","3").get(0), "2");
+
+        assertEquals(branch("2","3","4").get(2), "4");
+        assertEquals(branch("2","3","4").get(1), "3");
+        assertEquals(branch("2","3","4").get(0), "2");
+
+        assertEquals(new Branch<>(branch("2","3"),branch("4","5")).get(3), "5");
+        assertEquals(new Branch<>(branch("2","3"),branch("4","5")).get(2), "4");
+        assertEquals(new Branch<>(branch("2","3"),branch("4","5")).get(1), "3");
+        assertEquals(new Branch<>(branch("2","3"),branch("4","5")).get(0), "2");
+    }
+    @Test
+    public void testReverse() {
+        assertEquals(new Leaf<>("1").reverse(), new Leaf<>("1"));
+        assertEquals(branch("2","3").reverse(), branch("3","2"));
+        assertEquals(branch("2","3","4").reverse(), branch("4","3","2"));
+        assertEquals(new Branch<>(branch("2","3"),branch("4","5")).reverse(), new Branch<>(branch("5","4"),branch("3","2")));
+    }
 }

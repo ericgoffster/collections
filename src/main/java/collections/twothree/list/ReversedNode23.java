@@ -83,15 +83,15 @@ final class ReversedNode23<E> implements Node23<E> {
     }
 
     @Override
-    public <T> T binarySearch(Function<? super E, Integer> comparator, int index,
+    public <T> T binarySearch(Function<? super E, Integer> comparator,
             BiFunction<E, Integer, T> leafVisitor) {
-        return other.reverseBinarySearch(comparator, index, leafVisitor);
+        return other.reverseBinarySearch(comparator, leafVisitor);
     }
 
     @Override
-    public <T> T reverseBinarySearch(Function<? super E, Integer> comparator, int index,
+    public <T> T reverseBinarySearch(Function<? super E, Integer> comparator,
             BiFunction<E, Integer, T> leafVisitor) {
-        return other.binarySearch(comparator, index, leafVisitor);
+        return other.binarySearch(comparator, leafVisitor);
     }
     
     @Override

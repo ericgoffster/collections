@@ -54,15 +54,15 @@ final class MappedNode23<E, F> implements Node23<F> {
     }
     
     @Override
-    public <T> T binarySearch(Function<? super F, Integer> comparator, int index,
+    public <T> T binarySearch(Function<? super F, Integer> comparator,
             BiFunction<F, Integer, T> leafVisitor) {
-        return e.binarySearch(e -> comparator.apply(f.apply(e)), index, (e, i) -> leafVisitor.apply(f.apply(e), i));
+        return e.binarySearch(e -> comparator.apply(f.apply(e)), (e, i) -> leafVisitor.apply(f.apply(e), i));
     }
     
     @Override
-    public <T> T reverseBinarySearch(Function<? super F, Integer> comparator, int index,
+    public <T> T reverseBinarySearch(Function<? super F, Integer> comparator,
             BiFunction<F, Integer, T> leafVisitor) {
-        return e.reverseBinarySearch(e -> comparator.apply(f.apply(e)), index, (e, i) -> leafVisitor.apply(f.apply(e), i));
+        return e.reverseBinarySearch(e -> comparator.apply(f.apply(e)), (e, i) -> leafVisitor.apply(f.apply(e), i));
     }
     
     @Override

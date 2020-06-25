@@ -782,7 +782,7 @@ public final class List23<E> implements Collection23<E> {
         if (root == null) {
             return -1;
         }
-        return root.binarySearch(comparator, 0, (leaf, i) -> comparator.apply(leaf) == 0 ? i : -1);
+        return root.binarySearch(comparator, (leaf, i) -> comparator.apply(leaf) == 0 ? i : -1);
     }
     
     // Returns the position where the element belongs
@@ -791,7 +791,7 @@ public final class List23<E> implements Collection23<E> {
         if (root == null) {
             return 0;
         }
-        return root.binarySearch(comparator, 0, (leaf, i) -> comparator.apply(leaf) > 0 ? (i + 1) : i);
+        return root.binarySearch(comparator, (leaf, i) -> comparator.apply(leaf) > 0 ? (i + 1) : i);
     }
 
     static <E> Iterator<Leaf<E>> sortLeaves(final Comparator<? super E> comparator,
