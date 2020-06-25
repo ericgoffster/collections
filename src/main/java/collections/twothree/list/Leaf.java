@@ -99,7 +99,7 @@ final class Leaf<E> implements Node23<E> {
     
     @Override
     public Node23<E> head(int index) {
-        return null;
+        return index > 0 ? this : null;
     }
     
     @Override

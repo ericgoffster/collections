@@ -17,17 +17,6 @@ import java.util.Set;
 import org.junit.Test;
 
 public class List23Test {
-	
-	@Test
-	public void testIsValid() {
-	   assertFalse(new Branch<>(branch("2","3"), new Leaf<>("1"), new Leaf<>("4")).isValid(3));
-       assertFalse(new Branch<>(new Leaf<>("1"), branch("2","3"), new Leaf<>("4")).isValid(3));
-       assertFalse(new Branch<>(new Leaf<>("1"), new Leaf<>("4"), branch("2","3")).isValid(3));
-       assertFalse(new Branch<>(branch("2","3"), new Leaf<>("1")).isValid(3));
-       assertFalse(new Branch<>(new Leaf<>("1"), branch("2","3")).isValid(3));
-       assertTrue(new Branch<>(branch("2","3"), branch("4","5")).isValid(3));
-	}
-	
 	@Test
 	public void testToCollection() {
         List23<Integer> l = List23.of(1,2,3,4,5,6);

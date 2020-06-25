@@ -170,7 +170,7 @@ final class Branch<E> implements Node23<E> {
         final Node23<E> lhs;
         final Node23<E> rhs;
         final int b2Index = b1Index - nodes[1].size();
-        if (b2Index < 0) {
+        if (b2Index < 0 || nodes.length == 2) {
             lhs = nodes[0];
             rhs = nodes[1].head(b1Index);
         } else {
