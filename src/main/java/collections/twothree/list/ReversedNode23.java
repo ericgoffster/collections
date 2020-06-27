@@ -87,6 +87,12 @@ final class ReversedNode23<E> implements Node23<E> {
             BiFunction<E, Integer, T> leafVisitor) {
         return other.reverseBinarySearch(comparator, leafVisitor);
     }
+    
+    @Override
+    public int indexOf(Function<? super E, Integer> comparator) {
+        int i = other.indexOf(e -> -comparator.apply(e));
+        return i < 0 ? -1 : size() - i - 1;
+    }
 
     @Override
     public <T> T reverseBinarySearch(Function<? super E, Integer> comparator,

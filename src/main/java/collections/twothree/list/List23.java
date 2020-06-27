@@ -782,7 +782,7 @@ public final class List23<E> implements Collection23<E> {
         if (root == null) {
             return -1;
         }
-        return root.binarySearch(comparator, (leaf, i) -> comparator.apply(leaf) == 0 ? i : -1);
+        return root.indexOf(comparator);
     }
     
     // Returns the position where the element belongs

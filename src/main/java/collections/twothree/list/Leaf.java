@@ -123,4 +123,9 @@ final class Leaf<E> implements Node23<E> {
     public boolean equals(Object obj) {
         return eq(obj);
     }
+    
+    @Override
+    public int indexOf(Function<? super E, Integer> comparator) {
+        return comparator.apply(element) == 0 ? 0 : -1;
+    }
 }
