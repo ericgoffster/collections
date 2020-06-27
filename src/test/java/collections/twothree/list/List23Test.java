@@ -572,4 +572,32 @@ public class List23Test {
         assertThrows(UnsupportedOperationException.class, () -> new Leaf<String>("abc").getBranchSize(0));
         assertThrows(UnsupportedOperationException.class, () -> new Leaf<String>("abc").getBranchSize(1));
 	}
+
+	@Test
+	public void testNaturalPosition() {
+        List23<String> l = new List23<>(new Branch<>(branch("1","2"),branch("3","4"),branch("5","6","7")));
+        assertEquals(l.naturalPosition(String.valueOf("0")::compareTo), 0);
+        assertEquals(l.naturalPosition(String.valueOf("1")::compareTo), 0);
+        assertEquals(l.naturalPosition(String.valueOf("2")::compareTo), 1);
+        assertEquals(l.naturalPosition(String.valueOf("3")::compareTo), 2);
+        assertEquals(l.naturalPosition(String.valueOf("4")::compareTo), 3);
+        assertEquals(l.naturalPosition(String.valueOf("5")::compareTo), 4);
+        assertEquals(l.naturalPosition(String.valueOf("6")::compareTo), 5);
+        assertEquals(l.naturalPosition(String.valueOf("7")::compareTo), 6);
+        assertEquals(l.naturalPosition(String.valueOf("8")::compareTo), 7);
+	}
+
+    @Test
+    public void testNaturalPositionReversed() {
+        List23<String> l = new List23<>(new Branch<>(branch("1","2"),branch("3","4"),branch("5","6","7"))).reversed();
+        assertEquals(l.naturalPosition(e -> -String.valueOf("0").compareTo(e)), 7);
+        assertEquals(l.naturalPosition(e -> -String.valueOf("1").compareTo(e)), 6);
+        assertEquals(l.naturalPosition(e -> -String.valueOf("2").compareTo(e)), 5);
+        assertEquals(l.naturalPosition(e -> -String.valueOf("3").compareTo(e)), 4);
+        assertEquals(l.naturalPosition(e -> -String.valueOf("4").compareTo(e)), 3);
+        assertEquals(l.naturalPosition(e -> -String.valueOf("5").compareTo(e)), 2);
+        assertEquals(l.naturalPosition(e -> -String.valueOf("6").compareTo(e)), 1);
+        assertEquals(l.naturalPosition(e -> -String.valueOf("7").compareTo(e)), 0);
+        assertEquals(l.naturalPosition(e -> -String.valueOf("8").compareTo(e)), 0);
+    }
 }

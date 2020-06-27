@@ -55,6 +55,9 @@ public class SortedSet23Test {
 		assertTrue(l.reversed().contains(12));
 		assertEquals(l.reversed(), SortedSet23.of(12, 9, 6, 3, 0));
 		assertEquals(l.reversed().subSet(9, 3), SortedSet23.of(9, 6));
+		assertEquals(l.reversed().add(11), SortedSet23.of(12, 11, 9, 6, 3, 0));
+        assertEquals(l.reversed().add(13), SortedSet23.of(13, 12, 9, 6, 3, 0));
+        assertEquals(l.reversed().add(-1), SortedSet23.of(12, 9, 6, 3, 0, -1));
 	}
 	
 	@Test

@@ -37,7 +37,7 @@ final class Leaf<E> implements Node23<E> {
     
     @Override
     public Node23<E> reverse() {
-        return this;
+        return new ReversedNode23<>(this);
     }
     
     @Override
@@ -46,12 +46,6 @@ final class Leaf<E> implements Node23<E> {
         return leafVisitor.apply(element, 0);
     }
     
-    @Override
-    public <T> T reverseBinarySearch(Function<? super E, Integer> comparator,
-            BiFunction<E, Integer, T> leafVisitor) {
-        return leafVisitor.apply(element, 0);
-    }
-
     @Override
     public Node23<E> getBranch(int which) {
         throw new UnsupportedOperationException();

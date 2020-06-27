@@ -47,9 +47,12 @@ final class ReversedNode23<E> implements Node23<E> {
     }
     @Override
     public String toString() {
+        if (isLeaf()) {
+            return other.toString();
+        }
         StringBuilder sb =  new StringBuilder("[");
         String delim = "";
-        for(int i = 0; i < size(); i++) {
+        for(int i = 0; i < numBranches(); i++) {
             Node23<E> n = getBranch(i);
             sb.append(delim).append(n.toString());
             delim = " ";
@@ -85,7 +88,7 @@ final class ReversedNode23<E> implements Node23<E> {
     @Override
     public <T> T binarySearch(Function<? super E, Integer> comparator,
             BiFunction<E, Integer, T> leafVisitor) {
-        return other.reverseBinarySearch(comparator, leafVisitor);
+        return other.binarySearch(x -> -comparator.apply(x), (e,i) -> leafVisitor.apply(e, size() - i - 1));
     }
     
     @Override
@@ -94,12 +97,6 @@ final class ReversedNode23<E> implements Node23<E> {
         return i < 0 ? -1 : size() - i - 1;
     }
 
-    @Override
-    public <T> T reverseBinarySearch(Function<? super E, Integer> comparator,
-            BiFunction<E, Integer, T> leafVisitor) {
-        return other.binarySearch(comparator, leafVisitor);
-    }
-    
     @Override
     public boolean isLeaf() {
         return other.isLeaf();
