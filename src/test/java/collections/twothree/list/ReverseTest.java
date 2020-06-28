@@ -5,6 +5,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
+import java.util.ListIterator;
 import java.util.stream.Collectors;
 
 import org.junit.Test;
@@ -17,6 +18,11 @@ public class ReverseTest {
         return new Branch<>(new Leaf<>(a),new Leaf<>(b),new Leaf<>(c));
     }
   
+    @Test
+    public void testIsLeaf() {
+        assertTrue(new Leaf<>("1").reverse().isLeaf());
+        assertFalse(branch("2","3").reverse().isLeaf());
+    }
     @Test
     public void testIsValid() {
        assertTrue(branch("2","3").reverse().isValid(2));
@@ -165,5 +171,19 @@ public class ReverseTest {
         assertEquals(branch(2,4).reverse().stream().collect(Collectors.toList()),Arrays.asList(4, 2));
         assertEquals(branch(2,4, 6).reverse().stream().collect(Collectors.toList()),Arrays.asList(6, 4, 2));
         assertEquals(new Branch<>(branch(2,4),branch(6,8,10)).reverse().stream().collect(Collectors.toList()),Arrays.asList(10, 8,6,4,2));
+      
+        ListIterator<Integer> iter = branch(2,4).reverse().iterator();
+        assertEquals(iter.nextIndex(), 0);
+        assertEquals(iter.next().intValue(), 4);
+        assertEquals(iter.nextIndex(), 1);
+        assertEquals(iter.next().intValue(), 2);
+        assertFalse(iter.hasNext());
+        assertTrue(iter.hasPrevious());
+        assertEquals(iter.previousIndex(), 1);
+        assertEquals(iter.previous().intValue(), 2);
+        assertEquals(iter.previousIndex(), 0);
+        assertEquals(iter.previous().intValue(), 4);
+        assertTrue(iter.hasNext());
+        assertFalse(iter.hasPrevious());
     }
 }

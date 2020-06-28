@@ -6,11 +6,16 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.ListIterator;
 import java.util.stream.Collectors;
 
 import org.junit.Test;
 
 public class LeafTest {
+    @Test
+    public void testIsLeaf() {
+       assertTrue(new Leaf<>("1").isLeaf());
+    }
     @Test
     public void testIsValid() {
        assertTrue(new Leaf<>("1").isValid(1));
@@ -72,6 +77,16 @@ public class LeafTest {
     @Test
     public void testStream() {
         assertEquals(new Leaf<>("1").stream().collect(Collectors.toList()),Arrays.asList("1"));
+        
+        ListIterator<Integer> iter = new Leaf<>(1).reverse().iterator();
+        assertEquals(iter.nextIndex(), 0);
+        assertEquals(iter.next().intValue(), 1);
+        assertFalse(iter.hasNext());
+        assertTrue(iter.hasPrevious());
+        assertEquals(iter.previousIndex(), 0);
+        assertEquals(iter.previous().intValue(), 1);
+        assertTrue(iter.hasNext());
+        assertFalse(iter.hasPrevious());
     }
     @Test
     public void testHash() {

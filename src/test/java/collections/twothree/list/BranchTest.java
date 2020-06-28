@@ -19,6 +19,10 @@ public class BranchTest {
     }
   
     @Test
+    public void testIsLeaf() {
+       assertFalse(branch("2","3").isLeaf());
+    }
+    @Test
     public void testIsValid() {
        assertTrue(branch("2","3").isValid(2));
        assertTrue(branch("1","2","3").isValid(2));
