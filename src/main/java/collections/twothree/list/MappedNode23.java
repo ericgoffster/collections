@@ -3,7 +3,6 @@ package collections.twothree.list;
 import java.util.ListIterator;
 import java.util.Spliterator;
 import java.util.Spliterators;
-import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -46,12 +45,6 @@ final class MappedNode23<E, F> implements Node23<F> {
     @Override
     public Node23<F> reverse() {
         return e.reverse().map(f);
-    }
-    
-    @Override
-    public <T> T binarySearch(Function<? super F, Integer> comparator,
-            BiFunction<F, Integer, T> leafVisitor) {
-        return e.binarySearch(e -> comparator.apply(f.apply(e)), (e, i) -> leafVisitor.apply(f.apply(e), i));
     }
     
     @Override

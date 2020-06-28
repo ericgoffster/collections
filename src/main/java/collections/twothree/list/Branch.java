@@ -3,7 +3,6 @@ package collections.twothree.list;
 import java.util.ListIterator;
 import java.util.Spliterator;
 import java.util.Spliterators;
-import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -93,18 +92,6 @@ final class Branch<E> implements Node23<E> {
         return nodes[0].first();
     }
     
-    @Override
-    public <T> T binarySearch(Function<? super E, Integer> comparator,
-            BiFunction<E, Integer, T> leafVisitor) {
-        int pos = 0;
-        int j = 0;
-        while(j + 1 < nodes.length && comparator.apply(nodes[j].last()) > 0) {
-            pos += nodes[j++].size();
-        }
-        final int p = pos;
-        return nodes[j].binarySearch(comparator, (e, i) -> leafVisitor.apply(e, i + p));
-    }
-
     @Override
     public Node23<E> reverse() {
         return new ReversedNode23<>(this);

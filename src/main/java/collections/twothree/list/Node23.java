@@ -17,7 +17,20 @@ interface Node23<E> extends Iterable<E> {
 	ListIterator<E> iterator();
     E get(int index);
     boolean isValid(int depth);
-    <T> T binarySearch(Function<? super E, Integer> comparator, BiFunction<E,Integer,T> leafVisitor);
+    default <T> T binarySearch(Function<? super E, Integer> comparator,
+            BiFunction<E, Integer, T> leafVisitor) {
+        if (isLeaf()) {
+            return leafVisitor.apply(leafValue(), 0);
+        }
+        int pos = 0;
+        int j = 0;
+        while(j < numBranches() - 1 && comparator.apply(getBranch(j).last()) > 0) {
+            pos += getBranch(j++).size();
+        }
+        final int p = pos;
+        return getBranch(j).binarySearch(comparator, (e, i) -> leafVisitor.apply(e, i + p));
+    }
+    
     E last();
     E first(); 
     <F> Node23<F> map(Function<E, F> f);
