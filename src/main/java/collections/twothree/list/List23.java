@@ -129,6 +129,13 @@ public final class List23<E> implements Collection23<E> {
         return quickConstruct(new LeafIterator<>(elements));
 	}
 
+	/**
+	 * Construction of a list formed by filtering another list.
+     * @param <E> The type of the elements.
+	 * @param filter The filter
+	 * @param elements The elements to filter
+	 * @return The List23 representation of the filtered "elements"
+	 */
     public static <E> List23<E> ofFiltered(final Predicate<E> filter, final Iterable<? extends E> elements) {
         Requirements.require(filter, Requirements.notNull(), () -> "filter");
         Requirements.require(elements, Requirements.notNull(), () -> "elements");
@@ -136,7 +143,7 @@ public final class List23<E> implements Collection23<E> {
     }
 
     /**
-     * Easy construction of a sorted list, with dups removed.
+     * Easy construction of a sorted list, with dups removed, using a custom comparator.
      * Creates a list23 represents of the elements sorted by a comparator.
      * <p>This operation is O(n log n) where n = |elements|.
      * <pre>
@@ -171,7 +178,7 @@ public final class List23<E> implements Collection23<E> {
     }
 	
 	/**
-	 * Easy construction of a sorted list.
+	 * Easy construction of a sorted list, using a custom comparator.
 	 * Creates a list23 represents of the elements sorted by a comparator.
      * <p>This operation is O(n log n) where n = |elements|.
      * <pre>
@@ -362,6 +369,10 @@ public final class List23<E> implements Collection23<E> {
      * Returns a list whose items also appear <code>other</code>.
      * <p> This operation is O(n log n) where n = |this| + |other|.
      * <p> THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
+     * <pre>
+     * Example:
+     *     List23.of(6, 1, 6, 8).retain(Arrays.asList(6,1)) == [6, 1, 6]
+     * </pre>
      * @param other The items to match.
      * @return a list whose items also appear in another list
      */
@@ -375,6 +386,10 @@ public final class List23<E> implements Collection23<E> {
      * Returns a list whose items don't appear <code>other</code>.
      * <p> This operation is O(n log n) where n = |this| + |other|.
      * <p> THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
+     * <pre>
+     * Example:
+     *     List23.of(6, 1, 6, 8).removeAllIn(Arrays.asList(1)) == [6, 6, 8]
+     * </pre>
      * @param other The items to match.
      * @return a list whose items don't appear in another list
      */
@@ -699,7 +714,7 @@ public final class List23<E> implements Collection23<E> {
         if (depthDelta == 0) {
             return new Branch<>(lhs, rhs);
         }
-        @SuppressWarnings("unchecked")
+        @SuppressWarnings({"unchecked","rawtypes"})
         final Node23<E>[] nodes = new Node23[2];
         final int nodelen;
 	    if (depthDelta >= 0) {
@@ -710,6 +725,7 @@ public final class List23<E> implements Collection23<E> {
 	    return nodelen == 1 ? nodes[0] : new Branch<>(nodes[0], nodes[1]);
     }
 
+	// Combines 2-4 nodes into a list of one or 2 nodes.
     private static <E> int combine(final Node23<E>[] arr, final int arrlen, final Node23<E>[] nodes, final int pos) {
         switch(arrlen) {
         case 2: {
@@ -740,7 +756,7 @@ public final class List23<E> implements Collection23<E> {
             return 2;
 	    }
 
-	    @SuppressWarnings("unchecked")
+        @SuppressWarnings({"unchecked","rawtypes"})
         final Node23<E>[] arr = new Node23[4];
 	    int arrlen = prepend(lhs, rhs.getBranch(0), depthDelta - 1, arr);
         for(int i = 1; i < rhs.numBranches(); i++) {
@@ -760,7 +776,7 @@ public final class List23<E> implements Collection23<E> {
             return pos + 2;
         }
 
-        @SuppressWarnings("unchecked")
+        @SuppressWarnings({"unchecked","rawtypes"})
         final Node23<E>[] arr = new Node23[4];
         int arrlen = 0;
         for(int i = 0; i < lhs.numBranches() - 1; i++) {

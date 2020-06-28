@@ -205,7 +205,7 @@ public final class HashSet23<E> implements Set23<E> {
      * <p>This operation is O((m + n) * log (m + n)).
      * <pre>
      * Example:
-     *     HashSet23.of(4, 2, 3).intersection(Set.of(1,2,4)) == {2, 4}
+     *     HashSet23.of(4, 2, 3).retain(Set.of(1,2,4)) == {2, 4}
      * </pre>
      * THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * @param other The set to intersection with
@@ -221,7 +221,7 @@ public final class HashSet23<E> implements Set23<E> {
      * <p>This operation is O(m * log n).
      * <pre>
      * Example:
-     *     HashSet23.of(4, 2, 3).subtraction(Set.of(2,4)) == {3}
+     *     HashSet23.of(4, 2, 3).removeAllIn(Set.of(2,4)) == {3}
      * </pre>
      * THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * @param other The elements to remove.

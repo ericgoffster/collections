@@ -20,7 +20,7 @@ public interface Collection23<E> extends Iterable<E> {
     
     /**
      * Returns true if the set contains <code>element</code>.
-     * <p>This operation is O(log n).
+     * <p>This operation is O(log n) or O(n) depending in implementation.
      * <pre>
      * Example:
      *     SortedSet23.of(4, 2, 3).contains(2) == true
@@ -46,7 +46,7 @@ public interface Collection23<E> extends Iterable<E> {
     
     /**
      * Returns a set with <code>element</code> removed.
-     * <p>This operation is O(log n).
+     * <p>This operation is O(log n) or O(n) depending in implementation.
      * <pre>
      * Example:
      *     SortedSet23.of(4, 2, 3).remove(2) == {3, 4}
@@ -99,6 +99,7 @@ public interface Collection23<E> extends Iterable<E> {
   
     /**
      * Returns the read-only {@link Set} view of this set.
+     * <p>This operation is O(1).
      * <pre>
      * Example:
      *     SortedSet23.of(4, 2, 3).asSet() == {2, 3, 4}
@@ -109,6 +110,7 @@ public interface Collection23<E> extends Iterable<E> {
     
     /**
      * Streams all elements of this set.
+     * <p>This operation is O(1).
      * @return A stream of elements in this set.
      */
     Stream<E> stream();
