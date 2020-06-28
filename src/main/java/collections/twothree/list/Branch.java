@@ -68,7 +68,7 @@ final class Branch<E> implements Node23<E> {
         assert index < size;
         int pos = 0;
         int j = 0;
-        while(j < nodes.length - 1 && index >= pos + nodes[j].size()) {
+        while(j < nodes.length && index >= pos + nodes[j].size()) {
             pos += nodes[j++].size();
         }
         return nodes[j].get(index - pos);

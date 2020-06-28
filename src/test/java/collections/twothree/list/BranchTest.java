@@ -140,12 +140,15 @@ public class BranchTest {
         assertEquals(branch(2,4).binarySearch(i -> Integer.valueOf(3).compareTo(i), (e, i) -> i).intValue(),1);
         assertEquals(branch(2,4).binarySearch(i -> Integer.valueOf(4).compareTo(i), (e, i) -> i).intValue(),1);
         
+        assertEquals(branch(2,4,6).binarySearch(i -> Integer.valueOf(1).compareTo(i), (e, i) -> i).intValue(),0);
         assertEquals(branch(2,4,6).binarySearch(i -> Integer.valueOf(2).compareTo(i), (e, i) -> i).intValue(),0);
         assertEquals(branch(2,4,6).binarySearch(i -> Integer.valueOf(3).compareTo(i), (e, i) -> i).intValue(),1);
         assertEquals(branch(2,4,6).binarySearch(i -> Integer.valueOf(4).compareTo(i), (e, i) -> i).intValue(),1);
         assertEquals(branch(2,4,6).binarySearch(i -> Integer.valueOf(5).compareTo(i), (e, i) -> i).intValue(),2);
         assertEquals(branch(2,4,6).binarySearch(i -> Integer.valueOf(6).compareTo(i), (e, i) -> i).intValue(),2);
+        assertEquals(branch(2,4,6).binarySearch(i -> Integer.valueOf(7).compareTo(i), (e, i) -> i).intValue(),2);
        
+        assertEquals(new Branch<>(branch(2,4),branch(6,8,10)).binarySearch(i -> Integer.valueOf(1).compareTo(i), (e, i) -> i).intValue(),0);
         assertEquals(new Branch<>(branch(2,4),branch(6,8,10)).binarySearch(i -> Integer.valueOf(2).compareTo(i), (e, i) -> i).intValue(),0);
         assertEquals(new Branch<>(branch(2,4),branch(6,8,10)).binarySearch(i -> Integer.valueOf(3).compareTo(i), (e, i) -> i).intValue(),1);
         assertEquals(new Branch<>(branch(2,4),branch(6,8,10)).binarySearch(i -> Integer.valueOf(4).compareTo(i), (e, i) -> i).intValue(),1);
@@ -154,7 +157,8 @@ public class BranchTest {
         assertEquals(new Branch<>(branch(2,4),branch(6,8,10)).binarySearch(i -> Integer.valueOf(7).compareTo(i), (e, i) -> i).intValue(),3);
         assertEquals(new Branch<>(branch(2,4),branch(6,8,10)).binarySearch(i -> Integer.valueOf(8).compareTo(i), (e, i) -> i).intValue(),3);
         assertEquals(new Branch<>(branch(2,4),branch(6,8,10)).binarySearch(i -> Integer.valueOf(9).compareTo(i), (e, i) -> i).intValue(),4);
-        assertEquals(new Branch<>(branch(2,4),branch(6,8,10)).binarySearch(i -> Integer.valueOf(9).compareTo(i), (e, i) -> i).intValue(),4);
+        assertEquals(new Branch<>(branch(2,4),branch(6,8,10)).binarySearch(i -> Integer.valueOf(10).compareTo(i), (e, i) -> i).intValue(),4);
+        assertEquals(new Branch<>(branch(2,4),branch(6,8,10)).binarySearch(i -> Integer.valueOf(11).compareTo(i), (e, i) -> i).intValue(),4);
     }
     @Test
     public void testStream() {

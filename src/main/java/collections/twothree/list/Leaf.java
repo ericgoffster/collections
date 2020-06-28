@@ -37,7 +37,7 @@ final class Leaf<E> implements Node23<E> {
     
     @Override
     public Node23<E> reverse() {
-        return this;
+        return new ReversedNode23<>(this);
     }
     
     @Override
