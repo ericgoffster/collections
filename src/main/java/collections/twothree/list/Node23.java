@@ -11,7 +11,6 @@ interface Node23<E> extends Iterable<E> {
 	int size();
 	boolean isLeaf();
     Node23<E> getBranch(int which);
-    int getBranchSize(int which);
 	Node23<E> reverse();
 	int numBranches();
 	int getDepth();

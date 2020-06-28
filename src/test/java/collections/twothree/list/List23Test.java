@@ -569,8 +569,6 @@ public class List23Test {
         assertThrows(UnsupportedOperationException.class, () -> new Leaf<String>("abc").getBranch(0));
         assertThrows(UnsupportedOperationException.class, () -> new Leaf<String>("abc").getBranch(1));
         assertThrows(UnsupportedOperationException.class, () -> new Leaf<String>("abc").getBranch(2));
-        assertThrows(UnsupportedOperationException.class, () -> new Leaf<String>("abc").getBranchSize(0));
-        assertThrows(UnsupportedOperationException.class, () -> new Leaf<String>("abc").getBranchSize(1));
 	}
 
 	@Test

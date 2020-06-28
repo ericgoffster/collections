@@ -19,9 +19,7 @@ final class NodeIterator<E> implements ListIterator<E>{
     }
     
     public static <E> ListIterator<E> atBeginning(Node23<E> n) {
-        if (n == null) {
-            return new EmptyIterator<E>();
-        }
+        assert n != null;
         if (n.isLeaf()) {
             return new SingletonIterator<>(n.leafValue());
         }
@@ -29,9 +27,7 @@ final class NodeIterator<E> implements ListIterator<E>{
     }
     
     public static <E> ListIterator<E> atEnd(Node23<E> n) {
-        if (n == null) {
-            return new EmptyIterator<E>();
-        }
+        assert n != null;
         if (n.isLeaf()) {
             ListIterator<E> iterator = new SingletonIterator<>(n.leafValue());
             iterator.next();

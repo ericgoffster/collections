@@ -44,11 +44,6 @@ final class MappedNode23<E, F> implements Node23<F> {
     }
     
     @Override
-    public int getBranchSize(int which) {
-        return e.getBranchSize(which);
-    }
-
-    @Override
     public Node23<F> reverse() {
         return e.reverse().map(f);
     }

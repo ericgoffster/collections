@@ -11,6 +11,7 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 import org.junit.Test;
 
@@ -168,9 +169,7 @@ public class SortedSet23Test {
     @Test
     public void testIterator() {
         SortedSet23<Integer> l = SortedSet23.of(1,2,3,4,5,6);
-        Set<Integer> t = new HashSet<>(Arrays.asList(1,2,3,4,5,6));
-        l.forEach(t::remove);
-        assertTrue(t.isEmpty());
+        assertEquals(l.stream().collect(Collectors.toList()), Arrays.asList(1,2,3,4,5,6));
     }
 	
     @Test

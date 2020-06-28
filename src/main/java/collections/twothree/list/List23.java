@@ -637,7 +637,7 @@ public final class List23<E> implements Collection23<E> {
     @Override
     public ListIterator<E> iterator() {
         if (root == null) {
-            return new EmptyIterator<>();
+            return Collections.emptyListIterator();
         }
     	return root.iterator();
     }
@@ -645,7 +645,7 @@ public final class List23<E> implements Collection23<E> {
     @Override
     public Spliterator<E> spliterator() {
         if (root == null) {
-            return Spliterators.spliterator(new EmptyIterator<>(), 0, 0);
+            return Spliterators.spliterator(Collections.emptyListIterator(), 0, 0);
         }
         return root.spliterator();
     }
@@ -657,7 +657,7 @@ public final class List23<E> implements Collection23<E> {
     @Override
     public Stream<E> stream() {
         if (root == null) {
-            return StreamSupport.stream(Spliterators.spliterator(new EmptyIterator<>(), 0, 0), false);
+            return StreamSupport.stream(Spliterators.spliterator(Collections.emptyListIterator(), 0, 0), false);
         }
         return root.stream();
     }

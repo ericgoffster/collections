@@ -37,11 +37,6 @@ final class Branch<E> implements Node23<E> {
         return nodes[which];
     }
     @Override
-    public int getBranchSize(int which) {
-        return nodes[which].size();
-    }
-	
-    @Override
     public int numBranches() {
         return nodes.length;
     }
@@ -99,13 +94,13 @@ final class Branch<E> implements Node23<E> {
             BiFunction<E, Integer, T> leafVisitor) {
         int pos = 0;
         int j = 0;
-        while(j < nodes.length - 1 && comparator.apply(nodes[j].last()) > 0) {
+        while(j + 1 < nodes.length && comparator.apply(nodes[j].last()) > 0) {
             pos += nodes[j++].size();
         }
         final int p = pos;
         return nodes[j].binarySearch(comparator, (e, i) -> leafVisitor.apply(e, i + p));
     }
-    
+
     @Override
     public Node23<E> reverse() {
         return new ReversedNode23<>(this);

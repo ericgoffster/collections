@@ -1,9 +1,11 @@
 package collections.twothree.list;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.stream.Collectors;
 
 import org.junit.Test;
@@ -70,5 +72,13 @@ public class LeafTest {
     @Test
     public void testStream() {
         assertEquals(new Leaf<>("1").stream().collect(Collectors.toList()),Arrays.asList("1"));
+    }
+    @Test
+    public void testHash() {
+        HashSet<Leaf<Integer>> hm = new HashSet<>();
+        hm.add(new Leaf<>(1));
+        assertTrue(hm.contains(new Leaf<>(1)));
+        assertTrue(hm.contains(new Leaf<>(1).reverse()));
+        assertFalse(hm.contains(new Leaf<>(2)));
     }
 }

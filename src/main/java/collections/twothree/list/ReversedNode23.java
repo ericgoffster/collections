@@ -32,11 +32,6 @@ final class ReversedNode23<E> implements Node23<E> {
     }
 
     @Override
-    public int getBranchSize(int which) {
-        return other.getBranchSize(numBranches() - which - 1);
-    }
-
-    @Override
     public Node23<E> reverse() {
         return other;
     }

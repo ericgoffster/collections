@@ -5,6 +5,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.stream.Collectors;
 
 import org.junit.Test;
@@ -160,10 +161,19 @@ public class BranchTest {
         assertEquals(new Branch<>(branch(2,4),branch(6,8,10)).binarySearch(i -> Integer.valueOf(10).compareTo(i), (e, i) -> i).intValue(),4);
         assertEquals(new Branch<>(branch(2,4),branch(6,8,10)).binarySearch(i -> Integer.valueOf(11).compareTo(i), (e, i) -> i).intValue(),4);
     }
+
     @Test
     public void testStream() {
         assertEquals(branch(2,4).stream().collect(Collectors.toList()),Arrays.asList(2, 4));
         assertEquals(branch(2,4, 6).stream().collect(Collectors.toList()),Arrays.asList(2, 4, 6));
         assertEquals(new Branch<>(branch(2,4),branch(6,8,10)).stream().collect(Collectors.toList()),Arrays.asList(2, 4, 6, 8, 10));
+    }
+    @Test
+    public void testHash() {
+        HashSet<Node23<Integer>> hm = new HashSet<>();
+        hm.add(branch(2,3));
+        assertTrue(hm.contains(branch(2,3)));
+        assertFalse(hm.contains(branch(2,3).reverse()));
+        assertFalse(hm.contains(new Leaf<>(2)));
     }
 }
