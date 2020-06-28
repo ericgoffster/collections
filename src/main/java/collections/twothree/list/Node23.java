@@ -18,7 +18,6 @@ interface Node23<E> extends Iterable<E> {
 	ListIterator<E> iterator();
     E get(int index);
     boolean isValid(int depth);
-    int indexOf(Function<? super E, Integer> comparator);
     <T> T binarySearch(Function<? super E, Integer> comparator, BiFunction<E,Integer,T> leafVisitor);
     E last();
     E first(); 

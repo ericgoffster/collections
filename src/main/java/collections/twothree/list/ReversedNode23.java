@@ -92,12 +92,6 @@ final class ReversedNode23<E> implements Node23<E> {
     }
     
     @Override
-    public int indexOf(Function<? super E, Integer> comparator) {
-        int i = other.indexOf(e -> -comparator.apply(e));
-        return i < 0 ? -1 : size() - i - 1;
-    }
-
-    @Override
     public boolean isLeaf() {
         return other.isLeaf();
     }
@@ -114,12 +108,22 @@ final class ReversedNode23<E> implements Node23<E> {
     
     @Override
     public Node23<E> head(int index) {
-        return other.tail(size() - index).reverse();
+        final Node23<E> n = other.tail(size() - index);
+        if (n == null) {
+            return null;
+        } else {
+            return n.reverse();
+        }
     }
     
     @Override
     public Node23<E> tail(int index) {
-        return other.head(size() - index).reverse();
+        final Node23<E> n = other.head(size() - index);
+        if (n == null) {
+            return null;
+        } else {
+            return n.reverse();
+        }
     }
     
     @Override

@@ -95,17 +95,6 @@ final class Branch<E> implements Node23<E> {
     }
     
     @Override
-    public int indexOf(Function<? super E, Integer> comparator) {
-        int pos = 0;
-        int j = 0;
-        while(j < nodes.length - 1 && comparator.apply(nodes[j].last()) > 0) {
-            pos += nodes[j++].size();
-        }
-        int i = nodes[j].indexOf(comparator);
-        return i < 0 ? -1 : i + pos;
-    }
-    
-    @Override
     public <T> T binarySearch(Function<? super E, Integer> comparator,
             BiFunction<E, Integer, T> leafVisitor) {
         int pos = 0;

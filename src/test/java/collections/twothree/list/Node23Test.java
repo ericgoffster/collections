@@ -28,23 +28,37 @@ public class Node23Test {
     }
     @Test
     public void testHead() {
+        assertEquals(new Leaf<>("1").reverse().head(0), null);
         assertEquals(new Leaf<>("1").head(0), null);
+        assertEquals(new Leaf<>("1").reverse().head(1), new Leaf<>("1"));
         assertEquals(new Leaf<>("1").head(1), new Leaf<>("1"));
 
         assertEquals(branch("2","3").head(0), null);
+        assertEquals(branch("2","3").reverse().head(0), null);
         assertEquals(branch("2","3").head(1), new Leaf<>("2"));
+        assertEquals(branch("2","3").reverse().head(1), new Leaf<>("3"));
         assertEquals(branch("2","3").head(2), branch("2","3"));
+        assertEquals(branch("2","3").reverse().head(2), branch("3","2"));
 
         assertEquals(branch("2","3","4").head(0), null);
+        assertEquals(branch("2","3","4").reverse().head(0), null);
         assertEquals(branch("2","3","4").head(1), new Leaf<>("2"));
+        assertEquals(branch("2","3","4").reverse().head(1), new Leaf<>("4"));
         assertEquals(branch("2","3","4").head(2), branch("2","3"));
+        assertEquals(branch("2","3","4").reverse().head(2), branch("4","3"));
         assertEquals(branch("2","3","4").head(3), branch("2","3", "4"));
+        assertEquals(branch("2","3","4").reverse().head(3), branch("4","3", "2"));
 
         assertEquals(new Branch<>(branch("2","3"),branch("4","5")).head(0), null);
+        assertEquals(new Branch<>(branch("2","3"),branch("4","5")).reverse().head(0), null);
         assertEquals(new Branch<>(branch("2","3"),branch("4","5")).head(1), new Leaf<>("2"));
+        assertEquals(new Branch<>(branch("2","3"),branch("4","5")).reverse().head(1), new Leaf<>("5"));
         assertEquals(new Branch<>(branch("2","3"),branch("4","5")).head(2), branch("2", "3"));
+        assertEquals(new Branch<>(branch("2","3"),branch("4","5")).reverse().head(2), branch("5", "4"));
         assertEquals(new Branch<>(branch("2","3"),branch("4","5")).head(3), branch("2", "3", "4"));
+        assertEquals(new Branch<>(branch("2","3"),branch("4","5")).reverse().head(3), branch("5", "4", "3"));
         assertEquals(new Branch<>(branch("2","3"),branch("4","5")).head(4), new Branch<>(branch("2","3"),branch("4","5")));
+        assertEquals(new Branch<>(branch("2","3"),branch("4","5")).reverse().head(4), new Branch<>(branch("5","4"),branch("3","2")));
     }
     @Test
     public void testTail() {

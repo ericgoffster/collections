@@ -60,11 +60,6 @@ final class MappedNode23<E, F> implements Node23<F> {
     }
     
     @Override
-    public int indexOf(Function<? super F, Integer> comparator) {
-        return e.indexOf(e -> comparator.apply(f.apply(e)));
-    }
-    
-    @Override
     public F last() {
         return f.apply(e.last());
     }
@@ -101,12 +96,20 @@ final class MappedNode23<E, F> implements Node23<F> {
     
     @Override
     public Node23<F> head(int index) {
-        return e.head(index).map(f);
+        final Node23<E> head = e.head(index);
+        if (head == null) {
+            return null;
+        }
+        return head.map(f);
     }
     
     @Override
     public Node23<F> tail(int index) {
-        return e.tail(index).map(f);
+        final Node23<E> tail = e.tail(index);
+        if (tail == null) {
+            return null;
+        }
+        return tail.map(f);
     }
     
     @Override

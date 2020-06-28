@@ -37,7 +37,7 @@ final class Leaf<E> implements Node23<E> {
     
     @Override
     public Node23<E> reverse() {
-        return new ReversedNode23<>(this);
+        return this;
     }
     
     @Override
@@ -116,10 +116,5 @@ final class Leaf<E> implements Node23<E> {
     @Override
     public boolean equals(Object obj) {
         return eq(obj);
-    }
-    
-    @Override
-    public int indexOf(Function<? super E, Integer> comparator) {
-        return comparator.apply(element) == 0 ? 0 : -1;
     }
 }
