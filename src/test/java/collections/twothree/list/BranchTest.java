@@ -39,11 +39,12 @@ public class BranchTest {
         assertEquals(branch("2","3","4").head(2), branch("2","3"));
         assertEquals(branch("2","3","4").head(3), branch("2","3", "4"));
 
-        assertEquals(new Branch<>(branch("2","3"),branch("4","5")).head(0), null);
-        assertEquals(new Branch<>(branch("2","3"),branch("4","5")).head(1), new Leaf<>("2"));
-        assertEquals(new Branch<>(branch("2","3"),branch("4","5")).head(2), branch("2", "3"));
-        assertEquals(new Branch<>(branch("2","3"),branch("4","5")).head(3), branch("2", "3", "4"));
-        assertEquals(new Branch<>(branch("2","3"),branch("4","5")).head(4), new Branch<>(branch("2","3"),branch("4","5")));
+        assertEquals(new Branch<>(branch("2","3"),branch("4","5","6")).head(0), null);
+        assertEquals(new Branch<>(branch("2","3"),branch("4","5","6")).head(1), new Leaf<>("2"));
+        assertEquals(new Branch<>(branch("2","3"),branch("4","5","6")).head(2), branch("2", "3"));
+        assertEquals(new Branch<>(branch("2","3"),branch("4","5","6")).head(3), branch("2", "3", "4"));
+        assertEquals(new Branch<>(branch("2","3"),branch("4","5","6")).head(4), new Branch<>(branch("2","3"),branch("4","5")));
+        assertEquals(new Branch<>(branch("2","3"),branch("4","5","6")).head(5), new Branch<>(branch("2","3"),branch("4","5","6")));
     }
     @Test
     public void testTail() {
@@ -56,11 +57,12 @@ public class BranchTest {
         assertEquals(branch("2","3","4").tail(1), branch("3","4"));
         assertEquals(branch("2","3","4").tail(0), branch("2","3", "4"));
 
-        assertEquals(new Branch<>(branch("2","3"),branch("4","5")).tail(4), null);
-        assertEquals(new Branch<>(branch("2","3"),branch("4","5")).tail(3), new Leaf<>("5"));
-        assertEquals(new Branch<>(branch("2","3"),branch("4","5")).tail(2), branch("4", "5"));
-        assertEquals(new Branch<>(branch("2","3"),branch("4","5")).tail(1), branch("3", "4", "5"));
-        assertEquals(new Branch<>(branch("2","3"),branch("4","5")).tail(0), new Branch<>(branch("2","3"),branch("4","5")));
+        assertEquals(new Branch<>(branch("2","3"),branch("4","5","6")).tail(5), null);
+        assertEquals(new Branch<>(branch("2","3"),branch("4","5","6")).tail(4), new Leaf<>("6"));
+        assertEquals(new Branch<>(branch("2","3"),branch("4","5","6")).tail(3), branch("5", "6"));
+        assertEquals(new Branch<>(branch("2","3"),branch("4","5","6")).tail(2), branch("4", "5", "6"));
+        assertEquals(new Branch<>(branch("2","3"),branch("4","5", "6")).tail(1), new Branch<>(branch("3","4"),branch("5","6")));
+        assertEquals(new Branch<>(branch("2","3"),branch("4","5","6")).tail(0), new Branch<>(branch("2","3"),branch("4","5","6")));
     }
     @Test
     public void testFirst() {
@@ -129,7 +131,7 @@ public class BranchTest {
     public void testReverse() {
         assertEquals(branch("2","3").reverse(), branch("3","2"));
         assertEquals(branch("2","3","4").reverse(), branch("4","3","2"));
-        assertEquals(new Branch<>(branch("2","3"),branch("4","5")).reverse(), new Branch<>(branch("5","4"),branch("3","2")));
+        assertEquals(new Branch<>(branch("2","3"),branch("4","5","6")).reverse(), new Branch<>(branch("6","5","4"),branch("3","2")));
     }
 
     @Test
