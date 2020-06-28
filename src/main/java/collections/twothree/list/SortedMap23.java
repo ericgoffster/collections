@@ -155,6 +155,11 @@ public final class SortedMap23<K, V> implements Map23<K, V> {
         return m;
     }
 	
+    @Override
+    public SortedMap23<K, V> filterKeys(final Predicate<K> filter) {
+        return filter(e -> filter.test(e.getKey()));
+    }
+
     public Entry<K,V> getAt(final int index) {
         return entries.getAt(index);
     }

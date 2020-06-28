@@ -2,6 +2,7 @@ package collections.twothree.list;
 
 import java.util.AbstractMap;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Spliterator;
@@ -11,6 +12,17 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
+/**
+ * Represents a map where objects are ordered by their hashes.
+ * Note *ALL OPERATIONS ARE IMMUTABLE*.
+ * Unlike the java counterpart {@link HashMap}, lookup's are O(log n).
+ * Use @link {@link SortedMap23}, if at all possible, the only thing
+ * HashMap23 provides is the ability to have a map, when comparators
+ * are inconvenient.
+ *
+ * @param <K> The key type
+ * @param <V> The value type
+ */
 public final class HashMap23<K, V> implements Map23<K, V> {
 	final List23<Entry<K, V>> entries;
 
@@ -76,6 +88,11 @@ public final class HashMap23<K, V> implements Map23<K, V> {
     public HashMap23<K, V> retainAllKeys(final Iterable<K> other) {
         HashSet23<K> hs = HashSet23.of(other);
         return filter(e -> hs.contains(e.getKey()));
+    }
+    
+    @Override
+    public HashMap23<K, V> filterKeys(final Predicate<K> filter) {
+        return filter(e -> filter.test(e.getKey()));
     }
 
     @Override
