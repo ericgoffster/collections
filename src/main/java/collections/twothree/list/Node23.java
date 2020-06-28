@@ -17,6 +17,13 @@ interface Node23<E> extends Iterable<E> {
 	ListIterator<E> iterator();
     E get(int index);
     boolean isValid(int depth);
+    E last();
+    E first(); 
+    <F> Node23<F> map(Function<E, F> f);
+    Node23<E> head(int index);
+    Node23<E> tail(int index);
+    Stream<E> stream();
+
     default <T> T binarySearch(Function<? super E, Integer> comparator,
             BiFunction<E, Integer, T> leafVisitor) {
         if (isLeaf()) {
@@ -31,12 +38,6 @@ interface Node23<E> extends Iterable<E> {
         return getBranch(j).binarySearch(comparator, (e, i) -> leafVisitor.apply(e, i + p));
     }
     
-    E last();
-    E first(); 
-    <F> Node23<F> map(Function<E, F> f);
-    Node23<E> head(int index);
-    Node23<E> tail(int index);
-    Stream<E> stream();
     default int hc() {
         if (isLeaf()) {
             return Objects.hashCode(leafValue());
@@ -49,6 +50,7 @@ interface Node23<E> extends Iterable<E> {
             return result;            
         }
     }
+
     default public boolean eq(Object obj) {
         if (!(obj instanceof Node23)) {
             return false;
