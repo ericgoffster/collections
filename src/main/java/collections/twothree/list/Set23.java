@@ -4,7 +4,7 @@ import java.util.Set;
 import java.util.function.Predicate;
 
 /**
- * Represents a generic set of items backed by a {@link List23}.
+ * Represents an Immutable set of items backed by a {@link List23}.
  *
  * @param <E> The type of the elements contained by this set.
  */

@@ -5,7 +5,7 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 /**
- * Represents a generic collection of items backed by a {@link List23}.
+ * Represents an Immutable collection of items backed by a {@link List23}.
  *
  * @param <E> The type of the elements contained by this set.
  */
