@@ -52,7 +52,7 @@ public final class HashMap23<K, V> implements Map23<K, V> {
      * <p>This operation is O(n log n), where n = |items|.
      * <pre>
      * Example:
-     *     HashMap&gt;Integer, String&lt; hm = new HashMap&gt;&lt;();
+     *     HashMap&lt;Integer, String&gt; hm = new HashMap&lt;&gt;();
      *     hm.put(1, "2");
      *     hm.put(3, "4");
      *     HashMap23.of(hm) == {1 =&gt; "2", 3 =&gt; "4"}
@@ -71,7 +71,7 @@ public final class HashMap23<K, V> implements Map23<K, V> {
      * <p>This operation is O(n log n), where n = |items|.
      * <pre>
      * Example:
-     *     HashMap&gt;Integer, String&lt; hm = new HashMap&gt;&lt;();
+     *     HashMap&lt;Integer, String&gt; hm = new HashMap&lt;&gt;();
      *     hm.put(1, "2");
      *     hm.put(3, "4");
      *     HashMap23.of(hm.entrySet()) == {1 =&gt; "2", 3 =&gt; "4"}
