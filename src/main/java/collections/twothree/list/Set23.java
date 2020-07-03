@@ -14,8 +14,8 @@ public interface Set23<E> extends Collection23<E> {
      * The order of elements is not defined.
      * <p>This operation is O(log n), where n = |this|.
      * THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
-     * @param element The element to add.
-     * @return A set with the given element added.
+     * @param element The element to add
+     * @return A set with the given element added
      */
     Set23<E> add(E element);
     
@@ -34,8 +34,8 @@ public interface Set23<E> extends Collection23<E> {
      * The order of elements is not defined.
      * <p>This operation is O(m * log n), where n = |this| and m = |other|.
      * THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
-     * @param other The elements to remove.
-     * @return A set with the given element removed.
+     * @param other The elements to remove
+     * @return A set with the given element removed
      */
     Set23<E> union(Set23<E> other);
 
@@ -64,8 +64,8 @@ public interface Set23<E> extends Collection23<E> {
      * The order of elements should be retained.
      * <p>This operation is O(m * log n), where n = |this| and m = |other|.
      * THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
-     * @param other The elements to remove.
-     * @return A set with the given element removed.
+     * @param other The elements to remove
+     * @return A set with the given element removed
      */
     Set23<E> removeAllIn(Iterable<E> other);
   
