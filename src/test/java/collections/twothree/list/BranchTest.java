@@ -2,6 +2,7 @@ package collections.twothree.list;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
@@ -179,5 +180,16 @@ public class BranchTest {
         assertTrue(hm.contains(branch(2,3)));
         assertFalse(hm.contains(branch(2,3).reverse()));
         assertFalse(hm.contains(new Leaf<>(2)));
+    }
+    @Test
+    public void testEquals() {
+        assertEquals(branch(2,3),branch(2,3));
+        assertNotEquals(branch(2,3),branch(2,3,4));
+        assertNotEquals(branch(2,3, 4),branch(2,3));
+        assertNotEquals(branch(2,3, 4),new Leaf<>(2));
+        assertNotEquals(new Leaf<>(2),branch(2,3, 4));
+        assertNotEquals(2,branch(2,3, 4));
+        assertNotEquals(branch(2,3, 4),2);
+        assertNotEquals(branch(2,3),branch(2,4));
     }
 }

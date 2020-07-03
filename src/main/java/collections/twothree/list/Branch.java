@@ -66,7 +66,7 @@ final class Branch<E> implements Node23<E> {
         assert index < size;
         int pos = 0;
         int j = 0;
-        while(j < nodes.length && index >= pos + nodes[j].size()) {
+        while(j < nodes.length - 1 && index >= pos + nodes[j].size()) {
             pos += nodes[j++].size();
         }
         return nodes[j].get(index - pos);
@@ -116,23 +116,16 @@ final class Branch<E> implements Node23<E> {
     public Node23<E> tail(int index) {
         final int b1Index = index - nodes[0].size();
         if (b1Index < 0) {
-            final Node23<E> lhs = nodes[0].tail(index);
-            final Node23<E> rhs;
-            if (nodes.length == 3) {
-                rhs = new Branch<>(nodes[1], nodes[2]);
-            } else {
-                rhs = nodes[1];
-            }
-            return lhs == null ? rhs : List23.concat(lhs, rhs);
+            return List23.concat(nodes[0].tail(index), nodes.length == 3 ?
+                    new Branch<>(nodes[1], nodes[2]) :
+                    nodes[1]);
         }
         if (nodes.length == 2) {
             return nodes[1].tail(b1Index);
         }
         final int b2Index = b1Index - nodes[1].size();
         if (b2Index < 0) {
-            final Node23<E> lhs = nodes[1].tail(b1Index);
-            final Node23<E> rhs = nodes[2];
-            return lhs == null ? rhs : List23.concat(lhs, rhs);
+            return List23.concat(nodes[1].tail(b1Index), nodes[2]);
         } 
         return nodes[2].tail(b2Index);
     }
