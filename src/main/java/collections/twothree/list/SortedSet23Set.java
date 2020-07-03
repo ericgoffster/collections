@@ -16,7 +16,7 @@ final class SortedSet23Set<E> extends AbstractSet<E> implements SortedSet<E> {
 
 	@Override
 	public Iterator<E> iterator() {
-		return set.elements.asList().iterator();
+		return set.elements.iterator();
 	}
 
 	@Override

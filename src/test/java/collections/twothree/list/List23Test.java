@@ -302,14 +302,14 @@ public class List23Test {
 	}
 	
 	private static List<String> makeList(List23<String> src) {
-		return src.asList();
+		return src.asCollection();
 	}
 	
 	@Test
 	public void testAsList() {
 		List23<String> l1 = new List23<>(
 				new Branch<>(branch("1","2","3"),branch("4","5")));
-		List<String> l = l1.asList();
+		List<String> l = l1.asCollection();
 		assertEquals(l, Arrays.asList("1", "2", "3", "4", "5"));
 	}
 
@@ -317,7 +317,7 @@ public class List23Test {
 	public void testToString() {
 		List23<String> l1 = new List23<>(
 				new Branch<>(branch("1","2","3"),branch("4","5")));
-		assertEquals(l1.toString(), l1.asList().toString());
+		assertEquals(l1.toString(), l1.asCollection().toString());
         assertEquals(branch("1","2","3").toString(), "[1 2 3]");
         assertEquals(branch("1","2","3").reverse().toString(), "[3 2 1]");
         assertEquals(branch("1","2").toString(), "[1 2]");

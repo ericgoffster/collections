@@ -1,7 +1,6 @@
 package collections.twothree.list;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -241,7 +240,7 @@ public final class List23<E> implements Collection23<E> {
      * </pre>
 	 * @return A classic "read only java List" view of the list
 	 */
-	public List<E> asList() {
+	public List<E> asCollection() {
 		return new List23List<>(this);
 	}
 	
@@ -632,7 +631,7 @@ public final class List23<E> implements Collection23<E> {
 
 	@Override
     public int hashCode() {
-    	return asList().hashCode();
+    	return asCollection().hashCode();
     }
 
     @Override
@@ -641,12 +640,12 @@ public final class List23<E> implements Collection23<E> {
     		return false;
     	}
     	final List23<?> other = (List23<?>)obj;
-    	return asList().equals(other.asList());
+    	return asCollection().equals(other.asCollection());
     }
 
     @Override
     public String toString() {
-    	return asList().toString();
+    	return asCollection().toString();
     }
 
     @Override
@@ -812,10 +811,5 @@ public final class List23<E> implements Collection23<E> {
         elements.forEachRemaining(nodes::add);
         Collections.sort(nodes, (i,j) -> comparator.compare(i.leafValue(),j.leafValue()));
         return nodes.iterator();
-    }
-
-    @Override
-    public Collection<E> asCollection() {
-        return asList();
     }
 }

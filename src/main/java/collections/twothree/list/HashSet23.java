@@ -133,6 +133,7 @@ public final class HashSet23<E> implements Set23<E> {
      * <pre>
      * Example:
      *     HashSet23.of(4, 2, 3).add(5) == {2, 3, 4, 5}
+     *     HashSet23.of(4, 2, 3, 5).add(5) == {2, 3, 4, 5}
      * </pre>
      * THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
 	 * @param element The element to add.
@@ -151,7 +152,7 @@ public final class HashSet23<E> implements Set23<E> {
      * <p>This operation is O(m * log n).
      * <pre>
      * Example:
-     *     HashSet23.of(4, 2, 3).union(HashSet23.of(5, 6)) == {2, 3, 4, 5, 6}
+     *     HashSet23.of(4, 2, 3).union(HashSet23.of(4, 5, 6)) == {2, 3, 4, 5, 6}
      * </pre>
      * THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * @param other The elements to remove.
@@ -205,7 +206,7 @@ public final class HashSet23<E> implements Set23<E> {
      * <p>This operation is O((m + n) * log (m + n)).
      * <pre>
      * Example:
-     *     HashSet23.of(4, 2, 3).retain(Set.of(1,2,4)) == {2, 4}
+     *     HashSet23.of(4, 2, 3).retain(Set.of(1,2,4)) == {4, 2}
      * </pre>
      * THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * @param other The set to intersection with
@@ -262,7 +263,7 @@ public final class HashSet23<E> implements Set23<E> {
 		Set23<?> other = (Set23<?>)obj;
 		return asCollection().equals(other.asCollection());
 	}
-	
+
 	@Override
 	public String toString() {
 		return asCollection().toString();
