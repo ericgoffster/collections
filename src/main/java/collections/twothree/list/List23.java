@@ -783,13 +783,6 @@ public final class List23<E> implements Collection23<E> {
         return combine(arr, arrlen, result, pos);            
 	}
 
-	// Returns true, if the list is valid.
-    // All branches are same height, and no 1 degenerate 1 branches.
-    // O(n log n)
-	boolean isValid() {
-        return root == null || root.isValid(root.getDepth());
-    }
-
     // Warning, all elements in this list must follow order governed by this comparator
     int getIndexOf(final Function<? super E, Integer> comparator) {
         if (root == null) {

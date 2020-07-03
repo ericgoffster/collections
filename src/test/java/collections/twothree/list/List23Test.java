@@ -57,7 +57,6 @@ public class List23Test {
 				l4 = l4.insertAt(i, String.valueOf(i));
 			}
 			List23<String> l3 = l.appendList(l2);
-			assertTrue(l3.isValid());
 			assertEquals(l3, l4);
 		}
 	}
@@ -80,7 +79,6 @@ public class List23Test {
 		}
 		for(int i = 0; i <= 31; i++) {
 			List23<String> l2 = l.tailAt(i);
-            assertTrue(l2.isValid());
 			for(int j = 0; j < 31 - i; j++) {
 				assertEquals(l2.getAt(j), String.valueOf(j + i));
 			}
@@ -95,7 +93,6 @@ public class List23Test {
 		}
 		for(int i = 0; i <= 31; i++) {
 			List23<String> l2 = l.headAt(i);
-            assertTrue(l2.isValid());
 			for(int j = 0; j < i; j++) {
 				assertEquals(l2.getAt(j), String.valueOf(j));
 			}
@@ -110,7 +107,6 @@ public class List23Test {
 		}
 		for(int i = 0; i <= 26; i++) {
 			List23<String> l2 = l.getRange(i, i + 5);
-            assertTrue(l2.isValid());
 			for(int j = 0; j < 5; j++) {
 				assertEquals(l2.getAt(j), String.valueOf(i + j));
 			}
@@ -287,13 +283,11 @@ public class List23Test {
 			List23<String> l = new List23<String>(null);
 			for(int i = 0; i < sz; i++) {
 				l = l.insertAt(i, String.valueOf(i));
-	            assertTrue(l.isValid());
 			}
 			assertEquals(l.size(), sz);
 			{
 				for(int i = 0; i <= sz; i++) {
 					List23<String> l2 = l.insertAt(i, "abc");
-	                assertTrue(l2.isValid());
 					assertEquals(l2.size(), sz + 1);
 					for(int j = 0; j < i; j++) {
 						assertEquals(l2.getAt(j), String.valueOf(j));
@@ -489,13 +483,11 @@ public class List23Test {
 			List23<String> l = new List23<String>(null);
 			for(int i = 0; i < sz; i++) {
 				l = l.insertAt(i, String.valueOf(i));
-                assertTrue(l.isValid());
 			}
 			assertEquals(l.size(), sz);
 			{
 				for(int i = 0; i < sz; i++) {
 					List23<String> l2 = l.removeAt(i);
-	                assertTrue(l2.isValid());
 					assertEquals(l2.size(), sz - 1);
 					for(int j = 0; j < i; j++) {
 						assertEquals(l2.getAt(j), String.valueOf(j));
