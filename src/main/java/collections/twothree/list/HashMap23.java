@@ -14,10 +14,10 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 /**
- * Represents an Immutable map where objects are ordered by their hashes.
- * Note *ALL OPERATIONS ARE IMMUTABLE*.
- * Unlike the java counterpart {@link HashMap}, lookup's are O(log n).
- * Use @link {@link SortedMap23}, if at all possible, the only thing
+ * Represents an Immutable map where objects are ordered by their hashes in a {@link List23}.
+ * <p>Note *ALL OPERATIONS ARE IMMUTABLE*.
+ * <p>Unlike the java counterpart {@link HashMap}, lookup's are O(log n).
+ * <p>Use @link {@link SortedMap23}, if at all possible, the only thing
  * HashMap23 provides is the ability to have a map, when comparators
  * are inconvenient.
  *

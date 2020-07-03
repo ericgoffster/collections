@@ -6,6 +6,7 @@ import java.util.stream.Stream;
 
 /**
  * Represents an Immutable collection of items backed by a {@link List23}.
+ * <p>Note *ALL OPERATIONS ARE IMMUTABLE*.
  *
  * @param <E> The type of the elements contained by this set.
  */

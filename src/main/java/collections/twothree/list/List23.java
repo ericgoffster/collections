@@ -18,7 +18,8 @@ import org.granitesoft.requirement.Requirements;
 
 /**
  * Represents an Immutable list as a 23-tree.
- * A 23-tree is a semi-balanced tree, each branch has 2 or 3 nodes.
+ * <p>Note *ALL OPERATIONS ARE IMMUTABLE*.
+ * <p>A 23-tree is a semi-balanced tree, each branch has 2 or 3 nodes.
  * The nodes are ordered such that the leftmost side of the list
  * is in the left-most branch, and the rightmost side of the list is in the right-most branch.
  * <p>

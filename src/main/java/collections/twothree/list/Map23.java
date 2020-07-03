@@ -8,8 +8,8 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 /**
- * Represents the Immutable Map23 interface.
- * Note *ALL OPERATIONS ARE IMMUTABLE*.
+ * Represents an Immutable mapping of keys to values backed by a {@link List23} of entries.
+ * <p>Note *ALL OPERATIONS ARE IMMUTABLE*.
  *
  * @param <K> The key type
  * @param <V> The value type

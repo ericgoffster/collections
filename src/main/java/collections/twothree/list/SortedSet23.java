@@ -14,6 +14,7 @@ import org.granitesoft.requirement.Requirements;
 /**
  * Represents an Immutable ordered set of elements using a {@link List23} as a backing store.
  * Set membership and ordering is implemented with a comparator.
+ * <p>Note *ALL OPERATIONS ARE IMMUTABLE*.
  * <p>
  * Since operations on a List23 are log n, we can represent a set
  * relatively easily as a sorted list of elements, doing straightforward
