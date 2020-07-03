@@ -88,12 +88,6 @@ public class HashMap23Test {
 	}
 	
     @Test
-    public void testGetAt() {
-        assertEquals(HashMap23.<Integer, Integer>empty().put(1, 2).put(3, 4).getAt(0), makeEntry(1, 2));
-        assertEquals(HashMap23.<Integer, Integer>empty().put(1, 2).put(3, 4).getAt(1), makeEntry(3, 4));
-    }
-
-    @Test
     public void testEntries() {
         assertTrue(HashMap23.<Integer, Integer>empty().put(1, 2).put(3, 4).asSet23()
                 .contains(makeEntry(1, 2)));
@@ -119,10 +113,6 @@ public class HashMap23Test {
         assertEquals(HashMap23.<Integer, Integer>empty().put(1, 2).put(3, 4).values(), List23.of(2, 4));
     }
 
-    @Test
-    public void testRemoveAt() {
-        assertEquals(HashMap23.<Integer, Integer>empty().put(1, 2).put(3, 4).removeAt(0), HashMap23.<Integer, Integer>empty().put(3, 4));
-    }
     @Test
     public void testStream() {
         Map<Integer, Integer> m = new HashMap<>();

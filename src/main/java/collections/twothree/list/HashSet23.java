@@ -51,7 +51,7 @@ public final class HashSet23<E> implements Set23<E> {
     }
 
     /**
-     * Returns the empty set, using a custom ordering.
+     * Returns the empty hashset.
      * <p>This operation is O(1).
      * <pre>
      * Example:
@@ -65,7 +65,7 @@ public final class HashSet23<E> implements Set23<E> {
     }
 
     /**
-     * Returns a set containing an initial list of elements, using natural ordering.
+     * Returns a hashset containing an initial list of elements.
      * <p>This operation is O(n log n).
      * <pre>
      * Example:
@@ -82,7 +82,7 @@ public final class HashSet23<E> implements Set23<E> {
     }
 
     /**
-     * Returns a set containing an initial list of elements, using custom ordering.
+     * Returns a hashset containing an initial list of elements.
      * <p>This operation is O(n log n).
      * <pre>
      * Example:

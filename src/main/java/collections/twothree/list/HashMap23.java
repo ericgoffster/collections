@@ -32,17 +32,57 @@ public final class HashMap23<K, V> implements Map23<K, V> {
 		this.entries = entries;
 	}
 
+	/**
+     * Returns the empty hashmap.
+     * <p>This operation is O(1).
+     * <pre>
+     * Example:
+     *     HashMap23.empty() == {}
+     * </pre>
+     * @param <K> The key type
+     * @param <V> The value type
+	 * @return
+	 */
     public static <K,V> HashMap23<K,V> empty() {
         return of(Collections.emptyList());
     }
    
+    /**
+     * Returns a hashmap23 seeded from another <code>Map</code>.
+     * <p>This operation is O(n log n), where n = |items|.
+     * <pre>
+     * Example:
+     *     HashMap<Integer, String> hm = new HashMap<>();
+     *     hm.put(1, "2");
+     *     hm.put(3, "4");
+     *     HashMap23.of(hm) == {1 => "2", 3 => "4"}
+     * </pre>
+     * @param <K> The key type
+     * @param <V> The value type
+     * @return a hashmap23 seeded from another <code>Map</code>
+     */
     public static <K,V> HashMap23<K,V> of(final Map<K, V> items) {
         return of(items.entrySet());
     }
+
+    /**
+     * Returns a hashmap23 seeded from another collection of entries.
+     * <p>This operation is O(n log n), where n = |items|.
+     * <pre>
+     * Example:
+     *     HashMap<Integer, String> hm = new HashMap<>();
+     *     hm.put(1, "2");
+     *     hm.put(3, "4");
+     *     HashMap23.of(hm.entrySet()) == {1 => "2", 3 => "4"}
+     * </pre>
+     * @param <K> The key type
+     * @param <V> The value type
+     * @return a hashmap23 seeded from another <code>Map</code>
+     */
 	public static <K,V> HashMap23<K,V> of(final Iterable<Entry<K, V>> items) {
 	    return new HashMap23<K, V>(List23.ofSortedUnique((a,b) -> HashSet23.compare(a.getKey(), b.getKey()), items));
 	}
-	
+
     @Override
 	public int size() {
 		return entries.size();
@@ -82,7 +122,7 @@ public final class HashMap23<K, V> implements Map23<K, V> {
     @Override
 	public HashMap23<K, V> removeKey(final K key) {
         int index = keys().elements.indexOf(key);
-        return index < 0 ? this : removeAt(index);
+        return index < 0 ? this : new HashMap23<K, V>(entries.removeAt(index));
 	}
 	
     @Override
@@ -105,10 +145,6 @@ public final class HashMap23<K, V> implements Map23<K, V> {
         return m;
     }
 	
-    public Entry<K,V> getAt(final int index) {
-        return entries.getAt(index);
-    }
-    
     @Override
     public V get(final K key) {
         return getOrDefault(key, () -> null);
@@ -120,10 +156,6 @@ public final class HashMap23<K, V> implements Map23<K, V> {
         return index < 0 ? supplier.get() : entries.getAt(index).getValue();
     }
     
-    public HashMap23<K, V> removeAt(final int index) {
-        return new HashMap23<K, V>(entries.removeAt(index));
-    }
-
     @Override
 	public Map<K, V> asMap() {
 		return new Map23Map<>(this);
@@ -131,10 +163,10 @@ public final class HashMap23<K, V> implements Map23<K, V> {
 	
     @Override
 	public Set23<Entry<K,V>> asSet23() {
-	    return new SortedSet23<>(this::entryCompare, entries);
+	    return new SortedSet23<>(HashMap23::entryCompare, entries);
 	}
 	
-	public int entryCompare(final Entry<K,V> a, final Entry<K,V> b) {
+	static <K,V> int entryCompare(final Entry<K,V> a, final Entry<K,V> b) {
 	    int cmp = HashSet23.compare(a.getKey(), b.getKey());
 	    if (cmp != 0) {
 	        return cmp;
