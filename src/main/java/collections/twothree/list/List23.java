@@ -671,10 +671,7 @@ public final class List23<E> implements Collection23<E> {
      */
     @Override
     public Stream<E> stream() {
-        if (root == null) {
-            return StreamSupport.stream(Spliterators.emptySpliterator(), false);
-        }
-        return root.stream();
+        return StreamSupport.stream(spliterator(), false);
     }
 
     static int verifyIndex(final String name, final int index, final int low, final int high) {

@@ -36,6 +36,11 @@ public class HashMap23Test {
                 HashMap23.of(m));
     }
     @Test
+    public void testFilterKeys() {
+        assertEquals(HashMap23.of(Arrays.asList(makeEntry(0,1), makeEntry(3,2), makeEntry(6,3), makeEntry(9,4), makeEntry(12,5))).filterKeys(k -> k < 6),
+                HashMap23.of(Arrays.asList(makeEntry(0,1), makeEntry(3,2))));
+    }
+    @Test
     public void testRemoveAll() {
         assertEquals(HashMap23.of(Arrays.asList(makeEntry(0,1), makeEntry(3,2), makeEntry(6,3), makeEntry(9,4), makeEntry(12,5))).removeAllKeysIn(SortedSet23.of(6, 7, 9)),
                 HashMap23.of(Arrays.asList(makeEntry(0,1), makeEntry(3,2), makeEntry(12,5))));

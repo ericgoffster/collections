@@ -12,6 +12,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 /**
  * Represents a map where objects are ordered by a comparator on the keys.
@@ -337,7 +338,7 @@ public final class SortedMap23<K, V> implements Map23<K, V> {
     
     @Override
     public Stream<Entry<K,V>> stream() {
-        return entries.stream();
+        return StreamSupport.stream(spliterator(), false);
     }
     
     @Override

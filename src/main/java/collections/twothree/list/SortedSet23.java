@@ -7,6 +7,7 @@ import java.util.SortedSet;
 import java.util.Spliterator;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import org.granitesoft.requirement.Requirements;
 
@@ -502,7 +503,7 @@ public final class SortedSet23<E> implements Set23<E> {
 
     @Override
     public Stream<E> stream() {
-        return elements.stream();
+        return StreamSupport.stream(spliterator(), false);
     }
 
     /// Compares two elements, allowing for null.

@@ -32,6 +32,11 @@ public class SortedMap23Test {
     }
     
     @Test
+    public void testFilterKeys() {
+        assertEquals(SortedMap23.of(Arrays.asList(makeEntry(0,1), makeEntry(3,2), makeEntry(6,3), makeEntry(9,4), makeEntry(12,5))).filterKeys(k -> k < 6),
+                HashMap23.of(Arrays.asList(makeEntry(0,1), makeEntry(3,2))));
+    }
+    @Test
     public void testComparator() {
         Comparator<? super Integer> keyComparator = Integer::compare;
         SortedMap<Integer, Integer> l = SortedMap23.of(keyComparator, Arrays.asList(makeEntry(0,1), makeEntry(3,2), makeEntry(6,3), makeEntry(9,4), makeEntry(12,5))).asMap();
