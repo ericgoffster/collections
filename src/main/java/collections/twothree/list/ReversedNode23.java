@@ -1,6 +1,5 @@
 package collections.twothree.list;
 
-import java.util.ListIterator;
 import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.function.Function;
@@ -52,11 +51,6 @@ final class ReversedNode23<E> implements Node23<E> {
             delim = " ";
         }
         return sb.append("]").toString();
-    }
-
-    @Override
-    public ListIterator<E> iterator() {
-        return NodeIterator.atBeginning(this);
     }
 
     @Override

@@ -14,7 +14,6 @@ interface Node23<E> extends Iterable<E> {
 	Node23<E> reverse();
 	int numBranches();
 	int getDepth();
-	ListIterator<E> iterator();
     E get(int index);
     boolean isValid(int depth);
     E last();
@@ -68,5 +67,23 @@ interface Node23<E> extends Iterable<E> {
             }
         }
         return true;
+    }
+    
+    default ListIterator<E> iterator() {
+        if (isLeaf()) {
+            return new SingletonIterator<>(leafValue());
+        }
+        return new BranchIterator<E>(this);
+    }
+    
+    default ListIterator<E> atEnd() {
+        if (isLeaf()) {
+            ListIterator<E> iterator = new SingletonIterator<>(leafValue());
+            iterator.next();
+            return iterator;
+        }
+        BranchIterator<E> nodeIterator = new BranchIterator<E>(this);
+        nodeIterator.toEnd();
+        return nodeIterator;
     }
 }

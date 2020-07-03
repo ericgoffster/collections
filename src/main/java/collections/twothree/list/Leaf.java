@@ -1,6 +1,5 @@
 package collections.twothree.list;
 
-import java.util.ListIterator;
 import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.function.Function;
@@ -67,11 +66,6 @@ final class Leaf<E> implements Node23<E> {
     @Override
     public boolean isLeaf() {
         return true;
-    }
-    
-    @Override
-    public ListIterator<E> iterator() {
-        return new SingletonIterator<>(element);
     }
     
     @Override
