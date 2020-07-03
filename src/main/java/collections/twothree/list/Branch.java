@@ -12,16 +12,20 @@ final class Branch<E> implements Node23<E> {
 	Branch(Node23<E> b0, Node23<E> b1) {
 		super();
 		this.size = b0.size() + b1.size();	
-        @SuppressWarnings({"unchecked","rawtypes"})
-		final Node23<E>[] n = new Node23[] {b0, b1};
-        nodes = n;
+		@SuppressWarnings("rawtypes")
+        final Node23[] n = new Node23[] {b0, b1};
+		@SuppressWarnings("unchecked")
+        final Node23<E>[] n2 = n;
+        nodes = n2;
 	}
     Branch(Node23<E> b0, Node23<E> b1, Node23<E> b2) {
         super();
         this.size = b0.size() + b1.size() + b2.size();  
-        @SuppressWarnings({"unchecked","rawtypes"})
-        Node23<E>[] n = new Node23[] {b0, b1, b2};
-        nodes = n;
+        @SuppressWarnings("rawtypes")
+        final Node23[] n = new Node23[] {b0, b1, b2};
+        @SuppressWarnings("unchecked")
+        final Node23<E>[] n2 = n;
+        nodes = n2;
     }
     
     @Override

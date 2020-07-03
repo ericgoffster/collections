@@ -711,15 +711,17 @@ public final class List23<E> implements Collection23<E> {
         if (depthDelta == 0) {
             return new Branch<>(lhs, rhs);
         }
-        @SuppressWarnings({"unchecked","rawtypes"})
-        final Node23<E>[] nodes = new Node23[2];
+        @SuppressWarnings("rawtypes")
+        final Node23[] nodes = new Node23[2];
+        @SuppressWarnings("unchecked")
+        final Node23<E>[] nodes2 = nodes;
         final int nodelen;
 	    if (depthDelta >= 0) {
-	        nodelen = append(lhs, rhs, depthDelta, nodes, 0);
+	        nodelen = append(lhs, rhs, depthDelta, nodes2, 0);
 	    } else {
-	        nodelen = prepend(lhs, rhs, -depthDelta, nodes);
+	        nodelen = prepend(lhs, rhs, -depthDelta, nodes2);
 	    }
-	    return nodelen == 1 ? nodes[0] : new Branch<>(nodes[0], nodes[1]);
+	    return nodelen == 1 ? nodes2[0] : new Branch<>(nodes2[0], nodes2[1]);
     }
 
 	// Combines 2-4 nodes into a list of one or 2 nodes.
@@ -753,13 +755,15 @@ public final class List23<E> implements Collection23<E> {
             return 2;
 	    }
 
-        @SuppressWarnings({"unchecked","rawtypes"})
-        final Node23<E>[] arr = new Node23[4];
-	    int arrlen = prepend(lhs, rhs.getBranch(0), depthDelta - 1, arr);
+        @SuppressWarnings("rawtypes")
+        final Node23[] arr = new Node23[4];
+        @SuppressWarnings("unchecked")
+        final Node23<E>[] arr2 = arr;
+	    int arrlen = prepend(lhs, rhs.getBranch(0), depthDelta - 1, arr2);
         for(int i = 1; i < rhs.numBranches(); i++) {
-            arr[arrlen++] = rhs.getBranch(i);
+            arr2[arrlen++] = rhs.getBranch(i);
         }
-	    return combine(arr, arrlen, result, 0);            
+	    return combine(arr2, arrlen, result, 0);            
 	}
 
 	static <E> int append(final Node23<E> lhs, final Node23<E> rhs, final int depthDelta, final Node23<E>[] result, final int pos) {
@@ -773,14 +777,16 @@ public final class List23<E> implements Collection23<E> {
             return pos + 2;
         }
 
-        @SuppressWarnings({"unchecked","rawtypes"})
-        final Node23<E>[] arr = new Node23[4];
+        @SuppressWarnings("rawtypes")
+        final Node23[] arr = new Node23[4];
+        @SuppressWarnings("unchecked")
+        final Node23<E>[] arr2 = arr;
         int arrlen = 0;
         for(int i = 0; i < lhs.numBranches() - 1; i++) {
-            arr[arrlen++] = lhs.getBranch(i);
+            arr2[arrlen++] = lhs.getBranch(i);
         }
-        arrlen = append(lhs.getBranch(lhs.numBranches() - 1), rhs, depthDelta - 1, arr, arrlen);
-        return combine(arr, arrlen, result, pos);            
+        arrlen = append(lhs.getBranch(lhs.numBranches() - 1), rhs, depthDelta - 1, arr2, arrlen);
+        return combine(arr2, arrlen, result, pos);            
 	}
 
     // Warning, all elements in this list must follow order governed by this comparator
