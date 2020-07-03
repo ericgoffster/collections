@@ -4,7 +4,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public final class RemoveDupsIterator<E> implements Iterator<Leaf<E>> {
+final class RemoveDupsIterator<E> implements Iterator<Leaf<E>> {
     final Iterator<Leaf<E>> iterator;
     final Comparator<? super E> comparator;
     Leaf<E> node; 
