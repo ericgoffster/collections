@@ -1,6 +1,5 @@
 package collections.twothree.list;
 
-import java.util.ListIterator;
 import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -69,21 +68,10 @@ interface Node23<E> extends Iterable<E> {
         return true;
     }
     
-    default ListIterator<E> iterator() {
+    default SeekableIterator<E> iterator() {
         if (isLeaf()) {
             return new SingletonIterator<>(leafValue());
         }
         return new BranchIterator<E>(this);
-    }
-    
-    default ListIterator<E> atEnd() {
-        if (isLeaf()) {
-            ListIterator<E> iterator = new SingletonIterator<>(leafValue());
-            iterator.next();
-            return iterator;
-        }
-        BranchIterator<E> nodeIterator = new BranchIterator<E>(this);
-        nodeIterator.toEnd();
-        return nodeIterator;
     }
 }

@@ -1,13 +1,12 @@
 package collections.twothree.list;
 
-import java.util.ListIterator;
 import java.util.NoSuchElementException;
 
-final class BranchIterator<E> implements ListIterator<E>{
+final class BranchIterator<E> implements SeekableIterator<E>{
     
     final Node23<E> root;
     int which;
-    ListIterator<E> curr;
+    SeekableIterator<E> curr;
     int index;
 
     BranchIterator(Node23<E> n) {
@@ -20,8 +19,9 @@ final class BranchIterator<E> implements ListIterator<E>{
     
     public void toEnd() {
         this.which = root.numBranches() - 1;
-        this.curr = root.getBranch(root.numBranches() - 1).atEnd();
+        this.curr = root.getBranch(root.numBranches() - 1).iterator();
         this.index = root.size() - 1;
+        this.curr.toEnd();
     }
     
     @Override
@@ -53,7 +53,8 @@ final class BranchIterator<E> implements ListIterator<E>{
                 throw new NoSuchElementException();
             }
             which--;
-            this.curr = root.getBranch(which).atEnd();
+            this.curr = root.getBranch(which).iterator();
+            this.curr.toEnd();
         }
         index--;
         return curr.previous();

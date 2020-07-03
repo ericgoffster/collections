@@ -1,11 +1,15 @@
 package collections.twothree.list;
 
-import java.util.ListIterator;
 import java.util.NoSuchElementException;
 
-final class SingletonIterator<E> implements ListIterator<E> {
+final class SingletonIterator<E> implements SeekableIterator<E> {
     final E element;
     int i = 0;
+    
+    @Override
+    public void toEnd() {
+        i = 1;
+    }
 
     public SingletonIterator(E element) {
         super();
