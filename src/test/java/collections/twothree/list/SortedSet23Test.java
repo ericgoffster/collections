@@ -23,7 +23,7 @@ public class SortedSet23Test {
         assertEquals(SortedSet23.of(comp, Arrays.asList(4, 6, 5)).asList(), List23.of(4, 5, 6));
         assertEquals(SortedSet23.of(comp.reversed(), Arrays.asList(4, 6, 5)).asList(), List23.of(6, 5, 4));
         assertEquals(SortedSet23.of(SortedSet23.of(4, 6, 5)).asList(), List23.of(4, 5, 6));
-        assertEquals(SortedSet23.ofSorted(SortedSet23.of(4, 6, 5).reversed().asSet()).asList(), List23.of(6, 5, 4));
+        assertEquals(SortedSet23.ofSorted(SortedSet23.of(4, 6, 5).reversed().asCollection()).asList(), List23.of(6, 5, 4));
     }
 
 	@Test

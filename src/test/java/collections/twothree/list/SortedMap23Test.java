@@ -164,11 +164,11 @@ public class SortedMap23Test {
 
     @Test
     public void testEntries() {
-        assertTrue(SortedMap23.<Integer, Integer>empty().put(1, 2).put(3, 4).asSet()
+        assertTrue(SortedMap23.<Integer, Integer>empty().put(1, 2).put(3, 4).asSet23()
                 .contains(makeEntry(1, 2)));
-        assertFalse(SortedMap23.<Integer, Integer>empty().put(1, 2).put(3, 4).asSet()
+        assertFalse(SortedMap23.<Integer, Integer>empty().put(1, 2).put(3, 4).asSet23()
                 .contains(makeEntry(1, 3)));
-        assertFalse(SortedMap23.<Integer, Integer>empty().put(1, 2).put(3, 4).asSet()
+        assertFalse(SortedMap23.<Integer, Integer>empty().put(1, 2).put(3, 4).asSet23()
                 .contains(makeEntry(2, 2)));
     }
     @Test

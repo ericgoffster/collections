@@ -1,6 +1,5 @@
 package collections.twothree.list;
 
-import java.util.Collection;
 import java.util.Comparator;
 import java.util.ListIterator;
 import java.util.Set;
@@ -456,7 +455,7 @@ public final class SortedSet23<E> implements Set23<E> {
      * @return the {@link SortedSet} view of this set
      */
     @Override
-	public SortedSet<E> asSet() {
+	public SortedSet<E> asCollection() {
 		return new SortedSet23Set<>(this);
 	}
 	
@@ -474,7 +473,7 @@ public final class SortedSet23<E> implements Set23<E> {
 	
     @Override
 	public int hashCode() {
-		return asSet().hashCode();
+		return asCollection().hashCode();
 	}
 	
 	@Override
@@ -483,12 +482,12 @@ public final class SortedSet23<E> implements Set23<E> {
 			return false;
 		}
 		Set23<?> other = (Set23<?>)obj;
-		return asSet().equals(other.asSet());
+		return asCollection().equals(other.asCollection());
 	}
 	
 	@Override
 	public String toString() {
-		return asSet().toString();
+		return asCollection().toString();
 	}
 	
 	@Override
@@ -504,11 +503,6 @@ public final class SortedSet23<E> implements Set23<E> {
     @Override
     public Stream<E> stream() {
         return elements.stream();
-    }
-
-    @Override
-    public Collection<E> asCollection() {
-        return elements.asCollection();
     }
 
     /// Compares two elements, allowing for null.

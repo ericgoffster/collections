@@ -13,7 +13,7 @@ final class Map23Map<K, V> extends AbstractMap<K, V> {
 
     @Override
     public Set<Entry<K, V>> entrySet() {
-        return map.asSet().asSet();
+        return map.asSet23().asCollection();
     }
     
     @Override

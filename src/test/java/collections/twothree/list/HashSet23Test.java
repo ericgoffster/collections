@@ -19,8 +19,8 @@ public class HashSet23Test {
 
     @Test
     public void testEmpty() {
-        assertEquals(HashSet23.empty().asSet(), Collections.emptySet());
-        assertEquals(HashSet23.of().asSet(), Collections.emptySet());
+        assertEquals(HashSet23.empty().asCollection(), Collections.emptySet());
+        assertEquals(HashSet23.of().asCollection(), Collections.emptySet());
     }
     
 	@Test
@@ -133,11 +133,11 @@ public class HashSet23Test {
 	@Test
 	public void testAsSet() {
 		HashSet23<String> l1 = HashSet23.of("1","2","3","4","5",null);
-		assertEquals(l1.asSet(), new HashSet<>(Arrays.asList("1", "2", "3", "4", "5", null)));
-		assertEquals(l1.asSet(), new HashSet<>(Arrays.asList("1", "2", "4", "3", "5", null)));
-		assertNotEquals(l1.asSet(), new HashSet<>(Arrays.asList("1", "2", "4", "3", "5")));
-		assertTrue(l1.asSet().contains("5"));
-		assertFalse(l1.asSet().contains("6"));
+		assertEquals(l1.asCollection(), new HashSet<>(Arrays.asList("1", "2", "3", "4", "5", null)));
+		assertEquals(l1.asCollection(), new HashSet<>(Arrays.asList("1", "2", "4", "3", "5", null)));
+		assertNotEquals(l1.asCollection(), new HashSet<>(Arrays.asList("1", "2", "4", "3", "5")));
+		assertTrue(l1.asCollection().contains("5"));
+		assertFalse(l1.asCollection().contains("6"));
 	}
     @Test
     public void testBasic() {

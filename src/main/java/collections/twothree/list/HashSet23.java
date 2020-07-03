@@ -1,6 +1,5 @@
 package collections.twothree.list;
 
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.Objects;
 import java.util.Set;
@@ -245,13 +244,13 @@ public final class HashSet23<E> implements Set23<E> {
      * @return the {@link SortedSet} view of this set
      */
     @Override
-	public Set<E> asSet() {
+	public Set<E> asCollection() {
 		return new Set23Set<>(this);
 	}
 	
     @Override
 	public int hashCode() {
-		return asSet().hashCode();
+		return asCollection().hashCode();
 	}
 	
 	@Override
@@ -260,12 +259,12 @@ public final class HashSet23<E> implements Set23<E> {
 			return false;
 		}
 		Set23<?> other = (Set23<?>)obj;
-		return asSet().equals(other.asSet());
+		return asCollection().equals(other.asCollection());
 	}
 	
 	@Override
 	public String toString() {
-		return asSet().toString();
+		return asCollection().toString();
 	}
 	
 	@Override
@@ -292,10 +291,5 @@ public final class HashSet23<E> implements Set23<E> {
             return 0;
         }
         return Integer.compare(System.identityHashCode(a), System.identityHashCode(b));
-    }
-
-    @Override
-    public Collection<E> asCollection() {
-        return elements.asCollection();
     }
 }

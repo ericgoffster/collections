@@ -129,7 +129,7 @@ public final class HashMap23<K, V> implements Map23<K, V> {
 	}
 	
     @Override
-	public Set23<Entry<K,V>> asSet() {
+	public Set23<Entry<K,V>> asSet23() {
 	    return new SortedSet23<>(this::entryCompare, entries);
 	}
 	

@@ -110,7 +110,7 @@ public interface Map23<K,V> extends Iterable<Entry<K,V>> {
      * Returns all entries in the map as Set23.
      * @return all entries in the map as Set23.
      */
-    Set23<Entry<K,V>> asSet();
+    Set23<Entry<K,V>> asSet23();
     
     /**
      * Returns all keys in this map.

@@ -48,13 +48,13 @@ public class HashMap23Test {
 
 	@Test
 	public void testInsertions() {
-		assertEquals(HashMap23.<Integer, Integer>empty().put(1,2).put(3, 4).asSet(),HashSet23.of(makeEntry(1,2), makeEntry(3, 4)));
-        assertEquals(HashMap23.<Integer, Integer>empty().put(3, 4).put(1, 2).asSet(),HashSet23.of(makeEntry(1,2), makeEntry(3, 4)));
-        assertNotEquals(HashMap23.<Integer, Integer>empty().put(3, 4).put(1, 3).asSet(),HashSet23.of(makeEntry(1,2), makeEntry(3, 4)));
-        assertNotEquals(HashMap23.<Integer, Integer>empty().put(1, 3).add(makeEntry(3, 4)).asSet(),HashSet23.of(makeEntry(1,2), makeEntry(3, 4)));
+		assertEquals(HashMap23.<Integer, Integer>empty().put(1,2).put(3, 4).asSet23(),HashSet23.of(makeEntry(1,2), makeEntry(3, 4)));
+        assertEquals(HashMap23.<Integer, Integer>empty().put(3, 4).put(1, 2).asSet23(),HashSet23.of(makeEntry(1,2), makeEntry(3, 4)));
+        assertNotEquals(HashMap23.<Integer, Integer>empty().put(3, 4).put(1, 3).asSet23(),HashSet23.of(makeEntry(1,2), makeEntry(3, 4)));
+        assertNotEquals(HashMap23.<Integer, Integer>empty().put(1, 3).add(makeEntry(3, 4)).asSet23(),HashSet23.of(makeEntry(1,2), makeEntry(3, 4)));
         HashMap23<Integer,Integer>  m = HashMap23.<Integer, Integer>empty().put(5,6).put(7, 8);
-        assertEquals(HashMap23.<Integer, Integer>empty().put(1, 3).addAll(m).asSet(),HashSet23.of(makeEntry(1,3), makeEntry(5, 6), makeEntry(7, 8)));
-        assertEquals(HashMap23.<Integer, Integer>empty().put(1, 3).addAll(m.asMap()).asSet(),HashSet23.of(makeEntry(1,3), makeEntry(5, 6), makeEntry(7, 8)));
+        assertEquals(HashMap23.<Integer, Integer>empty().put(1, 3).addAll(m).asSet23(),HashSet23.of(makeEntry(1,3), makeEntry(5, 6), makeEntry(7, 8)));
+        assertEquals(HashMap23.<Integer, Integer>empty().put(1, 3).addAll(m.asMap()).asSet23(),HashSet23.of(makeEntry(1,3), makeEntry(5, 6), makeEntry(7, 8)));
 	}
 
 	@Test
@@ -90,11 +90,11 @@ public class HashMap23Test {
 
     @Test
     public void testEntries() {
-        assertTrue(HashMap23.<Integer, Integer>empty().put(1, 2).put(3, 4).asSet()
+        assertTrue(HashMap23.<Integer, Integer>empty().put(1, 2).put(3, 4).asSet23()
                 .contains(makeEntry(1, 2)));
-        assertFalse(HashMap23.<Integer, Integer>empty().put(1, 2).put(3, 4).asSet()
+        assertFalse(HashMap23.<Integer, Integer>empty().put(1, 2).put(3, 4).asSet23()
                 .contains(makeEntry(1, 3)));
-        assertFalse(HashMap23.<Integer, Integer>empty().put(1, 2).put(3, 4).asSet()
+        assertFalse(HashMap23.<Integer, Integer>empty().put(1, 2).put(3, 4).asSet23()
                 .contains(makeEntry(2, 2)));
     }
     @Test
