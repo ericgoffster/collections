@@ -41,7 +41,7 @@ public final class HashMap23<K, V> implements Map23<K, V> {
      * </pre>
      * @param <K> The key type
      * @param <V> The value type
-	 * @return
+	 * @return the empty hashmap
 	 */
     public static <K,V> HashMap23<K,V> empty() {
         return of(Collections.emptyList());
@@ -52,11 +52,12 @@ public final class HashMap23<K, V> implements Map23<K, V> {
      * <p>This operation is O(n log n), where n = |items|.
      * <pre>
      * Example:
-     *     HashMap<Integer, String> hm = new HashMap<>();
+     *     HashMap&gt;Integer, String&lt; hm = new HashMap&gt;&lt;();
      *     hm.put(1, "2");
      *     hm.put(3, "4");
-     *     HashMap23.of(hm) == {1 => "2", 3 => "4"}
+     *     HashMap23.of(hm) == {1 =&gt; "2", 3 =&gt; "4"}
      * </pre>
+     * @param items map of items to copy
      * @param <K> The key type
      * @param <V> The value type
      * @return a hashmap23 seeded from another <code>Map</code>
@@ -70,11 +71,12 @@ public final class HashMap23<K, V> implements Map23<K, V> {
      * <p>This operation is O(n log n), where n = |items|.
      * <pre>
      * Example:
-     *     HashMap<Integer, String> hm = new HashMap<>();
+     *     HashMap&gt;Integer, String&lt; hm = new HashMap&gt;&lt;();
      *     hm.put(1, "2");
      *     hm.put(3, "4");
-     *     HashMap23.of(hm.entrySet()) == {1 => "2", 3 => "4"}
+     *     HashMap23.of(hm.entrySet()) == {1 =&gt; "2", 3 =&gt; "4"}
      * </pre>
+     * @param items set of items to copy
      * @param <K> The key type
      * @param <V> The value type
      * @return a hashmap23 seeded from another <code>Map</code>

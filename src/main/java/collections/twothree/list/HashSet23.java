@@ -3,7 +3,6 @@ package collections.twothree.list;
 import java.util.Iterator;
 import java.util.Objects;
 import java.util.Set;
-import java.util.SortedSet;
 import java.util.Spliterator;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
@@ -243,7 +242,7 @@ public final class HashSet23<E> implements Set23<E> {
      * Example:
      *     HashSet23.of(4, 2, 3).asSet() == {2, 3, 4}
      * </pre>
-     * @return the {@link SortedSet} view of this set
+     * @return the {@link Set} view of this set
      */
     @Override
 	public Set<E> asCollection() {
