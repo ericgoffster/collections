@@ -35,7 +35,6 @@ public class ReverseBranchTest {
   
     @Test
     public void testIsLeaf() {
-        assertTrue(reverse(new Leaf<>("1")).isLeaf());
         assertFalse(reversedBranch2("2","3").isLeaf());
     }
     @Test
