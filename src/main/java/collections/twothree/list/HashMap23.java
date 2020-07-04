@@ -105,8 +105,8 @@ public final class HashMap23<K, V> implements Map23<K, V> {
     }
 
     @Override
-    public HashMap23<K, V> addAll(final Map<K ,V> entries) {
-        return addAll(entries.entrySet());
+    public HashMap23<K, V> addAll(final Map<K ,V> map) {
+        return addAll(map.entrySet());
     }
 
     @Override
