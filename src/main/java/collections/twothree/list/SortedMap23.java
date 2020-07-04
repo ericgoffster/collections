@@ -78,7 +78,7 @@ public final class SortedMap23<K, V> implements Map23<K, V> {
      * @return an empty sorted map using the natural comparator associated with the keys.
      */
     public static <K extends Comparable<K>,V> SortedMap23<K,V> singleton(K key, V value) {
-        return new SortedMap23<K, V>(List23::naturalCompare, List23.of(new AbstractMap.SimpleImmutableEntry<>(key, value)));
+        return new SortedMap23<K, V>(List23::naturalCompare, List23.singleton(new AbstractMap.SimpleImmutableEntry<>(key, value)));
     }
 
     /**

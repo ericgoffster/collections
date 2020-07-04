@@ -89,28 +89,9 @@ public final class List23<E> implements Collection23<E> {
      * @param element The element
      * @return The List23 representation of the element
      */
-    public static <E> List23<E> of(final E element) {
+    public static <E> List23<E> singleton(final E element) {
         return new List23<>(new Leaf<>(element));
     }
-
-	/**
-	 * Easy construction of list.
-	 * <p>This operation is O(n log n) where n = |elements|.
-     * <pre>
-     * Example:
-     *     List23.of(5, 7, 9) == [5, 7, 9]
-     *     List23.of(5, 7, 5) == [5, 7, 5]
-     * </pre>
-     * @param <E> The type of the elements.
-	 * @param elements The collections of elements
-	 * @return The List23 representation of "elements"
-	 */
-	@SafeVarargs
-    @SuppressWarnings("varargs")
-	public static <E> List23<E> of(final E ... elements) {
-        Requirements.require(elements, Requirements.notNull(), () -> "elements");
-		return of(new ArrayIterable<>(elements));
-	}
 
 	/**
 	 * Easy construction of list.
@@ -211,25 +192,6 @@ public final class List23<E> implements Collection23<E> {
 	public static <E extends Comparable<E>> List23<E> ofSorted(final Iterable<? extends E> elements) {
         Requirements.require(elements, Requirements.notNull(), () -> "elements");
 		return ofSorted(List23::naturalCompare, elements);
-	}
-
-	/**
-	 * Easy construction of a sorted list.
-	 * Creates a List23 representation of elements sorted by their natural ordering.
-     * <p>This operation is O(n log n) where n = |elements|.
-     * <pre>
-     * Example:
-     *     List23.ofSorted(6, 1, 6, 8) == [1, 6, 6, 8]
-     * </pre>
-     * @param <E> The type of the elements
-	 * @param elements The array of elements
-	 * @return The sorted List23 representation of "elements"
-	 */
-	@SafeVarargs
-    @SuppressWarnings("varargs")
-	public static <E extends Comparable<E>> List23<E> ofSorted(final E ... elements) {
-        Requirements.require(elements, Requirements.notNull(), () -> "elements");
-		return ofSorted(new ArrayIterable<>(elements));
 	}
 
 	/**
@@ -413,7 +375,7 @@ public final class List23<E> implements Collection23<E> {
 	 */
     @Override
 	public List23<E> add(final E element) {
-        return replaceRange(size(), size(), List23.of(element));
+        return replaceRange(size(), size(), List23.singleton(element));
 	}
 	
     /**
@@ -431,7 +393,7 @@ public final class List23<E> implements Collection23<E> {
 	 */
 	public List23<E> setAt(final int index, final E element) {
 	    verifyIndex("index", index, 0, size() - 1);
-	    return replaceRange(index, index + 1, List23.of(element));
+	    return replaceRange(index, index + 1, List23.singleton(element));
 	}
 	
 	/**
@@ -449,7 +411,7 @@ public final class List23<E> implements Collection23<E> {
 	 */
 	public List23<E> insertAt(final int index, final E element) {
         verifyIndex("index", index, 0, size());
-        return replaceRange(index, index, List23.of(element));
+        return replaceRange(index, index, List23.singleton(element));
 	}
 	
 	/**

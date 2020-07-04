@@ -42,24 +42,24 @@ public class HashMap23Test {
     }
     @Test
     public void testRemoveAll() {
-        assertEquals(HashMap23.of(Arrays.asList(makeEntry(0,1), makeEntry(3,2), makeEntry(6,3), makeEntry(9,4), makeEntry(12,5))).removeAllKeysIn(SortedSet23.of(6, 7, 9)),
+        assertEquals(HashMap23.of(Arrays.asList(makeEntry(0,1), makeEntry(3,2), makeEntry(6,3), makeEntry(9,4), makeEntry(12,5))).removeAllKeysIn(SortedSet23.singleton(6).add(7).add(9)),
                 HashMap23.of(Arrays.asList(makeEntry(0,1), makeEntry(3,2), makeEntry(12,5))));
     }
     @Test
     public void testRetainAll() {
-        assertEquals(HashMap23.of(Arrays.asList(makeEntry(0,1), makeEntry(3,2), makeEntry(6,3), makeEntry(9,4), makeEntry(12,5))).retainAllKeys(SortedSet23.of(6, 7, 9)),
+        assertEquals(HashMap23.of(Arrays.asList(makeEntry(0,1), makeEntry(3,2), makeEntry(6,3), makeEntry(9,4), makeEntry(12,5))).retainAllKeys(SortedSet23.singleton(6).add(7).add(9)),
                 HashMap23.of(Arrays.asList(makeEntry(6,3), makeEntry(9,4))));
     }
 
 	@Test
 	public void testInsertions() {
-		assertEquals(HashMap23.singleton(1,2).put(3, 4).asSet23(),HashSet23.of(makeEntry(1,2), makeEntry(3, 4)));
-        assertEquals(HashMap23.singleton(3, 4).put(1, 2).asSet23(),HashSet23.of(makeEntry(1,2), makeEntry(3, 4)));
-        assertNotEquals(HashMap23.singleton(3, 4).put(1, 3).asSet23(),HashSet23.of(makeEntry(1,2), makeEntry(3, 4)));
-        assertNotEquals(HashMap23.singleton(1, 3).add(makeEntry(3, 4)).asSet23(),HashSet23.of(makeEntry(1,2), makeEntry(3, 4)));
+		assertEquals(HashMap23.singleton(1,2).put(3, 4).asSet23(),HashSet23.singleton(makeEntry(1,2)).add(makeEntry(3, 4)));
+        assertEquals(HashMap23.singleton(3, 4).put(1, 2).asSet23(),HashSet23.singleton(makeEntry(1,2)).add(makeEntry(3, 4)));
+        assertNotEquals(HashMap23.singleton(3, 4).put(1, 3).asSet23(),HashSet23.singleton(makeEntry(1,2)).add(makeEntry(3, 4)));
+        assertNotEquals(HashMap23.singleton(1, 3).add(makeEntry(3, 4)).asSet23(),HashSet23.singleton(makeEntry(1,2)).add(makeEntry(3, 4)));
         HashMap23<Integer,Integer>  m = HashMap23.singleton(5,6).put(7, 8);
-        assertEquals(HashMap23.singleton(1, 3).addAll(m).asSet23(),HashSet23.of(makeEntry(1,3), makeEntry(5, 6), makeEntry(7, 8)));
-        assertEquals(HashMap23.singleton(1, 3).addAll(m.asMap()).asSet23(),HashSet23.of(makeEntry(1,3), makeEntry(5, 6), makeEntry(7, 8)));
+        assertEquals(HashMap23.singleton(1, 3).addAll(m).asSet23(),HashSet23.singleton(makeEntry(1,3)).add(makeEntry(5, 6)).add(makeEntry(7, 8)));
+        assertEquals(HashMap23.singleton(1, 3).addAll(m.asMap()).asSet23(),HashSet23.singleton(makeEntry(1,3)).add(makeEntry(5, 6)).add(makeEntry(7, 8)));
 	}
 
 	@Test
@@ -70,7 +70,7 @@ public class HashMap23Test {
 		assertTrue(HashMap23.singleton(1, 2).put(3, 4).containsKey(1));
 		assertTrue(HashMap23.singleton(1, 2).put(3, 4).containsKey(3));
 		assertFalse(HashMap23.singleton(1, 2).put(3, 4).containsKey(5));
-        assertNotEquals(HashMap23.singleton(1,2).put(3, 4), List23.of(makeEntry(1,2), makeEntry(3, 4)));
+        assertNotEquals(HashMap23.singleton(1,2).put(3, 4), List23.singleton(makeEntry(1,2)).add(makeEntry(3, 4)));
 	}
 	
 	@Test
@@ -105,12 +105,12 @@ public class HashMap23Test {
 
     @Test
     public void testKeys() {
-        assertEquals(HashMap23.singleton(1, 2).put(3, 4).keys(), SortedSet23.of(1, 3));
+        assertEquals(HashMap23.singleton(1, 2).put(3, 4).keys(), SortedSet23.singleton(1).add(3));
     }
 
     @Test
     public void testValues() {
-        assertEquals(HashMap23.singleton(1, 2).put(3, 4).values(), List23.of(2, 4));
+        assertEquals(HashMap23.singleton(1, 2).put(3, 4).values(), List23.singleton(2).add(4));
     }
 
     @Test

@@ -45,8 +45,8 @@ public final class HashSet23<E> implements Set23<E> {
 	 * @param element The singleton element
 	 * @return A set of exactly one element
 	 */
-    public static <E> HashSet23<E> of(final E element) {
-        return new HashSet23<E>(List23.of(element));
+    public static <E> HashSet23<E> singleton(final E element) {
+        return new HashSet23<E>(List23.singleton(element));
     }
 
     /**
@@ -61,23 +61,6 @@ public final class HashSet23<E> implements Set23<E> {
      */
     public static <E> HashSet23<E> empty() {
         return new HashSet23<E>(List23.empty());
-    }
-
-    /**
-     * Returns a hashset containing an initial list of elements.
-     * <p>This operation is O(n log n).
-     * <pre>
-     * Example:
-     *     HashSet23.of(4, 2, 3) == {2, 3, 4}
-     * </pre>
-     * @param <E> The element type
-     * @param elements The array of elements
-     * @return A set containing an initial list of elements
-     */
-	@SafeVarargs
-    @SuppressWarnings("varargs")
-    public static <E> HashSet23<E> of(final E ... elements) {
-    	return of(new ArrayIterable<>(Requirements.require(elements, Requirements.notNull(), () -> "elements")));
     }
 
     /**

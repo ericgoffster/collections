@@ -94,29 +94,29 @@ public class SortedMap23Test {
     }
     @Test
     public void testRemoveAll() {
-        assertEquals(SortedMap23.of(Arrays.asList(makeEntry(0,1), makeEntry(3,2), makeEntry(6,3), makeEntry(9,4), makeEntry(12,5))).removeAllKeysIn(SortedSet23.of(6, 7, 9)),
+        assertEquals(SortedMap23.of(Arrays.asList(makeEntry(0,1), makeEntry(3,2), makeEntry(6,3), makeEntry(9,4), makeEntry(12,5))).removeAllKeysIn(SortedSet23.singleton(6).add(7).add(9)),
                 SortedMap23.of(Arrays.asList(makeEntry(0,1), makeEntry(3,2), makeEntry(12,5))));
     }
     @Test
     public void testRetainAll() {
-        assertEquals(SortedMap23.of(Arrays.asList(makeEntry(0,1), makeEntry(3,2), makeEntry(6,3), makeEntry(9,4), makeEntry(12,5))).retainAllKeys(SortedSet23.of(6, 7, 9)),
+        assertEquals(SortedMap23.of(Arrays.asList(makeEntry(0,1), makeEntry(3,2), makeEntry(6,3), makeEntry(9,4), makeEntry(12,5))).retainAllKeys(SortedSet23.singleton(6).add(7).add(9)),
                 SortedMap23.of(Arrays.asList(makeEntry(6,3), makeEntry(9,4))));
     }
 
 	@Test
 	public void testInsertions() {
-		assertEquals(SortedMap23.singleton(1,2).put(3, 4).asList(),List23.of(makeEntry(1,2), makeEntry(3, 4)));
-        assertEquals(SortedMap23.singleton(3, 4).put(1, 2).asList(),List23.of(makeEntry(1,2), makeEntry(3, 4)));
-        assertNotEquals(SortedMap23.singleton(3, 4).put(1, 3).asList(),List23.of(makeEntry(1,2), makeEntry(3, 4)));
-        assertNotEquals(SortedMap23.singleton(1, 3).add(makeEntry(3, 4)).asList(),List23.of(makeEntry(1,2), makeEntry(3, 4)));
+		assertEquals(SortedMap23.singleton(1,2).put(3, 4).asList(),List23.singleton(makeEntry(1,2)).add(makeEntry(3, 4)));
+        assertEquals(SortedMap23.singleton(3, 4).put(1, 2).asList(),List23.singleton(makeEntry(1,2)).add(makeEntry(3, 4)));
+        assertNotEquals(SortedMap23.singleton(3, 4).put(1, 3).asList(),List23.singleton(makeEntry(1,2)).add(makeEntry(3, 4)));
+        assertNotEquals(SortedMap23.singleton(1, 3).add(makeEntry(3, 4)).asList(),List23.singleton(makeEntry(1,2)).add(makeEntry(3, 4)));
         SortedMap23<Integer,Integer>  m = SortedMap23.singleton(5,6).put(7, 8);
-        assertEquals(SortedMap23.singleton(1, 3).addAll(m).asList(),List23.of(makeEntry(1,3), makeEntry(5, 6), makeEntry(7, 8)));
-        assertEquals(SortedMap23.singleton(1, 3).addAll(m.asMap()).asList(),List23.of(makeEntry(1,3), makeEntry(5, 6), makeEntry(7, 8)));
+        assertEquals(SortedMap23.singleton(1, 3).addAll(m).asList(),List23.singleton(makeEntry(1,3)).add(makeEntry(5, 6)).add(makeEntry(7, 8)));
+        assertEquals(SortedMap23.singleton(1, 3).addAll(m.asMap()).asList(),List23.singleton(makeEntry(1,3)).add(makeEntry(5, 6)).add(makeEntry(7, 8)));
 	}
 
     @Test
     public void testReversed() {
-        assertEquals(SortedMap23.singleton(1,2).put(3, 4).reversed().asList(),List23.of(makeEntry(3,4), makeEntry(1,2)));
+        assertEquals(SortedMap23.singleton(1,2).put(3, 4).reversed().asList(),List23.singleton(makeEntry(3,4)).add(makeEntry(1,2)));
         assertEquals(SortedMap23.empty().reversed().asList(),List23.empty());
      }
 
@@ -128,11 +128,11 @@ public class SortedMap23Test {
         TreeMap<Integer, Integer> ts = new TreeMap<>();
         ts.put(1, 2);
         ts.put(3, 4);
-        assertEquals(SortedMap23.of(ts.entrySet()).asList(),List23.of(makeEntry(1,2), makeEntry(3,4)));
-        assertEquals(SortedMap23.<Integer,Integer>empty().addAll(ts.entrySet()).asList(),List23.of(makeEntry(1,2), makeEntry(3,4)));
-        assertEquals(SortedMap23.of((i,j) -> j.compareTo(i), ts).asList(),List23.of(makeEntry(3,4), makeEntry(1,2)));
-        assertEquals(SortedMap23.ofSorted(ts).asList(),List23.of(makeEntry(1,2), makeEntry(3,4)));
-        assertEquals(SortedMap23.ofSorted(ts2).asList(),List23.of(makeEntry(1,2), makeEntry(3,4)));
+        assertEquals(SortedMap23.of(ts.entrySet()).asList(),List23.singleton(makeEntry(1,2)).add(makeEntry(3,4)));
+        assertEquals(SortedMap23.<Integer,Integer>empty().addAll(ts.entrySet()).asList(),List23.singleton(makeEntry(1,2)).add(makeEntry(3,4)));
+        assertEquals(SortedMap23.of((i,j) -> j.compareTo(i), ts).asList(),List23.singleton(makeEntry(3,4)).add(makeEntry(1,2)));
+        assertEquals(SortedMap23.ofSorted(ts).asList(),List23.singleton(makeEntry(1,2)).add(makeEntry(3,4)));
+        assertEquals(SortedMap23.ofSorted(ts2).asList(),List23.singleton(makeEntry(1,2)).add(makeEntry(3,4)));
         assertEquals(SortedMap23.empty().reversed().asList(),List23.empty());
      }
 
@@ -144,7 +144,7 @@ public class SortedMap23Test {
 		assertTrue(SortedMap23.singleton(1, 2).put(3, 4).containsKey(1));
 		assertTrue(SortedMap23.singleton(1, 2).put(3, 4).containsKey(3));
 		assertFalse(SortedMap23.singleton(1, 2).put(3, 4).containsKey(5));
-        assertNotEquals(SortedMap23.singleton(1,2).put(3, 4), List23.of(makeEntry(1,2), makeEntry(3, 4)));
+        assertNotEquals(SortedMap23.singleton(1,2).put(3, 4), List23.singleton(makeEntry(1,2)).add(makeEntry(3, 4)));
 	}
 	
 	@Test
@@ -185,12 +185,12 @@ public class SortedMap23Test {
 
     @Test
     public void testKeys() {
-        assertEquals(SortedMap23.singleton(1, 2).put(3, 4).keys(), SortedSet23.of(1, 3));
+        assertEquals(SortedMap23.singleton(1, 2).put(3, 4).keys(), SortedSet23.singleton(1).add(3));
     }
 
     @Test
     public void testValues() {
-        assertEquals(SortedMap23.singleton(1, 2).put(3, 4).values(), List23.of(2, 4));
+        assertEquals(SortedMap23.singleton(1, 2).put(3, 4).values(), List23.singleton(2).add(4));
     }
 
     @Test

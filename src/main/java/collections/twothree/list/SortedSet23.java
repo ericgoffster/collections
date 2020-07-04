@@ -53,8 +53,8 @@ public final class SortedSet23<E> implements Set23<E> {
 	 * @param element The singleton element
 	 * @return A set of exactly one element
 	 */
-    public static <E extends Comparable<E>> SortedSet23<E> of(final E element) {
-        return new SortedSet23<E>(List23::naturalCompare, List23.of(element));
+    public static <E extends Comparable<E>> SortedSet23<E> singleton(final E element) {
+        return new SortedSet23<E>(List23::naturalCompare, List23.singleton(element));
     }
 
     /**
@@ -84,23 +84,6 @@ public final class SortedSet23<E> implements Set23<E> {
      */
     public static <E extends Comparable<E>> SortedSet23<E> empty() {
         return empty(List23::naturalCompare);
-    }
-
-    /**
-     * Returns a set containing an initial list of elements, using natural ordering.
-     * <p>This operation is O(n log n).
-     * <pre>
-     * Example:
-     *     SortedSet23.of(4, 2, 3) == {2, 3, 4}
-     * </pre>
-     * @param <E> The element type
-     * @param elements The array of elements
-     * @return A set containing an initial list of elements
-     */
-	@SafeVarargs
-    @SuppressWarnings("varargs")
-    public static <E extends Comparable<E>> SortedSet23<E> of(final E ... elements) {
-    	return of(new ArrayIterable<>(elements));
     }
 
     /**

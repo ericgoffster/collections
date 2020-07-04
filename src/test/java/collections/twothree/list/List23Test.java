@@ -20,26 +20,32 @@ import org.junit.Test;
 public class List23Test {
 	@Test
 	public void testToCollection() {
-        List23<Integer> l = List23.of(1,2,3,4,5,6);
+        List23<Integer> l = of(1,2,3,4,5,6);
         assertEquals(new HashSet<Integer>(l.asCollection()), new HashSet<Integer>(Arrays.asList(1,2,3,4,5,6)));
+	}
+	
+    @SafeVarargs
+    @SuppressWarnings("varargs")
+	private static <E> List23<E> of(E ... elements) {
+	    return List23.of(Arrays.asList(elements));
 	}
 	
     @Test
     public void testMap() {
-        assertEquals(List23.of("1","2",null).map(x -> x == null ? null : Integer.parseInt(x)),List23.of(1,2,null));
-        assertEquals(List23.of("1","2",null).map(x -> x == null ? null : Integer.parseInt(x)).indexOf(1),0);
-        assertEquals(List23.of("1","2",null).map(x -> x == null ? null : Integer.parseInt(x)).indexOf(2),1);
-        assertEquals(List23.of("1","2",null).map(x -> x == null ? null : Integer.parseInt(x)).indexOf(null),2);
-        assertEquals(List23.of("1","2",null).map(x -> x == null ? null : Integer.parseInt(x)).reversed(),List23.of(null, 2, 1));
+        assertEquals(of("1","2",null).map(x -> x == null ? null : Integer.parseInt(x)),of(1,2,null));
+        assertEquals(of("1","2",null).map(x -> x == null ? null : Integer.parseInt(x)).indexOf(1),0);
+        assertEquals(of("1","2",null).map(x -> x == null ? null : Integer.parseInt(x)).indexOf(2),1);
+        assertEquals(of("1","2",null).map(x -> x == null ? null : Integer.parseInt(x)).indexOf(null),2);
+        assertEquals(of("1","2",null).map(x -> x == null ? null : Integer.parseInt(x)).reversed(),of(null, 2, 1));
        
-        assertEquals(List23.of("1","2").map(x -> x == null ? null : Integer.parseInt(x)),List23.of(1,2));
-        assertEquals(List23.of("1","2").map(x -> x == null ? null : Integer.parseInt(x)).indexOf(1),0);
-        assertEquals(List23.of("1","2").map(x -> x == null ? null : Integer.parseInt(x)).indexOf(2),1);
-        assertEquals(List23.of("1","2").map(x -> x == null ? null : Integer.parseInt(x)).reversed(),List23.of(2, 1));
+        assertEquals(of("1","2").map(x -> x == null ? null : Integer.parseInt(x)),of(1,2));
+        assertEquals(of("1","2").map(x -> x == null ? null : Integer.parseInt(x)).indexOf(1),0);
+        assertEquals(of("1","2").map(x -> x == null ? null : Integer.parseInt(x)).indexOf(2),1);
+        assertEquals(of("1","2").map(x -> x == null ? null : Integer.parseInt(x)).reversed(),of(2, 1));
         
-        assertEquals(List23.of("1").map(x -> x == null ? null : Integer.parseInt(x)),List23.of(1));
-        assertEquals(List23.of("1").map(x -> x == null ? null : Integer.parseInt(x)).indexOf(1),0);
-        assertEquals(List23.of("1").map(x -> x == null ? null : Integer.parseInt(x)).reversed(),List23.of(1));
+        assertEquals(of("1").map(x -> x == null ? null : Integer.parseInt(x)),of(1));
+        assertEquals(of("1").map(x -> x == null ? null : Integer.parseInt(x)).indexOf(1),0);
+        assertEquals(of("1").map(x -> x == null ? null : Integer.parseInt(x)).reversed(),of(1));
     }
   
 	@Test
@@ -63,12 +69,12 @@ public class List23Test {
 	
     @Test
     public void testRetainAll() {
-        assertEquals(List23.of(0, 3, 6, 9, 12).retain(SortedSet23.of(6, 7, 9)),List23.of(6, 9));
+        assertEquals(of(0, 3, 6, 9, 12).retain(SortedSet23.singleton(6).add(7).add(9)),of(6, 9));
     }
 
     @Test
     public void testRemoveAll() {
-        assertEquals(List23.of(0, 3, 6, 9, 12).removeAllIn(SortedSet23.of(6, 7, 9)),List23.of(0, 3, 12));
+        assertEquals(of(0, 3, 6, 9, 12).removeAllIn(SortedSet23.singleton(6).add(7).add(9)),of(0, 3, 12));
     }
 
 	@Test
@@ -115,31 +121,31 @@ public class List23Test {
 
     @Test
     public void testRemove() {
-        List23<Integer> l = List23.of(1,2,3,4,5,6);
-        assertEquals(l.remove(2), List23.of(1,3,4,5,6));
-        assertEquals(l.remove(7), List23.of(1,2,3,4,5,6));
+        List23<Integer> l = of(1,2,3,4,5,6);
+        assertEquals(l.remove(2), of(1,3,4,5,6));
+        assertEquals(l.remove(7), of(1,2,3,4,5,6));
     }
 
     @Test
     public void testExclude() {
-        List23<Integer> l = List23.of(1,2,3,4,5,6);
-        assertEquals(l.removeRange(2,4), List23.of(1,2,5,6));
-        assertEquals(l.removeRange(0,4), List23.of(5,6));
-        assertEquals(l.removeRange(2, 6), List23.of(1,2));
-        assertEquals(l.removeRange(0, 6), List23.of());
+        List23<Integer> l = of(1,2,3,4,5,6);
+        assertEquals(l.removeRange(2,4), of(1,2,5,6));
+        assertEquals(l.removeRange(0,4), of(5,6));
+        assertEquals(l.removeRange(2, 6), of(1,2));
+        assertEquals(l.removeRange(0, 6), List23.empty());
         assertEquals(l.removeRange(2, 2), l);
     }
 
     @Test
     public void testStream() {
-        assertEquals(List23.of(1,2,3,4,5,6).stream().collect(Collectors.toList()),Arrays.asList(1,2,3,4,5,6));
+        assertEquals(of(1,2,3,4,5,6).stream().collect(Collectors.toList()),Arrays.asList(1,2,3,4,5,6));
         assertEquals(List23.empty().stream().collect(Collectors.toList()),Arrays.asList());
     }
 
     @Test
     public void testIterator() {
         {
-            List23<Integer> l = List23.of(1,2,3,4);
+            List23<Integer> l = of(1,2,3,4);
             ListIterator<Integer> i = l.iterator();
             assertEquals(i.nextIndex(), 0);
             assertEquals(i.next().intValue(), 1);
@@ -186,34 +192,34 @@ public class List23Test {
 
     @Test
     public void testInsertList() {
-        List23<Integer> l = List23.of(1,2,3,4,5,6);
-        assertEquals(l.insertListAt(2, List23.of(7,8)), List23.of(1,2,7,8,3,4,5,6));
-        assertEquals(l.insertListAt(0, List23.of(7,8)), List23.of(7,8,1,2,3,4,5,6));
-        assertEquals(l.insertListAt(6, List23.of(7,8)), List23.of(1,2,3,4,5,6,7,8));
+        List23<Integer> l = of(1,2,3,4,5,6);
+        assertEquals(l.insertListAt(2, of(7,8)), of(1,2,7,8,3,4,5,6));
+        assertEquals(l.insertListAt(0, of(7,8)), of(7,8,1,2,3,4,5,6));
+        assertEquals(l.insertListAt(6, of(7,8)), of(1,2,3,4,5,6,7,8));
     }
 
     @Test
     public void testSet() {
-        List23<Integer> l = List23.of(1,2,3,4,5,6);
-        assertEquals(l.setAt(2, 9), List23.of(1,2,9,4,5,6));
-        assertEquals(l.setAt(0, 9), List23.of(9,2,3,4,5,6));
-        assertEquals(l.setAt(5, 9), List23.of(1,2,3,4,5,9));
+        List23<Integer> l = of(1,2,3,4,5,6);
+        assertEquals(l.setAt(2, 9), of(1,2,9,4,5,6));
+        assertEquals(l.setAt(0, 9), of(9,2,3,4,5,6));
+        assertEquals(l.setAt(5, 9), of(1,2,3,4,5,9));
     }
 
     @Test
     public void testOfSorted() {
-        assertEquals(List23.ofSorted(4, 1, 5, 1 , 6, 2), List23.of(1, 1, 2, 4, 5, 6));
-        assertEquals(List23.ofSorted(4), List23.of(4));
-        assertEquals(List23.ofSorted(), List23.of());
-        assertEquals(List23.ofSorted(4, 1, null, 1 , 6, null), List23.of(null, null, 1, 1, 4, 6));
+        assertEquals(List23.ofSorted(Arrays.asList(4, 1, 5, 1 , 6, 2)), of(1, 1, 2, 4, 5, 6));
+        assertEquals(List23.ofSorted(Arrays.asList(4)), of(4));
+        assertEquals(List23.ofSorted(Arrays.asList()), List23.empty());
+        assertEquals(List23.ofSorted(Arrays.asList(4, 1, null, 1 , 6, null)), of(null, null, 1, 1, 4, 6));
     }
     
     @Test
     public void testOfSortedUnique() {
-        assertEquals(List23.ofSortedUnique(Arrays.asList(4, 1, 5, 1 , 6, 2)), List23.of(1, 2, 4, 5, 6));
-        assertEquals(List23.ofSortedUnique(Arrays.asList(4)), List23.of(4));
-        assertEquals(List23.ofSortedUnique(Arrays.asList()), List23.of());
-        assertEquals(List23.ofSortedUnique(Arrays.asList(4, 1, null, 1 , 6, null)), List23.of(null, 1, 4, 6));
+        assertEquals(List23.ofSortedUnique(Arrays.asList(4, 1, 5, 1 , 6, 2)), of(1, 2, 4, 5, 6));
+        assertEquals(List23.ofSortedUnique(Arrays.asList(4)), of(4));
+        assertEquals(List23.ofSortedUnique(Arrays.asList()), List23.empty());
+        assertEquals(List23.ofSortedUnique(Arrays.asList(4, 1, null, 1 , 6, null)), of(null, 1, 4, 6));
     }
     
     @Test
@@ -227,7 +233,7 @@ public class List23Test {
 
     @Test
     public void testContains() {
-        List23<Integer> l = List23.of(1,2,3,1,5,1);
+        List23<Integer> l = of(1,2,3,1,5,1);
         assertTrue(l.contains(3));
         assertTrue(l.contains(1));
         assertFalse(l.contains(7));
@@ -235,46 +241,46 @@ public class List23Test {
 
     @Test
     public void testIndexOf() {
-        List23<Integer> l = List23.of(1,2,3,1,5,1,8);
+        List23<Integer> l = of(1,2,3,1,5,1,8);
         assertEquals(l.indexOf(3), 2);
         assertEquals(l.indexOf(1), 0);
         assertEquals(l.indexOf(-1), -1);
         assertEquals(l.indexOf(7), -1);
         assertEquals(l.indexOf(9), -1);
-        assertEquals(List23.of().indexOf(7), -1);
+        assertEquals(List23.empty().indexOf(7), -1);
     }
 
     @Test
     public void testLastIndexOf() {
-        List23<Integer> l = List23.of(1,2,3,1,5,1);
+        List23<Integer> l = of(1,2,3,1,5,1);
         assertEquals(l.lastIndexOf(3), 2);
         assertEquals(l.lastIndexOf(1), 5);
         assertEquals(l.lastIndexOf(7), -1);
-        assertEquals(List23.of().lastIndexOf(7), -1);
+        assertEquals(List23.empty().lastIndexOf(7), -1);
     }
 
     @Test
     public void testReplace() {
-        List23<Integer> l = List23.of(1,2,3,4,5,6);
-        assertEquals(l.replaceRange(0,2, List23.of(7,8)), List23.of(7,8,3,4,5,6));
-        assertEquals(l.replaceRange(1,4, List23.of(7,8)), List23.of(1,7,8,5,6));
-        assertEquals(l.replaceRange(1,4, List23.of()), List23.of(1,5,6));
-        assertEquals(l.replaceRange(1,6, List23.of(7)), List23.of(1,7));
-        assertEquals(l.replaceRange(0,6, List23.of(7)), List23.of(7));
+        List23<Integer> l = of(1,2,3,4,5,6);
+        assertEquals(l.replaceRange(0,2, of(7,8)), of(7,8,3,4,5,6));
+        assertEquals(l.replaceRange(1,4, of(7,8)), of(1,7,8,5,6));
+        assertEquals(l.replaceRange(1,4, List23.empty()), of(1,5,6));
+        assertEquals(l.replaceRange(1,6, of(7)), of(1,7));
+        assertEquals(l.replaceRange(0,6, of(7)), of(7));
     }
 
 	@Test
 	public void testReversed() {
-		List23<Integer> l = List23.of(1,2,3,4,5,6);
-		assertEquals(l.reversed(), List23.of(6,5,4,3,2,1));
+		List23<Integer> l = of(1,2,3,4,5,6);
+		assertEquals(l.reversed(), of(6,5,4,3,2,1));
         assertEquals(l.reversed().reversed(), l);
-		assertEquals(l.reversed().add(7), List23.of(6,5,4,3,2,1,7));
-		assertEquals(l.reversed().removeAt(0), List23.of(5,4,3,2,1));
-		assertEquals(l.reversed().removeAt(5), List23.of(6,5,4,3,2));
-		assertEquals(l.reversed().getRange(1, 3), List23.of(5,4));
-		assertEquals(l.reversed().getRange(0, 6), List23.of(6,5,4,3,2,1));
-        assertEquals(l.appendList(l.reversed()), List23.of(1,2,3,4,5,6,6,5,4,3,2,1));
-        assertEquals(l.reversed().appendList(l), List23.of(6,5,4,3,2,1,1,2,3,4,5,6));
+		assertEquals(l.reversed().add(7), of(6,5,4,3,2,1,7));
+		assertEquals(l.reversed().removeAt(0), of(5,4,3,2,1));
+		assertEquals(l.reversed().removeAt(5), of(6,5,4,3,2));
+		assertEquals(l.reversed().getRange(1, 3), of(5,4));
+		assertEquals(l.reversed().getRange(0, 6), of(6,5,4,3,2,1));
+        assertEquals(l.appendList(l.reversed()), of(1,2,3,4,5,6,6,5,4,3,2,1));
+        assertEquals(l.reversed().appendList(l), of(6,5,4,3,2,1,1,2,3,4,5,6));
 	}
 
 	@Test
@@ -526,27 +532,24 @@ public class List23Test {
 	public void testErrors() {
 		assertTrue(new Leaf<Integer>(5).isLeaf());
 		assertEquals(new Leaf<Integer>(5).size(), 1);
-		Integer[] x = null;
 		List<Integer> lnull = null;
         assertThrows(UnsupportedOperationException.class, () -> branch("1","2").leafValue());
         assertThrows(IllegalArgumentException.class, () -> List23.ofSorted(null,lnull));
         assertThrows(IllegalArgumentException.class, () -> List23.ofSorted(Integer::compare,lnull));
-        assertThrows(IllegalArgumentException.class, () -> List23.ofSorted(x));
         assertThrows(IllegalArgumentException.class, () -> List23.ofSorted(lnull));
-        assertThrows(IllegalArgumentException.class, () -> List23.of(x));
         assertThrows(IllegalArgumentException.class, () -> List23.of(lnull));
-        assertThrows(IllegalArgumentException.class, () -> List23.of(1, 2).appendList(null));
-        assertThrows(IllegalArgumentException.class, () -> List23.of(1, 2).insertListAt(0, null));
-        assertThrows(IllegalArgumentException.class, () -> List23.of(1, 2).replaceRange(0, 0, null));
-        assertThrows(IndexOutOfBoundsException.class, () -> List23.of(1, 2).headAt(-1));
-        assertThrows(IndexOutOfBoundsException.class, () -> List23.of(1, 2).headAt(3));
-        assertThrows(IndexOutOfBoundsException.class, () -> List23.of(1, 2).tailAt(-1));
-        assertThrows(IndexOutOfBoundsException.class, () -> List23.of(1, 2).tailAt(3));
-        assertThrows(IndexOutOfBoundsException.class, () -> List23.of(1, 2).getRange(0, -1));
-        assertThrows(IndexOutOfBoundsException.class, () -> List23.of(1, 2).getRange(0, 3));
-        assertThrows(IndexOutOfBoundsException.class, () -> List23.of(1, 2).getRange(-1, 1));
-        assertThrows(IndexOutOfBoundsException.class, () -> List23.of(1, 2).getRange(1, 0));
-        assertThrows(IndexOutOfBoundsException.class, () -> List23.of(1, 2).getRange(3, 0));
+        assertThrows(IllegalArgumentException.class, () -> of(1, 2).appendList(null));
+        assertThrows(IllegalArgumentException.class, () -> of(1, 2).insertListAt(0, null));
+        assertThrows(IllegalArgumentException.class, () -> of(1, 2).replaceRange(0, 0, null));
+        assertThrows(IndexOutOfBoundsException.class, () -> of(1, 2).headAt(-1));
+        assertThrows(IndexOutOfBoundsException.class, () -> of(1, 2).headAt(3));
+        assertThrows(IndexOutOfBoundsException.class, () -> of(1, 2).tailAt(-1));
+        assertThrows(IndexOutOfBoundsException.class, () -> of(1, 2).tailAt(3));
+        assertThrows(IndexOutOfBoundsException.class, () -> of(1, 2).getRange(0, -1));
+        assertThrows(IndexOutOfBoundsException.class, () -> of(1, 2).getRange(0, 3));
+        assertThrows(IndexOutOfBoundsException.class, () -> of(1, 2).getRange(-1, 1));
+        assertThrows(IndexOutOfBoundsException.class, () -> of(1, 2).getRange(1, 0));
+        assertThrows(IndexOutOfBoundsException.class, () -> of(1, 2).getRange(3, 0));
 		assertThrows(IndexOutOfBoundsException.class, () -> new List23<String>(null).getAt(-1));
 		assertThrows(IndexOutOfBoundsException.class, () -> new List23<String>(null).removeAt(-1));
 		assertThrows(IndexOutOfBoundsException.class, () -> new List23<String>(null).insertAt(-1, "abc"));
