@@ -114,7 +114,7 @@ public final class SortedSet23<E> implements Set23<E> {
      * @param elements The array of elements
      * @return A set containing an initial list of elements
      */
-    public static <E extends Comparable<E>> SortedSet23<E> of(final Iterable<E> elements) {
+    public static <E extends Comparable<E>> SortedSet23<E> of(final Iterable<? extends E> elements) {
     	return of(List23::naturalCompare, elements);
     }
     
@@ -154,7 +154,7 @@ public final class SortedSet23<E> implements Set23<E> {
      * @param elements The array of elements
      * @return A set containing an initial list of elements
      */
-    public static <E> SortedSet23<E> of(final Comparator<? super E> comparator, final Iterable<E> elements) {
+    public static <E> SortedSet23<E> of(final Comparator<? super E> comparator, final Iterable<? extends E> elements) {
     	return new SortedSet23<E>(comparator, List23.ofSortedUnique(comparator, elements));
     }
     
