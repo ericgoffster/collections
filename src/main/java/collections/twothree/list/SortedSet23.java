@@ -68,7 +68,7 @@ public final class SortedSet23<E> implements Set23<E> {
      * @param <E> The element type
      * @return An empty set.
      */
-    public static <E> SortedSet23<E> empty(Comparator<E> comparator) {
+    public static <E> SortedSet23<E> empty(Comparator<? super E> comparator) {
         return new SortedSet23<E>(comparator, List23.empty());
     }
 

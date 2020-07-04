@@ -190,7 +190,7 @@ public final class List23<E> implements Collection23<E> {
 	 * @param elements The collections of elements
 	 * @return The sorted List23 representation of "elements"
 	 */
-	public static <E> List23<E> ofSorted(final Comparator<E> comparator, final Iterable<? extends E> elements) {
+	public static <E> List23<E> ofSorted(final Comparator<? super E> comparator, final Iterable<? extends E> elements) {
 	    Requirements.require(comparator, Requirements.notNull(), () -> "comparator");
         Requirements.require(elements, Requirements.notNull(), () -> "elements");
         return quickConstruct(sortLeaves(comparator, new LeafIterator<>(elements)));
