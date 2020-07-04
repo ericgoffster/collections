@@ -39,7 +39,7 @@ public final class HashSet23<E> implements Set23<E> {
      * <p>This operation is O(1).
      * <pre>
      * Example:
-     *     HashSet23.of(6) == {6}
+     *     HashSet23.singleton(6) == {6}
      * </pre>
 	 * @param <E> The element type
 	 * @param element The singleton element
@@ -84,7 +84,7 @@ public final class HashSet23<E> implements Set23<E> {
      * <p>This operation is O(1).
      * <pre>
      * Example:
-     *     HashSet23.of(4, 2, 3).size() == 3
+     *     HashSet23.of(Arrays.asList(4,2,3)).size() == 3
      * </pre>
 	 * @return The size of this set
 	 */
@@ -98,8 +98,8 @@ public final class HashSet23<E> implements Set23<E> {
      * <p>This operation is O(log n).
      * <pre>
      * Example:
-     *     HashSet23.of(4, 2, 3).contains(2) == true
-     *     HashSet23.of(4, 2, 3).contains(5) == false
+     *     HashSet23.of(Arrays.asList(4,2,3)).contains(2) == true
+     *     HashSet23.of(Arrays.asList(4,2,3)).contains(5) == false
      * </pre>
 	 * @param element The element to look for.
 	 * @return true if the set contains the given element
@@ -115,7 +115,7 @@ public final class HashSet23<E> implements Set23<E> {
      * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * <pre>
      * Example:
-     *     HashSet23.of(4, 2, 3).add(5) == {2, 3, 4, 5}
+     *     HashSet23.of(Arrays.asList(4,2,3)).add(5) == {2, 3, 4, 5}
      *     HashSet23.of(4, 2, 3, 5).add(5) == {2, 3, 4, 5}
      * </pre>
 	 * @param element The element to add.
@@ -135,7 +135,7 @@ public final class HashSet23<E> implements Set23<E> {
      * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * <pre>
      * Example:
-     *     HashSet23.of(4, 2, 3).union(HashSet23.of(4, 5, 6)) == {2, 3, 4, 5, 6}
+     *     HashSet23.of(Arrays.asList(4,2,3)).union(HashSet23.of(4, 5, 6)) == {2, 3, 4, 5, 6}
      * </pre>
      * @param other The elements to remove.
      * @return A set with the given element removed.
@@ -155,8 +155,8 @@ public final class HashSet23<E> implements Set23<E> {
      * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * <pre>
      * Example:
-     *     HashSet23.of(4, 2, 3).remove(2) == {3, 4}
-     *     HashSet23.of(4, 2, 3).remove(5) == {2, 3, 4}
+     *     HashSet23.of(Arrays.asList(4,2,3)).remove(2) == {3, 4}
+     *     HashSet23.of(Arrays.asList(4,2,3)).remove(5) == {2, 3, 4}
      * </pre>
      * @param element The element to remove
      * @return A set with the given element removed
@@ -173,7 +173,7 @@ public final class HashSet23<E> implements Set23<E> {
      * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * <pre>
      * Example:
-     *     HashSet23.of(4, 2, 3).filter(e -&gt; e &lt; 4) == {2, 3}
+     *     HashSet23.of(Arrays.asList(4,2,3)).filter(e -&gt; e &lt; 4) == {2, 3}
      * </pre>
      * @param filter The filter to apply
      * @return A set with the given element removed
@@ -189,7 +189,7 @@ public final class HashSet23<E> implements Set23<E> {
      * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * <pre>
      * Example:
-     *     HashSet23.of(4, 2, 3).retain(Set.of(1,2,4)) == {4, 2}
+     *     HashSet23.of(Arrays.asList(4,2,3)).retain(Set.of(1,2,4)) == {4, 2}
      * </pre>
      * @param other The set to intersection with
      * @return A set with the given element removed
@@ -205,7 +205,7 @@ public final class HashSet23<E> implements Set23<E> {
      * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * <pre>
      * Example:
-     *     HashSet23.of(4, 2, 3).removeAllIn(Set.of(2,4)) == {3}
+     *     HashSet23.of(Arrays.asList(4,2,3)).removeAllIn(Set.of(2,4)) == {3}
      * </pre>
      * @param other The elements to remove.
      * @return A set with the given element removed.
@@ -223,7 +223,7 @@ public final class HashSet23<E> implements Set23<E> {
      * Returns the read-only {@link Set} view of this set.
      * <pre>
      * Example:
-     *     HashSet23.of(4, 2, 3).asSet() == {2, 3, 4}
+     *     HashSet23.of(Arrays.asList(4,2,3)).asSet() == {2, 3, 4}
      * </pre>
      * @return the {@link Set} view of this set
      */
