@@ -49,7 +49,7 @@ public final class HashMap23<K, V> implements Map23<K, V> {
    
     /**
      * Returns a hashmap23 seeded from another <code>Map</code>.
-     * <p>This operation is O(n log n), where n = |items|.
+     * <p>This operation is O(n log n), where n = |entries|.
      * <pre>
      * Example:
      *     HashMap&lt;Integer, String&gt; hm = new HashMap&lt;&gt;();
@@ -57,18 +57,18 @@ public final class HashMap23<K, V> implements Map23<K, V> {
      *     hm.put(3, "4");
      *     HashMap23.of(hm) == {1 =&gt; "2", 3 =&gt; "4"}
      * </pre>
-     * @param items map of items to copy
+     * @param map map of items to copy
      * @param <K> The key type
      * @param <V> The value type
      * @return a hashmap23 seeded from another <code>Map</code>
      */
-    public static <K,V> HashMap23<K,V> of(final Map<K, V> items) {
-        return of(items.entrySet());
+    public static <K,V> HashMap23<K,V> of(final Map<K, V> map) {
+        return of(map.entrySet());
     }
 
     /**
      * Returns a hashmap23 seeded from another collection of entries.
-     * <p>This operation is O(n log n), where n = |items|.
+     * <p>This operation is O(n log n), where n = |entries|.
      * <pre>
      * Example:
      *     HashMap&lt;Integer, String&gt; hm = new HashMap&lt;&gt;();
@@ -76,13 +76,13 @@ public final class HashMap23<K, V> implements Map23<K, V> {
      *     hm.put(3, "4");
      *     HashMap23.of(hm.entrySet()) == {1 =&gt; "2", 3 =&gt; "4"}
      * </pre>
-     * @param items set of items to copy
+     * @param entries set of items to copy
      * @param <K> The key type
      * @param <V> The value type
      * @return a hashmap23 seeded from another <code>Map</code>
      */
-	public static <K,V> HashMap23<K,V> of(final Iterable<Entry<K, V>> items) {
-	    return new HashMap23<K, V>(List23.ofSortedUnique((a,b) -> HashSet23.compare(a.getKey(), b.getKey()), items));
+	public static <K,V> HashMap23<K,V> of(final Iterable<? extends Entry<K, V>> entries) {
+	    return new HashMap23<K, V>(List23.ofSortedUnique((a,b) -> HashSet23.compare(a.getKey(), b.getKey()), entries));
 	}
 
     @Override
@@ -91,28 +91,28 @@ public final class HashMap23<K, V> implements Map23<K, V> {
 	}
 	
     @Override
-    public HashMap23<K, V> add(Entry<K ,V> entry) {
+    public HashMap23<K, V> add(final Entry<K ,V> entry) {
         return put(entry.getKey(), entry.getValue());
     }
 
     @Override
-    public HashMap23<K, V> addAll(Iterable<Entry<K ,V>> items) {
+    public HashMap23<K, V> addAll(final Iterable<? extends Entry<K ,V>> entries) {
         HashMap23<K, V> m = this;
-        for(Entry<K,V> e: items) {
+        for(Entry<K,V> e: entries) {
             m = m.add(e);
         }
         return m;
     }
 
     @Override
-    public HashMap23<K, V> addAll(Map<K ,V> items) {
+    public HashMap23<K, V> addAll(final Map<K ,V> items) {
         return addAll(items.entrySet());
     }
 
     @Override
 	public HashMap23<K, V> put(final K key, final V value) {
-        HashMap23<K, V> m = removeKey(key);
-        int index = m.keys().elements.naturalPosition(e -> HashSet23.compare(key, e));
+        final HashMap23<K, V> m = removeKey(key);
+        final int index = m.keys().elements.naturalPosition(e -> HashSet23.compare(key, e));
         return new HashMap23<>(m.entries.insertAt(index, new AbstractMap.SimpleImmutableEntry<>(key, value)));
 	}
 	
@@ -123,13 +123,13 @@ public final class HashMap23<K, V> implements Map23<K, V> {
 
     @Override
 	public HashMap23<K, V> removeKey(final K key) {
-        int index = keys().elements.indexOf(key);
+        final int index = keys().elements.indexOf(key);
         return index < 0 ? this : new HashMap23<K, V>(entries.removeAt(index));
 	}
 	
     @Override
-    public HashMap23<K, V> retainAllKeys(final Iterable<K> other) {
-        HashSet23<K> hs = HashSet23.of(other);
+    public HashMap23<K, V> retainAllKeys(final Iterable<? extends K> keys) {
+        final HashSet23<K> hs = HashSet23.of(keys);
         return filter(e -> hs.contains(e.getKey()));
     }
     
@@ -139,7 +139,7 @@ public final class HashMap23<K, V> implements Map23<K, V> {
     }
 
     @Override
-    public HashMap23<K, V> removeAllKeysIn(final Iterable<K> keys) {
+    public HashMap23<K, V> removeAllKeysIn(final Iterable<? extends K> keys) {
         HashMap23<K, V> m = this;
         for(K key: keys) {
             m = m.removeKey(key);
@@ -153,9 +153,9 @@ public final class HashMap23<K, V> implements Map23<K, V> {
     }
 
     @Override
-    public V getOrDefault(final K key, final Supplier<V> supplier) {
-        int index = keys().elements.indexOf(key);
-        return index < 0 ? supplier.get() : entries.getAt(index).getValue();
+    public V getOrDefault(final K key, final Supplier<V> defaultSupplier) {
+        final int index = keys().elements.indexOf(key);
+        return index < 0 ? defaultSupplier.get() : entries.getAt(index).getValue();
     }
     
     @Override
@@ -169,7 +169,7 @@ public final class HashMap23<K, V> implements Map23<K, V> {
 	}
 	
 	static <K,V> int entryCompare(final Entry<K,V> a, final Entry<K,V> b) {
-	    int cmp = HashSet23.compare(a.getKey(), b.getKey());
+	    final int cmp = HashSet23.compare(a.getKey(), b.getKey());
 	    if (cmp != 0) {
 	        return cmp;
 	    }
@@ -201,7 +201,7 @@ public final class HashMap23<K, V> implements Map23<K, V> {
 		if (!(obj instanceof Map23)) {
 			return false;
 		}
-		Map23<?, ?> other = (Map23<?, ?>)obj;
+		final Map23<?, ?> other = (Map23<?, ?>)obj;
 		return asMap().equals(other.asMap());
 	}
 	

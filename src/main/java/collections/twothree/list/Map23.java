@@ -38,7 +38,7 @@ public interface Map23<K,V> extends Iterable<Entry<K,V>> {
      * @param entries The entries to add.
      * @return a new map23 with <code>entries</code> added.
      */
-    Map23<K, V> addAll(Iterable<Entry<K ,V>> entries);
+    Map23<K, V> addAll(Iterable<? extends Entry<K ,V>> entries);
 
     /**
      * Returns a new map23 with the contents of <code>map</code> added.
@@ -83,7 +83,7 @@ public interface Map23<K,V> extends Iterable<Entry<K,V>> {
      * @param keys The key list.
      * @return a new map23 with only the keys contained in <code>keys</code>
      */
-    Map23<K, V> retainAllKeys(final Iterable<K> keys);
+    Map23<K, V> retainAllKeys(final Iterable<? extends K> keys);
 
     /**
      * Returns a new map23 with only the keys than are *not* in <code>keys</code>.
@@ -92,7 +92,7 @@ public interface Map23<K,V> extends Iterable<Entry<K,V>> {
      * @param keys The key list.
      * @return a new map23 with only the keys than are *not* in <code>keys</code>
      */
-    Map23<K, V> removeAllKeysIn(final Iterable<K> keys);
+    Map23<K, V> removeAllKeysIn(final Iterable<? extends K> keys);
     
     /**
      * Returns the value associated with <code>key</code>, null if not found.

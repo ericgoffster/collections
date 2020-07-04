@@ -112,7 +112,7 @@ public final class SortedMap23<K, V> implements Map23<K, V> {
     }
 
     @Override
-    public SortedMap23<K, V> addAll(Iterable<Entry<K ,V>> items) {
+    public SortedMap23<K, V> addAll(Iterable<? extends Entry<K ,V>> items) {
         SortedMap23<K, V> m = this;
         for(Entry<K,V> e: items) {
             m = m.add(e);
@@ -224,13 +224,13 @@ public final class SortedMap23<K, V> implements Map23<K, V> {
 	}
 	
     @Override
-    public SortedMap23<K, V> retainAllKeys(final Iterable<K> keys) {
+    public SortedMap23<K, V> retainAllKeys(final Iterable<? extends K> keys) {
         HashSet23<K> hs = HashSet23.of(keys);
         return filter(e -> hs.contains(e.getKey()));
     }
 
     @Override
-    public SortedMap23<K, V> removeAllKeysIn(final Iterable<K> keys) {
+    public SortedMap23<K, V> removeAllKeysIn(final Iterable<? extends K> keys) {
         SortedMap23<K, V> m = this;
         for(K key: keys) {
             m = m.removeKey(key);
