@@ -120,7 +120,7 @@ public class SortedSet23Test {
 	public void testContains() {
 		assertFalse(SortedSet23.<Integer>empty().contains(1));
 		assertFalse(of(1).contains(2));
-		assertTrue(SortedSet23.<Integer>singleton(1).contains(1));
+		assertTrue(SortedSet23.singleton(1).contains(1));
 		assertTrue(of(1, 2).contains(1));
 		assertTrue(of(1, 2).contains(2));
 		assertFalse(of(1, 2).contains(3));
@@ -129,7 +129,7 @@ public class SortedSet23Test {
 	
 	@Test
 	public void testSize() {
-		assertEquals(SortedSet23.<Integer>empty().size(), 0);
+		assertEquals(SortedSet23.empty().size(), 0);
 		assertEquals(of(1).size(), 1);
 		assertEquals(of(1, 2).size(), 2);
 	}
