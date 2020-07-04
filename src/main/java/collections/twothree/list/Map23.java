@@ -23,11 +23,11 @@ public interface Map23<K,V> extends Iterable<Entry<K,V>> {
     int size();
 
     /**
-     * Returns a new map23 with <code>item</code> added.
+     * Returns a new map23 with <code>entry</code> added.
      * <p>This operation is O(log n), where n = |this|.
      * <p>Note *THIS OPERATION IS IMMUTABLE, THE PREVIOUS Map23 IS UNCHANGED!*.
      * @param entry The entry to add.
-     * @return a new map23 with <code>item</code> added.
+     * @return a new map23 with <code>entry</code> added.
      */
     Map23<K, V> add(Entry<K ,V> entry);
 
