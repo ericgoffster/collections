@@ -134,8 +134,8 @@ public final class HashMap23<K, V> implements Map23<K, V> {
     }
     
     @Override
-    public HashMap23<K, V> filterKeys(final Predicate<K> filter) {
-        return filter(e -> filter.test(e.getKey()));
+    public HashMap23<K, V> filterKeys(final Predicate<K> keyFilter) {
+        return filter(e -> keyFilter.test(e.getKey()));
     }
 
     @Override
