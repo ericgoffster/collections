@@ -47,7 +47,7 @@ public final class SortedSet23<E> implements Set23<E> {
      * <p>This operation is O(1).
      * <pre>
      * Example:
-     *     SortedSet23.singleton(6) == {6}
+     *     assert SortedSet23.singleton(6).asList().asCollection().equals(Arrays.asList(6));
      * </pre>
 	 * @param <E> The element type
 	 * @param element The singleton element
@@ -62,7 +62,7 @@ public final class SortedSet23<E> implements Set23<E> {
      * <p>This operation is O(1).
      * <pre>
      * Example:
-     *     SortedSet23.empty(Integer::compare) == {}
+     *     assert SortedSet23.empty(Integer::compare).asList().asCollection().equals(Arrays.asList());
      * </pre>
      * @param comparator The comparator which defines ordering.
      * @param <E> The element type
@@ -77,7 +77,7 @@ public final class SortedSet23<E> implements Set23<E> {
      * <p>This operation is O(1).
      * <pre>
      * Example:
-     *     SortedSet23.empty() == {}
+     *     assert SortedSet23.empty().asList().asCollection().equals(Arrays.asList());
      * </pre>
      * @param <E> The element type
      * @return An empty set.
@@ -91,7 +91,7 @@ public final class SortedSet23<E> implements Set23<E> {
      * <p>This operation is O(n log n).
      * <pre>
      * Example:
-     *     SortedSet23.of(Arrays.asList(4, 2, 3)) == {2, 3, 4}
+     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).asList().asCollection().equals(Arrays.asList(2, 3, 4));
      * </pre>
      * @param <E> The element type
      * @param elements The array of elements
@@ -106,7 +106,7 @@ public final class SortedSet23<E> implements Set23<E> {
      * <p>This operation is O(n log n).
      * <pre>
      * Example:
-     *     SortedSet23.of(SortedSet23.of(4, 2, 3).asSet()) == {2, 3, 4}
+     *     assert SortedSet23.of(SortedSet23.of(Arrays.asList(4, 2, 3)).asCollection()).asList().asCollection().equals(Arrays.asList(2, 3, 4));
      * </pre>
      * @param <E> The element type
      * @param sortedSet The set of elements
@@ -129,8 +129,9 @@ public final class SortedSet23<E> implements Set23<E> {
      * <p>This operation is O(n log n).
      * <pre>
      * Example:
-     *     SortedSet23.of(Integer::compare, Arrays.asList(4, 2, 3)) == {2, 3, 4}
-     *     SortedSet23.of(Integer::compare.reversed(), Arrays.asList(4, 2, 3)) == {4, 3, 2}
+     *     Comparator<Integer> comp = Integer::compare;
+     *     assert SortedSet23.of(comp, Arrays.asList(4, 2, 3)).asList().asCollection().equals(Arrays.asList(2, 3, 4));
+     *     assert SortedSet23.of(comp.reversed(), Arrays.asList(4, 2, 3)).asList().asCollection().equals(Arrays.asList(4, 3, 2));
      * </pre>
      * @param <E> The element type
      * @param comparator The comparator of elements
@@ -146,7 +147,7 @@ public final class SortedSet23<E> implements Set23<E> {
      * <p>This operation is O(1).
      * <pre>
      * Example:
-     *     SortedSet23.of(Arrays.asList(4, 2, 3)).size() == 3
+     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).size() == 3;
      * </pre>
 	 * @return The size of this set
 	 */
@@ -160,8 +161,8 @@ public final class SortedSet23<E> implements Set23<E> {
      * <p>This operation is O(log n).
      * <pre>
      * Example:
-     *     SortedSet23.of(Arrays.asList(4, 2, 3)).contains(2) == true
-     *     SortedSet23.of(Arrays.asList(4, 2, 3)).contains(5) == false
+     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).contains(2) == true;
+     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).contains(5) == false;
      * </pre>
 	 * @param element The element to look for.
 	 * @return true if the set contains the given element
@@ -176,9 +177,9 @@ public final class SortedSet23<E> implements Set23<E> {
      * <p>This operation is O(log n).
      * <pre>
      * Example:
-     *     SortedSet23.of(Arrays.asList(4, 2, 3)).indexOf(2) == 0
-     *     SortedSet23.of(Arrays.asList(4, 2, 3)).indexOf(4) == 2
-     *     SortedSet23.of(Arrays.asList(4, 2, 3)).indexOf(5) == -1
+     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).indexOf(2) == 0;
+     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).indexOf(4) == 2;
+     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).indexOf(5) == -1;
      * </pre>
      * @param element The element to look for.
      * @return The index of the given element in the set, -1 of not found.
@@ -192,10 +193,10 @@ public final class SortedSet23<E> implements Set23<E> {
      * <p>This operation is O(log n).
      * <pre>
      * Example:
-     *     SortedSet23.of(Arrays.asList(4, 2, 3)).ge(2) == {2, 3, 4}
-     *     SortedSet23.of(Arrays.asList(4, 2, 3)).ge(4) == {4}
-     *     SortedSet23.of(Arrays.asList(4, 2, 3)).ge(0) == {2, 3, 4}
-     *     SortedSet23.of(Arrays.asList(4, 2, 3)).ge(5) == {}
+     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).ge(2).asList().asCollection().equals(Arrays.asList(2, 3, 4));
+     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).ge(4).asList().asCollection().equals(Arrays.asList(4));
+     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).ge(0).asList().asCollection().equals(Arrays.asList(2, 3, 4));
+     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).ge(5).asList().asCollection().equals(Arrays.asList());
      * </pre>
      * @param element The comparison element (inclusive)
      * @return The set of all elements in this set &gt;= element
@@ -209,10 +210,10 @@ public final class SortedSet23<E> implements Set23<E> {
      * <p>This operation is O(log n).
      * <pre>
      * Example:
-     *     SortedSet23.of(Arrays.asList(4, 2, 3)).lt(2) == {}
-     *     SortedSet23.of(Arrays.asList(4, 2, 3)).lt(4) == {2, 3}
-     *     SortedSet23.of(Arrays.asList(4, 2, 3)).lt(0) == {}
-     *     SortedSet23.of(Arrays.asList(4, 2, 3)).lt(5) == {2, 3, 4}
+     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).lt(2).asList().asCollection().equals(Arrays.asList());
+     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).lt(4).asList().asCollection().equals(Arrays.asList(2, 3));
+     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).lt(0).asList().asCollection().equals(Arrays.asList());
+     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).lt(5).asList().asCollection().equals(Arrays.asList(2, 3, 4));
      * </pre>
      * @param element The comparison element (exclusive)
      * @return The set of all elements in this set &lt; element
@@ -226,10 +227,10 @@ public final class SortedSet23<E> implements Set23<E> {
      * <p>This operation is O(log n).
      * <pre>
      * Example:
-     *     SortedSet23.of(Arrays.asList(4, 2, 3)).exclude(2, 3) == {3, 4}
-     *     SortedSet23.of(Arrays.asList(4, 2, 3)).exclude(2, 4) == {4}
-     *     SortedSet23.of(Arrays.asList(4, 2, 3)).exclude(0, 4) == {4}
-     *     SortedSet23.of(Arrays.asList(4, 2, 3)).exclude(0, 5) == {}
+     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).exclude(2, 3).asList().asCollection().equals(Arrays.asList(3, 4));
+     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).exclude(2, 4).asList().asCollection().equals(Arrays.asList(4));
+     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).exclude(0, 4).asList().asCollection().equals(Arrays.asList(4));
+     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).exclude(0, 5).asList().asCollection().equals(Arrays.asList());
      * </pre>
      * @param low The low element (exclusive)
      * @param high The high element (inclusive)
@@ -253,11 +254,11 @@ public final class SortedSet23<E> implements Set23<E> {
      * <p>This operation is O(log n).
      * <pre>
      * Example:
-     *     SortedSet23.of(Arrays.asList(4, 2, 3)).subSet(2, 3) == {2}
-     *     SortedSet23.of(Arrays.asList(4, 2, 3)).subSet(2, 4) == {2, 3}
-     *     SortedSet23.of(Arrays.asList(4, 2, 3)).subSet(0, 4) == {2, 3}
-     *     SortedSet23.of(Arrays.asList(4, 2, 3)).subSet(0, 5) == {2, 3, 4}
-     *     SortedSet23.of(Arrays.asList(4, 2, 3)).subSet(3, 3) == {}
+     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).subSet(2, 3).asList().asCollection().equals(Arrays.asList(2));
+     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).subSet(2, 4).asList().asCollection().equals(Arrays.asList(2, 3));
+     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).subSet(0, 4).asList().asCollection().equals(Arrays.asList(2, 3));
+     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).subSet(0, 5).asList().asCollection().equals(Arrays.asList(2, 3, 4));
+     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).subSet(3, 3).asList().asCollection().equals(Arrays.asList());
      * </pre>
      * @param low The low element (inclusive)
      * @param high The high element (exclusive)
@@ -282,7 +283,7 @@ public final class SortedSet23<E> implements Set23<E> {
      * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * <pre>
      * Example:
-     *     SortedSet23.of(Arrays.asList(4, 2, 3)).add(5) == {2, 3, 4, 5}
+     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).add(5).asList().asCollection().equals(Arrays.asList(2, 3, 4, 5));
      * </pre>
 	 * @param element The element to add.
 	 * @return A set with the given element added.
@@ -301,7 +302,7 @@ public final class SortedSet23<E> implements Set23<E> {
      * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * <pre>
      * Example:
-     *     SortedSet23.of(Arrays.asList(4, 2, 3)).union(SortedSet23.of(5, 6)) == {2, 3, 4, 5, 6}
+     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).union(SortedSet23.of(Arrays.asList(5, 6))).asList().asCollection().equals(Arrays.asList(2, 3, 4, 5, 6));
      * </pre>
      * @param other The elements to remove.
      * @return A set with the given element removed.
@@ -321,7 +322,7 @@ public final class SortedSet23<E> implements Set23<E> {
      * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * <pre>
      * Example:
-     *     SortedSet23.of(Arrays.asList(4, 2, 3)).reversed() == {4, 3, 2}
+     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).reversed().asList().asCollection().equals(Arrays.asList(4, 3, 2));
      * </pre>
      * @return A set with the elements reversed
      */
@@ -335,8 +336,8 @@ public final class SortedSet23<E> implements Set23<E> {
      * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * <pre>
      * Example:
-     *     SortedSet23.of(Arrays.asList(4, 2, 3)).remove(2) == {3, 4}
-     *     SortedSet23.of(Arrays.asList(4, 2, 3)).remove(5) == {2, 3, 4}
+     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).remove(2).asList().asCollection().equals(Arrays.asList(3, 4));
+     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).remove(5).asList().asCollection().equals(Arrays.asList(2, 3, 4));
      * </pre>
      * @param element The element to remove
      * @return A set with the given element removed
@@ -353,7 +354,7 @@ public final class SortedSet23<E> implements Set23<E> {
      * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * <pre>
      * Example:
-     *     SortedSet23.of(Arrays.asList(4, 2, 3)).filter(e -&gt; e &lt; 4) == {2, 3}
+     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).filter(e -&gt; e &lt; 4).asList().asCollection().equals(Arrays.asList(2, 3));
      * </pre>
      * @param filter The filter to apply
      * @return A set with the given element removed
@@ -369,7 +370,7 @@ public final class SortedSet23<E> implements Set23<E> {
      * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * <pre>
      * Example:
-     *     SortedSet23.of(Arrays.asList(4, 2, 3)).intersection(Set.of(1,2,4)) == {2, 4}
+     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).retain(SortedSet23.of(Arrays.asList(1,2,4))).asList().asCollection().equals(Arrays.asList(2, 4));
      * </pre>
      * @param other The set to intersection with
      * @return A set with the given element removed
@@ -385,7 +386,7 @@ public final class SortedSet23<E> implements Set23<E> {
      * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * <pre>
      * Example:
-     *     SortedSet23.of(Arrays.asList(4, 2, 3)).subtraction(Set.of(2,4)) == {3}
+     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).removeAllIn(SortedSet23.of(Arrays.asList(2,4))).asList().asCollection().equals(Arrays.asList(3));
      * </pre>
      * @param other The elements to remove.
      * @return A set with the given element removed.
@@ -404,8 +405,8 @@ public final class SortedSet23<E> implements Set23<E> {
      * <p>This operation is O(log n).
      * <pre>
      * Example:
-     *     SortedSet23.of(Arrays.asList(4, 2, 3)).getAt(0) == 2
-     *     SortedSet23.of(Arrays.asList(4, 2, 3)).getAt(2) == 4
+     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).getAt(0) == 2;
+     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).getAt(2) == 4;
      * </pre>
 	 * @param index The index.
 	 * @return The element at the given index.
@@ -421,8 +422,8 @@ public final class SortedSet23<E> implements Set23<E> {
      * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * <pre>
      * Example:
-     *     SortedSet23.of(Arrays.asList(4, 2, 3)).removeAt(0) == {3, 4}
-     *     SortedSet23.of(Arrays.asList(4, 2, 3)).removeAt(2) == {2, 3}
+     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).removeAt(0).asList().asCollection().equals(Arrays.asList(3, 4));
+     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).removeAt(2).asList().asCollection().equals(Arrays.asList(2, 3));
      * </pre>
      * @param index The index of the element to remove.
      * @return A set with the element at the given index removed
@@ -435,7 +436,7 @@ public final class SortedSet23<E> implements Set23<E> {
      * Returns the read-only {@link Set} view of this set.
      * <pre>
      * Example:
-     *     SortedSet23.of(Arrays.asList(4, 2, 3)).asSet() == {2, 3, 4}
+     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).asList().asCollection().equals(Arrays.asList(2, 3, 4));
      * </pre>
      * @return the {@link SortedSet} view of this set
      */
@@ -448,7 +449,7 @@ public final class SortedSet23<E> implements Set23<E> {
      * Returns the {@link List23} view of this set.
      * <pre>
      * Example:
-     *     SortedSet23.of(Arrays.asList(4, 2, 3)).asList() == [2, 3, 4]
+     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).asList().asCollection().equals(Arrays.asList(2, 3, 4));
      * </pre>
      * @return the {@link List23} view of this set
      */
