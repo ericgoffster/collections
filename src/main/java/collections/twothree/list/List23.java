@@ -18,7 +18,7 @@ import org.granitesoft.requirement.Requirements;
 
 /**
  * Represents an Immutable list as a 23-tree.
- * <p>Note *ALL OPERATIONS ARE IMMUTABLE*.
+ * <p>*ALL OPERATIONS ARE IMMUTABLE*.  The object is not modified in any way.
  * <p>A 23-tree is a semi-balanced tree, each branch has 2 or 3 nodes.
  * The nodes are ordered such that the leftmost side of the list
  * is in the left-most branch, and the rightmost side of the list is in the right-most branch.
@@ -51,7 +51,7 @@ public final class List23<E> implements Collection23<E> {
     /**
      * Returns a new list with <code>function</code> applied to all elements of this list.
      * <p>This operation is O(1).
-     * <p> THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
+     * <p>THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
      * <pre>
      * Example:
      *     List23.of(3, 4, 5).map(a -&gt; a + 1) == [4,5,6]
@@ -234,7 +234,7 @@ public final class List23<E> implements Collection23<E> {
 
 	/**
 	 * Returns a classic "read only java List" view of the list.
-	 * <p> This operation is O(1).
+	 * <p>This operation is O(1).
      * <pre>
      * Example:
      *     List23.of(6, 1, 6, 8).asList() == [6, 1, 6, 8]
@@ -247,7 +247,7 @@ public final class List23<E> implements Collection23<E> {
 	
 	/**
 	 * Returns the number of elements in the list.
-	 * <p> This operation is O(1).
+	 * <p>This operation is O(1).
      * <pre>
      * Example:
      *     List23.of(6, 1, 6, 8).size() == 4
@@ -261,7 +261,7 @@ public final class List23<E> implements Collection23<E> {
 	
 	/**
 	 * Returns <code>list[index]</code>.
-	 * <p> This operation is O(log n) where n = |this|.
+	 * <p>This operation is O(log n) where n = |this|.
      * <pre>
      * Example:
      *     List23.of(6, 1, 6, 8).getAt(2) == 6
@@ -276,7 +276,7 @@ public final class List23<E> implements Collection23<E> {
 	
     /**
 	 * Returns true if this list contains <code>element</code>.
-	 * <p> This operation is O(n) where n = |this|.
+	 * <p>This operation is O(n) where n = |this|.
      * <pre>
      * Example:
      *     List23.of(6, 1, 6, 8).contains(2) == false
@@ -292,7 +292,7 @@ public final class List23<E> implements Collection23<E> {
     
     /**
      * Returns the index of the first occurrence of <code>element</code>.
-     * <p> This operation is O(n) where n = |this|.
+     * <p>This operation is O(n) where n = |this|.
      * <pre>
      * Example:
      *     List23.of(6, 1, 6, 8).indexOf(1) == 1
@@ -315,7 +315,7 @@ public final class List23<E> implements Collection23<E> {
 	
     /**
      * Returns the index of the last occurrence of <code>element</code>.
-     * <p> This operation is O(n) where n = |this|.
+     * <p>This operation is O(n) where n = |this|.
      * <pre>
      * Example:
      *     List23.of(6, 1, 6, 8).lastIndexOf(1) == 1
@@ -332,8 +332,8 @@ public final class List23<E> implements Collection23<E> {
     
     /**
      * Returns a list with the first element matching <code>element</code> removed.
-     * <p> This operation is O(n) where n = |this|.
-     * <p> THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
+     * <p>This operation is O(n) where n = |this|.
+     * <p>THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
      * <pre>
      * Example:
      *     List23.of(6, 1, 6, 8).remove(1) == [6, 6, 8]
@@ -351,8 +351,8 @@ public final class List23<E> implements Collection23<E> {
     
     /**
      * Returns a list with only items that match <code>filter</code>.
-     * <p> This operation is O(n log n + n * k) where n = |this| and k = O(filter.test).
-     * <p> THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
+     * <p>This operation is O(n log n + n * k) where n = |this| and k = O(filter.test).
+     * <p>THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
      * <pre>
      * Example:
      *     List23.of(6, 1, 6, 8).filter(e -&gt; e != 6 ) == [1, 8]
@@ -367,8 +367,8 @@ public final class List23<E> implements Collection23<E> {
 
    /**
      * Returns a list whose items also appear <code>other</code>.
-     * <p> This operation is O(n log n) where n = |this| + |other|.
-     * <p> THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
+     * <p>This operation is O(n log n) where n = |this| + |other|.
+     * <p>THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
      * <pre>
      * Example:
      *     List23.of(6, 1, 6, 8).retain(Arrays.asList(6,1)) == [6, 1, 6]
@@ -384,8 +384,8 @@ public final class List23<E> implements Collection23<E> {
     
     /**
      * Returns a list whose items don't appear <code>other</code>.
-     * <p> This operation is O(n log n) where n = |this| + |other|.
-     * <p> THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
+     * <p>This operation is O(n log n) where n = |this| + |other|.
+     * <p>THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
      * <pre>
      * Example:
      *     List23.of(6, 1, 6, 8).removeAllIn(Arrays.asList(1)) == [6, 6, 8]
@@ -401,8 +401,8 @@ public final class List23<E> implements Collection23<E> {
     
     /**
 	 * Returns a list with <code>element</code> added to the end.
-	 * <p> This operation is O(log n) where n = |this|.
-	 * <p> THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
+	 * <p>This operation is O(log n) where n = |this|.
+	 * <p>THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
      * <pre>
      * Example:
      *     List23.of(6, 1, 6, 8).add(9) == [6, 1, 6, 8, 9]
@@ -418,8 +418,8 @@ public final class List23<E> implements Collection23<E> {
 	
     /**
 	 * Returns a new list with <code>list[index] == element</code>.
-     * <p> This operation is O(log n) where n = |this|.
-	 * <p> THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
+     * <p>This operation is O(log n) where n = |this|.
+	 * <p>THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
      * <pre>
      * Example:
      *     List23.of(6, 1, 6, 8).setAt(2, 3) == [6, 1, 3, 8]
@@ -436,8 +436,8 @@ public final class List23<E> implements Collection23<E> {
 	
 	/**
 	 * Returns a list with <code>element</code> inserted at <code>index</code>.
-     * <p> This operation is O(log n) where n = |this|.
-	 * <p> THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
+     * <p>This operation is O(log n) where n = |this|.
+	 * <p>THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
      * <pre>
      * Example:
      *     List23.of(6, 1, 6, 8).insertAt(2, 3) == [6, 1, 3, 6, 8]
@@ -454,8 +454,8 @@ public final class List23<E> implements Collection23<E> {
 	
 	/**
 	 * Returns a list with <code>index</code> removed.
-     * <p> This operation is O(log n) where n = |this|.
-	 * <p> THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
+     * <p>This operation is O(log n) where n = |this|.
+	 * <p>THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
      * <pre>
      * Example:
      *     List23.of(6, 1, 6, 8).removeAt(2) == [6, 1, 8]
@@ -471,8 +471,8 @@ public final class List23<E> implements Collection23<E> {
 	
     /**
      * Returns a list with range <code>[low, high - 1]</code> removed.
-     * <p> This operation is O(log n) where n = |this|.
-     * <p> THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
+     * <p>This operation is O(log n) where n = |this|.
+     * <p>THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
      * <pre>
      * Example:
      *     List23.of(6, 1, 6, 8).removeRange(1,3) == [6, 8]
@@ -492,8 +492,8 @@ public final class List23<E> implements Collection23<E> {
     
     /**
      * Returns a list with range <code>[low, high - 1]</code> replaced with <code>other</code>.
-     * <p> This operation is O(log n) where n = |this| + |other|.
-     * <p> THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
+     * <p>This operation is O(log n) where n = |this| + |other|.
+     * <p>THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
      * <pre>
      * Example:
      *     List23.of(6, 1, 6, 8).replaceRange(1,3,List23.of(7)) == [6, 7, 8]
@@ -516,8 +516,8 @@ public final class List23<E> implements Collection23<E> {
     
     /**
      * Returns a list with <code>other</code> inserted at <code>index</code>. 
-     * <p> This operation is O(log n) where n = |this| + |other|.
-     * <p> THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
+     * <p>This operation is O(log n) where n = |this| + |other|.
+     * <p>THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
      * <pre>
      * Example:
      *     List23.of(6, 1, 6, 8).insertListAt(2,List23.of(7)) == [6, 1, 7, 6, 8]
@@ -536,8 +536,8 @@ public final class List23<E> implements Collection23<E> {
 	
 	/**
 	 * Returns a list with <code>other</code> appended to the end.
-     * <p> This operation is O(log n) where n = |this| + |other|.
-	 * <p> THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
+     * <p>This operation is O(log n) where n = |this| + |other|.
+	 * <p>THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
      * <pre>
      * Example:
      *     List23.of(6, 1, 6, 8).appendList(List23.of(7)) == [6, 1, 6, 8, 7]
@@ -555,8 +555,8 @@ public final class List23<E> implements Collection23<E> {
 	
 	/**
 	 * Returns a list with all indexes &gt;= <code>index</code>.
-	 * <p> This operation is O(log n) where n = |this|.
-     * THIS OPERATION IS IMMUTABLE. The original list is left unchanged.
+	 * <p>This operation is O(log n) where n = |this|.
+     * <p>THIS OPERATION IS IMMUTABLE. The original list is left unchanged.
      * <pre>
      * Example:
      *     List23.of(6, 1, 6, 8).tailAt(2) == [6,8 ]
@@ -576,8 +576,8 @@ public final class List23<E> implements Collection23<E> {
 	
 	/**
 	 * Returns a list with all indexes &lt; <code>index</code>.
-     * <p> This operation is O(log n) where n = |this|.
-     * THIS OPERATION IS IMMUTABLE. The original list is left unchanged.
+     * <p>This operation is O(log n) where n = |this|.
+     * <p>THIS OPERATION IS IMMUTABLE. The original list is left unchanged.
      * <pre>
      * Example:
      *     List23.of(6, 1, 6, 8).headAt(2) == [6, 1]
@@ -595,8 +595,8 @@ public final class List23<E> implements Collection23<E> {
 	
 	/**
 	 * Returns a list with all indexes that fall in range <code>[low, high - 1]</code>.
-     * <p> This operation is O(log n) where n = |this|.
-     * THIS OPERATION IS IMMUTABLE. The original list is left unchanged.
+     * <p>This operation is O(log n) where n = |this|.
+     * <p>THIS OPERATION IS IMMUTABLE. The original list is left unchanged.
      * <pre>
      * Example:
      *     List23.of(6, 1, 6, 8).getRange(1, 3) == [1, 6]
@@ -614,8 +614,8 @@ public final class List23<E> implements Collection23<E> {
 	
 	/**
 	 * Returns a list that is the original list reversed.
-	 * <p> This operation is O(1).
-	 * <p> THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
+	 * <p>This operation is O(1).
+	 * <p>THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
      * <pre>
      * Example:
      *     List23.of(6, 1, 6, 8).reversed() == [8, 6, 1, 6]

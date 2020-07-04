@@ -134,7 +134,7 @@ public final class HashSet23<E> implements Set23<E> {
      *     HashSet23.of(4, 2, 3).add(5) == {2, 3, 4, 5}
      *     HashSet23.of(4, 2, 3, 5).add(5) == {2, 3, 4, 5}
      * </pre>
-     * THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
+     * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
 	 * @param element The element to add.
 	 * @return A set with the given element added.
 	 */
@@ -153,7 +153,7 @@ public final class HashSet23<E> implements Set23<E> {
      * Example:
      *     HashSet23.of(4, 2, 3).union(HashSet23.of(4, 5, 6)) == {2, 3, 4, 5, 6}
      * </pre>
-     * THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
+     * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * @param other The elements to remove.
      * @return A set with the given element removed.
      */
@@ -174,7 +174,7 @@ public final class HashSet23<E> implements Set23<E> {
      *     HashSet23.of(4, 2, 3).remove(2) == {3, 4}
      *     HashSet23.of(4, 2, 3).remove(5) == {2, 3, 4}
      * </pre>
-     * THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
+     * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * @param element The element to remove
      * @return A set with the given element removed
      */
@@ -191,7 +191,7 @@ public final class HashSet23<E> implements Set23<E> {
      * Example:
      *     HashSet23.of(4, 2, 3).filter(e -&gt; e &lt; 4) == {2, 3}
      * </pre>
-     * THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
+     * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * @param filter The filter to apply
      * @return A set with the given element removed
      */
@@ -207,7 +207,7 @@ public final class HashSet23<E> implements Set23<E> {
      * Example:
      *     HashSet23.of(4, 2, 3).retain(Set.of(1,2,4)) == {4, 2}
      * </pre>
-     * THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
+     * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * @param other The set to intersection with
      * @return A set with the given element removed
      */
@@ -223,7 +223,7 @@ public final class HashSet23<E> implements Set23<E> {
      * Example:
      *     HashSet23.of(4, 2, 3).removeAllIn(Set.of(2,4)) == {3}
      * </pre>
-     * THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
+     * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * @param other The elements to remove.
      * @return A set with the given element removed.
      */

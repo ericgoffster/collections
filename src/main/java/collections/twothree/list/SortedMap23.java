@@ -16,7 +16,7 @@ import java.util.stream.StreamSupport;
 
 /**
  * Represents an Immutable map where objects are ordered by a comparator on the keys in a {@link List23}.
- * <p>Note *ALL OPERATIONS ARE IMMUTABLE*.
+ * <p>*ALL OPERATIONS ARE IMMUTABLE*.  The object is not modified in any way.
  * <p>Note that all operations are O(log n), but the results of those
  * operations are also guaranteed to be O(log n)
  *
@@ -134,7 +134,7 @@ public final class SortedMap23<K, V> implements Map23<K, V> {
 	
     /**
      * Returns a sorted map with all entries &gt;= the given key. 
-     * Note *THIS OPERATION IS IMMUTABLE, THE PREVIOUS Map23 IS UNCHANGED!*.
+     * <p>Note *THIS OPERATION IS IMMUTABLE, THE PREVIOUS Map23 IS UNCHANGED!*.
      * @param key The min key
      * @return a sorted map with all entries &gt;= the given key
      */
@@ -144,7 +144,7 @@ public final class SortedMap23<K, V> implements Map23<K, V> {
 
     /**
      * Returns a sorted map with all entries &lt; the given key. 
-     * Note *THIS OPERATION IS IMMUTABLE, THE PREVIOUS Map23 IS UNCHANGED!*.
+     * <p>Note *THIS OPERATION IS IMMUTABLE, THE PREVIOUS Map23 IS UNCHANGED!*.
      * @param key The max key
      * @return a sorted map with all entries &lt; the given key
      */
@@ -154,7 +154,7 @@ public final class SortedMap23<K, V> implements Map23<K, V> {
 
     /**
      * Returns a sorted map with no keys between lowKey and highKey.
-     * Note *THIS OPERATION IS IMMUTABLE, THE PREVIOUS Map23 IS UNCHANGED!*.
+     * <p>Note *THIS OPERATION IS IMMUTABLE, THE PREVIOUS Map23 IS UNCHANGED!*.
      * @param lowKey The min key.  (inclusive)
      * @param highKey The max key.  (exclusive)
      * @return a sorted map with no keys between lowKey and highKey
@@ -175,7 +175,7 @@ public final class SortedMap23<K, V> implements Map23<K, V> {
 
     /**
      * Returns a sorted map with all keys between lowKey and highKey.
-     * Note *THIS OPERATION IS IMMUTABLE, THE PREVIOUS Map23 IS UNCHANGED!*.
+     * <p>Note *THIS OPERATION IS IMMUTABLE, THE PREVIOUS Map23 IS UNCHANGED!*.
      * @param lowKey The min key.  (inclusive)
      * @param highKey The max key.  (exclusive)
      * @return a sorted map with all keys between lowKey and highKey.
@@ -196,7 +196,7 @@ public final class SortedMap23<K, V> implements Map23<K, V> {
 
 	/**
 	 * Returns a sorted map with all elements reversed.
-     * Note *THIS OPERATION IS IMMUTABLE, THE PREVIOUS Map23 IS UNCHANGED!*.
+     * <p>Note *THIS OPERATION IS IMMUTABLE, THE PREVIOUS Map23 IS UNCHANGED!*.
 	 * @return a sorted map with all elements reversed
 	 */
 	public SortedMap23<K, V> reversed() {
@@ -265,7 +265,7 @@ public final class SortedMap23<K, V> implements Map23<K, V> {
     
     /**
      * Returns a map with the entry at the given index removed.
-     * Note *THIS OPERATION IS IMMUTABLE, THE PREVIOUS Map23 IS UNCHANGED!*.
+     * <p>Note *THIS OPERATION IS IMMUTABLE, THE PREVIOUS Map23 IS UNCHANGED!*.
      * @param index The index
      * @return a map with the entry at the given index removed
      */

@@ -14,7 +14,7 @@ import org.granitesoft.requirement.Requirements;
 /**
  * Represents an Immutable ordered set of elements using a {@link List23} as a backing store.
  * Set membership and ordering is implemented with a comparator.
- * <p>Note *ALL OPERATIONS ARE IMMUTABLE*.
+ * <p>*ALL OPERATIONS ARE IMMUTABLE*.  The object is not modified in any way.
  * <p>
  * Since operations on a List23 are log n, we can represent a set
  * relatively easily as a sorted list of elements, doing straightforward
@@ -300,7 +300,7 @@ public final class SortedSet23<E> implements Set23<E> {
      * Example:
      *     SortedSet23.of(4, 2, 3).add(5) == {2, 3, 4, 5}
      * </pre>
-     * THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
+     * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
 	 * @param element The element to add.
 	 * @return A set with the given element added.
 	 */
@@ -319,7 +319,7 @@ public final class SortedSet23<E> implements Set23<E> {
      * Example:
      *     SortedSet23.of(4, 2, 3).union(SortedSet23.of(5, 6)) == {2, 3, 4, 5, 6}
      * </pre>
-     * THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
+     * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * @param other The elements to remove.
      * @return A set with the given element removed.
      */
@@ -339,7 +339,7 @@ public final class SortedSet23<E> implements Set23<E> {
      * Example:
      *     SortedSet23.of(4, 2, 3).reversed() == {4, 3, 2}
      * </pre>
-     * THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
+     * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * @return A set with the elements reversed
      */
 	public SortedSet23<E> reversed() {
@@ -354,7 +354,7 @@ public final class SortedSet23<E> implements Set23<E> {
      *     SortedSet23.of(4, 2, 3).remove(2) == {3, 4}
      *     SortedSet23.of(4, 2, 3).remove(5) == {2, 3, 4}
      * </pre>
-     * THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
+     * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * @param element The element to remove
      * @return A set with the given element removed
      */
@@ -371,7 +371,7 @@ public final class SortedSet23<E> implements Set23<E> {
      * Example:
      *     SortedSet23.of(4, 2, 3).filter(e -&gt; e &lt; 4) == {2, 3}
      * </pre>
-     * THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
+     * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * @param filter The filter to apply
      * @return A set with the given element removed
      */
@@ -387,7 +387,7 @@ public final class SortedSet23<E> implements Set23<E> {
      * Example:
      *     SortedSet23.of(4, 2, 3).intersection(Set.of(1,2,4)) == {2, 4}
      * </pre>
-     * THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
+     * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * @param other The set to intersection with
      * @return A set with the given element removed
      */
@@ -403,7 +403,7 @@ public final class SortedSet23<E> implements Set23<E> {
      * Example:
      *     SortedSet23.of(4, 2, 3).subtraction(Set.of(2,4)) == {3}
      * </pre>
-     * THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
+     * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * @param other The elements to remove.
      * @return A set with the given element removed.
      */
@@ -440,7 +440,7 @@ public final class SortedSet23<E> implements Set23<E> {
      *     SortedSet23.of(4, 2, 3).removeAt(0) == {3, 4}
      *     SortedSet23.of(4, 2, 3).removeAt(2) == {2, 3}
      * </pre>
-     * THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
+     * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * @param index The index of the element to remove.
      * @return A set with the element at the given index removed
      */
