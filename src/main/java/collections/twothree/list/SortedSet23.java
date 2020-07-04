@@ -119,22 +119,22 @@ public final class SortedSet23<E> implements Set23<E> {
     }
     
     /**
-     * Returns a set containing an initial list of elements from <code>other</code>.
+     * Returns a set containing an initial list of elements from <code>sortedSet</code>.
      * <p>This operation is O(n log n).
      * <pre>
      * Example:
      *     SortedSet23.of(SortedSet23.of(4, 2, 3).asSet()) == {2, 3, 4}
      * </pre>
      * @param <E> The element type
-     * @param other The set of elements
+     * @param sortedSet The set of elements
      * @return A set containing an initial list of elements
      */
-    public static <E> SortedSet23<E> ofSorted(final SortedSet<E> other) {
-        return new SortedSet23<>(getComparator(other), List23.of(other));
+    public static <E> SortedSet23<E> ofSorted(final SortedSet<E> sortedSet) {
+        return new SortedSet23<>(getComparator(sortedSet), List23.of(sortedSet));
     }
 
-    private static <E> Comparator<? super E> getComparator(final SortedSet<E> other) {
-        final Comparator<? super E> comparator = other.comparator();
+    private static <E> Comparator<? super E> getComparator(final SortedSet<E> sortedSet) {
+        final Comparator<? super E> comparator = sortedSet.comparator();
         if (comparator == null) {
             return SortedSet23::unNaturalCompare;
         }

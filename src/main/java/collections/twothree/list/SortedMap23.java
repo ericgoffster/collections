@@ -36,6 +36,11 @@ public final class SortedMap23<K, V> implements Map23<K, V> {
 
 	/**
 	 * Returns an empty sorted map with a a custom key comparator.
+     * <p>This operation is O(1).
+     * <pre>
+     * Example:
+     *     SortedMap23.empty(Integer::compare) == {}
+     * </pre>
      * @param <K> The key type
      * @param <V> The value type
 	 * @param keyComparator The custom key comparator
@@ -47,6 +52,11 @@ public final class SortedMap23<K, V> implements Map23<K, V> {
 
     /**
      * Returns an empty sorted map using the natural comparator associated with the keys.
+     * <p>This operation is O(1).
+     * <pre>
+     * Example:
+     *     SortedMap23.empty() == {}
+     * </pre>
      * @param <K> The key type
      * @param <V> The value type
      * @return an empty sorted map using the natural comparator associated with the keys.
@@ -57,6 +67,15 @@ public final class SortedMap23<K, V> implements Map23<K, V> {
    
     /**
      * Returns a sorted map populated from a java sorted map.
+     * <p>This operation is O(n log n).
+     * <pre>
+     * Example:
+     *     TreeMap&lt;Integer,Integer&gt; tm = new TreeMap&lt;&gt;();
+     *     tm.put(4,1);
+     *     tm.put(2,2);
+     *     tm.put(3,3);
+     *     SortedMap23.of(tm) == {2=&gt;2,3=&gt;3,4=&gt;1}
+     * </pre>
      * @param <K> The key type
      * @param <V> The value type
      * @param sortedMap The map to get entries from
@@ -68,6 +87,15 @@ public final class SortedMap23<K, V> implements Map23<K, V> {
 
     /**
      * Returns a sorted map populated from a java map and a custom comparator.
+     * <p>This operation is O(n log n).
+     * <pre>
+     * Example:
+     *     TreeMap&lt;Integer,Integer&gt; tm = new TreeMap&lt;&gt;();
+     *     tm.put(4,1);
+     *     tm.put(2,2);
+     *     tm.put(3,3);
+     *     SortedMap23.of(Integer::compare, tm) == {2=&gt;2,3=&gt;3,4=&gt;1}
+     * </pre>
      * @param <K> The key type
      * @param <V> The value type
      * @param keyComparator The custom key comparator
@@ -80,6 +108,15 @@ public final class SortedMap23<K, V> implements Map23<K, V> {
     
     /**
      * Returns a sorted map populated from a list of entries and a custom comparator.
+     * <p>This operation is O(n log n).
+     * <pre>
+     * Example:
+     *     TreeMap&lt;Integer,Integer&gt; tm = new TreeMap&lt;&gt;();
+     *     tm.put(4,1);
+     *     tm.put(2,2);
+     *     tm.put(3,3);
+     *     SortedMap23.of(Integer::compare, tm.entrySet()) == {2=&gt;2,3=&gt;3,4=&gt;1}
+     * </pre>
      * @param <K> The key type
      * @param <V> The value type
      * @param keyComparator The key comparator
@@ -92,6 +129,15 @@ public final class SortedMap23<K, V> implements Map23<K, V> {
 	
 	/**
      * Returns a sorted map populated from a list of entries and the natural key comparator.
+     * <p>This operation is O(n log n).
+     * <pre>
+     * Example:
+     *     TreeMap&lt;Integer,Integer&gt; tm = new TreeMap&lt;&gt;();
+     *     tm.put(4,1);
+     *     tm.put(2,2);
+     *     tm.put(3,3);
+     *     SortedMap23.of(tm.entrySet()) == {2=&gt;2,3=&gt;3,4=&gt;1}
+     * </pre>
      * @param <K> The key type
      * @param <V> The value type
      * @param entries The list of entries
@@ -134,6 +180,15 @@ public final class SortedMap23<K, V> implements Map23<K, V> {
 	
     /**
      * Returns a sorted map with all entries &gt;= the given key. 
+     * <p>This operation is O(log n).
+     * <pre>
+     * Example:
+     *     SortedMap23&lt;Integer,Integer&gt; tm = SortedMap23.empty().put(4,1).put(2,2).put(3,3);
+     *     m.ge(2) == {2=&gt;2, 3=&gt;3, 4=&gt;1}
+     *     m.ge(4) == {4=&gt;1}
+     *     m.ge(0) == {2=&gt;2, 3=&gt;3, 4=&gt;1}
+     *     m.ge(5) == {}
+     * </pre>
      * <p>Note *THIS OPERATION IS IMMUTABLE, THE PREVIOUS Map23 IS UNCHANGED!*.
      * @param key The min key
      * @return a sorted map with all entries &gt;= the given key
@@ -144,6 +199,15 @@ public final class SortedMap23<K, V> implements Map23<K, V> {
 
     /**
      * Returns a sorted map with all entries &lt; the given key. 
+     * <p>This operation is O(log n).
+     * <pre>
+     * Example:
+     *     SortedMap23&lt;Integer,Integer&gt; tm = SortedMap23.empty().put(4,1).put(2,2).put(3,3);
+     *     m.lt(2) == {}
+     *     m.lt(4) == {2=&gt;2, 3=&gt;3}
+     *     m.lt(0) == {}
+     *     m.lt(5) == {2=&gt;2, 3=&gt;3, 4=&gt;1}
+     * </pre>
      * <p>Note *THIS OPERATION IS IMMUTABLE, THE PREVIOUS Map23 IS UNCHANGED!*.
      * @param key The max key
      * @return a sorted map with all entries &lt; the given key
@@ -154,6 +218,15 @@ public final class SortedMap23<K, V> implements Map23<K, V> {
 
     /**
      * Returns a sorted map with no keys between lowKey and highKey.
+     * <p>This operation is O(log n).
+     * <pre>
+     * Example:
+     *     SortedMap23&lt;Integer,Integer&gt; tm = SortedMap23.empty().put(4,1).put(2,2).put(3,3);
+     *     m.exclude(2, 3) == {3=&gt;3, 4=&gt;1}
+     *     m.exclude(2, 4) == {4=&gt;1}
+     *     m.exclude(0, 4) == {4=&gt;1}
+     *     m.exclude(0, 5) == {}
+     * </pre>
      * <p>Note *THIS OPERATION IS IMMUTABLE, THE PREVIOUS Map23 IS UNCHANGED!*.
      * @param lowKey The min key.  (inclusive)
      * @param highKey The max key.  (exclusive)
@@ -175,6 +248,16 @@ public final class SortedMap23<K, V> implements Map23<K, V> {
 
     /**
      * Returns a sorted map with all keys between lowKey and highKey.
+     * <p>This operation is O(log n).
+     * <pre>
+     * Example:
+     *     SortedMap23&lt;Integer,Integer&gt; tm = SortedMap23.empty().put(4,1).put(2,2).put(3,3);
+     *     m.subSet(2, 3) == {2=&gt;2}
+     *     m.subSet(2, 4) == {2=&gt;2, 3=&gt;3}
+     *     m.subSet(0, 4) == {2=&gt;2, 3=&gt;3}
+     *     m.subSet(0, 5) == {2=&gt;2, 3=&gt;3, 4=&gt;1}
+     *     m.subSet(3, 3) == {}
+     * </pre>
      * <p>Note *THIS OPERATION IS IMMUTABLE, THE PREVIOUS Map23 IS UNCHANGED!*.
      * @param lowKey The min key.  (inclusive)
      * @param highKey The max key.  (exclusive)
@@ -196,6 +279,12 @@ public final class SortedMap23<K, V> implements Map23<K, V> {
 
 	/**
 	 * Returns a sorted map with all elements reversed.
+     * <p>This operation is O(1).
+     * <pre>
+     * Example:
+     *     SortedMap23&lt;Integer,Integer&gt; tm = SortedMap23.empty().put(4,1).put(2,2).put(3,3);
+     *     m.reversed() = {4=&gt;1,3=&gt;2,2=&gt;1}
+     * </pre>
      * <p>Note *THIS OPERATION IS IMMUTABLE, THE PREVIOUS Map23 IS UNCHANGED!*.
 	 * @return a sorted map with all elements reversed
 	 */
