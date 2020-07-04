@@ -91,7 +91,7 @@ public final class HashSet23<E> implements Set23<E> {
      * @param elements The array of elements
      * @return A set containing an initial list of elements
      */
-    public static <E> HashSet23<E> of(final Iterable<E> elements) {
+    public static <E> HashSet23<E> of(final Iterable<? extends E> elements) {
         Requirements.require(elements, Requirements.notNull(), () -> "elements");
         return new HashSet23<E>(List23.ofSortedUnique(HashSet23::compare, elements));
     }
@@ -212,7 +212,7 @@ public final class HashSet23<E> implements Set23<E> {
      * @return A set with the given element removed
      */
     @Override
-    public HashSet23<E> retain(final Iterable<E> other) {
+    public HashSet23<E> retain(final Iterable<? extends E> other) {
         final HashSet23<E> hs = HashSet23.of(other);
         return filter(hs::contains);
     }
@@ -228,7 +228,7 @@ public final class HashSet23<E> implements Set23<E> {
      * @return A set with the given element removed.
      */
     @Override
-    public HashSet23<E> removeAllIn(final Iterable<E> other) {
+    public HashSet23<E> removeAllIn(final Iterable<? extends E> other) {
         HashSet23<E> m = this;
         for(E e: other) {
             m = m.remove(e);

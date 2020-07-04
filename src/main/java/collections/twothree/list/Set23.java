@@ -58,7 +58,7 @@ public interface Set23<E> extends Collection23<E> {
      * @param other The set to intersection with
      * @return A set with the given element removed
      */
-    Set23<E> retain(Iterable<E> other);
+    Set23<E> retain(Iterable<? extends E> other);
 
     /**
      * Returns a set that is the subtraction of this set with <code>other</code>.
@@ -68,7 +68,7 @@ public interface Set23<E> extends Collection23<E> {
      * @param other The elements to remove
      * @return A set with the given element removed
      */
-    Set23<E> removeAllIn(Iterable<E> other);
+    Set23<E> removeAllIn(Iterable<? extends E> other);
   
     /**
      * Returns the read-only {@link Set} view of this set.

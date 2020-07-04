@@ -377,7 +377,7 @@ public final class List23<E> implements Collection23<E> {
      * @return a list whose items also appear in another list
      */
     @Override
-    public List23<E> retain(final Iterable<E> other) {
+    public List23<E> retain(final Iterable<? extends E> other) {
         final HashSet23<E> hs = HashSet23.of(other);
         return filter(hs::contains);
     }
@@ -394,7 +394,7 @@ public final class List23<E> implements Collection23<E> {
      * @return a list whose items don't appear in another list
      */
     @Override
-    public List23<E> removeAllIn(final Iterable<E> other) {
+    public List23<E> removeAllIn(final Iterable<? extends E> other) {
         final HashSet23<E> hs = HashSet23.of(other);
         return filter(e -> !hs.contains(e));
     }

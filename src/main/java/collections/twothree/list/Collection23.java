@@ -60,7 +60,7 @@ public interface Collection23<E> extends Iterable<E> {
      * @param other The collection to intersection with
      * @return A collection with the given element removed
      */
-    Collection23<E> retain(Iterable<E> other);
+    Collection23<E> retain(Iterable<? extends E> other);
 
     /**
      * Returns a collection that is the subtraction of this collection with <code>other</code>.
@@ -69,7 +69,7 @@ public interface Collection23<E> extends Iterable<E> {
      * @param other The elements to remove
      * @return A collection with the given element removed
      */
-    Collection23<E> removeAllIn(Iterable<E> other);
+    Collection23<E> removeAllIn(Iterable<? extends E> other);
   
     /**
      * Returns the read-only {@link Collection} view of this collection.

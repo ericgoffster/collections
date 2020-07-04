@@ -392,7 +392,7 @@ public final class SortedSet23<E> implements Set23<E> {
      * @return A set with the given element removed
      */
     @Override
-    public SortedSet23<E> retain(final Iterable<E> other) {
+    public SortedSet23<E> retain(final Iterable<? extends E> other) {
         final HashSet23<E> hs = HashSet23.of(other);
         return filter(hs::contains);
     }
@@ -408,7 +408,7 @@ public final class SortedSet23<E> implements Set23<E> {
      * @return A set with the given element removed.
      */
     @Override
-    public SortedSet23<E> removeAllIn(final Iterable<E> other) {
+    public SortedSet23<E> removeAllIn(final Iterable<? extends E> other) {
         SortedSet23<E> m = this;
         for(E e: other) {
             m = m.remove(e);
