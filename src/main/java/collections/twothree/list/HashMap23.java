@@ -36,7 +36,7 @@ public final class HashMap23<K, V> implements Map23<K, V> {
      * <p>This operation is O(1).
      * <pre>
      * Example:
-     *     HashMap23.empty() == {}
+     *     assert HashMap23.empty().asMap().equals(Collections.emptyMap());
      * </pre>
      * @param <K> The key type
      * @param <V> The value type
@@ -51,7 +51,7 @@ public final class HashMap23<K, V> implements Map23<K, V> {
      * <p>This operation is O(1).
      * <pre>
      * Example:
-     *     HashMap23.singleton(4, 1) == {4 =&gt; 1}
+     *     assert HashMap23.singleton(4, 1).asMap().equals(Collections.singletonMap(4, 1));
      * </pre>
      * @param key initial key
      * @param value initial value
@@ -71,7 +71,7 @@ public final class HashMap23<K, V> implements Map23<K, V> {
      *     HashMap&lt;Integer, String&gt; hm = new HashMap&lt;&gt;();
      *     hm.put(1, "2");
      *     hm.put(3, "4");
-     *     HashMap23.of(hm) == {1 =&gt; "2", 3 =&gt; "4"}
+     *     assert HashMap23.of(hm).asMap().equals(hm);
      * </pre>
      * @param map map of items to copy
      * @param <K> The key type
@@ -90,7 +90,7 @@ public final class HashMap23<K, V> implements Map23<K, V> {
      *     HashMap&lt;Integer, String&gt; hm = new HashMap&lt;&gt;();
      *     hm.put(1, "2");
      *     hm.put(3, "4");
-     *     HashMap23.of(hm.entrySet()) == {1 =&gt; "2", 3 =&gt; "4"}
+     *     assert HashMap23.of(hm.entrySet()).asMap().equals(hm);
      * </pre>
      * @param entries set of items to copy
      * @param <K> The key type
