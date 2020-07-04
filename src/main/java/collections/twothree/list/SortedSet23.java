@@ -296,11 +296,11 @@ public final class SortedSet23<E> implements Set23<E> {
 	/**
 	 * Returns a set with <code>element</code> added.
      * <p>This operation is O(log n).
+     * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * <pre>
      * Example:
      *     SortedSet23.of(4, 2, 3).add(5) == {2, 3, 4, 5}
      * </pre>
-     * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
 	 * @param element The element to add.
 	 * @return A set with the given element added.
 	 */
@@ -315,11 +315,11 @@ public final class SortedSet23<E> implements Set23<E> {
     /**
      * Returns a set that is the union of this set with <code>other</code>.
      * <p>This operation is O(m * log n).
+     * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * <pre>
      * Example:
      *     SortedSet23.of(4, 2, 3).union(SortedSet23.of(5, 6)) == {2, 3, 4, 5, 6}
      * </pre>
-     * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * @param other The elements to remove.
      * @return A set with the given element removed.
      */
@@ -335,11 +335,11 @@ public final class SortedSet23<E> implements Set23<E> {
     /**
      * Returns a set with the elements in reverse order.
      * <p>This operation is O(1).
+     * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * <pre>
      * Example:
      *     SortedSet23.of(4, 2, 3).reversed() == {4, 3, 2}
      * </pre>
-     * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * @return A set with the elements reversed
      */
 	public SortedSet23<E> reversed() {
@@ -349,12 +349,12 @@ public final class SortedSet23<E> implements Set23<E> {
     /**
      * Returns a set with <code>element</code> removed.
      * <p>This operation is O(log n).
+     * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * <pre>
      * Example:
      *     SortedSet23.of(4, 2, 3).remove(2) == {3, 4}
      *     SortedSet23.of(4, 2, 3).remove(5) == {2, 3, 4}
      * </pre>
-     * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * @param element The element to remove
      * @return A set with the given element removed
      */
@@ -367,11 +367,11 @@ public final class SortedSet23<E> implements Set23<E> {
     /**
      * Returns a set with only the elements that match <code>filter</code>.
      * <p>This operation is O(n * log n).
+     * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * <pre>
      * Example:
      *     SortedSet23.of(4, 2, 3).filter(e -&gt; e &lt; 4) == {2, 3}
      * </pre>
-     * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * @param filter The filter to apply
      * @return A set with the given element removed
      */
@@ -383,11 +383,11 @@ public final class SortedSet23<E> implements Set23<E> {
     /**
      * Returns a set that is the intersection of this set with <code>other</code>.
      * <p>This operation is O((m + n) * log (m + n)).
+     * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * <pre>
      * Example:
      *     SortedSet23.of(4, 2, 3).intersection(Set.of(1,2,4)) == {2, 4}
      * </pre>
-     * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * @param other The set to intersection with
      * @return A set with the given element removed
      */
@@ -399,11 +399,11 @@ public final class SortedSet23<E> implements Set23<E> {
     /**
      * Returns a set that is the subtraction of this set with <code>other</code>.
      * <p>This operation is O(m * log n).
+     * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * <pre>
      * Example:
      *     SortedSet23.of(4, 2, 3).subtraction(Set.of(2,4)) == {3}
      * </pre>
-     * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * @param other The elements to remove.
      * @return A set with the given element removed.
      */
@@ -435,12 +435,12 @@ public final class SortedSet23<E> implements Set23<E> {
     /**
      * Returns a set with the element at the given index removed.
      * <p>This operation is O(log n).
+     * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * <pre>
      * Example:
      *     SortedSet23.of(4, 2, 3).removeAt(0) == {3, 4}
      *     SortedSet23.of(4, 2, 3).removeAt(2) == {2, 3}
      * </pre>
-     * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * @param index The index of the element to remove.
      * @return A set with the element at the given index removed
      */

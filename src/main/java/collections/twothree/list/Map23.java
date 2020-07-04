@@ -25,7 +25,7 @@ public interface Map23<K,V> extends Iterable<Entry<K,V>> {
     /**
      * Returns a new map23 with <code>entry</code> added.
      * <p>This operation is O(log n), where n = |this|.
-     * <p>Note *THIS OPERATION IS IMMUTABLE, THE PREVIOUS Map23 IS UNCHANGED!*.
+     * <p>*THIS OPERATION IS IMMUTABLE, THE PREVIOUS Map23 IS UNCHANGED!*.
      * @param entry The entry to add.
      * @return a new map23 with <code>entry</code> added.
      */
@@ -34,7 +34,7 @@ public interface Map23<K,V> extends Iterable<Entry<K,V>> {
     /**
      * Returns a new map23 with <code>entries</code> added.
      * <p>This operation is O(n log n), where n = |this|.
-     * <p>Note *THIS OPERATION IS IMMUTABLE, THE PREVIOUS Map23 IS UNCHANGED!*.
+     * <p>*THIS OPERATION IS IMMUTABLE, THE PREVIOUS Map23 IS UNCHANGED!*.
      * @param entries The entries to add.
      * @return a new map23 with <code>entries</code> added.
      */
@@ -43,7 +43,7 @@ public interface Map23<K,V> extends Iterable<Entry<K,V>> {
     /**
      * Returns a new map23 with the contents of <code>map</code> added.
      * <p>This operation is O(m * log n), where n = |this| and m = |other|.
-     * <p>Note *THIS OPERATION IS IMMUTABLE, THE PREVIOUS Map23 IS UNCHANGED!*.
+     * <p>*THIS OPERATION IS IMMUTABLE, THE PREVIOUS Map23 IS UNCHANGED!*.
      * @param map The map to copy.
      * @return a new map23 with the map added.
      */
@@ -52,7 +52,7 @@ public interface Map23<K,V> extends Iterable<Entry<K,V>> {
     /**
      * Returns a new map23 with <code>key</code> associated with <code>value</code>.
      * <p>This operation is O(log n), where n = |this|.
-     * <p>Note *THIS OPERATION IS IMMUTABLE, THE PREVIOUS Map23 IS UNCHANGED!*.
+     * <p>*THIS OPERATION IS IMMUTABLE, THE PREVIOUS Map23 IS UNCHANGED!*.
      * @param key The key to add
      * @param value The value to add
      * @return a new map23 with <code>key</code> associated with <code>value</code>
@@ -70,7 +70,7 @@ public interface Map23<K,V> extends Iterable<Entry<K,V>> {
     /**
      * Returns a new map23 with <code>key</code> removed.
      * <p>This operation is O(log n), where n = |this|.
-     * <p>Note *THIS OPERATION IS IMMUTABLE, THE PREVIOUS Map23 IS UNCHANGED!*.
+     * <p>*THIS OPERATION IS IMMUTABLE, THE PREVIOUS Map23 IS UNCHANGED!*.
      * @param key The key to remove
      * @return  a new map23 with <code>key</code> removed
      */
@@ -79,7 +79,7 @@ public interface Map23<K,V> extends Iterable<Entry<K,V>> {
     /**
      * Returns a new map23 with only the keys contained in <code>keys</code>.
      * <p>This operation is O(n * log (n)), where n = |this| + |other|.
-     * <p>Note *THIS OPERATION IS IMMUTABLE, THE PREVIOUS Map23 IS UNCHANGED!*.
+     * <p>*THIS OPERATION IS IMMUTABLE, THE PREVIOUS Map23 IS UNCHANGED!*.
      * @param keys The key list.
      * @return a new map23 with only the keys contained in <code>keys</code>
      */
@@ -88,7 +88,7 @@ public interface Map23<K,V> extends Iterable<Entry<K,V>> {
     /**
      * Returns a new map23 with only the keys than are *not* in <code>keys</code>.
      * <p>This operation is O(m * log n), where n = |this| and m = |other|.
-     * <p>Note *THIS OPERATION IS IMMUTABLE, THE PREVIOUS Map23 IS UNCHANGED!*.
+     * <p>*THIS OPERATION IS IMMUTABLE, THE PREVIOUS Map23 IS UNCHANGED!*.
      * @param keys The key list.
      * @return a new map23 with only the keys than are *not* in <code>keys</code>
      */

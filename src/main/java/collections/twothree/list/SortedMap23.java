@@ -16,7 +16,7 @@ import java.util.stream.StreamSupport;
 /**
  * Represents an Immutable map where objects are ordered by a comparator on the keys in a {@link List23}.
  * <p>*ALL OPERATIONS ARE IMMUTABLE*.  The object is not modified in any way.
- * <p>Note that all operations are O(log n), but the results of those
+ * <p>that all operations are O(log n), but the results of those
  * operations are also guaranteed to be O(log n)
  *
  * @param <K> The key type
@@ -197,6 +197,7 @@ public final class SortedMap23<K, V> implements Map23<K, V> {
     /**
      * Returns a sorted map with all entries &gt;= the given key. 
      * <p>This operation is O(log n).
+     * <p>*THIS OPERATION IS IMMUTABLE, THE PREVIOUS Map23 IS UNCHANGED!*.
      * <pre>
      * Example:
      *     SortedMap23&lt;Integer,Integer&gt; tm = SortedMap23.singleton(4,1).put(2,2).put(3,3);
@@ -205,7 +206,6 @@ public final class SortedMap23<K, V> implements Map23<K, V> {
      *     m.ge(0) == {2=&gt;2, 3=&gt;3, 4=&gt;1}
      *     m.ge(5) == {}
      * </pre>
-     * <p>Note *THIS OPERATION IS IMMUTABLE, THE PREVIOUS Map23 IS UNCHANGED!*.
      * @param key The min key
      * @return a sorted map with all entries &gt;= the given key
      */
@@ -224,7 +224,7 @@ public final class SortedMap23<K, V> implements Map23<K, V> {
      *     m.lt(0) == {}
      *     m.lt(5) == {2=&gt;2, 3=&gt;3, 4=&gt;1}
      * </pre>
-     * <p>Note *THIS OPERATION IS IMMUTABLE, THE PREVIOUS Map23 IS UNCHANGED!*.
+     * <p>*THIS OPERATION IS IMMUTABLE, THE PREVIOUS Map23 IS UNCHANGED!*.
      * @param key The max key
      * @return a sorted map with all entries &lt; the given key
      */
@@ -243,7 +243,7 @@ public final class SortedMap23<K, V> implements Map23<K, V> {
      *     m.exclude(0, 4) == {4=&gt;1}
      *     m.exclude(0, 5) == {}
      * </pre>
-     * <p>Note *THIS OPERATION IS IMMUTABLE, THE PREVIOUS Map23 IS UNCHANGED!*.
+     * <p>*THIS OPERATION IS IMMUTABLE, THE PREVIOUS Map23 IS UNCHANGED!*.
      * @param lowKey The min key.  (inclusive)
      * @param highKey The max key.  (exclusive)
      * @return a sorted map with no keys between lowKey and highKey
@@ -274,7 +274,7 @@ public final class SortedMap23<K, V> implements Map23<K, V> {
      *     m.subSet(0, 5) == {2=&gt;2, 3=&gt;3, 4=&gt;1}
      *     m.subSet(3, 3) == {}
      * </pre>
-     * <p>Note *THIS OPERATION IS IMMUTABLE, THE PREVIOUS Map23 IS UNCHANGED!*.
+     * <p>*THIS OPERATION IS IMMUTABLE, THE PREVIOUS Map23 IS UNCHANGED!*.
      * @param lowKey The min key.  (inclusive)
      * @param highKey The max key.  (exclusive)
      * @return a sorted map with all keys between lowKey and highKey.
@@ -301,7 +301,7 @@ public final class SortedMap23<K, V> implements Map23<K, V> {
      *     SortedMap23&lt;Integer,Integer&gt; tm = SortedMap23.singleton(4,1).put(2,2).put(3,3);
      *     m.reversed() = {4=&gt;1,3=&gt;2,2=&gt;1}
      * </pre>
-     * <p>Note *THIS OPERATION IS IMMUTABLE, THE PREVIOUS Map23 IS UNCHANGED!*.
+     * <p>*THIS OPERATION IS IMMUTABLE, THE PREVIOUS Map23 IS UNCHANGED!*.
 	 * @return a sorted map with all elements reversed
 	 */
 	public SortedMap23<K, V> reversed() {
@@ -309,7 +309,15 @@ public final class SortedMap23<K, V> implements Map23<K, V> {
 	}
 	
 	/**
-	 * Returns the index of the given key.
+	 * Returns the index of the given key.  Returns -1 if not found.
+     * <p>This operation is O(log n).
+     * <pre>
+     * Example:
+     *     SortedMap23&lt;Integer,Integer&gt; tm = SortedMap23.singleton(4,1).put(2,2).put(3,3);
+     *     m.indexOf(2) = 1
+     *     m.indexOf(4) = 2
+     *     m.indexOf(5) = -1
+     * </pre>
 	 * @param key The key to get an index of.
 	 * @return the index of the given key
 	 */
@@ -350,6 +358,14 @@ public final class SortedMap23<K, V> implements Map23<K, V> {
 
     /**
      * Returns the entry at the given index.
+     * <p>This operation is O(log n).
+     * <pre>
+     * Example:
+     *     SortedMap23&lt;Integer,Integer&gt; tm = SortedMap23.singleton(4,1).put(2,2).put(3,3);
+     *     m.getAt(0) = 2
+     *     m.getAt(1) = 3
+     *     m.getAt(2) = 4
+     * </pre>
      * @param index The index
      * @return  the entry at the given index
      */
@@ -370,7 +386,15 @@ public final class SortedMap23<K, V> implements Map23<K, V> {
     
     /**
      * Returns a map with the entry at the given index removed.
-     * <p>Note *THIS OPERATION IS IMMUTABLE, THE PREVIOUS Map23 IS UNCHANGED!*.
+     * <p>This operation is O(log n).
+     * <pre>
+     * Example:
+     *     SortedMap23&lt;Integer,Integer&gt; tm = SortedMap23.singleton(4,1).put(2,2).put(3,3);
+     *     m.removeAt(0) = {3 =gt; 3,4 =gt; 1}
+     *     m.removeAt(1) = {2 =gt; 2,4 =gt; 1}
+     *     m.removeAt(2) = {2 =gt; 2,3 =gt; 3}
+     * </pre>
+     * <p>*THIS OPERATION IS IMMUTABLE, THE PREVIOUS Map23 IS UNCHANGED!*.
      * @param index The index
      * @return a map with the entry at the given index removed
      */
@@ -385,6 +409,12 @@ public final class SortedMap23<K, V> implements Map23<K, V> {
 	
     /**
      * Returns all of the entries as a list.
+     * <p>This operation is O(1).
+     * <pre>
+     * Example:
+     *     SortedMap23&lt;Integer,Integer&gt; tm = SortedMap23.singleton(4,1).put(2,2).put(3,3);
+     *     m.asList() = [{2=gt;2},{3=gt;3},{4=gt;1}]
+     * </pre>
      * @return all of the entries as a list
      */
 	public List23<Entry<K,V>> asList() {
