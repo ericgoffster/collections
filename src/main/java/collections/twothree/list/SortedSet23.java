@@ -307,7 +307,7 @@ public final class SortedSet23<E> implements Set23<E> {
      * @return A set with the given element removed.
      */
     @Override
-	public SortedSet23<E> union(Set23<E> other) {
+	public SortedSet23<E> union(final Set23<E> other) {
 	    SortedSet23<E> s = this;
 	    for(E e: other) {
 	        s = s.add(e);

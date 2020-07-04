@@ -59,7 +59,7 @@ public final class HashMap23<K, V> implements Map23<K, V> {
      * @param <V> The value type
      * @return an empty hashmap23 using the natural comparator associated with the keys.
      */
-    public static <K,V> HashMap23<K,V> singleton(K key, V value) {
+    public static <K,V> HashMap23<K,V> singleton(final K key, final V value) {
         return new HashMap23<>(List23.singleton(new AbstractMap.SimpleImmutableEntry<>(key, value)));
     }
 

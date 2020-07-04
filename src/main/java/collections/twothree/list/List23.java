@@ -54,13 +54,13 @@ public final class List23<E> implements Collection23<E> {
      * <p>THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
      * <pre>
      * Example:
-     *     List23.of(3, 4, 5).map(a -&gt; a + 1) == [4,5,6]
+     *     List23.of(Arrays.asList(3, 4, 5)).map(a -&gt; a + 1) == [4,5,6]
      * </pre>
      * @param <F> The new type of the elements.
      * @param function The mapping function
      * @return A new List23 representing the map of this one
      */
-    public <F> List23<F> map(Function<E, F> function) {
+    public <F> List23<F> map(final Function<E, F> function) {
         return root == null ? empty() : new List23<>(root.map(function));
     }
 
@@ -83,7 +83,7 @@ public final class List23<E> implements Collection23<E> {
      * <p>This operation is O(1).
      * <pre>
      * Example:
-     *     List23.of(5) == [5]
+     *     List23.singleton(5) == [5]
      * </pre>
      * @param <E> The type of the element.
      * @param element The element
@@ -136,7 +136,7 @@ public final class List23<E> implements Collection23<E> {
      * @param elements The collections of elements
      * @return The sorted List23 representation of "elements"
      */
-    public static <E> List23<E> ofSortedUnique(Comparator<? super E> comparator,final Iterable<? extends E> elements) {
+    public static <E> List23<E> ofSortedUnique(final Comparator<? super E> comparator,final Iterable<? extends E> elements) {
         Requirements.require(comparator, Requirements.notNull(), () -> "comparator");
         Requirements.require(elements, Requirements.notNull(), () -> "elements");
         return quickConstruct(new RemoveDupsIterator<>(sortLeaves(comparator, new LeafIterator<>(elements)), comparator));
@@ -199,7 +199,7 @@ public final class List23<E> implements Collection23<E> {
 	 * <p>This operation is O(1).
      * <pre>
      * Example:
-     *     List23.of(6, 1, 6, 8).asList() == [6, 1, 6, 8]
+     *     List23.of(Arrays.asList(6, 1, 6, 8)).asList() == [6, 1, 6, 8]
      * </pre>
 	 * @return A classic "read only java List" view of the list
 	 */
@@ -212,7 +212,7 @@ public final class List23<E> implements Collection23<E> {
 	 * <p>This operation is O(1).
      * <pre>
      * Example:
-     *     List23.of(6, 1, 6, 8).size() == 4
+     *     List23.of(Arrays.asList(6, 1, 6, 8)).size() == 4
      * </pre>
 	 * @return The number of elements in the list
 	 */
@@ -226,7 +226,7 @@ public final class List23<E> implements Collection23<E> {
 	 * <p>This operation is O(log n) where n = |this|.
      * <pre>
      * Example:
-     *     List23.of(6, 1, 6, 8).getAt(2) == 6
+     *     List23.of(Arrays.asList(6, 1, 6, 8)).getAt(2) == 6
      * </pre>
      * @param index The index. Must be in range <code>[0, size - 1]</code>.
 	 * @return <code>list[index]</code>
@@ -241,14 +241,14 @@ public final class List23<E> implements Collection23<E> {
 	 * <p>This operation is O(n) where n = |this|.
      * <pre>
      * Example:
-     *     List23.of(6, 1, 6, 8).contains(2) == false
-     *     List23.of(6, 1, 6, 8).contains(6) == true
+     *     List23.of(Arrays.asList(6, 1, 6, 8)).contains(2) == false
+     *     List23.of(Arrays.asList(6, 1, 6, 8)).contains(6) == true
      * </pre>
 	 * @param element The element to look for
 	 * @return true if this list contains <code>element</code>
 	 */
     @Override
-    public boolean contains(E element) {
+    public boolean contains(final E element) {
         return indexOf(element) >= 0;
     }
     
@@ -257,14 +257,14 @@ public final class List23<E> implements Collection23<E> {
      * <p>This operation is O(n) where n = |this|.
      * <pre>
      * Example:
-     *     List23.of(6, 1, 6, 8).indexOf(1) == 1
-     *     List23.of(6, 1, 6, 8).indexOf(6) == 0
-     *     List23.of(6, 1, 6, 8).indexOf(7) == -1
+     *     List23.of(Arrays.asList(6, 1, 6, 8)).indexOf(1) == 1
+     *     List23.of(Arrays.asList(6, 1, 6, 8)).indexOf(6) == 0
+     *     List23.of(Arrays.asList(6, 1, 6, 8)).indexOf(7) == -1
      * </pre>
      * @param element The element to look for
      * @return The index of <code>element</code>, -1 if not found
      */
-	public int indexOf(E element) {
+	public int indexOf(final E element) {
 	    int i = 0;
 	    for(E e: this) {
 	        if (Objects.equals(e,element)) {
@@ -280,14 +280,14 @@ public final class List23<E> implements Collection23<E> {
      * <p>This operation is O(n) where n = |this|.
      * <pre>
      * Example:
-     *     List23.of(6, 1, 6, 8).lastIndexOf(1) == 1
-     *     List23.of(6, 1, 6, 8).lastIndexOf(6) == 2
-     *     List23.of(6, 1, 6, 8).lastIndexOf(7) == -1
+     *     List23.of(Arrays.asList(6, 1, 6, 8)).lastIndexOf(1) == 1
+     *     List23.of(Arrays.asList(6, 1, 6, 8)).lastIndexOf(6) == 2
+     *     List23.of(Arrays.asList(6, 1, 6, 8)).lastIndexOf(7) == -1
      * </pre>
      * @param element The element to look for
      * @return The last index of <code>element</code>, -1 if not found
      */
-    public int lastIndexOf(E element) {
+    public int lastIndexOf(final E element) {
         int pos = reversed().indexOf(element);
         return pos < 0 ? -1 : size() - 1 - pos;
     }
@@ -298,9 +298,9 @@ public final class List23<E> implements Collection23<E> {
      * <p>THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
      * <pre>
      * Example:
-     *     List23.of(6, 1, 6, 8).remove(1) == [6, 6, 8]
-     *     List23.of(6, 1, 6, 8).remove(6) == [1, 6, 8]
-     *     List23.of(6, 1, 6, 8).remove(7) == [6, 1, 6, 8]
+     *     List23.of(Arrays.asList(6, 1, 6, 8)).remove(1) == [6, 6, 8]
+     *     List23.of(Arrays.asList(6, 1, 6, 8)).remove(6) == [1, 6, 8]
+     *     List23.of(Arrays.asList(6, 1, 6, 8)).remove(7) == [6, 1, 6, 8]
      * </pre>
      * @param element The element to remove
      * @return A list with <code>element</code> removed
@@ -317,7 +317,7 @@ public final class List23<E> implements Collection23<E> {
      * <p>THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
      * <pre>
      * Example:
-     *     List23.of(6, 1, 6, 8).filter(e -&gt; e != 6 ) == [1, 8]
+     *     List23.of(Arrays.asList(6, 1, 6, 8)).filter(e -&gt; e != 6 ) == [1, 8]
      * </pre>
      * @param filter The filter to apply
      * @return A list with <code>filter</code> applied
@@ -333,7 +333,7 @@ public final class List23<E> implements Collection23<E> {
      * <p>THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
      * <pre>
      * Example:
-     *     List23.of(6, 1, 6, 8).retain(Arrays.asList(6,1)) == [6, 1, 6]
+     *     List23.of(Arrays.asList(6, 1, 6, 8)).retain(Arrays.asList(6,1)) == [6, 1, 6]
      * </pre>
      * @param other The items to match.
      * @return a list whose items also appear in another list
@@ -350,7 +350,7 @@ public final class List23<E> implements Collection23<E> {
      * <p>THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
      * <pre>
      * Example:
-     *     List23.of(6, 1, 6, 8).removeAllIn(Arrays.asList(1)) == [6, 6, 8]
+     *     List23.of(Arrays.asList(6, 1, 6, 8)).removeAllIn(Arrays.asList(1)) == [6, 6, 8]
      * </pre>
      * @param other The items to match.
      * @return a list whose items don't appear in another list
@@ -367,8 +367,8 @@ public final class List23<E> implements Collection23<E> {
 	 * <p>THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
      * <pre>
      * Example:
-     *     List23.of(6, 1, 6, 8).add(9) == [6, 1, 6, 8, 9]
-     *     List23.of(6, 1, 6, 8).add(1) == [6, 1, 6, 8, 1]
+     *     List23.of(Arrays.asList(6, 1, 6, 8)).add(9) == [6, 1, 6, 8, 9]
+     *     List23.of(Arrays.asList(6, 1, 6, 8)).add(1) == [6, 1, 6, 8, 1]
      * </pre>
 	 * @param element The element to add.
 	 * @return A list with <code>element</code> added to the end
@@ -384,7 +384,7 @@ public final class List23<E> implements Collection23<E> {
 	 * <p>THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
      * <pre>
      * Example:
-     *     List23.of(6, 1, 6, 8).setAt(2, 3) == [6, 1, 3, 8]
+     *     List23.of(Arrays.asList(6, 1, 6, 8)).setAt(2, 3) == [6, 1, 3, 8]
      * </pre>
      * @param index The index. Must be in range <code>[0, size]</code>.
 	 * @param element The element to set
@@ -402,7 +402,7 @@ public final class List23<E> implements Collection23<E> {
 	 * <p>THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
      * <pre>
      * Example:
-     *     List23.of(6, 1, 6, 8).insertAt(2, 3) == [6, 1, 3, 6, 8]
+     *     List23.of(Arrays.asList(6, 1, 6, 8)).insertAt(2, 3) == [6, 1, 3, 6, 8]
      * </pre>
      * @param index The index. Must be in range <code>[0, size]</code>.
 	 * @param element The element to insert
@@ -420,7 +420,7 @@ public final class List23<E> implements Collection23<E> {
 	 * <p>THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
      * <pre>
      * Example:
-     *     List23.of(6, 1, 6, 8).removeAt(2) == [6, 1, 8]
+     *     List23.of(Arrays.asList(6, 1, 6, 8)).removeAt(2) == [6, 1, 8]
      * </pre>
      * @param index The index. Must be in range <code>[0, size - 1]</code>
 	 * @return A list with the given index removed
@@ -437,9 +437,9 @@ public final class List23<E> implements Collection23<E> {
      * <p>THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
      * <pre>
      * Example:
-     *     List23.of(6, 1, 6, 8).removeRange(1,3) == [6, 8]
-     *     List23.of(6, 1, 6, 8).removeRange(1,1) == [6, 1, 6, 8]
-     *     List23.of(6, 1, 6, 8).removeRange(0,4) == []
+     *     List23.of(Arrays.asList(6, 1, 6, 8)).removeRange(1,3) == [6, 8]
+     *     List23.of(Arrays.asList(6, 1, 6, 8)).removeRange(1,1) == [6, 1, 6, 8]
+     *     List23.of(Arrays.asList(6, 1, 6, 8)).removeRange(0,4) == []
      * </pre>
      * @param low The low index (inclusive).   Must be in range <code>[0, high]</code>
      * @param high The high index (exclusive).   Must be in range <code>[0, size]</code>
@@ -458,8 +458,8 @@ public final class List23<E> implements Collection23<E> {
      * <p>THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
      * <pre>
      * Example:
-     *     List23.of(6, 1, 6, 8).replaceRange(1,3,List23.of(7)) == [6, 7, 8]
-     *     List23.of(6, 1, 6, 8).replaceRange(1,3,List23.of(7,5,3)) == [6, 7, 5, 3, 8]
+     *     List23.of(Arrays.asList(6, 1, 6, 8)).replaceRange(1,3,List23.singleton(7)) == [6, 7, 8]
+     *     List23.of(Arrays.asList(6, 1, 6, 8)).replaceRange(1,3,List23.of(Arrays.asList(7,5,3))) == [6, 7, 5, 3, 8]
      * </pre>
      * @param low The low index (inclusive).   Must be in range <code>[0, high]</code>
      * @param high The high index (exclusive).   Must be in range <code>[0, size]</code>
@@ -482,8 +482,8 @@ public final class List23<E> implements Collection23<E> {
      * <p>THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
      * <pre>
      * Example:
-     *     List23.of(6, 1, 6, 8).insertListAt(2,List23.of(7)) == [6, 1, 7, 6, 8]
-     *     List23.of(6, 1, 6, 8).insertListAt(2,List23.of(7,5,3)) == [6, 1, 7, 5, 3, 6, 8]
+     *     List23.of(Arrays.asList(6, 1, 6, 8)).insertListAt(2,List23.singleton(7)) == [6, 1, 7, 6, 8]
+     *     List23.of(Arrays.asList(6, 1, 6, 8)).insertListAt(2,List23.of(Arrays.asList(7,5,3))) == [6, 1, 7, 5, 3, 6, 8]
      * </pre>
      * @param index The index.   Must be in range <code>[0, size]</code>
      * @param other The list to insert
@@ -502,8 +502,8 @@ public final class List23<E> implements Collection23<E> {
 	 * <p>THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
      * <pre>
      * Example:
-     *     List23.of(6, 1, 6, 8).appendList(List23.of(7)) == [6, 1, 6, 8, 7]
-     *     List23.of(6, 1, 6, 8).appendList(List23.of(7,5,3)) == [6, 1, 6, 8, 7, 5, 3]
+     *     List23.of(Arrays.asList(6, 1, 6, 8)).appendList(List23.singleton(7)) == [6, 1, 6, 8, 7]
+     *     List23.of(Arrays.asList(6, 1, 6, 8)).appendList(List23.of(Arrays.asList(7,5,3))) == [6, 1, 6, 8, 7, 5, 3]
      * </pre>
 	 * @param other The list to append
 	 * @return A list with the given list appended to the end
@@ -521,9 +521,9 @@ public final class List23<E> implements Collection23<E> {
      * <p>THIS OPERATION IS IMMUTABLE. The original list is left unchanged.
      * <pre>
      * Example:
-     *     List23.of(6, 1, 6, 8).tailAt(2) == [6,8 ]
-     *     List23.of(6, 1, 6, 8).tailAt(4) == []
-     *     List23.of(6, 1, 6,  8).tailAt(0) == [6, 1, 6, 8]
+     *     List23.of(Arrays.asList(6, 1, 6, 8)).tailAt(2) == [6,8 ]
+     *     List23.of(Arrays.asList(6, 1, 6, 8)).tailAt(4) == []
+     *     List23.of(Arrays.asList(6, 1, 6,  8)).tailAt(0) == [6, 1, 6, 8]
      * </pre>
 	 * @param index The chopping point (inclusive).  Must be in range <code>[0, size]</code>
 	 * @return A list with all indexes &gt;= the specified index
@@ -542,9 +542,9 @@ public final class List23<E> implements Collection23<E> {
      * <p>THIS OPERATION IS IMMUTABLE. The original list is left unchanged.
      * <pre>
      * Example:
-     *     List23.of(6, 1, 6, 8).headAt(2) == [6, 1]
-     *     List23.of(6, 1, 6, 8).headAt(4) == [6, 1, 6, 8]
-     *     List23.of(6, 1, 6, 8).headAt(0) == []
+     *     List23.of(Arrays.asList(6, 1, 6, 8)).headAt(2) == [6, 1]
+     *     List23.of(Arrays.asList(6, 1, 6, 8)).headAt(4) == [6, 1, 6, 8]
+     *     List23.of(Arrays.asList(6, 1, 6, 8)).headAt(0) == []
      * </pre>
 	 * @param index The chopping point (exclusive).  Must be in range <code>[0, size]</code>
 	 * @return A list with all indexes &lt; the specified index
@@ -561,7 +561,7 @@ public final class List23<E> implements Collection23<E> {
      * <p>THIS OPERATION IS IMMUTABLE. The original list is left unchanged.
      * <pre>
      * Example:
-     *     List23.of(6, 1, 6, 8).getRange(1, 3) == [1, 6]
+     *     List23.of(Arrays.asList(6, 1, 6, 8)).getRange(1, 3) == [1, 6]
      * </pre>
      * @param low The low index (inclusive).   Must be in range <code>[0, high]</code>
      * @param high The high index (exclusive).   Must be in range <code>[0, size]</code>
@@ -580,7 +580,7 @@ public final class List23<E> implements Collection23<E> {
 	 * <p>THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
      * <pre>
      * Example:
-     *     List23.of(6, 1, 6, 8).reversed() == [8, 6, 1, 6]
+     *     List23.of(Arrays.asList(6, 1, 6, 8)).reversed() == [8, 6, 1, 6]
      * </pre>
 	 * @return A list that is the original list reversed
 	 */
