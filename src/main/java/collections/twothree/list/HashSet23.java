@@ -180,7 +180,7 @@ public final class HashSet23<E> implements Set23<E> {
      */
     @Override
 	public HashSet23<E> remove(final E element) {
-	    int index = elements.getIndexOf(e -> compare(element, e));
+        final int index = elements.getIndexOf(e -> compare(element, e));
 	    return index < 0 ? this : new HashSet23<>(elements.removeAt(index));
 	}
 	
@@ -259,7 +259,7 @@ public final class HashSet23<E> implements Set23<E> {
 		if (!(obj instanceof Set23)) {
 			return false;
 		}
-		Set23<?> other = (Set23<?>)obj;
+		final Set23<?> other = (Set23<?>)obj;
 		return asCollection().equals(other.asCollection());
 	}
 
@@ -283,7 +283,7 @@ public final class HashSet23<E> implements Set23<E> {
         return StreamSupport.stream(spliterator(), false);
     }
 
-    static <E> int compare(E a, E b) {
+    static <E> int compare(final E a, final E b) {
         int cmp = Integer.compare(Objects.hash(a), Objects.hash(b));
         if (cmp != 0) {
             return cmp;

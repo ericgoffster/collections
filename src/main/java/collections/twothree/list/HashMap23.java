@@ -226,7 +226,7 @@ public final class HashMap23<K, V> implements Map23<K, V> {
     }
     
     @Override
-    public void forEach(BiConsumer<K, V> cond) {
+    public void forEach(final BiConsumer<K, V> cond) {
         stream().forEach(e -> cond.accept(e.getKey(), e.getValue()));
     }
 }
