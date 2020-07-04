@@ -1,12 +1,11 @@
 package collections.twothree.list;
 
 import java.util.AbstractMap;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Spliterator;
 import java.util.Map.Entry;
+import java.util.Spliterator;
 import java.util.function.BiConsumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -44,9 +43,26 @@ public final class HashMap23<K, V> implements Map23<K, V> {
 	 * @return the empty hashmap
 	 */
     public static <K,V> HashMap23<K,V> empty() {
-        return of(Collections.emptyList());
+        return new HashMap23<>(List23.empty());
     }
    
+    /**
+     * Returns a hashmap23 with a single entry.
+     * <p>This operation is O(1).
+     * <pre>
+     * Example:
+     *     HashMap23.singleton(4, 1) == {4 =&gt; 1}
+     * </pre>
+     * @param key initial key
+     * @param value initial value
+     * @param <K> The key type
+     * @param <V> The value type
+     * @return an empty hashmap23 using the natural comparator associated with the keys.
+     */
+    public static <K,V> HashMap23<K,V> singleton(K key, V value) {
+        return new HashMap23<>(List23.of(new AbstractMap.SimpleImmutableEntry<>(key, value)));
+    }
+
     /**
      * Returns a hashmap23 seeded from another <code>Map</code>.
      * <p>This operation is O(n log n), where n = |entries|.

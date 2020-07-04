@@ -1,7 +1,6 @@
 package collections.twothree.list;
 
 import java.util.AbstractMap;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.ListIterator;
 import java.util.Map;
@@ -47,7 +46,7 @@ public final class SortedMap23<K, V> implements Map23<K, V> {
 	 * @return an empty sorted map with a a custom key comparator
 	 */
     public static <K,V> SortedMap23<K,V> empty(final Comparator<? super K> keyComparator) {
-        return of(keyComparator, Collections.emptyList());
+        return new SortedMap23<K, V>(keyComparator, List23.empty());
     }
 
     /**
@@ -65,6 +64,23 @@ public final class SortedMap23<K, V> implements Map23<K, V> {
         return empty(List23::naturalCompare);
     }
    
+    /**
+     * Returns a sorted map with a single entry using the natural comparator associated with the key.
+     * <p>This operation is O(1).
+     * <pre>
+     * Example:
+     *     SortedMap23.singleton(4, 1) == {4 =&gt; 1}
+     * </pre>
+     * @param key initial key
+     * @param value initial value
+     * @param <K> The key type
+     * @param <V> The value type
+     * @return an empty sorted map using the natural comparator associated with the keys.
+     */
+    public static <K extends Comparable<K>,V> SortedMap23<K,V> singleton(K key, V value) {
+        return new SortedMap23<K, V>(List23::naturalCompare, List23.of(new AbstractMap.SimpleImmutableEntry<>(key, value)));
+    }
+
     /**
      * Returns a sorted map populated from a java sorted map.
      * <p>This operation is O(n log n).
@@ -183,7 +199,7 @@ public final class SortedMap23<K, V> implements Map23<K, V> {
      * <p>This operation is O(log n).
      * <pre>
      * Example:
-     *     SortedMap23&lt;Integer,Integer&gt; tm = SortedMap23.empty().put(4,1).put(2,2).put(3,3);
+     *     SortedMap23&lt;Integer,Integer&gt; tm = SortedMap23.singleton(4,1).put(2,2).put(3,3);
      *     m.ge(2) == {2=&gt;2, 3=&gt;3, 4=&gt;1}
      *     m.ge(4) == {4=&gt;1}
      *     m.ge(0) == {2=&gt;2, 3=&gt;3, 4=&gt;1}
@@ -202,7 +218,7 @@ public final class SortedMap23<K, V> implements Map23<K, V> {
      * <p>This operation is O(log n).
      * <pre>
      * Example:
-     *     SortedMap23&lt;Integer,Integer&gt; tm = SortedMap23.empty().put(4,1).put(2,2).put(3,3);
+     *     SortedMap23&lt;Integer,Integer&gt; tm = SortedMap23.singleton(4,1).put(2,2).put(3,3);
      *     m.lt(2) == {}
      *     m.lt(4) == {2=&gt;2, 3=&gt;3}
      *     m.lt(0) == {}
@@ -221,7 +237,7 @@ public final class SortedMap23<K, V> implements Map23<K, V> {
      * <p>This operation is O(log n).
      * <pre>
      * Example:
-     *     SortedMap23&lt;Integer,Integer&gt; tm = SortedMap23.empty().put(4,1).put(2,2).put(3,3);
+     *     SortedMap23&lt;Integer,Integer&gt; tm = SortedMap23.singleton(4,1).put(2,2).put(3,3);
      *     m.exclude(2, 3) == {3=&gt;3, 4=&gt;1}
      *     m.exclude(2, 4) == {4=&gt;1}
      *     m.exclude(0, 4) == {4=&gt;1}
@@ -251,7 +267,7 @@ public final class SortedMap23<K, V> implements Map23<K, V> {
      * <p>This operation is O(log n).
      * <pre>
      * Example:
-     *     SortedMap23&lt;Integer,Integer&gt; tm = SortedMap23.empty().put(4,1).put(2,2).put(3,3);
+     *     SortedMap23&lt;Integer,Integer&gt; tm = SortedMap23.singleton(4,1).put(2,2).put(3,3);
      *     m.subSet(2, 3) == {2=&gt;2}
      *     m.subSet(2, 4) == {2=&gt;2, 3=&gt;3}
      *     m.subSet(0, 4) == {2=&gt;2, 3=&gt;3}
@@ -282,7 +298,7 @@ public final class SortedMap23<K, V> implements Map23<K, V> {
      * <p>This operation is O(1).
      * <pre>
      * Example:
-     *     SortedMap23&lt;Integer,Integer&gt; tm = SortedMap23.empty().put(4,1).put(2,2).put(3,3);
+     *     SortedMap23&lt;Integer,Integer&gt; tm = SortedMap23.singleton(4,1).put(2,2).put(3,3);
      *     m.reversed() = {4=&gt;1,3=&gt;2,2=&gt;1}
      * </pre>
      * <p>Note *THIS OPERATION IS IMMUTABLE, THE PREVIOUS Map23 IS UNCHANGED!*.
