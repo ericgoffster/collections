@@ -23,15 +23,6 @@ public interface ImmMap<K,V> extends Iterable<Entry<K,V>> {
     int size();
 
     /**
-     * Returns a new map23 with <code>entry</code> added.
-     * <p>This operation is O(log n), where n = |this|.
-     * <p>*THIS OPERATION IS IMMUTABLE, THE PREVIOUS Map23 IS UNCHANGED!*.
-     * @param entry The entry to add.
-     * @return a new map23 with <code>entry</code> added.
-     */
-    ImmMap<K, V> add(Entry<K ,V> entry);
-
-    /**
      * Returns a new map23 with <code>entries</code> added.
      * <p>This operation is O(n log n), where n = |this|.
      * <p>*THIS OPERATION IS IMMUTABLE, THE PREVIOUS Map23 IS UNCHANGED!*.

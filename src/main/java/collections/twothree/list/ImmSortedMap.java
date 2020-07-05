@@ -17,9 +17,6 @@ import java.util.function.Predicate;
  */
 public interface ImmSortedMap<K, V> extends ImmMap<K, V> {
     @Override
-    ImmSortedMap<K, V> add(Entry<K ,V> entry);
-
-    @Override
     ImmSortedMap<K, V> addAll(Iterable<? extends Entry<K ,V>> items);
 
     @Override

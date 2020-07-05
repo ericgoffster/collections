@@ -169,15 +169,10 @@ public final class TreeMap23<K, V> implements ImmSortedMap<K, V> {
 	}
 	
     @Override
-    public TreeMap23<K, V> add(Entry<K ,V> entry) {
-        return put(entry.getKey(), entry.getValue());
-    }
-
-    @Override
     public TreeMap23<K, V> addAll(Iterable<? extends Entry<K ,V>> items) {
         TreeMap23<K, V> m = this;
         for(Entry<K,V> e: items) {
-            m = m.add(e);
+            m = m.put(e.getKey(), e.getValue());
         }
         return m;
     }

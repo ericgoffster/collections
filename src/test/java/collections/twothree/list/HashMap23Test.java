@@ -56,7 +56,7 @@ public class HashMap23Test {
 		assertEquals(HashMap23.singleton(1,2).put(3, 4).asSet23(),HashSet23.singleton(makeEntry(1,2)).add(makeEntry(3, 4)));
         assertEquals(HashMap23.singleton(3, 4).put(1, 2).asSet23(),HashSet23.singleton(makeEntry(1,2)).add(makeEntry(3, 4)));
         assertNotEquals(HashMap23.singleton(3, 4).put(1, 3).asSet23(),HashSet23.singleton(makeEntry(1,2)).add(makeEntry(3, 4)));
-        assertNotEquals(HashMap23.singleton(1, 3).add(makeEntry(3, 4)).asSet23(),HashSet23.singleton(makeEntry(1,2)).add(makeEntry(3, 4)));
+        assertNotEquals(HashMap23.singleton(1, 3).put(3, 4).asSet23(),HashSet23.singleton(makeEntry(1,2)).add(makeEntry(3, 4)));
         HashMap23<Integer,Integer>  m = HashMap23.singleton(5,6).put(7, 8);
         assertEquals(HashMap23.singleton(1, 3).addAll(m).asSet23(),HashSet23.singleton(makeEntry(1,3)).add(makeEntry(5, 6)).add(makeEntry(7, 8)));
         assertEquals(HashMap23.singleton(1, 3).addAll(m.asMap()).asSet23(),HashSet23.singleton(makeEntry(1,3)).add(makeEntry(5, 6)).add(makeEntry(7, 8)));

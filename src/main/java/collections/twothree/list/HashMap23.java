@@ -107,15 +107,10 @@ public final class HashMap23<K, V> implements ImmMap<K, V> {
 	}
 	
     @Override
-    public HashMap23<K, V> add(final Entry<K ,V> entry) {
-        return put(entry.getKey(), entry.getValue());
-    }
-
-    @Override
     public HashMap23<K, V> addAll(final Iterable<? extends Entry<K ,V>> entries) {
         HashMap23<K, V> m = this;
         for(Entry<K,V> e: entries) {
-            m = m.add(e);
+            m = m.put(e.getKey(), e.getValue());
         }
         return m;
     }
