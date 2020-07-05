@@ -190,60 +190,17 @@ public final class TreeMap23<K, V> implements ImmSortedMap<K, V> {
         return new TreeMap23<>(keyComparator, m.entries.insertAt(index, new AbstractMap.SimpleImmutableEntry<>(key, value)));
 	}
 	
-    /**
-     * Returns a sorted map with all entries &gt;= the given key. 
-     * <p>This operation is O(log n).
-     * <p>*THIS OPERATION IS IMMUTABLE, THE PREVIOUS Map23 IS UNCHANGED!*.
-     * <pre>
-     * Example:
-     *     SortedMap23&lt;Integer,Integer&gt; tm = SortedMap23.singleton(4,1).put(2,2).put(3,3);
-     *     m.ge(2) == {2=&gt;2, 3=&gt;3, 4=&gt;1}
-     *     m.ge(4) == {4=&gt;1}
-     *     m.ge(0) == {2=&gt;2, 3=&gt;3, 4=&gt;1}
-     *     m.ge(5) == {}
-     * </pre>
-     * @param key The min key
-     * @return a sorted map with all entries &gt;= the given key
-     */
+    @Override
     public TreeMap23<K, V> ge(final K key) {
         return new TreeMap23<>(keyComparator, entries.tailAt(keys().asList().naturalPosition(e -> keyComparator.compare(key, e))));
     }
 
-    /**
-     * Returns a sorted map with all entries &lt; the given key. 
-     * <p>This operation is O(log n).
-     * <pre>
-     * Example:
-     *     SortedMap23&lt;Integer,Integer&gt; tm = SortedMap23.singleton(4,1).put(2,2).put(3,3);
-     *     m.lt(2) == {}
-     *     m.lt(4) == {2=&gt;2, 3=&gt;3}
-     *     m.lt(0) == {}
-     *     m.lt(5) == {2=&gt;2, 3=&gt;3, 4=&gt;1}
-     * </pre>
-     * <p>*THIS OPERATION IS IMMUTABLE, THE PREVIOUS Map23 IS UNCHANGED!*.
-     * @param key The max key
-     * @return a sorted map with all entries &lt; the given key
-     */
+    @Override
     public TreeMap23<K, V> lt(final K key) {
         return new TreeMap23<>(keyComparator, entries.headAt(keys().asList().naturalPosition(e -> keyComparator.compare(key, e))));
     }
 
-    /**
-     * Returns a sorted map with no keys between lowKey and highKey.
-     * <p>This operation is O(log n).
-     * <pre>
-     * Example:
-     *     SortedMap23&lt;Integer,Integer&gt; tm = SortedMap23.singleton(4,1).put(2,2).put(3,3);
-     *     m.exclude(2, 3) == {3=&gt;3, 4=&gt;1}
-     *     m.exclude(2, 4) == {4=&gt;1}
-     *     m.exclude(0, 4) == {4=&gt;1}
-     *     m.exclude(0, 5) == {}
-     * </pre>
-     * <p>*THIS OPERATION IS IMMUTABLE, THE PREVIOUS Map23 IS UNCHANGED!*.
-     * @param lowKey The min key.  (inclusive)
-     * @param highKey The max key.  (exclusive)
-     * @return a sorted map with no keys between lowKey and highKey
-     */
+    @Override
     public TreeMap23<K, V> exclude(final K lowKey, final K highKey) {
         final int cmp = keyComparator.compare(lowKey, highKey);
         if (cmp > 0) {
@@ -258,23 +215,7 @@ public final class TreeMap23<K, V> implements ImmSortedMap<K, V> {
                 keys.asList().naturalPosition(e -> keyComparator.compare(highKey, e))));
     }
 
-    /**
-     * Returns a sorted map with all keys between lowKey and highKey.
-     * <p>This operation is O(log n).
-     * <pre>
-     * Example:
-     *     SortedMap23&lt;Integer,Integer&gt; tm = SortedMap23.singleton(4,1).put(2,2).put(3,3);
-     *     m.subSet(2, 3) == {2=&gt;2}
-     *     m.subSet(2, 4) == {2=&gt;2, 3=&gt;3}
-     *     m.subSet(0, 4) == {2=&gt;2, 3=&gt;3}
-     *     m.subSet(0, 5) == {2=&gt;2, 3=&gt;3, 4=&gt;1}
-     *     m.subSet(3, 3) == {}
-     * </pre>
-     * <p>*THIS OPERATION IS IMMUTABLE, THE PREVIOUS Map23 IS UNCHANGED!*.
-     * @param lowKey The min key.  (inclusive)
-     * @param highKey The max key.  (exclusive)
-     * @return a sorted map with all keys between lowKey and highKey.
-     */
+    @Override
     public TreeMap23<K, V> subSet(final K lowKey, final K highKey) {
         final int cmp = keyComparator.compare(lowKey, highKey);
         if (cmp > 0) {
@@ -289,34 +230,12 @@ public final class TreeMap23<K, V> implements ImmSortedMap<K, V> {
                 keys.asList().naturalPosition(e -> keyComparator.compare(highKey, e))));
     }
 
-	/**
-	 * Returns a sorted map with all elements reversed.
-     * <p>This operation is O(1).
-     * <pre>
-     * Example:
-     *     SortedMap23&lt;Integer,Integer&gt; tm = SortedMap23.singleton(4,1).put(2,2).put(3,3);
-     *     m.reversed() = {4=&gt;1,3=&gt;2,2=&gt;1}
-     * </pre>
-     * <p>*THIS OPERATION IS IMMUTABLE, THE PREVIOUS Map23 IS UNCHANGED!*.
-	 * @return a sorted map with all elements reversed
-	 */
+    @Override
 	public TreeMap23<K, V> reversed() {
 		return new TreeMap23<K, V>(keyComparator.reversed(), entries.reversed());
 	}
 	
-	/**
-	 * Returns the index of the given key.  Returns -1 if not found.
-     * <p>This operation is O(log n).
-     * <pre>
-     * Example:
-     *     SortedMap23&lt;Integer,Integer&gt; tm = SortedMap23.singleton(4,1).put(2,2).put(3,3);
-     *     m.indexOf(2) = 1
-     *     m.indexOf(4) = 2
-     *     m.indexOf(5) = -1
-     * </pre>
-	 * @param key The key to get an index of.
-	 * @return the index of the given key
-	 */
+    @Override
     public int indexOfKey(final K key) {
         return keys().indexOf(key);
     }
@@ -352,19 +271,7 @@ public final class TreeMap23<K, V> implements ImmSortedMap<K, V> {
         return filter((k, v) -> filter.test(k));
     }
 
-    /**
-     * Returns the entry at the given index.
-     * <p>This operation is O(log n).
-     * <pre>
-     * Example:
-     *     SortedMap23&lt;Integer,Integer&gt; tm = SortedMap23.singleton(4,1).put(2,2).put(3,3);
-     *     m.getAt(0) = 2
-     *     m.getAt(1) = 3
-     *     m.getAt(2) = 4
-     * </pre>
-     * @param index The index
-     * @return  the entry at the given index
-     */
+    @Override
     public Entry<K,V> getAt(final int index) {
         return entries.getAt(index);
     }
@@ -380,20 +287,7 @@ public final class TreeMap23<K, V> implements ImmSortedMap<K, V> {
         return index < 0 ? supplier.get() : entries.getAt(index).getValue();
     }
     
-    /**
-     * Returns a map with the entry at the given index removed.
-     * <p>This operation is O(log n).
-     * <pre>
-     * Example:
-     *     SortedMap23&lt;Integer,Integer&gt; tm = SortedMap23.singleton(4,1).put(2,2).put(3,3);
-     *     m.removeAt(0) = {3 =gt; 3,4 =gt; 1}
-     *     m.removeAt(1) = {2 =gt; 2,4 =gt; 1}
-     *     m.removeAt(2) = {2 =gt; 2,3 =gt; 3}
-     * </pre>
-     * <p>*THIS OPERATION IS IMMUTABLE, THE PREVIOUS Map23 IS UNCHANGED!*.
-     * @param index The index
-     * @return a map with the entry at the given index removed
-     */
+    @Override
     public TreeMap23<K, V> removeAt(final int index) {
         return new TreeMap23<K, V>(keyComparator, entries.removeAt(index));
     }
@@ -403,25 +297,6 @@ public final class TreeMap23<K, V> implements ImmSortedMap<K, V> {
 		return new SortedMap23Map<>(this);
 	}
 	
-    /**
-     * Returns all of the entries as a list.
-     * <p>This operation is O(1).
-     * <pre>
-     * Example:
-     *     SortedMap23&lt;Integer,Integer&gt; tm = SortedMap23.singleton(4,1).put(2,2).put(3,3);
-     *     m.asList() = [{2=gt;2},{3=gt;3},{4=gt;1}]
-     * </pre>
-     * @return all of the entries as a list
-     */
-	public TreeList23<Entry<K,V>> asList() {
-		return entries;
-	}
-	
-	public TreeSet23<Entry<K,V>> asSet23() {
-	    return new TreeSet23<>(this::entryCompare, entries);
-	}
-	
-
 	@Override
 	public TreeSet23<K> keys() {
 	    return new TreeSet23<>(keyComparator, entries.map(e -> e.getKey()));
@@ -479,6 +354,10 @@ public final class TreeMap23<K, V> implements ImmSortedMap<K, V> {
     @Override
     public Comparator<? super K> getKeyComparator() {
         return keyComparator;
+    }
+
+    TreeSet23<Entry<K,V>> asSet23() {
+        return new TreeSet23<>(this::entryCompare, entries);
     }
 
     int entryCompare(final Entry<K,V> a, final Entry<K,V> b) {

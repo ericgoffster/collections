@@ -32,11 +32,11 @@ public interface ImmSortedMap<K, V> extends ImmMap<K, V> {
      * <p>*THIS OPERATION IS IMMUTABLE, THE PREVIOUS Map23 IS UNCHANGED!*.
      * <pre>
      * Example:
-     *     SortedMap23&lt;Integer,Integer&gt; tm = SortedMap23.singleton(4,1).put(2,2).put(3,3);
-     *     m.ge(2) == {2=&gt;2, 3=&gt;3, 4=&gt;1}
-     *     m.ge(4) == {4=&gt;1}
-     *     m.ge(0) == {2=&gt;2, 3=&gt;3, 4=&gt;1}
-     *     m.ge(5) == {}
+     *     SortedMap23&lt;Integer,Integer&gt; m = ImmCollections.asSortedMap(4,1,  2,2,  3,3);
+     *     m.ge(2) == ImmCollections.asSortedMap(4,1,  2,2,  3,3)
+     *     m.ge(4) == ImmCollections.asSortedMap(4,1)
+     *     m.ge(0) == ImmCollections.asSortedMap(4,1,  2,2,  3,3)
+     *     m.ge(5) == ImmCollections.emptySortedMap();
      * </pre>
      * @param key The min key
      * @return a sorted map with all entries &gt;= the given key
@@ -48,11 +48,11 @@ public interface ImmSortedMap<K, V> extends ImmMap<K, V> {
      * <p>This operation is O(log n).
      * <pre>
      * Example:
-     *     SortedMap23&lt;Integer,Integer&gt; tm = SortedMap23.singleton(4,1).put(2,2).put(3,3);
-     *     m.lt(2) == {}
-     *     m.lt(4) == {2=&gt;2, 3=&gt;3}
-     *     m.lt(0) == {}
-     *     m.lt(5) == {2=&gt;2, 3=&gt;3, 4=&gt;1}
+     *     SortedMap23&lt;Integer,Integer&gt; tm = ImmCollections.asSortedMap(4,1,  2,2,  3,3);
+     *     m.lt(2) == ImmCollections.emptySortedMap();
+     *     m.lt(4) == ImmCollections.asSortedMap(2,2,  3,3)
+     *     m.lt(0) == ImmCollections.emptySortedMap();
+     *     m.lt(5) == ImmCollections.asSortedMap(4,1,  2,2,  3,3)
      * </pre>
      * <p>*THIS OPERATION IS IMMUTABLE, THE PREVIOUS Map23 IS UNCHANGED!*.
      * @param key The max key
@@ -65,11 +65,11 @@ public interface ImmSortedMap<K, V> extends ImmMap<K, V> {
      * <p>This operation is O(log n).
      * <pre>
      * Example:
-     *     SortedMap23&lt;Integer,Integer&gt; tm = SortedMap23.singleton(4,1).put(2,2).put(3,3);
-     *     m.exclude(2, 3) == {3=&gt;3, 4=&gt;1}
-     *     m.exclude(2, 4) == {4=&gt;1}
-     *     m.exclude(0, 4) == {4=&gt;1}
-     *     m.exclude(0, 5) == {}
+     *     SortedMap23&lt;Integer,Integer&gt; tm = ImmCollections.asSortedMap(4,1,  2,2,  3,3);
+     *     m.exclude(2, 3) == ImmCollections.asSortedMap(3,3, 4,1)
+     *     m.exclude(2, 4) == ImmCollections.asSortedMap(4,1)
+     *     m.exclude(0, 4) == ImmCollections.asSortedMap(4,1)
+     *     m.exclude(0, 5) == ImmCollections.emptySortedMap()
      * </pre>
      * <p>*THIS OPERATION IS IMMUTABLE, THE PREVIOUS Map23 IS UNCHANGED!*.
      * @param lowKey The min key.  (inclusive)
@@ -83,12 +83,12 @@ public interface ImmSortedMap<K, V> extends ImmMap<K, V> {
      * <p>This operation is O(log n).
      * <pre>
      * Example:
-     *     SortedMap23&lt;Integer,Integer&gt; tm = SortedMap23.singleton(4,1).put(2,2).put(3,3);
-     *     m.subSet(2, 3) == {2=&gt;2}
-     *     m.subSet(2, 4) == {2=&gt;2, 3=&gt;3}
-     *     m.subSet(0, 4) == {2=&gt;2, 3=&gt;3}
-     *     m.subSet(0, 5) == {2=&gt;2, 3=&gt;3, 4=&gt;1}
-     *     m.subSet(3, 3) == {}
+     *     SortedMap23&lt;Integer,Integer&gt; tm = ImmCollections.asSortedMap(4,1,  2,2,  3,3);
+     *     m.subSet(2, 3) == ImmCollections.asSortedMap(2,2)
+     *     m.subSet(2, 4) == ImmCollections.asSortedMap(2,2,   3,3)
+     *     m.subSet(0, 4) == ImmCollections.asSortedMap(2,2,   3,3)
+     *     m.subSet(0, 5) == ImmCollections.asSortedMap(2,2,   3,3,   4,1)
+     *     m.subSet(3, 3) == ImmCollections.emptySortedMap()
      * </pre>
      * <p>*THIS OPERATION IS IMMUTABLE, THE PREVIOUS Map23 IS UNCHANGED!*.
      * @param lowKey The min key.  (inclusive)
@@ -102,8 +102,8 @@ public interface ImmSortedMap<K, V> extends ImmMap<K, V> {
      * <p>This operation is O(1).
      * <pre>
      * Example:
-     *     SortedMap23&lt;Integer,Integer&gt; tm = SortedMap23.singleton(4,1).put(2,2).put(3,3);
-     *     m.reversed() = {4=&gt;1,3=&gt;2,2=&gt;1}
+     *     SortedMap23&lt;Integer,Integer&gt; tm = ImmCollections.asSortedMap(4,1,  2,2,  3,3);
+     *     m.reversed() = ImmCollections.asSortedMap(4,1,  3,1,   2,2)
      * </pre>
      * <p>*THIS OPERATION IS IMMUTABLE, THE PREVIOUS Map23 IS UNCHANGED!*.
 	 * @return a sorted map with all elements reversed
@@ -115,7 +115,7 @@ public interface ImmSortedMap<K, V> extends ImmMap<K, V> {
      * <p>This operation is O(log n).
      * <pre>
      * Example:
-     *     SortedMap23&lt;Integer,Integer&gt; tm = SortedMap23.singleton(4,1).put(2,2).put(3,3);
+     *     SortedMap23&lt;Integer,Integer&gt; tm = ImmCollections.asSortedMap(4,1,  2,2,  3,3);
      *     m.indexOf(2) = 1
      *     m.indexOf(4) = 2
      *     m.indexOf(5) = -1
@@ -142,7 +142,7 @@ public interface ImmSortedMap<K, V> extends ImmMap<K, V> {
      * <p>This operation is O(log n).
      * <pre>
      * Example:
-     *     SortedMap23&lt;Integer,Integer&gt; tm = SortedMap23.singleton(4,1).put(2,2).put(3,3);
+     *     SortedMap23&lt;Integer,Integer&gt; tm = ImmCollections.asSortedMap(4,1,  2,2,  3,3);
      *     m.getAt(0) = 2
      *     m.getAt(1) = 3
      *     m.getAt(2) = 4
@@ -157,10 +157,10 @@ public interface ImmSortedMap<K, V> extends ImmMap<K, V> {
      * <p>This operation is O(log n).
      * <pre>
      * Example:
-     *     SortedMap23&lt;Integer,Integer&gt; tm = SortedMap23.singleton(4,1).put(2,2).put(3,3);
-     *     m.removeAt(0) = {3 =gt; 3,4 =gt; 1}
-     *     m.removeAt(1) = {2 =gt; 2,4 =gt; 1}
-     *     m.removeAt(2) = {2 =gt; 2,3 =gt; 3}
+     *     SortedMap23&lt;Integer,Integer&gt; tm = ImmCollections.asSortedMap(4,1,  2,2,  3,3);
+     *     m.removeAt(0) = ImmCollections.asSortedMap(4,1,  3,3)
+     *     m.removeAt(1) = ImmCollections.asSortedMap(4,1,  2,2)
+     *     m.removeAt(2) = ImmCollections.asSortedMap(3,3,  2,2)
      * </pre>
      * <p>*THIS OPERATION IS IMMUTABLE, THE PREVIOUS Map23 IS UNCHANGED!*.
      * @param index The index
@@ -170,18 +170,6 @@ public interface ImmSortedMap<K, V> extends ImmMap<K, V> {
 
     @Override
 	SortedMap<K, V> asMap();
-	
-    /**
-     * Returns all of the entries as a list.
-     * <p>This operation is O(1).
-     * <pre>
-     * Example:
-     *     SortedMap23&lt;Integer,Integer&gt; tm = SortedMap23.singleton(4,1).put(2,2).put(3,3);
-     *     m.asList() = [{2=gt;2},{3=gt;3},{4=gt;1}]
-     * </pre>
-     * @return all of the entries as a list
-     */
-	ImmList<Entry<K,V>> asList();
 	
 	@Override
 	ImmSortedSet<K> keys();

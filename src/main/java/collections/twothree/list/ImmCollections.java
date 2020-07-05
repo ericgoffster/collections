@@ -59,6 +59,12 @@ public final class ImmCollections {
     public static <K extends Comparable<K>, V> ImmMap<K, V> asSortedMap(K key, V value) {
         return TreeMap23.singleton(key, value);
     }
+    public static <K extends Comparable<K>, V> ImmMap<K, V> asSortedMap(K key1, V value1, K key2, V value2) {
+        return asSortedMap(key1, value1).put(key2, value2);
+    }
+    public static <K extends Comparable<K>, V> ImmMap<K, V> asSortedMap(K key1, V value1, K key2, V value2, K key3, V value3) {
+        return asSortedMap(key1, value1, key2, value2).put(key3, value3);
+    }
     public static <K extends Comparable<K>, V> ImmMap<K, V> asSortedMap(final Iterable<Entry<K,V>> elements) {
         return TreeMap23.of(elements);
     }

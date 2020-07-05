@@ -175,19 +175,7 @@ public final class HashMap23<K, V> implements ImmMap<K, V> {
 		return new Map23Map<>(this);
 	}
 	
-	public ImmSet<Entry<K,V>> asSet23() {
-	    return new TreeSet23<>(HashMap23::entryCompare, entries);
-	}
-	
-	static <K,V> int entryCompare(final Entry<K,V> a, final Entry<K,V> b) {
-	    final int cmp = HashSet23.compare(a.getKey(), b.getKey());
-	    if (cmp != 0) {
-	        return cmp;
-	    }
-	    return HashSet23.compare(a.getValue(), b.getValue());
-	}
-	
-    @Override
+	@Override
 	public HashSet23<K> keys() {
 	    return new HashSet23<>(entries.map(e -> e.getKey()));
 	}
@@ -239,5 +227,17 @@ public final class HashMap23<K, V> implements ImmMap<K, V> {
     @Override
     public void forEach(final BiConsumer<K, V> cond) {
         stream().forEach(e -> cond.accept(e.getKey(), e.getValue()));
+    }
+
+    ImmSet<Entry<K,V>> asSet23() {
+        return new TreeSet23<>(HashMap23::entryCompare, entries);
+    }
+
+    static <K,V> int entryCompare(final Entry<K,V> a, final Entry<K,V> b) {
+        final int cmp = HashSet23.compare(a.getKey(), b.getKey());
+        if (cmp != 0) {
+            return cmp;
+        }
+        return HashSet23.compare(a.getValue(), b.getValue());
     }
 }
