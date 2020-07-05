@@ -26,10 +26,10 @@ public interface ImmSortedSet<E> extends ImmSet<E> {
      * <p>This operation is O(log n).
      * <pre>
      * Example:
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).ge(2).asList().asCollection().equals(Arrays.asList(2, 3, 4));
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).ge(4).asList().asCollection().equals(Arrays.asList(4));
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).ge(0).asList().asCollection().equals(Arrays.asList(2, 3, 4));
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).ge(5).asList().asCollection().equals(Arrays.asList());
+     *     assert ImmCollections.asSortedSet(4, 2, 3).ge(2).asList().asCollection().equals(Arrays.asList(2, 3, 4));
+     *     assert ImmCollections.asSortedSet(4, 2, 3).ge(4).asList().asCollection().equals(Arrays.asList(4));
+     *     assert ImmCollections.asSortedSet(4, 2, 3).ge(0).asList().asCollection().equals(Arrays.asList(2, 3, 4));
+     *     assert ImmCollections.asSortedSet(4, 2, 3).ge(5).asList().asCollection().equals(Arrays.asList());
      * </pre>
      * @param element The comparison element (inclusive)
      * @return The set of all elements in this set &gt;= element
@@ -41,10 +41,10 @@ public interface ImmSortedSet<E> extends ImmSet<E> {
      * <p>This operation is O(log n).
      * <pre>
      * Example:
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).lt(2).asList().asCollection().equals(Arrays.asList());
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).lt(4).asList().asCollection().equals(Arrays.asList(2, 3));
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).lt(0).asList().asCollection().equals(Arrays.asList());
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).lt(5).asList().asCollection().equals(Arrays.asList(2, 3, 4));
+     *     assert ImmCollections.asSortedSet(4, 2, 3).lt(2).asList().asCollection().equals(Arrays.asList());
+     *     assert ImmCollections.asSortedSet(4, 2, 3).lt(4).asList().asCollection().equals(Arrays.asList(2, 3));
+     *     assert ImmCollections.asSortedSet(4, 2, 3).lt(0).asList().asCollection().equals(Arrays.asList());
+     *     assert ImmCollections.asSortedSet(4, 2, 3).lt(5).asList().asCollection().equals(Arrays.asList(2, 3, 4));
      * </pre>
      * @param element The comparison element (exclusive)
      * @return The set of all elements in this set &lt; element
@@ -56,10 +56,10 @@ public interface ImmSortedSet<E> extends ImmSet<E> {
      * <p>This operation is O(log n).
      * <pre>
      * Example:
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).exclude(2, 3).asList().asCollection().equals(Arrays.asList(3, 4));
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).exclude(2, 4).asList().asCollection().equals(Arrays.asList(4));
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).exclude(0, 4).asList().asCollection().equals(Arrays.asList(4));
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).exclude(0, 5).asList().asCollection().equals(Arrays.asList());
+     *     assert ImmCollections.asSortedSet(4, 2, 3).exclude(2, 3).asList().asCollection().equals(Arrays.asList(3, 4));
+     *     assert ImmCollections.asSortedSet(4, 2, 3).exclude(2, 4).asList().asCollection().equals(Arrays.asList(4));
+     *     assert ImmCollections.asSortedSet(4, 2, 3).exclude(0, 4).asList().asCollection().equals(Arrays.asList(4));
+     *     assert ImmCollections.asSortedSet(4, 2, 3).exclude(0, 5).asList().asCollection().equals(Arrays.asList());
      * </pre>
      * @param low The low element (exclusive)
      * @param high The high element (inclusive)
@@ -72,11 +72,11 @@ public interface ImmSortedSet<E> extends ImmSet<E> {
      * <p>This operation is O(log n).
      * <pre>
      * Example:
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).subSet(2, 3).asList().asCollection().equals(Arrays.asList(2));
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).subSet(2, 4).asList().asCollection().equals(Arrays.asList(2, 3));
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).subSet(0, 4).asList().asCollection().equals(Arrays.asList(2, 3));
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).subSet(0, 5).asList().asCollection().equals(Arrays.asList(2, 3, 4));
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).subSet(3, 3).asList().asCollection().equals(Arrays.asList());
+     *     assert ImmCollections.asSortedSet(4, 2, 3).subSet(2, 3).asList().asCollection().equals(Arrays.asList(2));
+     *     assert ImmCollections.asSortedSet(4, 2, 3).subSet(2, 4).asList().asCollection().equals(Arrays.asList(2, 3));
+     *     assert ImmCollections.asSortedSet(4, 2, 3).subSet(0, 4).asList().asCollection().equals(Arrays.asList(2, 3));
+     *     assert ImmCollections.asSortedSet(4, 2, 3).subSet(0, 5).asList().asCollection().equals(Arrays.asList(2, 3, 4));
+     *     assert ImmCollections.asSortedSet(4, 2, 3).subSet(3, 3).asList().asCollection().equals(Arrays.asList());
      * </pre>
      * @param low The low element (inclusive)
      * @param high The high element (exclusive)
@@ -90,7 +90,7 @@ public interface ImmSortedSet<E> extends ImmSet<E> {
      * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * <pre>
      * Example:
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).add(5).asList().asCollection().equals(Arrays.asList(2, 3, 4, 5));
+     *     assert ImmCollections.asSortedSet(4, 2, 3).add(5).asList().asCollection().equals(Arrays.asList(2, 3, 4, 5));
      * </pre>
 	 * @param element The element to add.
 	 * @return A set with the given element added.
@@ -104,7 +104,7 @@ public interface ImmSortedSet<E> extends ImmSet<E> {
      * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * <pre>
      * Example:
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).union(SortedSet23.of(Arrays.asList(5, 6))).asList().asCollection().equals(Arrays.asList(2, 3, 4, 5, 6));
+     *     assert ImmCollections.asSortedSet(4, 2, 3).union(ImmCollections.asSortedSet(5, 6)).asList().asCollection().equals(Arrays.asList(2, 3, 4, 5, 6));
      * </pre>
      * @param other The elements to remove.
      * @return A set with the given element removed.
@@ -118,7 +118,7 @@ public interface ImmSortedSet<E> extends ImmSet<E> {
      * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * <pre>
      * Example:
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).reversed().asList().asCollection().equals(Arrays.asList(4, 3, 2));
+     *     assert ImmCollections.asSortedSet(4, 2, 3).reversed().asList().asCollection().equals(Arrays.asList(4, 3, 2));
      * </pre>
      * @return A set with the elements reversed
      */
@@ -130,8 +130,8 @@ public interface ImmSortedSet<E> extends ImmSet<E> {
      * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * <pre>
      * Example:
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).remove(2).asList().asCollection().equals(Arrays.asList(3, 4));
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).remove(5).asList().asCollection().equals(Arrays.asList(2, 3, 4));
+     *     assert ImmCollections.asSortedSet(4, 2, 3).remove(2).asList().asCollection().equals(Arrays.asList(3, 4));
+     *     assert ImmCollections.asSortedSet(4, 2, 3).remove(5).asList().asCollection().equals(Arrays.asList(2, 3, 4));
      * </pre>
      * @param element The element to remove
      * @return A set with the given element removed
@@ -145,7 +145,7 @@ public interface ImmSortedSet<E> extends ImmSet<E> {
      * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * <pre>
      * Example:
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).filter(e -&gt; e &lt; 4).asList().asCollection().equals(Arrays.asList(2, 3));
+     *     assert ImmCollections.asSortedSet(4, 2, 3).filter(e -&gt; e &lt; 4).asList().asCollection().equals(Arrays.asList(2, 3));
      * </pre>
      * @param filter The filter to apply
      * @return A set with the given element removed
@@ -159,7 +159,7 @@ public interface ImmSortedSet<E> extends ImmSet<E> {
      * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * <pre>
      * Example:
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).retain(SortedSet23.of(Arrays.asList(1,2,4))).asList().asCollection().equals(Arrays.asList(2, 4));
+     *     assert ImmCollections.asSortedSet(4, 2, 3).retain(ImmCollections.asSortedSet(1,2,4)).asList().asCollection().equals(Arrays.asList(2, 4));
      * </pre>
      * @param other The set to intersection with
      * @return A set with the given element removed
@@ -172,7 +172,7 @@ public interface ImmSortedSet<E> extends ImmSet<E> {
      * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * <pre>
      * Example:
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).removeAllIn(SortedSet23.of(Arrays.asList(2,4))).asList().asCollection().equals(Arrays.asList(3));
+     *     assert ImmCollections.asSortedSet(4, 2, 3).removeAllIn(ImmCollections.asSortedSet(2,4)).asList().asCollection().equals(Arrays.asList(3));
      * </pre>
      * @param other The elements to remove.
      * @return A set with the given element removed.
@@ -186,8 +186,8 @@ public interface ImmSortedSet<E> extends ImmSet<E> {
      * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * <pre>
      * Example:
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).removeAt(0).asList().asCollection().equals(Arrays.asList(3, 4));
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).removeAt(2).asList().asCollection().equals(Arrays.asList(2, 3));
+     *     assert ImmCollections.asSortedSet(4, 2, 3).removeAt(0).asList().asCollection().equals(Arrays.asList(3, 4));
+     *     assert ImmCollections.asSortedSet(4, 2, 3).removeAt(2).asList().asCollection().equals(Arrays.asList(2, 3));
      * </pre>
      * @param index The index of the element to remove.
      * @return A set with the element at the given index removed
@@ -199,8 +199,8 @@ public interface ImmSortedSet<E> extends ImmSet<E> {
      * <p>This operation is O(log n).
      * <pre>
      * Example:
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).getAt(0) == 2;
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).getAt(2) == 4;
+     *     assert ImmCollections.asSortedSet(4, 2, 3).getAt(0) == 2;
+     *     assert ImmCollections.asSortedSet(4, 2, 3).getAt(2) == 4;
      * </pre>
      * @param index The index.
      * @return The element at the given index.
@@ -212,7 +212,7 @@ public interface ImmSortedSet<E> extends ImmSet<E> {
      * Returns the read-only {@link Set} view of this set.
      * <pre>
      * Example:
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).asList().asCollection().equals(Arrays.asList(2, 3, 4));
+     *     assert ImmCollections.asSortedSet(4, 2, 3).asList().asCollection().equals(Arrays.asList(2, 3, 4));
      * </pre>
      * @return the {@link SortedSet} view of this set
      */
@@ -224,9 +224,9 @@ public interface ImmSortedSet<E> extends ImmSet<E> {
      * <p>This operation is O(log n).
      * <pre>
      * Example:
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).indexOf(2) == 0;
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).indexOf(4) == 2;
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).indexOf(5) == -1;
+     *     assert ImmCollections.asSortedSet(4, 2, 3).indexOf(2) == 0;
+     *     assert ImmCollections.asSortedSet(4, 2, 3).indexOf(4) == 2;
+     *     assert ImmCollections.asSortedSet(4, 2, 3).indexOf(5) == -1;
      * </pre>
      * @param element The element to look for.
      * @return The index of the given element in the set, -1 of not found.
@@ -237,7 +237,7 @@ public interface ImmSortedSet<E> extends ImmSet<E> {
      * Returns the {@link ImmList} view of this set.
      * <pre>
      * Example:
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).asList().asCollection().equals(Arrays.asList(2, 3, 4));
+     *     assert ImmCollections.asSortedSet(4, 2, 3).asList().asCollection().equals(Arrays.asList(2, 3, 4));
      * </pre>
      * @return the {@link ImmList} view of this set
      */
