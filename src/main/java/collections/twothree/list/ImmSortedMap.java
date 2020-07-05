@@ -15,18 +15,18 @@ import java.util.function.Predicate;
  * @param <K> The key type
  * @param <V> The value type
  */
-public interface SortedMap23<K, V> extends Map23<K, V> {
+public interface ImmSortedMap<K, V> extends Map23<K, V> {
     @Override
-    SortedMap23<K, V> add(Entry<K ,V> entry);
+    ImmSortedMap<K, V> add(Entry<K ,V> entry);
 
     @Override
-    SortedMap23<K, V> addAll(Iterable<? extends Entry<K ,V>> items);
+    ImmSortedMap<K, V> addAll(Iterable<? extends Entry<K ,V>> items);
 
     @Override
-    SortedMap23<K, V> addAll(Map<K ,V> items);
+    ImmSortedMap<K, V> addAll(Map<K ,V> items);
 
     @Override
-	SortedMap23<K, V> put(K key, V value);
+	ImmSortedMap<K, V> put(K key, V value);
 	
     /**
      * Returns a sorted map with all entries &gt;= the given key. 
@@ -43,7 +43,7 @@ public interface SortedMap23<K, V> extends Map23<K, V> {
      * @param key The min key
      * @return a sorted map with all entries &gt;= the given key
      */
-    SortedMap23<K, V> ge(K key);
+    ImmSortedMap<K, V> ge(K key);
 
     /**
      * Returns a sorted map with all entries &lt; the given key. 
@@ -60,7 +60,7 @@ public interface SortedMap23<K, V> extends Map23<K, V> {
      * @param key The max key
      * @return a sorted map with all entries &lt; the given key
      */
-    SortedMap23<K, V> lt(K key);
+    ImmSortedMap<K, V> lt(K key);
 
     /**
      * Returns a sorted map with no keys between lowKey and highKey.
@@ -78,7 +78,7 @@ public interface SortedMap23<K, V> extends Map23<K, V> {
      * @param highKey The max key.  (exclusive)
      * @return a sorted map with no keys between lowKey and highKey
      */
-    SortedMap23<K, V> exclude(K lowKey, K highKey);
+    ImmSortedMap<K, V> exclude(K lowKey, K highKey);
 
     /**
      * Returns a sorted map with all keys between lowKey and highKey.
@@ -97,7 +97,7 @@ public interface SortedMap23<K, V> extends Map23<K, V> {
      * @param highKey The max key.  (exclusive)
      * @return a sorted map with all keys between lowKey and highKey.
      */
-    SortedMap23<K, V> subSet(K lowKey, K highKey);
+    ImmSortedMap<K, V> subSet(K lowKey, K highKey);
 
 	/**
 	 * Returns a sorted map with all elements reversed.
@@ -110,7 +110,7 @@ public interface SortedMap23<K, V> extends Map23<K, V> {
      * <p>*THIS OPERATION IS IMMUTABLE, THE PREVIOUS Map23 IS UNCHANGED!*.
 	 * @return a sorted map with all elements reversed
 	 */
-	SortedMap23<K, V> reversed();
+	ImmSortedMap<K, V> reversed();
 	
 	/**
 	 * Returns the index of the given key.  Returns -1 if not found.
@@ -128,16 +128,16 @@ public interface SortedMap23<K, V> extends Map23<K, V> {
     int indexOfKey(K key);
     
     @Override
-	SortedMap23<K, V> removeKey(K key);
+	ImmSortedMap<K, V> removeKey(K key);
 	
     @Override
-    SortedMap23<K, V> retainAllKeys(Iterable<? extends K> keys);
+    ImmSortedMap<K, V> retainAllKeys(Iterable<? extends K> keys);
 
     @Override
-    SortedMap23<K, V> removeAllKeysIn(Iterable<? extends K> keys);
+    ImmSortedMap<K, V> removeAllKeysIn(Iterable<? extends K> keys);
 	
     @Override
-    SortedMap23<K, V> filterKeys(Predicate<K> filter);
+    ImmSortedMap<K, V> filterKeys(Predicate<K> filter);
 
     /**
      * Returns the entry at the given index.
@@ -168,7 +168,7 @@ public interface SortedMap23<K, V> extends Map23<K, V> {
      * @param index The index
      * @return a map with the entry at the given index removed
      */
-    SortedMap23<K, V> removeAt(int index);
+    ImmSortedMap<K, V> removeAt(int index);
 
     @Override
 	SortedMap<K, V> asMap();
@@ -186,13 +186,13 @@ public interface SortedMap23<K, V> extends Map23<K, V> {
 	List23<Entry<K,V>> asList();
 	
     @Override
-	SortedSet23<Entry<K,V>> asSet23();
+	ImmSortedSet<Entry<K,V>> asSet23();
 
 	@Override
-	SortedSet23<K> keys();
+	ImmSortedSet<K> keys();
 
     @Override
-    SortedMap23<K, V> filter(Predicate<Entry<K,V>> filter);
+    ImmSortedMap<K, V> filter(Predicate<Entry<K,V>> filter);
 
     Comparator<? super K> getKeyComparator();    
 }

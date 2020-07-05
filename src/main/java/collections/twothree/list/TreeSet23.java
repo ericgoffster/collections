@@ -26,7 +26,7 @@ import org.granitesoft.requirement.Requirements;
  *
  * @param <E> The type of the elements.
  */
-public final class TreeSet23<E> implements SortedSet23<E> {
+public final class TreeSet23<E> implements ImmSortedSet<E> {
     /**
      * The comparator for elements in the set.   Defines the ordering.
      */
@@ -305,7 +305,7 @@ public final class TreeSet23<E> implements SortedSet23<E> {
      * @return A set with the given element removed.
      */
     @Override
-	public TreeSet23<E> union(final Set23<E> other) {
+	public TreeSet23<E> union(final ImmSet<E> other) {
 	    TreeSet23<E> s = this;
 	    for(E e: other) {
 	        s = s.add(e);
@@ -465,10 +465,10 @@ public final class TreeSet23<E> implements SortedSet23<E> {
 	
 	@Override
 	public boolean equals(final Object obj) {
-		if (!(obj instanceof Set23)) {
+		if (!(obj instanceof ImmSet)) {
 			return false;
 		}
-		Set23<?> other = (Set23<?>)obj;
+		ImmSet<?> other = (ImmSet<?>)obj;
 		return asCollection().equals(other.asCollection());
 	}
 	

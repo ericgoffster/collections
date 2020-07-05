@@ -20,7 +20,7 @@ public class SortedSet23Test {
 
     @SafeVarargs
     @SuppressWarnings("varargs")
-    private static <E extends Comparable<E>> SortedSet23<E> of(E ... elements) {
+    private static <E extends Comparable<E>> ImmSortedSet<E> of(E ... elements) {
         List<E> asList = Arrays.asList(elements);
         return TreeSet23.of(asList);
     }
@@ -37,7 +37,7 @@ public class SortedSet23Test {
 
 	@Test
 	public void testHeadSet() {
-		SortedSet23<Integer> l = of(0, 3, 6, 9, 12);
+		ImmSortedSet<Integer> l = of(0, 3, 6, 9, 12);
 		assertEquals(l.lt(13),of(0, 3, 6, 9, 12));
 		assertEquals(l.lt(12),of(0, 3, 6, 9));
 		assertEquals(l.lt(3),of(0));
@@ -47,7 +47,7 @@ public class SortedSet23Test {
 
 	@Test
 	public void testTailSet() {
-		SortedSet23<Integer> l = of(0, 3, 6, 9, 12);
+		ImmSortedSet<Integer> l = of(0, 3, 6, 9, 12);
 		assertEquals(l.ge(-1),of(0, 3, 6, 9, 12));
 		assertEquals(l.ge(0),of(0, 3, 6, 9, 12));
 		assertEquals(l.ge(1),of(3, 6, 9, 12));
@@ -58,7 +58,7 @@ public class SortedSet23Test {
 
 	@Test
 	public void testReverse() {
-		SortedSet23<Integer> l = of(0, 3, 6, 9, 12);
+		ImmSortedSet<Integer> l = of(0, 3, 6, 9, 12);
 		assertTrue(l.reversed().contains(3));
 		assertTrue(l.reversed().contains(6));
 		assertTrue(l.reversed().contains(9));
@@ -72,7 +72,7 @@ public class SortedSet23Test {
 	
 	@Test
 	public void testSubSet() {
-		SortedSet23<Integer> l = of(0, 3, 6, 9, 12);
+		ImmSortedSet<Integer> l = of(0, 3, 6, 9, 12);
 		assertEquals(l.subSet(-1, 13),of(0, 3, 6, 9, 12));
 		assertEquals(l.subSet(0, 13),of(0, 3, 6, 9, 12));
 		assertEquals(l.subSet(0, 12),of(0, 3, 6, 9));
@@ -145,7 +145,7 @@ public class SortedSet23Test {
 	
     @Test
     public void testStream() {
-        SortedSet23<Integer> l = of(1,2,3,4,5,6);
+        ImmSortedSet<Integer> l = of(1,2,3,4,5,6);
         Set<Integer> t = new HashSet<>(Arrays.asList(1,2,3,4,5,6));
         l.stream().forEach(t::remove);
         assertTrue(t.isEmpty());
@@ -153,7 +153,7 @@ public class SortedSet23Test {
 
     @Test
     public void testGetAt() {
-        SortedSet23<Integer> l = of(3,2,1,4,5,6);
+        ImmSortedSet<Integer> l = of(3,2,1,4,5,6);
         assertEquals(l.getAt(0).intValue(), 1);
         assertEquals(l.getAt(1).intValue(), 2);
         assertEquals(l.getAt(2).intValue(), 3);
@@ -161,12 +161,12 @@ public class SortedSet23Test {
 
     @Test
     public void testRemoveAt() {
-        SortedSet23<Integer> l = of(3,2,1,4,5,6);
+        ImmSortedSet<Integer> l = of(3,2,1,4,5,6);
         assertEquals(l.removeAt(0), of(2,3,4,5,6));
     }
     @Test
     public void testExclude() {
-        SortedSet23<Integer> l = of(3,2,1,4,5,6);
+        ImmSortedSet<Integer> l = of(3,2,1,4,5,6);
         assertEquals(l.exclude(2,4), of(1,4,5,6));
         assertEquals(l.exclude(2,8), of(1));
         assertEquals(l.exclude(1,8), TreeSet23.empty());
@@ -177,22 +177,22 @@ public class SortedSet23Test {
 
     @Test
     public void testIterator() {
-        SortedSet23<Integer> l = of(1,2,3,4,5,6);
+        ImmSortedSet<Integer> l = of(1,2,3,4,5,6);
         assertEquals(l.stream().collect(Collectors.toList()), Arrays.asList(1,2,3,4,5,6));
     }
 	
     @Test
     public void testAsCollection() {
-        SortedSet23<Integer> l = of(1,2,3,4,5,6);
+        ImmSortedSet<Integer> l = of(1,2,3,4,5,6);
         assertEquals(new HashSet<>(l.asCollection()), new HashSet<>(Arrays.asList(1,2,3,4,5,6)));
     }
     
 	@Test
 	public void testBasic() {
-		SortedSet23<String> l1 = of("1","2","3","4","5",null);
+		ImmSortedSet<String> l1 = of("1","2","3","4","5",null);
 		assertTrue(l1.contains(null));
 		
-		Set<SortedSet23<String>> s = new HashSet<>();
+		Set<ImmSortedSet<String>> s = new HashSet<>();
 		s.add(l1);
 		assertTrue(s.contains(of("1","2","3","4","5",null)));
 		assertTrue(s.contains(of("1","2","3","5","4",null)));

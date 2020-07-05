@@ -16,7 +16,7 @@ import java.util.stream.StreamSupport;
  * Represents an Immutable map where objects are ordered by their hashes in a {@link List23}.
  * <p>*ALL OPERATIONS ARE IMMUTABLE*.  The object is not modified in any way.
  * <p>Unlike the java counterpart {@link HashMap}, lookup's are O(log n).
- * <p>Use @link {@link SortedMap23}, if at all possible, the only thing
+ * <p>Use @link {@link ImmSortedMap}, if at all possible, the only thing
  * HashMap23 provides is the ability to have a map, when comparators
  * are inconvenient.
  *
@@ -180,7 +180,7 @@ public final class HashMap23<K, V> implements Map23<K, V> {
 	}
 	
     @Override
-	public Set23<Entry<K,V>> asSet23() {
+	public ImmSet<Entry<K,V>> asSet23() {
 	    return new TreeSet23<>(HashMap23::entryCompare, entries);
 	}
 	
@@ -198,7 +198,7 @@ public final class HashMap23<K, V> implements Map23<K, V> {
 	}
 
     @Override
-    public Collection23<V> values() {
+    public ImmCollection23<V> values() {
         return entries.map(e -> e.getValue());
     }
 	

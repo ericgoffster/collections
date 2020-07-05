@@ -7,9 +7,9 @@ import java.util.NoSuchElementException;
 import java.util.SortedSet;
 
 final class SortedSet23Set<E> extends AbstractSet<E> implements SortedSet<E> {
-	final SortedSet23<E> set;
+	final ImmSortedSet<E> set;
 
-	public SortedSet23Set(SortedSet23<E> set) {
+	public SortedSet23Set(ImmSortedSet<E> set) {
 		super();
 		this.set = set;
 	}

@@ -123,21 +123,21 @@ public interface Map23<K,V> extends Iterable<Entry<K,V>> {
      * <p>This operation is O(1).
      * @return all entries in the map as Set23.
      */
-    Set23<Entry<K,V>> asSet23();
+    ImmSet<Entry<K,V>> asSet23();
     
     /**
      * Returns all keys in this map.
      * <p>This operation is O(1).
      * @return all keys in this map
      */
-    Set23<K> keys();
+    ImmSet<K> keys();
 
     /**
      * Returns all values in this map.
      * <p>This operation is O(1).
      * @return all values in this map
      */
-    Collection23<V> values();
+    ImmCollection23<V> values();
     
     /**
      * Return A map23 with keys that match <code>keyFilter</code>.

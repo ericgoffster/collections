@@ -44,7 +44,7 @@ public class SortedMap23Test {
     }
     @Test
     public void testHeadSet() {
-        SortedMap23<Integer,Integer> l = TreeMap23.of(Arrays.asList(makeEntry(0,1), makeEntry(3,2), makeEntry(6,3), makeEntry(9,4), makeEntry(12,5)));
+        ImmSortedMap<Integer,Integer> l = TreeMap23.of(Arrays.asList(makeEntry(0,1), makeEntry(3,2), makeEntry(6,3), makeEntry(9,4), makeEntry(12,5)));
         assertEquals(l.lt(13),TreeMap23.of(Arrays.asList(makeEntry(0,1), makeEntry(3,2), makeEntry(6,3), makeEntry(9,4), makeEntry(12,5))));
         assertEquals(l.lt(12),TreeMap23.of(Arrays.asList(makeEntry(0,1), makeEntry(3,2), makeEntry(6,3), makeEntry(9,4))));
         assertEquals(l.lt(3),TreeMap23.of(Arrays.asList(makeEntry(0,1))));
@@ -54,7 +54,7 @@ public class SortedMap23Test {
 
     @Test
     public void testTailSet() {
-        SortedMap23<Integer,Integer> l = TreeMap23.of(Arrays.asList(makeEntry(0,1), makeEntry(3,2), makeEntry(6,3), makeEntry(9,4), makeEntry(12,5)));
+        ImmSortedMap<Integer,Integer> l = TreeMap23.of(Arrays.asList(makeEntry(0,1), makeEntry(3,2), makeEntry(6,3), makeEntry(9,4), makeEntry(12,5)));
         assertEquals(l.ge(-1),TreeMap23.of(Arrays.asList(makeEntry(0,1), makeEntry(3,2), makeEntry(6,3), makeEntry(9,4), makeEntry(12,5))));
         assertEquals(l.ge(0),TreeMap23.of(Arrays.asList(makeEntry(0,1), makeEntry(3,2), makeEntry(6,3), makeEntry(9,4), makeEntry(12,5))));
         assertEquals(l.ge(1),TreeMap23.of(Arrays.asList(makeEntry(3,2), makeEntry(6,3), makeEntry(9,4), makeEntry(12,5))));
@@ -65,7 +65,7 @@ public class SortedMap23Test {
     
     @Test
     public void testSubSet() {
-        SortedMap23<Integer,Integer> l = TreeMap23.of(Arrays.asList(makeEntry(0,1), makeEntry(3,2), makeEntry(6,3), makeEntry(9,4), makeEntry(12,5)));
+        ImmSortedMap<Integer,Integer> l = TreeMap23.of(Arrays.asList(makeEntry(0,1), makeEntry(3,2), makeEntry(6,3), makeEntry(9,4), makeEntry(12,5)));
         assertEquals(l.subSet(-1, 13),TreeMap23.of(Arrays.asList(makeEntry(0,1), makeEntry(3,2), makeEntry(6,3), makeEntry(9,4), makeEntry(12,5))));
         assertEquals(l.subSet(0, 13),TreeMap23.of(Arrays.asList(makeEntry(0,1), makeEntry(3,2), makeEntry(6,3), makeEntry(9,4), makeEntry(12,5))));
         assertEquals(l.subSet(0, 12),TreeMap23.of(Arrays.asList(makeEntry(0,1), makeEntry(3,2), makeEntry(6,3), makeEntry(9,4))));
@@ -84,7 +84,7 @@ public class SortedMap23Test {
     }
     @Test
     public void testExclude() {
-        SortedMap23<Integer,Integer> l = TreeMap23.of(Arrays.asList(makeEntry(3,1),makeEntry(2,3),makeEntry(1,4),makeEntry(4,4),makeEntry(5,5),makeEntry(6,6)));
+        ImmSortedMap<Integer,Integer> l = TreeMap23.of(Arrays.asList(makeEntry(3,1),makeEntry(2,3),makeEntry(1,4),makeEntry(4,4),makeEntry(5,5),makeEntry(6,6)));
         assertEquals(l.exclude(2,4), TreeMap23.of(Arrays.asList(makeEntry(1,4),makeEntry(4,4),makeEntry(5,5),makeEntry(6,6))));
         assertEquals(l.exclude(2,8), TreeMap23.of(Arrays.asList(makeEntry(1,4))));
         assertEquals(l.exclude(1,8), TreeMap23.of(Arrays.asList()));
@@ -109,7 +109,7 @@ public class SortedMap23Test {
         assertEquals(TreeMap23.singleton(3, 4).put(1, 2).asList(),List23.singleton(makeEntry(1,2)).add(makeEntry(3, 4)));
         assertNotEquals(TreeMap23.singleton(3, 4).put(1, 3).asList(),List23.singleton(makeEntry(1,2)).add(makeEntry(3, 4)));
         assertNotEquals(TreeMap23.singleton(1, 3).add(makeEntry(3, 4)).asList(),List23.singleton(makeEntry(1,2)).add(makeEntry(3, 4)));
-        SortedMap23<Integer,Integer>  m = TreeMap23.singleton(5,6).put(7, 8);
+        ImmSortedMap<Integer,Integer>  m = TreeMap23.singleton(5,6).put(7, 8);
         assertEquals(TreeMap23.singleton(1, 3).addAll(m).asList(),List23.singleton(makeEntry(1,3)).add(makeEntry(5, 6)).add(makeEntry(7, 8)));
         assertEquals(TreeMap23.singleton(1, 3).addAll(m.asMap()).asList(),List23.singleton(makeEntry(1,3)).add(makeEntry(5, 6)).add(makeEntry(7, 8)));
 	}
@@ -209,7 +209,7 @@ public class SortedMap23Test {
     }
     @Test
     public void testEquals() {
-        Set<SortedMap23<Integer, Integer>> s = new HashSet<>();
+        Set<ImmSortedMap<Integer, Integer>> s = new HashSet<>();
         s.add(TreeMap23.of(Arrays.asList(makeEntry(6,3), makeEntry(9,4))));
         assertTrue(s.contains(TreeMap23.of(Arrays.asList(makeEntry(6,3), makeEntry(9,4)))));
         assertFalse(s.contains(TreeMap23.of(Arrays.asList(makeEntry(6,3), makeEntry(9,5)))));

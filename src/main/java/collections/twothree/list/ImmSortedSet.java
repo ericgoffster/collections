@@ -20,7 +20,7 @@ import java.util.function.Predicate;
  *
  * @param <E> The type of the elements.
  */
-public interface SortedSet23<E> extends Set23<E> {
+public interface ImmSortedSet<E> extends ImmSet<E> {
     /**
      * Returns the set of all elements in this set in range &gt;= <code>element</code>.
      * <p>This operation is O(log n).
@@ -34,7 +34,7 @@ public interface SortedSet23<E> extends Set23<E> {
      * @param element The comparison element (inclusive)
      * @return The set of all elements in this set &gt;= element
      */
-	SortedSet23<E> ge(E element);
+	ImmSortedSet<E> ge(E element);
 
     /**
      * Returns the set of all elements in this set &lt; <code>element</code>.
@@ -49,7 +49,7 @@ public interface SortedSet23<E> extends Set23<E> {
      * @param element The comparison element (exclusive)
      * @return The set of all elements in this set &lt; element
      */
-	SortedSet23<E> lt(E element);
+	ImmSortedSet<E> lt(E element);
 
     /**
      * Returns the set of all elements not in range <code>[low, high)</code>.
@@ -65,7 +65,7 @@ public interface SortedSet23<E> extends Set23<E> {
      * @param high The high element (inclusive)
      * @return The set of all elements in this set &lt; low or &gt;= high
      */
-    SortedSet23<E> exclude(E low, E high);
+    ImmSortedSet<E> exclude(E low, E high);
 
     /**
      * Returns the set of all elements in this set in range <code>[low, high)</code>.
@@ -82,7 +82,7 @@ public interface SortedSet23<E> extends Set23<E> {
      * @param high The high element (exclusive)
      * @return The set of all elements in this set &lt; element
      */
-	SortedSet23<E> subSet(E low, E high);
+	ImmSortedSet<E> subSet(E low, E high);
 
 	/**
 	 * Returns a set with <code>element</code> added.
@@ -96,7 +96,7 @@ public interface SortedSet23<E> extends Set23<E> {
 	 * @return A set with the given element added.
 	 */
     @Override
-	SortedSet23<E> add(E element);
+	ImmSortedSet<E> add(E element);
 	
     /**
      * Returns a set that is the union of this set with <code>other</code>.
@@ -110,7 +110,7 @@ public interface SortedSet23<E> extends Set23<E> {
      * @return A set with the given element removed.
      */
     @Override
-	SortedSet23<E> union(Set23<E> other);
+	ImmSortedSet<E> union(ImmSet<E> other);
 
     /**
      * Returns a set with the elements in reverse order.
@@ -122,7 +122,7 @@ public interface SortedSet23<E> extends Set23<E> {
      * </pre>
      * @return A set with the elements reversed
      */
-	SortedSet23<E> reversed();
+	ImmSortedSet<E> reversed();
 
     /**
      * Returns a set with <code>element</code> removed.
@@ -137,7 +137,7 @@ public interface SortedSet23<E> extends Set23<E> {
      * @return A set with the given element removed
      */
     @Override
-	SortedSet23<E> remove(E element);
+	ImmSortedSet<E> remove(E element);
 	
     /**
      * Returns a set with only the elements that match <code>filter</code>.
@@ -151,7 +151,7 @@ public interface SortedSet23<E> extends Set23<E> {
      * @return A set with the given element removed
      */
     @Override
-    SortedSet23<E> filter(Predicate<E> filter);
+    ImmSortedSet<E> filter(Predicate<E> filter);
 	
     /**
      * Returns a set that is the intersection of this set with <code>other</code>.
@@ -165,7 +165,7 @@ public interface SortedSet23<E> extends Set23<E> {
      * @return A set with the given element removed
      */
     @Override
-    SortedSet23<E> retain(Iterable<? extends E> other);
+    ImmSortedSet<E> retain(Iterable<? extends E> other);
     /**
      * Returns a set that is the subtraction of this set with <code>other</code>.
      * <p>This operation is O(m * log n).
@@ -178,7 +178,7 @@ public interface SortedSet23<E> extends Set23<E> {
      * @return A set with the given element removed.
      */
     @Override
-    SortedSet23<E> removeAllIn(Iterable<? extends E> other);
+    ImmSortedSet<E> removeAllIn(Iterable<? extends E> other);
   
     /**
      * Returns a set with the element at the given index removed.
@@ -192,7 +192,7 @@ public interface SortedSet23<E> extends Set23<E> {
      * @param index The index of the element to remove.
      * @return A set with the element at the given index removed
      */
-    SortedSet23<E> removeAt(int index);
+    ImmSortedSet<E> removeAt(int index);
 
     /**
      * Return the element at the given index.

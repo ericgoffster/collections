@@ -4,9 +4,9 @@ import java.util.AbstractSet;
 import java.util.Iterator;
 
 final class Set23Set<E> extends AbstractSet<E> {
-	final Set23<E> set;
+	final ImmSet<E> set;
 
-	public Set23Set(Set23<E> set) {
+	public Set23Set(ImmSet<E> set) {
 		super();
 		this.set = set;
 	}

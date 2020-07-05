@@ -23,7 +23,7 @@ import org.granitesoft.requirement.Requirements;
  *
  * @param <E> The type of the elements.
  */
-public final class HashSet23<E> implements Set23<E> {
+public final class HashSet23<E> implements ImmSet<E> {
 	/**
 	 * The list of elements
 	 */
@@ -141,7 +141,7 @@ public final class HashSet23<E> implements Set23<E> {
      * @return A set with the given element removed.
      */
     @Override
-	public HashSet23<E> union(final Set23<E> other) {
+	public HashSet23<E> union(final ImmSet<E> other) {
 	    HashSet23<E> s = this;
 	    for(E e: other) {
 	        s = s.add(e);
@@ -239,10 +239,10 @@ public final class HashSet23<E> implements Set23<E> {
 	
 	@Override
 	public boolean equals(final Object obj) {
-		if (!(obj instanceof Set23)) {
+		if (!(obj instanceof ImmSet)) {
 			return false;
 		}
-		final Set23<?> other = (Set23<?>)obj;
+		final ImmSet<?> other = (ImmSet<?>)obj;
 		return asCollection().equals(other.asCollection());
 	}
 

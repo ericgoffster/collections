@@ -19,7 +19,7 @@ public class SortedSet23SetTest {
     
     @SafeVarargs
     @SuppressWarnings("varargs")
-    private static <E extends Comparable<E>> SortedSet23<E> of(E ... elements) {
+    private static <E extends Comparable<E>> ImmSortedSet<E> of(E ... elements) {
         List<E> asList = Arrays.asList(elements);
         return TreeSet23.of(asList);
     }
@@ -32,7 +32,7 @@ public class SortedSet23SetTest {
 	
 	@Test
 	public void testAsSet() {
-		SortedSet23<String> l1 = of("1","2","3","4","5",null);
+		ImmSortedSet<String> l1 = of("1","2","3","4","5",null);
 		assertEquals(l1.asCollection(), new HashSet<>(Arrays.asList("1", "2", "3", "4", "5", null)));
 		assertEquals(l1.asCollection(), new HashSet<>(Arrays.asList("1", "2", "4", "3", "5", null)));
 		assertNotEquals(l1.asCollection(), new HashSet<>(Arrays.asList("1", "2", "4", "3", "5")));

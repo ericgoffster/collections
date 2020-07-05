@@ -22,7 +22,7 @@ import java.util.stream.StreamSupport;
  * @param <K> The key type
  * @param <V> The value type
  */
-public final class TreeMap23<K, V> implements SortedMap23<K, V> {
+public final class TreeMap23<K, V> implements ImmSortedMap<K, V> {
     final Comparator<? super K> keyComparator;
 	final List23<Entry<K, V>> entries;
 
@@ -256,7 +256,7 @@ public final class TreeMap23<K, V> implements SortedMap23<K, V> {
         if (keyComparator.compare(lowKey, highKey) == 0) {
             return this;
         }
-        final SortedSet23<K> keys = keys();
+        final ImmSortedSet<K> keys = keys();
         return new TreeMap23<>(keyComparator, entries.removeRange(
                 keys.asList().naturalPosition(e -> keyComparator.compare(lowKey, e)),
                 keys.asList().naturalPosition(e -> keyComparator.compare(highKey, e))));
@@ -287,7 +287,7 @@ public final class TreeMap23<K, V> implements SortedMap23<K, V> {
         if (keyComparator.compare(lowKey, highKey) == 0) {
             return new TreeMap23<>(keyComparator, List23.empty());
         }
-        final SortedSet23<K> keys = keys();
+        final ImmSortedSet<K> keys = keys();
         return new TreeMap23<>(keyComparator, entries.getRange(
                 keys.asList().naturalPosition(e -> keyComparator.compare(lowKey, e)),
                 keys.asList().naturalPosition(e -> keyComparator.compare(highKey, e))));
@@ -422,13 +422,13 @@ public final class TreeMap23<K, V> implements SortedMap23<K, V> {
 	}
 	
     @Override
-	public SortedSet23<Entry<K,V>> asSet23() {
+	public ImmSortedSet<Entry<K,V>> asSet23() {
 	    return new TreeSet23<>(this::entryCompare, entries);
 	}
 	
 
 	@Override
-	public SortedSet23<K> keys() {
+	public ImmSortedSet<K> keys() {
 	    return new TreeSet23<>(keyComparator, entries.map(e -> e.getKey()));
 	}
 
