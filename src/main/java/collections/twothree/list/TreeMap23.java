@@ -14,7 +14,7 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 /**
- * Represents an Immutable map where objects are ordered by a comparator on the keys in a {@link List23}.
+ * Represents an Immutable map where objects are ordered by a comparator on the keys in a {@link ImmList}.
  * <p>*ALL OPERATIONS ARE IMMUTABLE*.  The object is not modified in any way.
  * <p>that all operations are O(log n), but the results of those
  * operations are also guaranteed to be O(log n)

@@ -12,7 +12,7 @@ import java.util.stream.StreamSupport;
 import org.granitesoft.requirement.Requirements;
 
 /**
- * Represents an Immutable ordered set of elements using a {@link List23} as a backing store.
+ * Represents an Immutable ordered set of elements using a {@link ImmList} as a backing store.
  * Set membership and ordering is implemented with a comparator.
  * <p>*ALL OPERATIONS ARE IMMUTABLE*.  The object is not modified in any way.
  * <p>
@@ -446,12 +446,12 @@ public final class TreeSet23<E> implements ImmSortedSet<E> {
 	}
 	
     /**
-     * Returns the {@link List23} view of this set.
+     * Returns the {@link ImmList} view of this set.
      * <pre>
      * Example:
      *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).asList().asCollection().equals(Arrays.asList(2, 3, 4));
      * </pre>
-     * @return the {@link List23} view of this set
+     * @return the {@link ImmList} view of this set
      */
     @Override
 	public TreeList23<E> asList() {

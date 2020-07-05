@@ -8,7 +8,7 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 /**
- * Represents an Immutable mapping of keys to values backed by a {@link List23} of entries.
+ * Represents an Immutable mapping of keys to values backed by a {@link ImmList} of entries.
  * <p>*ALL OPERATIONS ARE IMMUTABLE*.  The object is not modified in any way.
  *
  * @param <K> The key type

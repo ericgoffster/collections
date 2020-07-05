@@ -11,7 +11,7 @@ import java.util.stream.StreamSupport;
 import org.granitesoft.requirement.Requirements;
 
 /**
- * Represents an Immutable hash set of elements using a {@link List23} as a backing store.
+ * Represents an Immutable hash set of elements using a {@link ImmList} as a backing store.
  * Set membership and ordering is implemented using standard java hashCode/equals semantics.
  * <p>
  * Since operations on a List23 are log n, we can represent a set

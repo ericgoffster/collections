@@ -3,9 +3,9 @@ package collections.twothree.list;
 import java.util.AbstractList;
 
 final class List23List<E> extends AbstractList<E> {
-	private final List23<E> list23;
+	private final ImmList<E> list23;
 
-	public List23List(List23<E> list23) {
+	public List23List(ImmList<E> list23) {
 		super();
 		this.list23 = list23;
 	}

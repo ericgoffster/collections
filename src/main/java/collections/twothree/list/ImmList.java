@@ -17,16 +17,16 @@ import java.util.function.Predicate;
  * <p>
  * The following operations are all O(log n) worst case:
  * <ul>
- *     <li>{@link List23#insertAt(int, Object)}</li>
- *     <li>{@link List23#removeRange(int, int)}</li>
- *     <li>{@link List23#appendList(List23)}</li>
- *     <li>{@link List23#getAt(int)}</li>
+ *     <li>{@link ImmList#insertAt(int, Object)}</li>
+ *     <li>{@link ImmList#removeRange(int, int)}</li>
+ *     <li>{@link ImmList#appendList(ImmList)}</li>
+ *     <li>{@link ImmList#getAt(int)}</li>
  * </ul>
  * 
  * Which is significant, there is no need for a builder.
  * @param <E> The type of the elements.
  */
-public interface List23<E> extends ImmCollection<E> {
+public interface ImmList<E> extends ImmCollection<E> {
     /**
      * Returns a new list with <code>function</code> applied to all elements of this list.
      * <p>This operation is O(1).
@@ -39,7 +39,7 @@ public interface List23<E> extends ImmCollection<E> {
      * @param function The mapping function
      * @return A new List23 representing the map of this one
      */
-    public <F> List23<F> map(final Function<E, F> function);
+    public <F> ImmList<F> map(final Function<E, F> function);
 
 	/**
 	 * Returns a classic "read only java List" view of the list.
@@ -107,7 +107,7 @@ public interface List23<E> extends ImmCollection<E> {
      * @return A list with <code>element</code> removed
      */
     @Override
-    public List23<E> remove(final E element);
+    public ImmList<E> remove(final E element);
     
     /**
      * Returns a list with only items that match <code>filter</code>.
@@ -121,7 +121,7 @@ public interface List23<E> extends ImmCollection<E> {
      * @return A list with <code>filter</code> applied
      */
     @Override
-    public List23<E> filter(final Predicate<E> filter);
+    public ImmList<E> filter(final Predicate<E> filter);
    /**
      * Returns a list whose items also appear <code>other</code>.
      * <p>This operation is O(n log n) where n = |this| + |other|.
@@ -134,7 +134,7 @@ public interface List23<E> extends ImmCollection<E> {
      * @return a list whose items also appear in another list
      */
     @Override
-    public List23<E> retain(final Iterable<? extends E> other);
+    public ImmList<E> retain(final Iterable<? extends E> other);
     
     /**
      * Returns a list whose items don't appear <code>other</code>.
@@ -148,7 +148,7 @@ public interface List23<E> extends ImmCollection<E> {
      * @return a list whose items don't appear in another list
      */
     @Override
-    public List23<E> removeAllIn(final Iterable<? extends E> other);
+    public ImmList<E> removeAllIn(final Iterable<? extends E> other);
     
     /**
 	 * Returns a list with <code>element</code> added to the end.
@@ -163,7 +163,7 @@ public interface List23<E> extends ImmCollection<E> {
 	 * @return A list with <code>element</code> added to the end
 	 */
     @Override
-	public List23<E> add(final E element);
+	public ImmList<E> add(final E element);
 	
     /**
 	 * Returns a new list with <code>list[index] == element</code>.
@@ -178,7 +178,7 @@ public interface List23<E> extends ImmCollection<E> {
 	 * @return A new list with <code>list[index] == element</code>
      * @throws IndexOutOfBoundsException if index &lt; 0 or index &gt;= size.
 	 */
-	public List23<E> setAt(final int index, final E element);
+	public ImmList<E> setAt(final int index, final E element);
 	
 	/**
 	 * Returns a list with <code>element</code> inserted at <code>index</code>.
@@ -193,7 +193,7 @@ public interface List23<E> extends ImmCollection<E> {
 	 * @return A list with the given element set at the specified index
      * @throws IndexOutOfBoundsException if index &lt; 0 or index &gt; size.
 	 */
-	public List23<E> insertAt(final int index, final E element);
+	public ImmList<E> insertAt(final int index, final E element);
 	
 	/**
 	 * Returns a list with <code>index</code> removed.
@@ -207,7 +207,7 @@ public interface List23<E> extends ImmCollection<E> {
 	 * @return A list with the given index removed
      * @throws IndexOutOfBoundsException if index &lt; 0 or index &gt;= size.
 	 */
-	public List23<E> removeAt(final int index);
+	public ImmList<E> removeAt(final int index);
 	
     /**
      * Returns a list with range <code>[low, high - 1]</code> removed.
@@ -224,7 +224,7 @@ public interface List23<E> extends ImmCollection<E> {
      * @return A list with the given list appended to the end
      * @throws IndexOutOfBoundsException if low &lt; 0 or low &gt; high or high &gt; size
      */
-    public List23<E> removeRange(final int low, final int high);
+    public ImmList<E> removeRange(final int low, final int high);
     
     /**
      * Returns a list with range <code>[low, high - 1]</code> replaced with <code>other</code>.
@@ -241,7 +241,7 @@ public interface List23<E> extends ImmCollection<E> {
      * @return A list with the given range replaced with another list
      * @throws IndexOutOfBoundsException if low &lt; 0 or low &gt; high or high &gt; size
      */
-    public List23<E> replaceRange(final int low, final int high, final List23<E> other);
+    public ImmList<E> replaceRange(final int low, final int high, final ImmList<E> other);
     
     /**
      * Returns a list with <code>other</code> inserted at <code>index</code>. 
@@ -257,7 +257,7 @@ public interface List23<E> extends ImmCollection<E> {
      * @return A list with another list inserted at the specified index
      * @throws IndexOutOfBoundsException if index &lt; 0 or index &gt; size.
      */
-    public List23<E> insertListAt(final int index, final List23<E> other);
+    public ImmList<E> insertListAt(final int index, final ImmList<E> other);
 	
 	/**
 	 * Returns a list with <code>other</code> appended to the end.
@@ -271,7 +271,7 @@ public interface List23<E> extends ImmCollection<E> {
 	 * @param other The list to append
 	 * @return A list with the given list appended to the end
 	 */
-	public List23<E> appendList(final List23<E> other);
+	public ImmList<E> appendList(final ImmList<E> other);
 	
 	/**
 	 * Returns a list with all indexes &gt;= <code>index</code>.
@@ -287,7 +287,7 @@ public interface List23<E> extends ImmCollection<E> {
 	 * @return A list with all indexes &gt;= the specified index
      * @throws IndexOutOfBoundsException if index &lt; 0 or index &gt; size
 	 */
-	public List23<E> tailAt(final int index);
+	public ImmList<E> tailAt(final int index);
 	
 	/**
 	 * Returns a list with all indexes &lt; <code>index</code>.
@@ -303,7 +303,7 @@ public interface List23<E> extends ImmCollection<E> {
 	 * @return A list with all indexes &lt; the specified index
      * @throws IndexOutOfBoundsException if index &lt; 0 or index &gt; size
 	 */
-	public List23<E> headAt(final int index);
+	public ImmList<E> headAt(final int index);
 	
 	/**
 	 * Returns a list with all indexes that fall in range <code>[low, high - 1]</code>.
@@ -318,7 +318,7 @@ public interface List23<E> extends ImmCollection<E> {
 	 * @return A list with all indexes &gt;= from and &lt; to
      * @throws IndexOutOfBoundsException if low &lt; 0 or low &gt; high or high &gt; size
 	 */
-	public List23<E> getRange(final int low, final int high);
+	public ImmList<E> getRange(final int low, final int high);
 	
 	/**
 	 * Returns a list that is the original list reversed.
@@ -330,7 +330,7 @@ public interface List23<E> extends ImmCollection<E> {
      * </pre>
 	 * @return A list that is the original list reversed
 	 */
-	public List23<E> reversed();
+	public ImmList<E> reversed();
 	
 	@Override
 	ListIterator<E> iterator();

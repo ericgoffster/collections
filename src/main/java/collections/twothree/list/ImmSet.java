@@ -4,7 +4,7 @@ import java.util.Set;
 import java.util.function.Predicate;
 
 /**
- * Represents an Immutable set of items backed by a {@link List23}.
+ * Represents an Immutable set of items backed by a {@link ImmList}.
  * <p>*ALL OPERATIONS ARE IMMUTABLE*.  The object is not modified in any way.
  *
  * @param <E> The type of the elements contained by this set.

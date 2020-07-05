@@ -7,7 +7,7 @@ import java.util.SortedMap;
 import java.util.function.Predicate;
 
 /**
- * Represents an Immutable map where objects are ordered by a comparator on the keys in a {@link List23}.
+ * Represents an Immutable map where objects are ordered by a comparator on the keys in a {@link ImmList}.
  * <p>*ALL OPERATIONS ARE IMMUTABLE*.  The object is not modified in any way.
  * <p>that all operations are O(log n), but the results of those
  * operations are also guaranteed to be O(log n)
@@ -183,7 +183,7 @@ public interface ImmSortedMap<K, V> extends Map23<K, V> {
      * </pre>
      * @return all of the entries as a list
      */
-	List23<Entry<K,V>> asList();
+	ImmList<Entry<K,V>> asList();
 	
     @Override
 	ImmSortedSet<Entry<K,V>> asSet23();

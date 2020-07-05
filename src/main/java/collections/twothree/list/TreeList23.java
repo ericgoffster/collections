@@ -30,14 +30,14 @@ import org.granitesoft.requirement.Requirements;
  * <ul>
  *     <li>{@link TreeList23#insertAt(int, Object)}</li>
  *     <li>{@link TreeList23#removeRange(int, int)}</li>
- *     <li>{@link TreeList23#appendList(List23)}</li>
+ *     <li>{@link TreeList23#appendList(ImmList)}</li>
  *     <li>{@link TreeList23#getAt(int)}</li>
  * </ul>
  * 
  * Which is significant, there is no need for a builder.
  * @param <E> The type of the elements.
  */
-public final class TreeList23<E> implements List23<E> {
+public final class TreeList23<E> implements ImmList<E> {
     /**
      * The root of the tree.
      */
@@ -467,7 +467,7 @@ public final class TreeList23<E> implements List23<E> {
      * @return A list with the given range replaced with another list
      * @throws IndexOutOfBoundsException if low &lt; 0 or low &gt; high or high &gt; size
      */
-    public TreeList23<E> replaceRange(final int low, final int high, final List23<E> other) {
+    public TreeList23<E> replaceRange(final int low, final int high, final ImmList<E> other) {
         verifyIndex("high", high, 0, size());
         verifyIndex("low", low, 0, high);
         Requirements.require(other, Requirements.notNull(), () -> "other");
@@ -490,7 +490,7 @@ public final class TreeList23<E> implements List23<E> {
      * @return A list with another list inserted at the specified index
      * @throws IndexOutOfBoundsException if index &lt; 0 or index &gt; size.
      */
-    public TreeList23<E> insertListAt(final int index, final List23<E> other) {
+    public TreeList23<E> insertListAt(final int index, final ImmList<E> other) {
         verifyIndex("index", index, 0, size());
         Requirements.require(other, Requirements.notNull(), () -> "other");
         return replaceRange(index, index, other);
@@ -508,7 +508,7 @@ public final class TreeList23<E> implements List23<E> {
 	 * @param other The list to append
 	 * @return A list with the given list appended to the end
 	 */
-	public TreeList23<E> appendList(final List23<E> other) {
+	public TreeList23<E> appendList(final ImmList<E> other) {
 		Requirements.require(other, Requirements.notNull(), () -> "other");
 		if (!(other instanceof TreeList23)) {
 		    throw new UnsupportedOperationException("Can only append other TreeList23's");
