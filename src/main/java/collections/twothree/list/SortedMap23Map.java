@@ -7,9 +7,9 @@ import java.util.Set;
 import java.util.SortedMap;
 
 final class SortedMap23Map<K, V> extends AbstractMap<K, V> implements SortedMap<K, V> {
-	final ImmSortedMap<K, V> map;
+	final TreeMap23<K, V> map;
 
-	public SortedMap23Map(ImmSortedMap<K, V> set) {
+	public SortedMap23Map(TreeMap23<K, V> set) {
 		super();
 		this.map = set;
 	}

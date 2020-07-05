@@ -4,6 +4,7 @@ import java.util.Comparator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.SortedMap;
+import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
 /**
@@ -182,14 +183,11 @@ public interface ImmSortedMap<K, V> extends ImmMap<K, V> {
      */
 	ImmList<Entry<K,V>> asList();
 	
-    @Override
-	ImmSortedSet<Entry<K,V>> asSet23();
-
 	@Override
 	ImmSortedSet<K> keys();
 
     @Override
-    ImmSortedMap<K, V> filter(Predicate<Entry<K,V>> filter);
+    ImmSortedMap<K, V> filter(BiPredicate<K, V> filter);
 
     Comparator<? super K> getKeyComparator();    
 }

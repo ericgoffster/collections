@@ -4,9 +4,9 @@ import java.util.AbstractMap;
 import java.util.Set;
 
 final class Map23Map<K, V> extends AbstractMap<K, V> {
-	final ImmMap<K, V> map;
+	final HashMap23<K, V> map;
 
-	public Map23Map(ImmMap<K, V> set) {
+	public Map23Map(HashMap23<K, V> set) {
 		super();
 		this.map = set;
 	}

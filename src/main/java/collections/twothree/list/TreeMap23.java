@@ -8,6 +8,7 @@ import java.util.Map.Entry;
 import java.util.SortedMap;
 import java.util.Spliterator;
 import java.util.function.BiConsumer;
+import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
@@ -334,7 +335,7 @@ public final class TreeMap23<K, V> implements ImmSortedMap<K, V> {
     @Override
     public TreeMap23<K, V> retainAllKeys(final Iterable<? extends K> keys) {
         HashSet23<K> hs = HashSet23.of(keys);
-        return filter(e -> hs.contains(e.getKey()));
+        return filter((k, v) -> hs.contains(k));
     }
 
     @Override
@@ -348,7 +349,7 @@ public final class TreeMap23<K, V> implements ImmSortedMap<K, V> {
 	
     @Override
     public TreeMap23<K, V> filterKeys(final Predicate<K> filter) {
-        return filter(e -> filter.test(e.getKey()));
+        return filter((k, v) -> filter.test(k));
     }
 
     /**
@@ -416,7 +417,6 @@ public final class TreeMap23<K, V> implements ImmSortedMap<K, V> {
 		return entries;
 	}
 	
-    @Override
 	public TreeSet23<Entry<K,V>> asSet23() {
 	    return new TreeSet23<>(this::entryCompare, entries);
 	}
@@ -433,8 +433,8 @@ public final class TreeMap23<K, V> implements ImmSortedMap<K, V> {
     }
 	
     @Override
-    public TreeMap23<K, V> filter(final Predicate<Entry<K,V>> filter) {
-        return new TreeMap23<>(keyComparator, entries.filter(filter));
+    public TreeMap23<K, V> filter(final BiPredicate<K,V> filter) {
+        return new TreeMap23<>(keyComparator, entries.filter(e -> filter.test(e.getKey(), e.getValue())));
     }
     
     @Override

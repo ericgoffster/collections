@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Spliterator;
 import java.util.function.BiConsumer;
+import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
@@ -141,12 +142,12 @@ public final class HashMap23<K, V> implements ImmMap<K, V> {
     @Override
     public HashMap23<K, V> retainAllKeys(final Iterable<? extends K> keys) {
         final HashSet23<K> hs = HashSet23.of(keys);
-        return filter(e -> hs.contains(e.getKey()));
+        return filter((k, v) -> hs.contains(k));
     }
     
     @Override
     public HashMap23<K, V> filterKeys(final Predicate<K> keyFilter) {
-        return filter(e -> keyFilter.test(e.getKey()));
+        return filter((k, v) -> keyFilter.test(k));
     }
 
     @Override
@@ -174,7 +175,6 @@ public final class HashMap23<K, V> implements ImmMap<K, V> {
 		return new Map23Map<>(this);
 	}
 	
-    @Override
 	public ImmSet<Entry<K,V>> asSet23() {
 	    return new TreeSet23<>(HashMap23::entryCompare, entries);
 	}
@@ -198,8 +198,8 @@ public final class HashMap23<K, V> implements ImmMap<K, V> {
     }
 	
     @Override
-    public HashMap23<K, V> filter(final Predicate<Entry<K,V>> filter) {
-        return new HashMap23<>(entries.filter(filter));
+    public HashMap23<K, V> filter(final BiPredicate<K, V> filter) {
+        return new HashMap23<>(entries.filter(e -> filter.test(e.getKey(), e.getValue())));
     }
     
     @Override
