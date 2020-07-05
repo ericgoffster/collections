@@ -33,7 +33,7 @@ public interface ImmList<E> extends ImmCollection<E> {
      * <p>THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
      * <pre>
      * Example:
-     *     assert List23.of(Arrays.asList(3, 4, 5)).map(a -&gt; a + 1).asCollection().equals(Arrays.asList(4,5,6));
+     *     assert ImmCollections.asList(3, 4, 5).map(a -&gt; a + 1).asCollection().equals(Arrays.asList(4,5,6));
      * </pre>
      * @param <F> The new type of the elements.
      * @param function The mapping function
@@ -46,7 +46,7 @@ public interface ImmList<E> extends ImmCollection<E> {
 	 * <p>This operation is O(1).
      * <pre>
      * Example:
-     *     assert List23.of(Arrays.asList(6, 1, 6, 8)).asCollection().equals(Arrays.asList(6, 1, 6, 8));
+     *     assert ImmCollections.asList(6, 1, 6, 8).asCollection().equals(Arrays.asList(6, 1, 6, 8));
      * </pre>
 	 * @return A classic "read only java List" view of the list
 	 */
@@ -57,7 +57,7 @@ public interface ImmList<E> extends ImmCollection<E> {
 	 * <p>This operation is O(log n) where n = |this|.
      * <pre>
      * Example:
-     *     assert List23.of(Arrays.asList(6, 1, 6, 8)).getAt(2) == 6;
+     *     assert ImmCollections.asList(6, 1, 6, 8).getAt(2) == 6;
      * </pre>
      * @param index The index. Must be in range <code>[0, size - 1]</code>.
 	 * @return <code>list[index]</code>
@@ -70,9 +70,9 @@ public interface ImmList<E> extends ImmCollection<E> {
      * <p>This operation is O(n) where n = |this|.
      * <pre>
      * Example:
-     *     assert List23.of(Arrays.asList(6, 1, 6, 8)).indexOf(1) == 1;
-     *     assert List23.of(Arrays.asList(6, 1, 6, 8)).indexOf(6) == 0;
-     *     assert List23.of(Arrays.asList(6, 1, 6, 8)).indexOf(7) == -1;
+     *     assert ImmCollections.asList(6, 1, 6, 8).indexOf(1) == 1;
+     *     assert ImmCollections.asList(6, 1, 6, 8).indexOf(6) == 0;
+     *     assert ImmCollections.asList(6, 1, 6, 8).indexOf(7) == -1;
      * </pre>
      * @param element The element to look for
      * @return The index of <code>element</code>, -1 if not found
@@ -84,9 +84,9 @@ public interface ImmList<E> extends ImmCollection<E> {
      * <p>This operation is O(n) where n = |this|.
      * <pre>
      * Example:
-     *     assert List23.of(Arrays.asList(6, 1, 6, 8)).lastIndexOf(1) == 1;
-     *     assert List23.of(Arrays.asList(6, 1, 6, 8)).lastIndexOf(6) == 2;
-     *     assert List23.of(Arrays.asList(6, 1, 6, 8)).lastIndexOf(7) == -1;
+     *     assert ImmCollections.asList(6, 1, 6, 8).lastIndexOf(1) == 1;
+     *     assert ImmCollections.asList(6, 1, 6, 8).lastIndexOf(6) == 2;
+     *     assert ImmCollections.asList(6, 1, 6, 8).lastIndexOf(7) == -1;
      * </pre>
      * @param element The element to look for
      * @return The last index of <code>element</code>, -1 if not found
@@ -99,9 +99,9 @@ public interface ImmList<E> extends ImmCollection<E> {
      * <p>THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
      * <pre>
      * Example:
-     *     assert List23.of(Arrays.asList(6, 1, 6, 8)).remove(1).asCollection().equals(Arrays.asList(6, 6, 8));
-     *     assert List23.of(Arrays.asList(6, 1, 6, 8)).remove(6).asCollection().equals(Arrays.asList(1, 6, 8));
-     *     assert List23.of(Arrays.asList(6, 1, 6, 8)).remove(7).asCollection().equals(Arrays.asList(6, 1, 6, 8));
+     *     assert ImmCollections.asList(6, 1, 6, 8).remove(1).asCollection().equals(Arrays.asList(6, 6, 8));
+     *     assert ImmCollections.asList(6, 1, 6, 8).remove(6).asCollection().equals(Arrays.asList(1, 6, 8));
+     *     assert ImmCollections.asList(6, 1, 6, 8).remove(7).asCollection().equals(Arrays.asList(6, 1, 6, 8));
      * </pre>
      * @param element The element to remove
      * @return A list with <code>element</code> removed
@@ -115,7 +115,7 @@ public interface ImmList<E> extends ImmCollection<E> {
      * <p>THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
      * <pre>
      * Example:
-     *     assert List23.of(Arrays.asList(6, 1, 6, 8)).filter(e -&gt; e != 6 ).asCollection().equals(Arrays.asList(1, 8));
+     *     assert ImmCollections.asList(6, 1, 6, 8).filter(e -&gt; e != 6 ).asCollection().equals(Arrays.asList(1, 8));
      * </pre>
      * @param filter The filter to apply
      * @return A list with <code>filter</code> applied
@@ -128,7 +128,7 @@ public interface ImmList<E> extends ImmCollection<E> {
      * <p>THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
      * <pre>
      * Example:
-     *     assert List23.of(Arrays.asList(6, 1, 6, 8)).retain(Arrays.asList(6,1)).asCollection().equals(Arrays.asList(6, 1, 6));
+     *     assert ImmCollections.asList(6, 1, 6, 8).retain(Arrays.asList(6,1)).asCollection().equals(Arrays.asList(6, 1, 6));
      * </pre>
      * @param other The items to match.
      * @return a list whose items also appear in another list
@@ -142,7 +142,7 @@ public interface ImmList<E> extends ImmCollection<E> {
      * <p>THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
      * <pre>
      * Example:
-     *     assert List23.of(Arrays.asList(6, 1, 6, 8)).removeAllIn(Arrays.asList(1)).asCollection().equals(Arrays.asList(6, 6, 8));
+     *     assert ImmCollections.asList(6, 1, 6, 8).removeAllIn(Arrays.asList(1)).asCollection().equals(Arrays.asList(6, 6, 8));
      * </pre>
      * @param other The items to match.
      * @return a list whose items don't appear in another list
@@ -156,8 +156,8 @@ public interface ImmList<E> extends ImmCollection<E> {
 	 * <p>THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
      * <pre>
      * Example:
-     *     assert List23.of(Arrays.asList(6, 1, 6, 8)).add(9).asCollection().equals(Arrays.asList(6, 1, 6, 8, 9));
-     *     assert List23.of(Arrays.asList(6, 1, 6, 8)).add(1).asCollection().equals(Arrays.asList(6, 1, 6, 8, 1));
+     *     assert ImmCollections.asList(6, 1, 6, 8).add(9).asCollection().equals(Arrays.asList(6, 1, 6, 8, 9));
+     *     assert ImmCollections.asList(6, 1, 6, 8).add(1).asCollection().equals(Arrays.asList(6, 1, 6, 8, 1));
      * </pre>
 	 * @param element The element to add.
 	 * @return A list with <code>element</code> added to the end
@@ -171,7 +171,7 @@ public interface ImmList<E> extends ImmCollection<E> {
 	 * <p>THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
      * <pre>
      * Example:
-     *     assert List23.of(Arrays.asList(6, 1, 6, 8)).setAt(2, 3).asCollection().equals(Arrays.asList(6, 1, 3, 8));
+     *     assert ImmCollections.asList(6, 1, 6, 8).setAt(2, 3).asCollection().equals(Arrays.asList(6, 1, 3, 8));
      * </pre>
      * @param index The index. Must be in range <code>[0, size]</code>.
 	 * @param element The element to set
@@ -186,7 +186,7 @@ public interface ImmList<E> extends ImmCollection<E> {
 	 * <p>THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
      * <pre>
      * Example:
-     *     assert List23.of(Arrays.asList(6, 1, 6, 8)).insertAt(2, 3).asCollection().equals(Arrays.asList(6, 1, 3, 6, 8));
+     *     assert ImmCollections.asList(6, 1, 6, 8).insertAt(2, 3).asCollection().equals(Arrays.asList(6, 1, 3, 6, 8));
      * </pre>
      * @param index The index. Must be in range <code>[0, size]</code>.
 	 * @param element The element to insert
@@ -201,7 +201,7 @@ public interface ImmList<E> extends ImmCollection<E> {
 	 * <p>THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
      * <pre>
      * Example:
-     *     assert List23.of(Arrays.asList(6, 1, 6, 8)).removeAt(2).asCollection().equals(Arrays.asList(6, 1, 8));
+     *     assert ImmCollections.asList(6, 1, 6, 8).removeAt(2).asCollection().equals(Arrays.asList(6, 1, 8));
      * </pre>
      * @param index The index. Must be in range <code>[0, size - 1]</code>
 	 * @return A list with the given index removed
@@ -215,9 +215,9 @@ public interface ImmList<E> extends ImmCollection<E> {
      * <p>THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
      * <pre>
      * Example:
-     *     assert List23.of(Arrays.asList(6, 1, 6, 8)).removeRange(1,3).asCollection().equals(Arrays.asList(6, 8));
-     *     assert List23.of(Arrays.asList(6, 1, 6, 8)).removeRange(1,1).asCollection().equals(Arrays.asList(6, 1, 6, 8));
-     *     assert List23.of(Arrays.asList(6, 1, 6, 8)).removeRange(0,4).asCollection().equals(Arrays.asList());
+     *     assert ImmCollections.asList(6, 1, 6, 8).removeRange(1,3).asCollection().equals(Arrays.asList(6, 8));
+     *     assert ImmCollections.asList(6, 1, 6, 8).removeRange(1,1).asCollection().equals(Arrays.asList(6, 1, 6, 8));
+     *     assert ImmCollections.asList(6, 1, 6, 8).removeRange(0,4).asCollection().equals(Arrays.asList());
      * </pre>
      * @param low The low index (inclusive).   Must be in range <code>[0, high]</code>
      * @param high The high index (exclusive).   Must be in range <code>[0, size]</code>
@@ -232,8 +232,8 @@ public interface ImmList<E> extends ImmCollection<E> {
      * <p>THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
      * <pre>
      * Example:
-     *     assert List23.of(Arrays.asList(6, 1, 6, 8)).replaceRange(1,3,List23.singleton(7)).asCollection().equals(Arrays.asList(6, 7, 8));
-     *     assert List23.of(Arrays.asList(6, 1, 6, 8)).replaceRange(1,3,List23.of(Arrays.asList(7,5,3))).asCollection().equals(Arrays.asList(6, 7, 5, 3, 8));
+     *     assert ImmCollections.asList(6, 1, 6, 8).replaceRange(1,3,ImmCollections.asList(7)).asCollection().equals(Arrays.asList(6, 7, 8));
+     *     assert ImmCollections.asList(6, 1, 6, 8).replaceRange(1,3,ImmCollections.asList(7,5,3)).asCollection().equals(Arrays.asList(6, 7, 5, 3, 8));
      * </pre>
      * @param low The low index (inclusive).   Must be in range <code>[0, high]</code>
      * @param high The high index (exclusive).   Must be in range <code>[0, size]</code>
@@ -249,8 +249,8 @@ public interface ImmList<E> extends ImmCollection<E> {
      * <p>THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
      * <pre>
      * Example:
-     *     assert List23.of(Arrays.asList(6, 1, 6, 8)).insertListAt(2,List23.singleton(7)).asCollection().equals(Arrays.asList(6, 1, 7, 6, 8));
-     *     assert List23.of(Arrays.asList(6, 1, 6, 8)).insertListAt(2,List23.of(Arrays.asList(7,5,3))).asCollection().equals(Arrays.asList(6, 1, 7, 5, 3, 6, 8));
+     *     assert ImmCollections.asList(6, 1, 6, 8).insertListAt(2,ImmCollections.asList(7)).asCollection().equals(Arrays.asList(6, 1, 7, 6, 8));
+     *     assert ImmCollections.asList(6, 1, 6, 8).insertListAt(2,ImmCollections.asList(7,5,3)).asCollection().equals(Arrays.asList(6, 1, 7, 5, 3, 6, 8));
      * </pre>
      * @param index The index.   Must be in range <code>[0, size]</code>
      * @param other The list to insert
@@ -265,8 +265,8 @@ public interface ImmList<E> extends ImmCollection<E> {
 	 * <p>THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
      * <pre>
      * Example:
-     *     assert List23.of(Arrays.asList(6, 1, 6, 8)).appendList(List23.singleton(7)).asCollection().equals(Arrays.asList(6, 1, 6, 8, 7));
-     *     assert List23.of(Arrays.asList(6, 1, 6, 8)).appendList(List23.of(Arrays.asList(7,5,3))).asCollection().equals(Arrays.asList(6, 1, 6, 8, 7, 5, 3));
+     *     assert ImmCollections.asList(6, 1, 6, 8).appendList(ImmCollections.asList(7)).asCollection().equals(Arrays.asList(6, 1, 6, 8, 7));
+     *     assert ImmCollections.asList(6, 1, 6, 8).appendList(ImmCollections.asList(7,5,3)).asCollection().equals(Arrays.asList(6, 1, 6, 8, 7, 5, 3));
      * </pre>
 	 * @param other The list to append
 	 * @return A list with the given list appended to the end
@@ -279,9 +279,9 @@ public interface ImmList<E> extends ImmCollection<E> {
      * <p>THIS OPERATION IS IMMUTABLE. The original list is left unchanged.
      * <pre>
      * Example:
-     *     assert List23.of(Arrays.asList(6, 1, 6, 8)).tailAt(2).asCollection().equals(Arrays.asList(6,8));
-     *     assert List23.of(Arrays.asList(6, 1, 6, 8)).tailAt(4).asCollection().equals(Arrays.asList());
-     *     assert List23.of(Arrays.asList(6, 1, 6,  8)).tailAt(0).asCollection().equals(Arrays.asList(6, 1, 6, 8));
+     *     assert ImmCollections.asList(6, 1, 6, 8).tailAt(2).asCollection().equals(Arrays.asList(6,8));
+     *     assert ImmCollections.asList(6, 1, 6, 8).tailAt(4).asCollection().equals(Arrays.asList());
+     *     assert ImmCollections.asList(Arrays.asList(6, 1, 6,  8)).tailAt(0).asCollection().equals(Arrays.asList(6, 1, 6, 8));
      * </pre>
 	 * @param index The chopping point (inclusive).  Must be in range <code>[0, size]</code>
 	 * @return A list with all indexes &gt;= the specified index
@@ -295,9 +295,9 @@ public interface ImmList<E> extends ImmCollection<E> {
      * <p>THIS OPERATION IS IMMUTABLE. The original list is left unchanged.
      * <pre>
      * Example:
-     *     assert List23.of(Arrays.asList(6, 1, 6, 8)).headAt(2).asCollection().equals(Arrays.asList(6, 1));
-     *     assert List23.of(Arrays.asList(6, 1, 6, 8)).headAt(4).asCollection().equals(Arrays.asList(6, 1, 6, 8));
-     *     assert List23.of(Arrays.asList(6, 1, 6, 8)).headAt(0).asCollection().equals(Arrays.asList());
+     *     assert ImmCollections.asList(6, 1, 6, 8).headAt(2).asCollection().equals(Arrays.asList(6, 1));
+     *     assert ImmCollections.asList(6, 1, 6, 8).headAt(4).asCollection().equals(Arrays.asList(6, 1, 6, 8));
+     *     assert ImmCollections.asList(6, 1, 6, 8).headAt(0).asCollection().equals(Arrays.asList());
      * </pre>
 	 * @param index The chopping point (exclusive).  Must be in range <code>[0, size]</code>
 	 * @return A list with all indexes &lt; the specified index
@@ -311,7 +311,7 @@ public interface ImmList<E> extends ImmCollection<E> {
      * <p>THIS OPERATION IS IMMUTABLE. The original list is left unchanged.
      * <pre>
      * Example:
-     *     assert List23.of(Arrays.asList(6, 1, 6, 8)).getRange(1, 3).asCollection().equals(Arrays.asList(1, 6));
+     *     assert ImmCollections.asList(6, 1, 6, 8).getRange(1, 3).asCollection().equals(Arrays.asList(1, 6));
      * </pre>
      * @param low The low index (inclusive).   Must be in range <code>[0, high]</code>
      * @param high The high index (exclusive).   Must be in range <code>[0, size]</code>
@@ -326,7 +326,7 @@ public interface ImmList<E> extends ImmCollection<E> {
 	 * <p>THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
      * <pre>
      * Example:
-     *     assert List23.of(Arrays.asList(6, 1, 6, 8)).reversed().asCollection().equals(Arrays.asList(8, 6, 1, 6));
+     *     assert ImmCollections.asList(6, 1, 6, 8).reversed().asCollection().equals(Arrays.asList(8, 6, 1, 6));
      * </pre>
 	 * @return A list that is the original list reversed
 	 */
