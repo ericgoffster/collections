@@ -15,7 +15,7 @@ import java.util.function.Predicate;
  * @param <K> The key type
  * @param <V> The value type
  */
-public interface ImmSortedMap<K, V> extends Map23<K, V> {
+public interface ImmSortedMap<K, V> extends ImmMap<K, V> {
     @Override
     ImmSortedMap<K, V> add(Entry<K ,V> entry);
 

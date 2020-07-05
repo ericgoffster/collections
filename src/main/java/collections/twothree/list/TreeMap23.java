@@ -449,10 +449,10 @@ public final class TreeMap23<K, V> implements ImmSortedMap<K, V> {
 	
 	@Override
 	public boolean equals(final Object obj) {
-		if (!(obj instanceof Map23)) {
+		if (!(obj instanceof ImmMap)) {
 			return false;
 		}
-		Map23<?, ?> other = (Map23<?, ?>)obj;
+		ImmMap<?, ?> other = (ImmMap<?, ?>)obj;
 		return asMap().equals(other.asMap());
 	}
 	

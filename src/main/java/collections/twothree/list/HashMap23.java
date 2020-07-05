@@ -23,7 +23,7 @@ import java.util.stream.StreamSupport;
  * @param <K> The key type
  * @param <V> The value type
  */
-public final class HashMap23<K, V> implements Map23<K, V> {
+public final class HashMap23<K, V> implements ImmMap<K, V> {
 	final TreeList23<Entry<K, V>> entries;
 
 	HashMap23(final TreeList23<Entry<K, V>> entries) {
@@ -214,10 +214,10 @@ public final class HashMap23<K, V> implements Map23<K, V> {
 	
 	@Override
 	public boolean equals(final Object obj) {
-		if (!(obj instanceof Map23)) {
+		if (!(obj instanceof ImmMap)) {
 			return false;
 		}
-		final Map23<?, ?> other = (Map23<?, ?>)obj;
+		final ImmMap<?, ?> other = (ImmMap<?, ?>)obj;
 		return asMap().equals(other.asMap());
 	}
 	

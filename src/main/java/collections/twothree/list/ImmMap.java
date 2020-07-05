@@ -14,7 +14,7 @@ import java.util.stream.Stream;
  * @param <K> The key type
  * @param <V> The value type
  */
-public interface Map23<K,V> extends Iterable<Entry<K,V>> {
+public interface ImmMap<K,V> extends Iterable<Entry<K,V>> {
     /**
      * Returns the size of the map.
      * <p>This operation is O(1).
@@ -29,7 +29,7 @@ public interface Map23<K,V> extends Iterable<Entry<K,V>> {
      * @param entry The entry to add.
      * @return a new map23 with <code>entry</code> added.
      */
-    Map23<K, V> add(Entry<K ,V> entry);
+    ImmMap<K, V> add(Entry<K ,V> entry);
 
     /**
      * Returns a new map23 with <code>entries</code> added.
@@ -38,7 +38,7 @@ public interface Map23<K,V> extends Iterable<Entry<K,V>> {
      * @param entries The entries to add.
      * @return a new map23 with <code>entries</code> added.
      */
-    Map23<K, V> addAll(Iterable<? extends Entry<K ,V>> entries);
+    ImmMap<K, V> addAll(Iterable<? extends Entry<K ,V>> entries);
 
     /**
      * Returns a new map23 with the contents of <code>map</code> added.
@@ -47,7 +47,7 @@ public interface Map23<K,V> extends Iterable<Entry<K,V>> {
      * @param map The map to copy.
      * @return a new map23 with the map added.
      */
-    Map23<K, V> addAll(Map<K ,V> map);
+    ImmMap<K, V> addAll(Map<K ,V> map);
 
     /**
      * Returns a new map23 with <code>key</code> associated with <code>value</code>.
@@ -57,7 +57,7 @@ public interface Map23<K,V> extends Iterable<Entry<K,V>> {
      * @param value The value to add
      * @return a new map23 with <code>key</code> associated with <code>value</code>
      */
-    Map23<K, V> put(final K key, final V value);
+    ImmMap<K, V> put(final K key, final V value);
     
     /**
      * Returns true if this map contains <code>key</code>.
@@ -74,7 +74,7 @@ public interface Map23<K,V> extends Iterable<Entry<K,V>> {
      * @param key The key to remove
      * @return  a new map23 with <code>key</code> removed
      */
-    Map23<K, V> removeKey(final K key);
+    ImmMap<K, V> removeKey(final K key);
     
     /**
      * Returns a new map23 with only the keys contained in <code>keys</code>.
@@ -83,7 +83,7 @@ public interface Map23<K,V> extends Iterable<Entry<K,V>> {
      * @param keys The key list.
      * @return a new map23 with only the keys contained in <code>keys</code>
      */
-    Map23<K, V> retainAllKeys(final Iterable<? extends K> keys);
+    ImmMap<K, V> retainAllKeys(final Iterable<? extends K> keys);
 
     /**
      * Returns a new map23 with only the keys than are *not* in <code>keys</code>.
@@ -92,7 +92,7 @@ public interface Map23<K,V> extends Iterable<Entry<K,V>> {
      * @param keys The key list.
      * @return a new map23 with only the keys than are *not* in <code>keys</code>
      */
-    Map23<K, V> removeAllKeysIn(final Iterable<? extends K> keys);
+    ImmMap<K, V> removeAllKeysIn(final Iterable<? extends K> keys);
     
     /**
      * Returns the value associated with <code>key</code>, null if not found.
@@ -145,7 +145,7 @@ public interface Map23<K,V> extends Iterable<Entry<K,V>> {
      * @param keyFilter The key filter
      * @return A map23 will all keys matching <code>keyFilter</code>.
      */
-    public Map23<K, V> filterKeys(final Predicate<K> keyFilter);
+    public ImmMap<K, V> filterKeys(final Predicate<K> keyFilter);
 
     /**
      * Return A map23 with entries that match <code>filter</code>.
@@ -153,7 +153,7 @@ public interface Map23<K,V> extends Iterable<Entry<K,V>> {
      * @param filter The entrr filter
      * @return  A map23 with entries that match <code>filter</code>
      */
-    Map23<K, V> filter(final Predicate<Entry<K,V>> filter);
+    ImmMap<K, V> filter(final Predicate<Entry<K,V>> filter);
     
     /**
      * Streams the entries.
