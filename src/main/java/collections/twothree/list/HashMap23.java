@@ -198,7 +198,7 @@ public final class HashMap23<K, V> implements Map23<K, V> {
 	}
 
     @Override
-    public ImmCollection23<V> values() {
+    public ImmCollection<V> values() {
         return entries.map(e -> e.getValue());
     }
 	

@@ -137,7 +137,7 @@ public interface Map23<K,V> extends Iterable<Entry<K,V>> {
      * <p>This operation is O(1).
      * @return all values in this map
      */
-    ImmCollection23<V> values();
+    ImmCollection<V> values();
     
     /**
      * Return A map23 with keys that match <code>keyFilter</code>.

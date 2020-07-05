@@ -10,7 +10,7 @@ import java.util.stream.Stream;
  *
  * @param <E> The type of the elements contained by this collection.
  */
-public interface ImmCollection23<E> extends Iterable<E> {
+public interface ImmCollection<E> extends Iterable<E> {
     /**
      * Returns the size of this collection.
      * <p>This operation is O(1).
@@ -33,7 +33,7 @@ public interface ImmCollection23<E> extends Iterable<E> {
      * @param element The element to add
      * @return A collection with the given element added.
      */
-    ImmCollection23<E> add(E element);
+    ImmCollection<E> add(E element);
     
     /**
      * Returns a collection with <code>element</code> removed.
@@ -42,7 +42,7 @@ public interface ImmCollection23<E> extends Iterable<E> {
      * @param element The element to remove
      * @return A collection with the given element removed
      */
-    ImmCollection23<E> remove(E element);
+    ImmCollection<E> remove(E element);
     
     /**
      * Returns a collection with only the elements that match <code>filter</code>.
@@ -51,7 +51,7 @@ public interface ImmCollection23<E> extends Iterable<E> {
      * @param filter The filter to apply
      * @return A collection with the given element removed
      */
-    ImmCollection23<E> filter(Predicate<E> filter);
+    ImmCollection<E> filter(Predicate<E> filter);
     
     /**
      * Returns a collection that is the intersection of this collection with <code>other</code>.
@@ -60,7 +60,7 @@ public interface ImmCollection23<E> extends Iterable<E> {
      * @param other The collection to intersection with
      * @return A collection with the given element removed
      */
-    ImmCollection23<E> retain(Iterable<? extends E> other);
+    ImmCollection<E> retain(Iterable<? extends E> other);
 
     /**
      * Returns a collection that is the subtraction of this collection with <code>other</code>.
@@ -69,7 +69,7 @@ public interface ImmCollection23<E> extends Iterable<E> {
      * @param other The elements to remove
      * @return A collection with the given element removed
      */
-    ImmCollection23<E> removeAllIn(Iterable<? extends E> other);
+    ImmCollection<E> removeAllIn(Iterable<? extends E> other);
   
     /**
      * Returns the read-only {@link Collection} view of this collection.

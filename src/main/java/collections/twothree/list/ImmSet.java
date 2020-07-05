@@ -9,7 +9,7 @@ import java.util.function.Predicate;
  *
  * @param <E> The type of the elements contained by this set.
  */
-public interface ImmSet<E> extends ImmCollection23<E> {
+public interface ImmSet<E> extends ImmCollection<E> {
     /**
      * Returns a set with <code>element</code> added.
      * The order of elements is not defined.
