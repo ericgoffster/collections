@@ -28,7 +28,7 @@ import org.granitesoft.requirement.Requirements;
  * <p>
  * The following operations are all O(log n) worst case:
  * <ul>
- *     <li>{@liank List23#insertAt(int, Object)}</li>
+ *     <li>{@link List23#insertAt(int, Object)}</li>
  *     <li>{@link List23#removeRange(int, int)}</li>
  *     <li>{@link List23#appendList(List23)}</li>
  *     <li>{@link List23#getAt(int)}</li>

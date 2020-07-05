@@ -39,7 +39,7 @@ public final class HashSet23<E> implements Set23<E> {
      * <p>This operation is O(1).
      * <pre>
      * Example:
-     *     assert HashSet23.singleton(6).asCollection().equals(new HashSet<>(Arrays.asList(6)));
+     *     assert HashSet23.singleton(6).asCollection().equals(new HashSet&lt;&gt;(Arrays.asList(6)));
      * </pre>
 	 * @param <E> The element type
 	 * @param element The singleton element
@@ -54,7 +54,7 @@ public final class HashSet23<E> implements Set23<E> {
      * <p>This operation is O(1).
      * <pre>
      * Example:
-     *     assert HashSet23.empty().asCollection().equals(new HashSet<>(Arrays.asList()));
+     *     assert HashSet23.empty().asCollection().equals(new HashSet&lt;&gt;(Arrays.asList()));
      * </pre>
      * @param <E> The element type
      * @return An empty set.
@@ -68,7 +68,7 @@ public final class HashSet23<E> implements Set23<E> {
      * <p>This operation is O(n log n).
      * <pre>
      * Example:
-     *     assert HashSet23.of(Arrays.asList(4, 2, 3)).asCollection().equals(new HashSet<>(Arrays.asList(2, 3, 4)));
+     *     assert HashSet23.of(Arrays.asList(4, 2, 3)).asCollection().equals(new HashSet&lt;&gt;(Arrays.asList(2, 3, 4)));
      * </pre>
      * @param <E> The element typer
      * @param elements The array of elements
@@ -115,8 +115,8 @@ public final class HashSet23<E> implements Set23<E> {
      * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * <pre>
      * Example:
-     *     assert HashSet23.of(Arrays.asList(4,2,3)).add(5).asCollection().equals(new HashSet<>(Arrays.asList(2, 3, 4, 5)));
-     *     assert HashSet23.of(Arrays.asList(4, 2, 3, 5)).add(5).asCollection().equals(new HashSet<>(Arrays.asList(2, 3, 4, 5)));
+     *     assert HashSet23.of(Arrays.asList(4,2,3)).add(5).asCollection().equals(new HashSet&lt;&gt;(Arrays.asList(2, 3, 4, 5)));
+     *     assert HashSet23.of(Arrays.asList(4, 2, 3, 5)).add(5).asCollection().equals(new HashSet&lt;&gt;(Arrays.asList(2, 3, 4, 5)));
      * </pre>
 	 * @param element The element to add.
 	 * @return A set with the given element added.
@@ -135,7 +135,7 @@ public final class HashSet23<E> implements Set23<E> {
      * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * <pre>
      * Example:
-     *     assert HashSet23.of(Arrays.asList(4,2,3)).union(HashSet23.of(Arrays.asList(4, 5, 6))).asCollection().equals(new HashSet<>(Arrays.asList(2, 3, 4, 5, 6)));
+     *     assert HashSet23.of(Arrays.asList(4,2,3)).union(HashSet23.of(Arrays.asList(4, 5, 6))).asCollection().equals(new HashSet&lt;&gt;(Arrays.asList(2, 3, 4, 5, 6)));
      * </pre>
      * @param other The elements to remove.
      * @return A set with the given element removed.
@@ -155,8 +155,8 @@ public final class HashSet23<E> implements Set23<E> {
      * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * <pre>
      * Example:
-     *     assert HashSet23.of(Arrays.asList(4,2,3)).remove(2).asCollection().equals(new HashSet<>(Arrays.asList(3, 4)));
-     *     assert HashSet23.of(Arrays.asList(4,2,3)).remove(5).asCollection().equals(new HashSet<>(Arrays.asList(2, 3, 4)));
+     *     assert HashSet23.of(Arrays.asList(4,2,3)).remove(2).asCollection().equals(new HashSet&lt;&gt;(Arrays.asList(3, 4)));
+     *     assert HashSet23.of(Arrays.asList(4,2,3)).remove(5).asCollection().equals(new HashSet&lt;&gt;(Arrays.asList(2, 3, 4)));
      * </pre>
      * @param element The element to remove
      * @return A set with the given element removed
@@ -173,7 +173,7 @@ public final class HashSet23<E> implements Set23<E> {
      * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * <pre>
      * Example:
-     *     assert HashSet23.of(Arrays.asList(4,2,3)).filter(e -&gt; e &lt; 4).asCollection().equals(new HashSet<>(Arrays.asList(2, 3)));
+     *     assert HashSet23.of(Arrays.asList(4,2,3)).filter(e -&gt; e &lt; 4).asCollection().equals(new HashSet&lt;&gt;(Arrays.asList(2, 3)));
      * </pre>
      * @param filter The filter to apply
      * @return A set with the given element removed
@@ -189,7 +189,7 @@ public final class HashSet23<E> implements Set23<E> {
      * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * <pre>
      * Example:
-     *     HashSet23.of(Arrays.asList(4,2,3)).retain(Set.of(1,2,4)).asCollection().equals(new HashSet<>(Arrays.asList(4, 2)));
+     *     HashSet23.of(Arrays.asList(4,2,3)).retain(Set.of(1,2,4)).asCollection().equals(new HashSet&lt;&gt;(Arrays.asList(4, 2)));
      * </pre>
      * @param other The set to intersection with
      * @return A set with the given element removed
@@ -205,7 +205,7 @@ public final class HashSet23<E> implements Set23<E> {
      * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * <pre>
      * Example:
-     *     assert HashSet23.of(Arrays.asList(4,2,3)).removeAllIn(HashSet23.of(Arrays.asList(2,4))).asCollection().equals(new HashSet<>(Arrays.asList(3)));
+     *     assert HashSet23.of(Arrays.asList(4,2,3)).removeAllIn(HashSet23.of(Arrays.asList(2,4))).asCollection().equals(new HashSet&lt;&gt;(Arrays.asList(3)));
      * </pre>
      * @param other The elements to remove.
      * @return A set with the given element removed.
@@ -223,7 +223,7 @@ public final class HashSet23<E> implements Set23<E> {
      * Returns the read-only {@link Set} view of this set.
      * <pre>
      * Example:
-     *     assert HashSet23.of(Arrays.asList(4,2,3)).asCollection().equals(new HashSet<>(Arrays.asList(2, 3, 4)));
+     *     assert HashSet23.of(Arrays.asList(4,2,3)).asCollection().equals(new HashSet&lt;&gt;(Arrays.asList(2, 3, 4)));
      * </pre>
      * @return the {@link Set} view of this set
      */

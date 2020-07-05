@@ -42,12 +42,12 @@ public class HashMap23Test {
     }
     @Test
     public void testRemoveAll() {
-        assertEquals(HashMap23.of(Arrays.asList(makeEntry(0,1), makeEntry(3,2), makeEntry(6,3), makeEntry(9,4), makeEntry(12,5))).removeAllKeysIn(SortedSet23.singleton(6).add(7).add(9)),
+        assertEquals(HashMap23.of(Arrays.asList(makeEntry(0,1), makeEntry(3,2), makeEntry(6,3), makeEntry(9,4), makeEntry(12,5))).removeAllKeysIn(TreeSet23.singleton(6).add(7).add(9)),
                 HashMap23.of(Arrays.asList(makeEntry(0,1), makeEntry(3,2), makeEntry(12,5))));
     }
     @Test
     public void testRetainAll() {
-        assertEquals(HashMap23.of(Arrays.asList(makeEntry(0,1), makeEntry(3,2), makeEntry(6,3), makeEntry(9,4), makeEntry(12,5))).retainAllKeys(SortedSet23.singleton(6).add(7).add(9)),
+        assertEquals(HashMap23.of(Arrays.asList(makeEntry(0,1), makeEntry(3,2), makeEntry(6,3), makeEntry(9,4), makeEntry(12,5))).retainAllKeys(TreeSet23.singleton(6).add(7).add(9)),
                 HashMap23.of(Arrays.asList(makeEntry(6,3), makeEntry(9,4))));
     }
 
@@ -105,7 +105,7 @@ public class HashMap23Test {
 
     @Test
     public void testKeys() {
-        assertEquals(HashMap23.singleton(1, 2).put(3, 4).keys(), SortedSet23.singleton(1).add(3));
+        assertEquals(HashMap23.singleton(1, 2).put(3, 4).keys(), TreeSet23.singleton(1).add(3));
     }
 
     @Test

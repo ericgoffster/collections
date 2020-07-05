@@ -22,17 +22,17 @@ public class SortedSet23Test {
     @SuppressWarnings("varargs")
     private static <E extends Comparable<E>> SortedSet23<E> of(E ... elements) {
         List<E> asList = Arrays.asList(elements);
-        return SortedSet23.of(asList);
+        return TreeSet23.of(asList);
     }
     
 
     @Test
     public void testOfSorted() {
         Comparator<Integer> comp = Integer::compare;
-        assertEquals(SortedSet23.of(comp, Arrays.asList(4, 6, 5)).asList(), List23.singleton(4).add(5).add(6));
-        assertEquals(SortedSet23.of(comp.reversed(), Arrays.asList(4, 6, 5)).asList(), List23.singleton(6).add(5).add(4));
-        assertEquals(SortedSet23.of(of(4, 6, 5)).asList(), List23.singleton(4).add(5).add(6));
-        assertEquals(SortedSet23.ofSorted(of(4, 6, 5).reversed().asCollection()).asList(), List23.singleton(6).add(5).add(4));
+        assertEquals(TreeSet23.of(comp, Arrays.asList(4, 6, 5)).asList(), List23.singleton(4).add(5).add(6));
+        assertEquals(TreeSet23.of(comp.reversed(), Arrays.asList(4, 6, 5)).asList(), List23.singleton(6).add(5).add(4));
+        assertEquals(TreeSet23.of(of(4, 6, 5)).asList(), List23.singleton(4).add(5).add(6));
+        assertEquals(TreeSet23.ofSorted(of(4, 6, 5).reversed().asCollection()).asList(), List23.singleton(6).add(5).add(4));
     }
 
 	@Test
@@ -42,7 +42,7 @@ public class SortedSet23Test {
 		assertEquals(l.lt(12),of(0, 3, 6, 9));
 		assertEquals(l.lt(3),of(0));
 		assertEquals(l.lt(2),of(0));
-		assertEquals(l.lt(0),SortedSet23.empty());
+		assertEquals(l.lt(0),TreeSet23.empty());
 	}
 
 	@Test
@@ -53,7 +53,7 @@ public class SortedSet23Test {
 		assertEquals(l.ge(1),of(3, 6, 9, 12));
 		assertEquals(l.ge(11),of(12));
 		assertEquals(l.ge(12),of(12));
-		assertEquals(l.ge(13),SortedSet23.empty());
+		assertEquals(l.ge(13),TreeSet23.empty());
 	}
 
 	@Test
@@ -83,10 +83,10 @@ public class SortedSet23Test {
 		assertEquals(l.subSet(4, 9),of(6));
 		assertEquals(l.subSet(6, 9),of(6));
 		assertEquals(l.subSet(6, 7),of(6));
-		assertEquals(l.subSet(6, 6),SortedSet23.empty());
-		l = SortedSet23.empty();
-        assertEquals(l.subSet(0, 0),SortedSet23.empty());
-        assertEquals(of(0, 3, 6, 9, 12).subSet(0, 0),SortedSet23.empty());
+		assertEquals(l.subSet(6, 6),TreeSet23.empty());
+		l = TreeSet23.empty();
+        assertEquals(l.subSet(0, 0),TreeSet23.empty());
+        assertEquals(of(0, 3, 6, 9, 12).subSet(0, 0),TreeSet23.empty());
         assertThrows(IllegalArgumentException.class, () -> of(0, 3, 6, 9, 12).subSet(1, 0));
 	}
 
@@ -107,20 +107,20 @@ public class SortedSet23Test {
 
 	@Test
 	public void testInsertions() {
-		assertEquals(SortedSet23.<Integer>empty().add(1),of(1));
+		assertEquals(TreeSet23.<Integer>empty().add(1),of(1));
         assertEquals(of(1, 3).add(2),of(1, 2, 3));
 		assertEquals(of(1).add(2),of(1, 2));
 		assertEquals(of(0, 3, 6, 9, 12).add(3),of(0, 3, 6, 9, 12));
 		assertEquals(of(0, 3, 6, 9, 12).add(5),of(0, 3, 5, 6, 9, 12));
         assertEquals(of(0, 3, 6, 9, 12).union(of(2, 4, 6)),of(0, 2, 3, 4, 6, 9, 12));
-        assertEquals(SortedSet23.<Integer>empty().union(of(2, 4, 6)),of(2, 4, 6));
+        assertEquals(TreeSet23.<Integer>empty().union(of(2, 4, 6)),of(2, 4, 6));
 	}
 	
 	@Test
 	public void testContains() {
-		assertFalse(SortedSet23.<Integer>empty().contains(1));
+		assertFalse(TreeSet23.<Integer>empty().contains(1));
 		assertFalse(of(1).contains(2));
-		assertTrue(SortedSet23.singleton(1).contains(1));
+		assertTrue(TreeSet23.singleton(1).contains(1));
 		assertTrue(of(1, 2).contains(1));
 		assertTrue(of(1, 2).contains(2));
 		assertFalse(of(1, 2).contains(3));
@@ -129,18 +129,18 @@ public class SortedSet23Test {
 	
 	@Test
 	public void testSize() {
-		assertEquals(SortedSet23.empty().size(), 0);
+		assertEquals(TreeSet23.empty().size(), 0);
 		assertEquals(of(1).size(), 1);
 		assertEquals(of(1, 2).size(), 2);
 	}
 	
 	@Test
 	public void testDeletions() {
-		assertEquals(SortedSet23.<Integer>empty().remove(1),SortedSet23.empty());
+		assertEquals(TreeSet23.<Integer>empty().remove(1),TreeSet23.empty());
 		assertEquals(of(2).remove(1),of(2));
 		assertEquals(of(2, 3).remove(1),of(2, 3));
 		assertEquals(of(2, 1).remove(1),of(2));
-		assertEquals(of(1).remove(1),SortedSet23.empty());
+		assertEquals(of(1).remove(1),TreeSet23.empty());
 	}
 	
     @Test
@@ -169,8 +169,8 @@ public class SortedSet23Test {
         SortedSet23<Integer> l = of(3,2,1,4,5,6);
         assertEquals(l.exclude(2,4), of(1,4,5,6));
         assertEquals(l.exclude(2,8), of(1));
-        assertEquals(l.exclude(1,8), SortedSet23.empty());
-        assertEquals(l.exclude(-1,8), SortedSet23.empty());
+        assertEquals(l.exclude(1,8), TreeSet23.empty());
+        assertEquals(l.exclude(-1,8), TreeSet23.empty());
         assertEquals(l.exclude(4, 4), of(3,2,1,4,5,6));
         assertThrows(IllegalArgumentException.class, () -> of(0, 3, 6, 9, 12).exclude(1, 0));
     }
@@ -206,11 +206,11 @@ public class SortedSet23Test {
         {
             TreeSet<String> t = new TreeSet<>();
             t.addAll(Arrays.asList("1", "2", "3", "4", "5"));
-            assertEquals(of("1","2","3","4","5"), SortedSet23.ofSorted(t));
+            assertEquals(of("1","2","3","4","5"), TreeSet23.ofSorted(t));
         }
 		
-		assertThrows(IllegalArgumentException.class, () -> new SortedSet23<>(null,null));
-        assertThrows(IllegalArgumentException.class, () -> new SortedSet23<>(null,List23.empty()));
-        assertThrows(IllegalArgumentException.class, () -> new SortedSet23<>(Integer::compare,null));
+		assertThrows(IllegalArgumentException.class, () -> new TreeSet23<>(null,null));
+        assertThrows(IllegalArgumentException.class, () -> new TreeSet23<>(null,List23.empty()));
+        assertThrows(IllegalArgumentException.class, () -> new TreeSet23<>(Integer::compare,null));
 	}
 }

@@ -190,7 +190,7 @@ public final class SortedMap23<K, V> implements Map23<K, V> {
     @Override
 	public SortedMap23<K, V> put(final K key, final V value) {
         SortedMap23<K, V> m = removeKey(key);
-        final int index = m.keys().elements.naturalPosition(e -> keyComparator.compare(key, e));
+        final int index = m.keys().asList().naturalPosition(e -> keyComparator.compare(key, e));
         return new SortedMap23<>(keyComparator, m.entries.insertAt(index, new AbstractMap.SimpleImmutableEntry<>(key, value)));
 	}
 	
@@ -210,7 +210,7 @@ public final class SortedMap23<K, V> implements Map23<K, V> {
      * @return a sorted map with all entries &gt;= the given key
      */
     public SortedMap23<K, V> ge(final K key) {
-        return new SortedMap23<>(keyComparator, entries.tailAt(keys().elements.naturalPosition(e -> keyComparator.compare(key, e))));
+        return new SortedMap23<>(keyComparator, entries.tailAt(keys().asList().naturalPosition(e -> keyComparator.compare(key, e))));
     }
 
     /**
@@ -229,7 +229,7 @@ public final class SortedMap23<K, V> implements Map23<K, V> {
      * @return a sorted map with all entries &lt; the given key
      */
     public SortedMap23<K, V> lt(final K key) {
-        return new SortedMap23<>(keyComparator, entries.headAt(keys().elements.naturalPosition(e -> keyComparator.compare(key, e))));
+        return new SortedMap23<>(keyComparator, entries.headAt(keys().asList().naturalPosition(e -> keyComparator.compare(key, e))));
     }
 
     /**
@@ -258,8 +258,8 @@ public final class SortedMap23<K, V> implements Map23<K, V> {
         }
         final SortedSet23<K> keys = keys();
         return new SortedMap23<>(keyComparator, entries.removeRange(
-                keys.elements.naturalPosition(e -> keyComparator.compare(lowKey, e)),
-                keys.elements.naturalPosition(e -> keyComparator.compare(highKey, e))));
+                keys.asList().naturalPosition(e -> keyComparator.compare(lowKey, e)),
+                keys.asList().naturalPosition(e -> keyComparator.compare(highKey, e))));
     }
 
     /**
@@ -289,8 +289,8 @@ public final class SortedMap23<K, V> implements Map23<K, V> {
         }
         final SortedSet23<K> keys = keys();
         return new SortedMap23<>(keyComparator, entries.getRange(
-                keys.elements.naturalPosition(e -> keyComparator.compare(lowKey, e)),
-                keys.elements.naturalPosition(e -> keyComparator.compare(highKey, e))));
+                keys.asList().naturalPosition(e -> keyComparator.compare(lowKey, e)),
+                keys.asList().naturalPosition(e -> keyComparator.compare(highKey, e))));
     }
 
 	/**
@@ -423,13 +423,13 @@ public final class SortedMap23<K, V> implements Map23<K, V> {
 	
     @Override
 	public SortedSet23<Entry<K,V>> asSet23() {
-	    return new SortedSet23<>(this::entryCompare, entries);
+	    return new TreeSet23<>(this::entryCompare, entries);
 	}
 	
 
 	@Override
 	public SortedSet23<K> keys() {
-	    return new SortedSet23<>(keyComparator, entries.map(e -> e.getKey()));
+	    return new TreeSet23<>(keyComparator, entries.map(e -> e.getKey()));
 	}
 
     @Override
@@ -492,7 +492,7 @@ public final class SortedMap23<K, V> implements Map23<K, V> {
     static <K, V> Comparator<? super K> getComparator(final SortedMap<K, V> items) {
         final Comparator<? super K> comparator = items.comparator();
         if (comparator == null) {
-            return SortedSet23::unNaturalCompare;
+            return TreeSet23::unNaturalCompare;
         }
         return comparator;
     }

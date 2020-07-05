@@ -21,13 +21,13 @@ public class SortedSet23SetTest {
     @SuppressWarnings("varargs")
     private static <E extends Comparable<E>> SortedSet23<E> of(E ... elements) {
         List<E> asList = Arrays.asList(elements);
-        return SortedSet23.of(asList);
+        return TreeSet23.of(asList);
     }
 
     @Test
     public void testEmpty() {
-        assertEquals(SortedSet23.empty().asCollection(), Collections.emptySet());
-        assertEquals(SortedSet23.empty().asCollection(), Collections.emptySet());
+        assertEquals(TreeSet23.empty().asCollection(), Collections.emptySet());
+        assertEquals(TreeSet23.empty().asCollection(), Collections.emptySet());
     }
 	
 	@Test
@@ -45,7 +45,7 @@ public class SortedSet23SetTest {
         assertEquals(of("1","2","3","4","5").asCollection().tailSet("3"), new TreeSet<>(Arrays.asList("1","2","3","4","5")).tailSet("3"));
         assertEquals(of("1","2","3","4","5").asCollection().first(), "1");
         assertEquals(of("1","2","3","4","5").asCollection().last(), "5");
-        assertThrows(NoSuchElementException.class, ()->SortedSet23.empty().asCollection().first());
-        assertThrows(NoSuchElementException.class, ()->SortedSet23.empty().asCollection().last());
+        assertThrows(NoSuchElementException.class, ()->TreeSet23.empty().asCollection().first());
+        assertThrows(NoSuchElementException.class, ()->TreeSet23.empty().asCollection().last());
 	}
 }

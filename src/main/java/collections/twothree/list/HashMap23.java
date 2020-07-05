@@ -181,7 +181,7 @@ public final class HashMap23<K, V> implements Map23<K, V> {
 	
     @Override
 	public Set23<Entry<K,V>> asSet23() {
-	    return new SortedSet23<>(HashMap23::entryCompare, entries);
+	    return new TreeSet23<>(HashMap23::entryCompare, entries);
 	}
 	
 	static <K,V> int entryCompare(final Entry<K,V> a, final Entry<K,V> b) {

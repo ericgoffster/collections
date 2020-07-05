@@ -69,12 +69,12 @@ public class List23Test {
 	
     @Test
     public void testRetainAll() {
-        assertEquals(of(0, 3, 6, 9, 12).retain(SortedSet23.singleton(6).add(7).add(9)),of(6, 9));
+        assertEquals(of(0, 3, 6, 9, 12).retain(TreeSet23.singleton(6).add(7).add(9)),of(6, 9));
     }
 
     @Test
     public void testRemoveAll() {
-        assertEquals(of(0, 3, 6, 9, 12).removeAllIn(SortedSet23.singleton(6).add(7).add(9)),of(0, 3, 12));
+        assertEquals(of(0, 3, 6, 9, 12).removeAllIn(TreeSet23.singleton(6).add(7).add(9)),of(0, 3, 12));
     }
 
 	@Test
@@ -508,12 +508,12 @@ public class List23Test {
 
     @Test
     public void testCompare() {
-        assertTrue(SortedSet23.unNaturalCompare(null, null) == 0);
-        assertTrue(SortedSet23.unNaturalCompare(2, null) > 0);
-        assertTrue(SortedSet23.unNaturalCompare(null, 2) < 0);
-        assertTrue(SortedSet23.unNaturalCompare(2, 3) < 0);
-        assertTrue(SortedSet23.unNaturalCompare(3, 2) > 0);
-        assertTrue(SortedSet23.unNaturalCompare(3, 3) == 00);
+        assertTrue(TreeSet23.unNaturalCompare(null, null) == 0);
+        assertTrue(TreeSet23.unNaturalCompare(2, null) > 0);
+        assertTrue(TreeSet23.unNaturalCompare(null, 2) < 0);
+        assertTrue(TreeSet23.unNaturalCompare(2, 3) < 0);
+        assertTrue(TreeSet23.unNaturalCompare(3, 2) > 0);
+        assertTrue(TreeSet23.unNaturalCompare(3, 3) == 00);
     }
     
     @Test
@@ -521,11 +521,11 @@ public class List23Test {
         Set<Integer> s = new HashSet<>();
         s.add(3);
         s.add(4);
-        assertTrue(SortedSet23.unNaturalCompare(2, null) > 0);
-        assertTrue(SortedSet23.unNaturalCompare(null, 2) < 0);
-        assertTrue(SortedSet23.unNaturalCompare(2, 3) < 0);
-        assertTrue(SortedSet23.unNaturalCompare(3, 2) > 0);
-        assertTrue(SortedSet23.unNaturalCompare(3, 3) == 00);
+        assertTrue(TreeSet23.unNaturalCompare(2, null) > 0);
+        assertTrue(TreeSet23.unNaturalCompare(null, 2) < 0);
+        assertTrue(TreeSet23.unNaturalCompare(2, 3) < 0);
+        assertTrue(TreeSet23.unNaturalCompare(3, 2) > 0);
+        assertTrue(TreeSet23.unNaturalCompare(3, 3) == 00);
     }
    
 	@Test

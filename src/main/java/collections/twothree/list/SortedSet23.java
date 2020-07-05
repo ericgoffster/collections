@@ -1,15 +1,9 @@
 package collections.twothree.list;
 
 import java.util.Comparator;
-import java.util.ListIterator;
 import java.util.Set;
 import java.util.SortedSet;
-import java.util.Spliterator;
 import java.util.function.Predicate;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
-
-import org.granitesoft.requirement.Requirements;
 
 /**
  * Represents an Immutable ordered set of elements using a {@link List23} as a backing store.
@@ -26,168 +20,7 @@ import org.granitesoft.requirement.Requirements;
  *
  * @param <E> The type of the elements.
  */
-public final class SortedSet23<E> implements Set23<E> {
-    /**
-     * The comparator for elements in the set.   Defines the ordering.
-     */
-	final Comparator<? super E> comparator;
-
-	/**
-	 * The list of elements
-	 */
-	final List23<E> elements;
-
-	SortedSet23(final Comparator<? super E> comparator, final List23<E> elements) {
-		this.elements = Requirements.require(elements, Requirements.notNull(), () -> "elements");
-		this.comparator = Requirements.require(comparator, Requirements.notNull(), () -> "comparator");
-	}
-	
-	/**
-	 * Returns a single set of <code>element</code>.
-     * <p>This operation is O(1).
-     * <pre>
-     * Example:
-     *     assert SortedSet23.singleton(6).asList().asCollection().equals(Arrays.asList(6));
-     * </pre>
-	 * @param <E> The element type
-	 * @param element The singleton element
-	 * @return A set of exactly one element
-	 */
-    public static <E extends Comparable<E>> SortedSet23<E> singleton(final E element) {
-        return new SortedSet23<E>(List23::naturalCompare, List23.singleton(element));
-    }
-
-    /**
-     * Returns the empty set, using a custom ordering.
-     * <p>This operation is O(1).
-     * <pre>
-     * Example:
-     *     assert SortedSet23.empty(Integer::compare).asList().asCollection().equals(Arrays.asList());
-     * </pre>
-     * @param comparator The comparator which defines ordering.
-     * @param <E> The element type
-     * @return An empty set.
-     */
-    public static <E> SortedSet23<E> empty(Comparator<? super E> comparator) {
-        return new SortedSet23<E>(comparator, List23.empty());
-    }
-
-    /**
-     * Returns the empty set.
-     * <p>This operation is O(1).
-     * <pre>
-     * Example:
-     *     assert SortedSet23.empty().asList().asCollection().equals(Arrays.asList());
-     * </pre>
-     * @param <E> The element type
-     * @return An empty set.
-     */
-    public static <E extends Comparable<E>> SortedSet23<E> empty() {
-        return empty(List23::naturalCompare);
-    }
-
-    /**
-     * Returns a set containing an initial list of elements, using natural ordering.
-     * <p>This operation is O(n log n).
-     * <pre>
-     * Example:
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).asList().asCollection().equals(Arrays.asList(2, 3, 4));
-     * </pre>
-     * @param <E> The element type
-     * @param elements The array of elements
-     * @return A set containing an initial list of elements
-     */
-    public static <E extends Comparable<E>> SortedSet23<E> of(final Iterable<? extends E> elements) {
-    	return of(List23::naturalCompare, elements);
-    }
-    
-    /**
-     * Returns a set containing an initial list of elements from <code>sortedSet</code>.
-     * <p>This operation is O(n log n).
-     * <pre>
-     * Example:
-     *     assert SortedSet23.of(SortedSet23.of(Arrays.asList(4, 2, 3)).asCollection()).asList().asCollection().equals(Arrays.asList(2, 3, 4));
-     * </pre>
-     * @param <E> The element type
-     * @param sortedSet The set of elements
-     * @return A set containing an initial list of elements
-     */
-    public static <E> SortedSet23<E> ofSorted(final SortedSet<E> sortedSet) {
-        return new SortedSet23<>(getComparator(sortedSet), List23.of(sortedSet));
-    }
-
-    private static <E> Comparator<? super E> getComparator(final SortedSet<E> sortedSet) {
-        final Comparator<? super E> comparator = sortedSet.comparator();
-        if (comparator == null) {
-            return SortedSet23::unNaturalCompare;
-        }
-        return comparator;
-    }
-
-    /**
-     * Returns a set containing an initial list of elements, using custom ordering.
-     * <p>This operation is O(n log n).
-     * <pre>
-     * Example:
-     *     Comparator<Integer> comp = Integer::compare;
-     *     assert SortedSet23.of(comp, Arrays.asList(4, 2, 3)).asList().asCollection().equals(Arrays.asList(2, 3, 4));
-     *     assert SortedSet23.of(comp.reversed(), Arrays.asList(4, 2, 3)).asList().asCollection().equals(Arrays.asList(4, 3, 2));
-     * </pre>
-     * @param <E> The element type
-     * @param comparator The comparator of elements
-     * @param elements The array of elements
-     * @return A set containing an initial list of elements
-     */
-    public static <E> SortedSet23<E> of(final Comparator<? super E> comparator, final Iterable<? extends E> elements) {
-    	return new SortedSet23<E>(comparator, List23.ofSortedUnique(comparator, elements));
-    }
-    
-    /**
-	 * Returns the size of this set.
-     * <p>This operation is O(1).
-     * <pre>
-     * Example:
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).size() == 3;
-     * </pre>
-	 * @return The size of this set
-	 */
-    @Override
-	public int size() {
-		return elements.size();
-	}
-	
-	/**
-	 * Returns true if the set contains <code>element</code>.
-     * <p>This operation is O(log n).
-     * <pre>
-     * Example:
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).contains(2) == true;
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).contains(5) == false;
-     * </pre>
-	 * @param element The element to look for.
-	 * @return true if the set contains the given element
-	 */
-    @Override
-	public boolean contains(final E element) {
-	    return indexOf(element) >= 0;
-	}
-
-    /**
-     * Returns the index of <code>element</code> in the set.
-     * <p>This operation is O(log n).
-     * <pre>
-     * Example:
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).indexOf(2) == 0;
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).indexOf(4) == 2;
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).indexOf(5) == -1;
-     * </pre>
-     * @param element The element to look for.
-     * @return The index of the given element in the set, -1 of not found.
-     */
-    public int indexOf(final E element) {
-        return elements.getIndexOf(e -> comparator.compare(element, e));
-    }
-    
+public interface SortedSet23<E> extends Set23<E> {
     /**
      * Returns the set of all elements in this set in range &gt;= <code>element</code>.
      * <p>This operation is O(log n).
@@ -201,9 +34,7 @@ public final class SortedSet23<E> implements Set23<E> {
      * @param element The comparison element (inclusive)
      * @return The set of all elements in this set &gt;= element
      */
-	public SortedSet23<E> ge(final E element) {
-		return new SortedSet23<E>(comparator, elements.tailAt(elements.naturalPosition(e -> comparator.compare(element, e))));
-	}
+	SortedSet23<E> ge(E element);
 
     /**
      * Returns the set of all elements in this set &lt; <code>element</code>.
@@ -218,9 +49,7 @@ public final class SortedSet23<E> implements Set23<E> {
      * @param element The comparison element (exclusive)
      * @return The set of all elements in this set &lt; element
      */
-	public SortedSet23<E> lt(final E element) {
-		return new SortedSet23<E>(comparator, elements.headAt(elements.naturalPosition(e -> comparator.compare(element, e))));
-	}
+	SortedSet23<E> lt(E element);
 
     /**
      * Returns the set of all elements not in range <code>[low, high)</code>.
@@ -236,18 +65,7 @@ public final class SortedSet23<E> implements Set23<E> {
      * @param high The high element (inclusive)
      * @return The set of all elements in this set &lt; low or &gt;= high
      */
-    public SortedSet23<E> exclude(final E low, final E high) {
-        int cmp = comparator.compare(low, high);
-        if (cmp > 0) {
-            throw new IllegalArgumentException("low must be <= high");
-        }
-        if (comparator.compare(low, high) == 0) {
-            return this;
-        }
-        return new SortedSet23<E>(comparator, elements.removeRange(
-                elements.naturalPosition(e -> comparator.compare(low, e)),
-                elements.naturalPosition(e -> comparator.compare(high, e))));
-    }
+    SortedSet23<E> exclude(E low, E high);
 
     /**
      * Returns the set of all elements in this set in range <code>[low, high)</code>.
@@ -264,18 +82,7 @@ public final class SortedSet23<E> implements Set23<E> {
      * @param high The high element (exclusive)
      * @return The set of all elements in this set &lt; element
      */
-	public SortedSet23<E> subSet(final E low, final E high) {
-        int cmp = comparator.compare(low, high);
-        if (cmp > 0) {
-            throw new IllegalArgumentException("low must be <= high");
-        }
-        if (comparator.compare(low, high) == 0) {
-            return new SortedSet23<E>(comparator, List23.empty());
-        }
-		return new SortedSet23<E>(comparator, elements.getRange(
-		        elements.naturalPosition(e -> comparator.compare(low, e)),
-		        elements.naturalPosition(e -> comparator.compare(high, e))));
-	}
+	SortedSet23<E> subSet(E low, E high);
 
 	/**
 	 * Returns a set with <code>element</code> added.
@@ -289,12 +96,7 @@ public final class SortedSet23<E> implements Set23<E> {
 	 * @return A set with the given element added.
 	 */
     @Override
-	public SortedSet23<E> add(final E element) {
-	    if (contains(element)) {
-	        return this;
-	    }
-	    return new SortedSet23<>(comparator, elements.insertAt(elements.naturalPosition(e -> comparator.compare(element, e)), element));
-	}
+	SortedSet23<E> add(E element);
 	
     /**
      * Returns a set that is the union of this set with <code>other</code>.
@@ -308,13 +110,7 @@ public final class SortedSet23<E> implements Set23<E> {
      * @return A set with the given element removed.
      */
     @Override
-	public SortedSet23<E> union(final Set23<E> other) {
-	    SortedSet23<E> s = this;
-	    for(E e: other) {
-	        s = s.add(e);
-	    }
-	    return s;
-	}
+	SortedSet23<E> union(Set23<E> other);
 
     /**
      * Returns a set with the elements in reverse order.
@@ -326,9 +122,7 @@ public final class SortedSet23<E> implements Set23<E> {
      * </pre>
      * @return A set with the elements reversed
      */
-	public SortedSet23<E> reversed() {
-		return new SortedSet23<E>(comparator.reversed(), elements.reversed());
-	}
+	SortedSet23<E> reversed();
 
     /**
      * Returns a set with <code>element</code> removed.
@@ -343,10 +137,7 @@ public final class SortedSet23<E> implements Set23<E> {
      * @return A set with the given element removed
      */
     @Override
-	public SortedSet23<E> remove(final E element) {
-	    int index = indexOf(element);
-	    return index < 0 ? this : new SortedSet23<>(comparator, elements.removeAt(index));
-	}
+	SortedSet23<E> remove(E element);
 	
     /**
      * Returns a set with only the elements that match <code>filter</code>.
@@ -360,9 +151,7 @@ public final class SortedSet23<E> implements Set23<E> {
      * @return A set with the given element removed
      */
     @Override
-    public SortedSet23<E> filter(final Predicate<E> filter) {
-        return new SortedSet23<>(comparator, elements.filter(filter));
-    }
+    SortedSet23<E> filter(Predicate<E> filter);
 	
     /**
      * Returns a set that is the intersection of this set with <code>other</code>.
@@ -376,10 +165,7 @@ public final class SortedSet23<E> implements Set23<E> {
      * @return A set with the given element removed
      */
     @Override
-    public SortedSet23<E> retain(final Iterable<? extends E> other) {
-        final HashSet23<E> hs = HashSet23.of(other);
-        return filter(hs::contains);
-    }
+    SortedSet23<E> retain(Iterable<? extends E> other);
     /**
      * Returns a set that is the subtraction of this set with <code>other</code>.
      * <p>This operation is O(m * log n).
@@ -392,30 +178,8 @@ public final class SortedSet23<E> implements Set23<E> {
      * @return A set with the given element removed.
      */
     @Override
-    public SortedSet23<E> removeAllIn(final Iterable<? extends E> other) {
-        SortedSet23<E> m = this;
-        for(E e: other) {
-            m = m.remove(e);
-        }
-        return m;
-    }
+    SortedSet23<E> removeAllIn(Iterable<? extends E> other);
   
-	/**
-	 * Return the element at the given index.
-     * <p>This operation is O(log n).
-     * <pre>
-     * Example:
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).getAt(0) == 2;
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).getAt(2) == 4;
-     * </pre>
-	 * @param index The index.
-	 * @return The element at the given index.
-     * @throws IndexOutOfBoundsException if out of bounds
-	 */
-    public E getAt(final int index) {
-        return elements.getAt(index);
-    }
-    
     /**
      * Returns a set with the element at the given index removed.
      * <p>This operation is O(log n).
@@ -428,9 +192,21 @@ public final class SortedSet23<E> implements Set23<E> {
      * @param index The index of the element to remove.
      * @return A set with the element at the given index removed
      */
-    public SortedSet23<E> removeAt(final int index) {
-        return new SortedSet23<E>(comparator, elements.removeAt(index));
-    }
+    SortedSet23<E> removeAt(int index);
+
+    /**
+     * Return the element at the given index.
+     * <p>This operation is O(log n).
+     * <pre>
+     * Example:
+     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).getAt(0) == 2;
+     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).getAt(2) == 4;
+     * </pre>
+     * @param index The index.
+     * @return The element at the given index.
+     * @throws IndexOutOfBoundsException if out of bounds
+     */
+    E getAt(int index);
 
 	/**
      * Returns the read-only {@link Set} view of this set.
@@ -441,9 +217,21 @@ public final class SortedSet23<E> implements Set23<E> {
      * @return the {@link SortedSet} view of this set
      */
     @Override
-	public SortedSet<E> asCollection() {
-		return new SortedSet23Set<>(this);
-	}
+	SortedSet<E> asCollection();
+    
+    /**
+     * Returns the index of <code>element</code> in the set.
+     * <p>This operation is O(log n).
+     * <pre>
+     * Example:
+     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).indexOf(2) == 0;
+     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).indexOf(4) == 2;
+     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).indexOf(5) == -1;
+     * </pre>
+     * @param element The element to look for.
+     * @return The index of the given element in the set, -1 of not found.
+     */
+    int indexOf(E element);
 	
     /**
      * Returns the {@link List23} view of this set.
@@ -453,55 +241,11 @@ public final class SortedSet23<E> implements Set23<E> {
      * </pre>
      * @return the {@link List23} view of this set
      */
-	public List23<E> asList() {
-		return elements;
-	}
-	
-    @Override
-	public int hashCode() {
-		return asCollection().hashCode();
-	}
-	
-	@Override
-	public boolean equals(final Object obj) {
-		if (!(obj instanceof Set23)) {
-			return false;
-		}
-		Set23<?> other = (Set23<?>)obj;
-		return asCollection().equals(other.asCollection());
-	}
-	
-	@Override
-	public String toString() {
-		return asCollection().toString();
-	}
-	
-	@Override
-	public ListIterator<E> iterator() {
-		return elements.iterator();
-	}
-    
-    @Override
-    public Spliterator<E> spliterator() {
-        return elements.spliterator();
-    }
+	List23<E> asList();
 
-    @Override
-    public Stream<E> stream() {
-        return StreamSupport.stream(spliterator(), false);
-    }
-
-    /// Compares two elements, allowing for null.
-    static <E> int unNaturalCompare(final E a, final E b) {
-        if (a == null) {
-            return (b == null) ? 0 : -1;
-        }
-        if (b == null) {
-            return 1;
-        }
-        
-        @SuppressWarnings("unchecked")
-        final Comparable<? super E> ea = (Comparable<? super E>) a;
-        return ea.compareTo(b);
-    }
+	/**
+	 * Returns the {@link Comparator} associated with this set.
+	 * @return the {@link Comparator} associated with this set
+	 */
+    Comparator<? super E> getComparator();
 }
