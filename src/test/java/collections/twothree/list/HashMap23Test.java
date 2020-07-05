@@ -70,7 +70,7 @@ public class HashMap23Test {
 		assertTrue(HashMap23.singleton(1, 2).put(3, 4).containsKey(1));
 		assertTrue(HashMap23.singleton(1, 2).put(3, 4).containsKey(3));
 		assertFalse(HashMap23.singleton(1, 2).put(3, 4).containsKey(5));
-        assertNotEquals(HashMap23.singleton(1,2).put(3, 4), List23.singleton(makeEntry(1,2)).add(makeEntry(3, 4)));
+        assertNotEquals(HashMap23.singleton(1,2).put(3, 4), TreeList23.singleton(makeEntry(1,2)).add(makeEntry(3, 4)));
 	}
 	
 	@Test
@@ -110,7 +110,7 @@ public class HashMap23Test {
 
     @Test
     public void testValues() {
-        assertEquals(HashMap23.singleton(1, 2).put(3, 4).values(), List23.singleton(2).add(4));
+        assertEquals(HashMap23.singleton(1, 2).put(3, 4).values(), TreeList23.singleton(2).add(4));
     }
 
     @Test

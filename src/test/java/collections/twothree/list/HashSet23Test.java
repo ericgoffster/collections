@@ -81,7 +81,7 @@ public class HashSet23Test {
         assertFalse(HashSet23.compare(2, 3) == 0);
         assertTrue(HashSet23.compare(2, 2) == 0);
         assertTrue(HashSet23.compare(of(2, 3), of(3, 2)) == 0);
-        assertFalse(HashSet23.compare(of(2), List23.singleton(2)) == 0);
+        assertFalse(HashSet23.compare(of(2), TreeList23.singleton(2)) == 0);
         assertTrue(HashSet23.compare(new Foo(0, true), new Foo(0, true)) == 0);
         assertFalse(HashSet23.compare(new Foo(0, false), new Foo(0, false)) == 0);
         assertFalse(HashSet23.compare(new Foo(0, true), new Foo(1, true)) == 0);
@@ -159,7 +159,7 @@ public class HashSet23Test {
         assertFalse(s.contains(of("1","2","3","4",null)));
         assertFalse(s.contains(null));
         {
-            TreeSet<String> t = new TreeSet<>(List23::naturalCompare);
+            TreeSet<String> t = new TreeSet<>(TreeList23::naturalCompare);
             t.addAll(Arrays.asList("1"));
             assertEquals(of("1").toString(), t.toString());
         }

@@ -35,9 +35,9 @@ public final class TreeSet23<E> implements ImmSortedSet<E> {
 	/**
 	 * The list of elements
 	 */
-	final List23<E> elements;
+	final TreeList23<E> elements;
 
-	TreeSet23(final Comparator<? super E> comparator, final List23<E> elements) {
+	TreeSet23(final Comparator<? super E> comparator, final TreeList23<E> elements) {
 		this.elements = Requirements.require(elements, Requirements.notNull(), () -> "elements");
 		this.comparator = Requirements.require(comparator, Requirements.notNull(), () -> "comparator");
 	}
@@ -54,7 +54,7 @@ public final class TreeSet23<E> implements ImmSortedSet<E> {
 	 * @return A set of exactly one element
 	 */
     public static <E extends Comparable<E>> TreeSet23<E> singleton(final E element) {
-        return new TreeSet23<E>(List23::naturalCompare, List23.singleton(element));
+        return new TreeSet23<E>(TreeList23::naturalCompare, TreeList23.singleton(element));
     }
 
     /**
@@ -69,7 +69,7 @@ public final class TreeSet23<E> implements ImmSortedSet<E> {
      * @return An empty set.
      */
     public static <E> TreeSet23<E> empty(Comparator<? super E> comparator) {
-        return new TreeSet23<E>(comparator, List23.empty());
+        return new TreeSet23<E>(comparator, TreeList23.empty());
     }
 
     /**
@@ -83,7 +83,7 @@ public final class TreeSet23<E> implements ImmSortedSet<E> {
      * @return An empty set.
      */
     public static <E extends Comparable<E>> TreeSet23<E> empty() {
-        return empty(List23::naturalCompare);
+        return empty(TreeList23::naturalCompare);
     }
 
     /**
@@ -98,7 +98,7 @@ public final class TreeSet23<E> implements ImmSortedSet<E> {
      * @return A set containing an initial list of elements
      */
     public static <E extends Comparable<E>> TreeSet23<E> of(final Iterable<? extends E> elements) {
-    	return of(List23::naturalCompare, elements);
+    	return of(TreeList23::naturalCompare, elements);
     }
     
     /**
@@ -113,7 +113,7 @@ public final class TreeSet23<E> implements ImmSortedSet<E> {
      * @return A set containing an initial list of elements
      */
     public static <E> TreeSet23<E> ofSorted(final SortedSet<E> sortedSet) {
-        return new TreeSet23<>(getComparator(sortedSet), List23.of(sortedSet));
+        return new TreeSet23<>(getComparator(sortedSet), TreeList23.of(sortedSet));
     }
 
     /**
@@ -131,7 +131,7 @@ public final class TreeSet23<E> implements ImmSortedSet<E> {
      * @return A set containing an initial list of elements
      */
     public static <E> TreeSet23<E> of(final Comparator<? super E> comparator, final Iterable<? extends E> elements) {
-    	return new TreeSet23<E>(comparator, List23.ofSortedUnique(comparator, elements));
+    	return new TreeSet23<E>(comparator, TreeList23.ofSortedUnique(comparator, elements));
     }
     
     /**
@@ -267,7 +267,7 @@ public final class TreeSet23<E> implements ImmSortedSet<E> {
             throw new IllegalArgumentException("low must be <= high");
         }
         if (comparator.compare(low, high) == 0) {
-            return new TreeSet23<E>(comparator, List23.empty());
+            return new TreeSet23<E>(comparator, TreeList23.empty());
         }
 		return new TreeSet23<E>(comparator, elements.getRange(
 		        elements.naturalPosition(e -> comparator.compare(low, e)),
@@ -441,7 +441,7 @@ public final class TreeSet23<E> implements ImmSortedSet<E> {
      * @return the {@link SortedSet} view of this set
      */
     @Override
-	public SortedSet<E> asCollection() {
+	public SortedSet23Set<E> asCollection() {
 		return new SortedSet23Set<>(this);
 	}
 	
@@ -454,7 +454,7 @@ public final class TreeSet23<E> implements ImmSortedSet<E> {
      * @return the {@link List23} view of this set
      */
     @Override
-	public List23<E> asList() {
+	public TreeList23<E> asList() {
 		return elements;
 	}
 	

@@ -105,19 +105,19 @@ public class SortedMap23Test {
 
 	@Test
 	public void testInsertions() {
-		assertEquals(TreeMap23.singleton(1,2).put(3, 4).asList(),List23.singleton(makeEntry(1,2)).add(makeEntry(3, 4)));
-        assertEquals(TreeMap23.singleton(3, 4).put(1, 2).asList(),List23.singleton(makeEntry(1,2)).add(makeEntry(3, 4)));
-        assertNotEquals(TreeMap23.singleton(3, 4).put(1, 3).asList(),List23.singleton(makeEntry(1,2)).add(makeEntry(3, 4)));
-        assertNotEquals(TreeMap23.singleton(1, 3).add(makeEntry(3, 4)).asList(),List23.singleton(makeEntry(1,2)).add(makeEntry(3, 4)));
+		assertEquals(TreeMap23.singleton(1,2).put(3, 4).asList(),TreeList23.singleton(makeEntry(1,2)).add(makeEntry(3, 4)));
+        assertEquals(TreeMap23.singleton(3, 4).put(1, 2).asList(),TreeList23.singleton(makeEntry(1,2)).add(makeEntry(3, 4)));
+        assertNotEquals(TreeMap23.singleton(3, 4).put(1, 3).asList(),TreeList23.singleton(makeEntry(1,2)).add(makeEntry(3, 4)));
+        assertNotEquals(TreeMap23.singleton(1, 3).add(makeEntry(3, 4)).asList(),TreeList23.singleton(makeEntry(1,2)).add(makeEntry(3, 4)));
         ImmSortedMap<Integer,Integer>  m = TreeMap23.singleton(5,6).put(7, 8);
-        assertEquals(TreeMap23.singleton(1, 3).addAll(m).asList(),List23.singleton(makeEntry(1,3)).add(makeEntry(5, 6)).add(makeEntry(7, 8)));
-        assertEquals(TreeMap23.singleton(1, 3).addAll(m.asMap()).asList(),List23.singleton(makeEntry(1,3)).add(makeEntry(5, 6)).add(makeEntry(7, 8)));
+        assertEquals(TreeMap23.singleton(1, 3).addAll(m).asList(),TreeList23.singleton(makeEntry(1,3)).add(makeEntry(5, 6)).add(makeEntry(7, 8)));
+        assertEquals(TreeMap23.singleton(1, 3).addAll(m.asMap()).asList(),TreeList23.singleton(makeEntry(1,3)).add(makeEntry(5, 6)).add(makeEntry(7, 8)));
 	}
 
     @Test
     public void testReversed() {
-        assertEquals(TreeMap23.singleton(1,2).put(3, 4).reversed().asList(),List23.singleton(makeEntry(3,4)).add(makeEntry(1,2)));
-        assertEquals(TreeMap23.empty().reversed().asList(),List23.empty());
+        assertEquals(TreeMap23.singleton(1,2).put(3, 4).reversed().asList(),TreeList23.singleton(makeEntry(3,4)).add(makeEntry(1,2)));
+        assertEquals(TreeMap23.empty().reversed().asList(),TreeList23.empty());
      }
 
     @Test
@@ -128,12 +128,12 @@ public class SortedMap23Test {
         TreeMap<Integer, Integer> ts = new TreeMap<>();
         ts.put(1, 2);
         ts.put(3, 4);
-        assertEquals(TreeMap23.of(ts.entrySet()).asList(),List23.singleton(makeEntry(1,2)).add(makeEntry(3,4)));
-        assertEquals(TreeMap23.<Integer,Integer>empty().addAll(ts.entrySet()).asList(),List23.singleton(makeEntry(1,2)).add(makeEntry(3,4)));
-        assertEquals(TreeMap23.of((i,j) -> j.compareTo(i), ts).asList(),List23.singleton(makeEntry(3,4)).add(makeEntry(1,2)));
-        assertEquals(TreeMap23.ofSorted(ts).asList(),List23.singleton(makeEntry(1,2)).add(makeEntry(3,4)));
-        assertEquals(TreeMap23.ofSorted(ts2).asList(),List23.singleton(makeEntry(1,2)).add(makeEntry(3,4)));
-        assertEquals(TreeMap23.empty().reversed().asList(),List23.empty());
+        assertEquals(TreeMap23.of(ts.entrySet()).asList(),TreeList23.singleton(makeEntry(1,2)).add(makeEntry(3,4)));
+        assertEquals(TreeMap23.<Integer,Integer>empty().addAll(ts.entrySet()).asList(),TreeList23.singleton(makeEntry(1,2)).add(makeEntry(3,4)));
+        assertEquals(TreeMap23.of((i,j) -> j.compareTo(i), ts).asList(),TreeList23.singleton(makeEntry(3,4)).add(makeEntry(1,2)));
+        assertEquals(TreeMap23.ofSorted(ts).asList(),TreeList23.singleton(makeEntry(1,2)).add(makeEntry(3,4)));
+        assertEquals(TreeMap23.ofSorted(ts2).asList(),TreeList23.singleton(makeEntry(1,2)).add(makeEntry(3,4)));
+        assertEquals(TreeMap23.empty().reversed().asList(),TreeList23.empty());
      }
 
 	@Test
@@ -144,7 +144,7 @@ public class SortedMap23Test {
 		assertTrue(TreeMap23.singleton(1, 2).put(3, 4).containsKey(1));
 		assertTrue(TreeMap23.singleton(1, 2).put(3, 4).containsKey(3));
 		assertFalse(TreeMap23.singleton(1, 2).put(3, 4).containsKey(5));
-        assertNotEquals(TreeMap23.singleton(1,2).put(3, 4), List23.singleton(makeEntry(1,2)).add(makeEntry(3, 4)));
+        assertNotEquals(TreeMap23.singleton(1,2).put(3, 4), TreeList23.singleton(makeEntry(1,2)).add(makeEntry(3, 4)));
 	}
 	
 	@Test
@@ -190,7 +190,7 @@ public class SortedMap23Test {
 
     @Test
     public void testValues() {
-        assertEquals(TreeMap23.singleton(1, 2).put(3, 4).values(), List23.singleton(2).add(4));
+        assertEquals(TreeMap23.singleton(1, 2).put(3, 4).values(), TreeList23.singleton(2).add(4));
     }
 
     @Test

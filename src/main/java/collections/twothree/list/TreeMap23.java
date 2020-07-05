@@ -24,9 +24,9 @@ import java.util.stream.StreamSupport;
  */
 public final class TreeMap23<K, V> implements ImmSortedMap<K, V> {
     final Comparator<? super K> keyComparator;
-	final List23<Entry<K, V>> entries;
+	final TreeList23<Entry<K, V>> entries;
 
-	TreeMap23(final Comparator<? super K> keyComparator, final List23<Entry<K, V>> entries) {
+	TreeMap23(final Comparator<? super K> keyComparator, final TreeList23<Entry<K, V>> entries) {
 	    assert keyComparator != null;
         assert entries != null;
         this.keyComparator = keyComparator;
@@ -46,7 +46,7 @@ public final class TreeMap23<K, V> implements ImmSortedMap<K, V> {
 	 * @return an empty sorted map with a a custom key comparator
 	 */
     public static <K,V> TreeMap23<K,V> empty(final Comparator<? super K> keyComparator) {
-        return new TreeMap23<K, V>(keyComparator, List23.empty());
+        return new TreeMap23<K, V>(keyComparator, TreeList23.empty());
     }
 
     /**
@@ -61,7 +61,7 @@ public final class TreeMap23<K, V> implements ImmSortedMap<K, V> {
      * @return an empty sorted map using the natural comparator associated with the keys.
      */
     public static <K extends Comparable<K>,V> TreeMap23<K,V> empty() {
-        return empty(List23::naturalCompare);
+        return empty(TreeList23::naturalCompare);
     }
    
     /**
@@ -78,7 +78,7 @@ public final class TreeMap23<K, V> implements ImmSortedMap<K, V> {
      * @return an empty sorted map using the natural comparator associated with the keys.
      */
     public static <K extends Comparable<K>,V> TreeMap23<K,V> singleton(final K key, final V value) {
-        return new TreeMap23<K, V>(List23::naturalCompare, List23.singleton(new AbstractMap.SimpleImmutableEntry<>(key, value)));
+        return new TreeMap23<K, V>(TreeList23::naturalCompare, TreeList23.singleton(new AbstractMap.SimpleImmutableEntry<>(key, value)));
     }
 
     /**
@@ -140,7 +140,7 @@ public final class TreeMap23<K, V> implements ImmSortedMap<K, V> {
      * @return a sorted map populated from a list of entries and a custom comparator
      */
 	public static <K,V> TreeMap23<K,V> of(final Comparator<? super K> keyComparator, final Iterable<? extends Entry<K, V>> entries) {
-	    return new TreeMap23<K, V>(keyComparator, List23.ofSortedUnique((a,b) -> keyComparator.compare(a.getKey(), b.getKey()), entries));
+	    return new TreeMap23<K, V>(keyComparator, TreeList23.ofSortedUnique((a,b) -> keyComparator.compare(a.getKey(), b.getKey()), entries));
 	}
 	
 	/**
@@ -160,7 +160,7 @@ public final class TreeMap23<K, V> implements ImmSortedMap<K, V> {
 	 * @return a sorted map populated from a list of entries and a natural comparator
 	 */
     public static <K extends Comparable<K>,V> TreeMap23<K,V> of(final Iterable<? extends Entry<K, V>> entries) {
-        return of(List23::naturalCompare, entries);
+        return of(TreeList23::naturalCompare, entries);
     }
 	
     @Override
@@ -256,7 +256,7 @@ public final class TreeMap23<K, V> implements ImmSortedMap<K, V> {
         if (keyComparator.compare(lowKey, highKey) == 0) {
             return this;
         }
-        final ImmSortedSet<K> keys = keys();
+        final TreeSet23<K> keys = keys();
         return new TreeMap23<>(keyComparator, entries.removeRange(
                 keys.asList().naturalPosition(e -> keyComparator.compare(lowKey, e)),
                 keys.asList().naturalPosition(e -> keyComparator.compare(highKey, e))));
@@ -285,9 +285,9 @@ public final class TreeMap23<K, V> implements ImmSortedMap<K, V> {
             throw new IllegalArgumentException("low must be <= high");
         }
         if (keyComparator.compare(lowKey, highKey) == 0) {
-            return new TreeMap23<>(keyComparator, List23.empty());
+            return new TreeMap23<>(keyComparator, TreeList23.empty());
         }
-        final ImmSortedSet<K> keys = keys();
+        final TreeSet23<K> keys = keys();
         return new TreeMap23<>(keyComparator, entries.getRange(
                 keys.asList().naturalPosition(e -> keyComparator.compare(lowKey, e)),
                 keys.asList().naturalPosition(e -> keyComparator.compare(highKey, e))));
@@ -403,7 +403,7 @@ public final class TreeMap23<K, V> implements ImmSortedMap<K, V> {
     }
 
     @Override
-	public SortedMap<K, V> asMap() {
+	public SortedMap23Map<K, V> asMap() {
 		return new SortedMap23Map<>(this);
 	}
 	
@@ -417,23 +417,23 @@ public final class TreeMap23<K, V> implements ImmSortedMap<K, V> {
      * </pre>
      * @return all of the entries as a list
      */
-	public List23<Entry<K,V>> asList() {
+	public TreeList23<Entry<K,V>> asList() {
 		return entries;
 	}
 	
     @Override
-	public ImmSortedSet<Entry<K,V>> asSet23() {
+	public TreeSet23<Entry<K,V>> asSet23() {
 	    return new TreeSet23<>(this::entryCompare, entries);
 	}
 	
 
 	@Override
-	public ImmSortedSet<K> keys() {
+	public TreeSet23<K> keys() {
 	    return new TreeSet23<>(keyComparator, entries.map(e -> e.getKey()));
 	}
 
     @Override
-    public List23<V> values() {
+    public TreeList23<V> values() {
         return entries.map(e -> e.getValue());
     }
 	

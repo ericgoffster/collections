@@ -66,7 +66,7 @@ public class SortedMap23MapTest {
 
     @Test
     public void testReversed() {
-        assertEquals(TreeMap23.singleton(1,2).put(3, 4).reversed().asList(),List23.singleton(makeEntry(3,4)).add(makeEntry(1,2)));
-        assertEquals(TreeMap23.empty().reversed().asList(),List23.empty());
+        assertEquals(TreeMap23.singleton(1,2).put(3, 4).reversed().asList(),TreeList23.singleton(makeEntry(3,4)).add(makeEntry(1,2)));
+        assertEquals(TreeMap23.empty().reversed().asList(),TreeList23.empty());
      }
 }

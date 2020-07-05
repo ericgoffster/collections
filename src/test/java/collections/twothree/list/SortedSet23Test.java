@@ -29,10 +29,10 @@ public class SortedSet23Test {
     @Test
     public void testOfSorted() {
         Comparator<Integer> comp = Integer::compare;
-        assertEquals(TreeSet23.of(comp, Arrays.asList(4, 6, 5)).asList(), List23.singleton(4).add(5).add(6));
-        assertEquals(TreeSet23.of(comp.reversed(), Arrays.asList(4, 6, 5)).asList(), List23.singleton(6).add(5).add(4));
-        assertEquals(TreeSet23.of(of(4, 6, 5)).asList(), List23.singleton(4).add(5).add(6));
-        assertEquals(TreeSet23.ofSorted(of(4, 6, 5).reversed().asCollection()).asList(), List23.singleton(6).add(5).add(4));
+        assertEquals(TreeSet23.of(comp, Arrays.asList(4, 6, 5)).asList(), TreeList23.singleton(4).add(5).add(6));
+        assertEquals(TreeSet23.of(comp.reversed(), Arrays.asList(4, 6, 5)).asList(), TreeList23.singleton(6).add(5).add(4));
+        assertEquals(TreeSet23.of(of(4, 6, 5)).asList(), TreeList23.singleton(4).add(5).add(6));
+        assertEquals(TreeSet23.ofSorted(of(4, 6, 5).reversed().asCollection()).asList(), TreeList23.singleton(6).add(5).add(4));
     }
 
 	@Test
@@ -199,7 +199,7 @@ public class SortedSet23Test {
 		assertFalse(s.contains(of("1","2","3","4",null)));
 		assertFalse(s.contains(null));
 		{
-    		TreeSet<String> t = new TreeSet<>(List23::naturalCompare);
+    		TreeSet<String> t = new TreeSet<>(TreeList23::naturalCompare);
     		t.addAll(Arrays.asList("1", "2", "3", "4", "5", null));
     		assertEquals(l1.toString(), t.toString());
 		}
@@ -210,7 +210,7 @@ public class SortedSet23Test {
         }
 		
 		assertThrows(IllegalArgumentException.class, () -> new TreeSet23<>(null,null));
-        assertThrows(IllegalArgumentException.class, () -> new TreeSet23<>(null,List23.empty()));
+        assertThrows(IllegalArgumentException.class, () -> new TreeSet23<>(null,TreeList23.empty()));
         assertThrows(IllegalArgumentException.class, () -> new TreeSet23<>(Integer::compare,null));
 	}
 }

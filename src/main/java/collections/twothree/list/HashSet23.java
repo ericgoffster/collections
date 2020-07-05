@@ -27,9 +27,9 @@ public final class HashSet23<E> implements ImmSet<E> {
 	/**
 	 * The list of elements
 	 */
-	final List23<E> elements;
+	final TreeList23<E> elements;
 
-	HashSet23(final List23<E> elements) {
+	HashSet23(final TreeList23<E> elements) {
 	    assert elements != null;
 		this.elements = elements;
 	}
@@ -46,7 +46,7 @@ public final class HashSet23<E> implements ImmSet<E> {
 	 * @return A set of exactly one element
 	 */
     public static <E> HashSet23<E> singleton(final E element) {
-        return new HashSet23<E>(List23.singleton(element));
+        return new HashSet23<E>(TreeList23.singleton(element));
     }
 
     /**
@@ -60,7 +60,7 @@ public final class HashSet23<E> implements ImmSet<E> {
      * @return An empty set.
      */
     public static <E> HashSet23<E> empty() {
-        return new HashSet23<E>(List23.empty());
+        return new HashSet23<E>(TreeList23.empty());
     }
 
     /**
@@ -76,7 +76,7 @@ public final class HashSet23<E> implements ImmSet<E> {
      */
     public static <E> HashSet23<E> of(final Iterable<? extends E> elements) {
         Requirements.require(elements, Requirements.notNull(), () -> "elements");
-        return new HashSet23<E>(List23.ofSortedUnique(HashSet23::compare, elements));
+        return new HashSet23<E>(TreeList23.ofSortedUnique(HashSet23::compare, elements));
     }
 
     /**

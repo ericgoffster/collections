@@ -24,9 +24,9 @@ import java.util.stream.StreamSupport;
  * @param <V> The value type
  */
 public final class HashMap23<K, V> implements Map23<K, V> {
-	final List23<Entry<K, V>> entries;
+	final TreeList23<Entry<K, V>> entries;
 
-	HashMap23(final List23<Entry<K, V>> entries) {
+	HashMap23(final TreeList23<Entry<K, V>> entries) {
         assert entries != null;
 		this.entries = entries;
 	}
@@ -43,7 +43,7 @@ public final class HashMap23<K, V> implements Map23<K, V> {
 	 * @return the empty hashmap
 	 */
     public static <K,V> HashMap23<K,V> empty() {
-        return new HashMap23<>(List23.empty());
+        return new HashMap23<>(TreeList23.empty());
     }
    
     /**
@@ -60,7 +60,7 @@ public final class HashMap23<K, V> implements Map23<K, V> {
      * @return an empty hashmap23 using the natural comparator associated with the keys.
      */
     public static <K,V> HashMap23<K,V> singleton(final K key, final V value) {
-        return new HashMap23<>(List23.singleton(new AbstractMap.SimpleImmutableEntry<>(key, value)));
+        return new HashMap23<>(TreeList23.singleton(new AbstractMap.SimpleImmutableEntry<>(key, value)));
     }
 
     /**
@@ -98,7 +98,7 @@ public final class HashMap23<K, V> implements Map23<K, V> {
      * @return a hashmap23 seeded from another <code>Map</code>
      */
 	public static <K,V> HashMap23<K,V> of(final Iterable<? extends Entry<K, V>> entries) {
-	    return new HashMap23<K, V>(List23.ofSortedUnique((a,b) -> HashSet23.compare(a.getKey(), b.getKey()), entries));
+	    return new HashMap23<K, V>(TreeList23.ofSortedUnique((a,b) -> HashSet23.compare(a.getKey(), b.getKey()), entries));
 	}
 
     @Override
