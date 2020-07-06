@@ -2,7 +2,6 @@ package collections.twothree.list;
 
 import java.util.Comparator;
 import java.util.ListIterator;
-import java.util.Set;
 import java.util.SortedSet;
 import java.util.Spliterator;
 import java.util.function.Predicate;
@@ -47,7 +46,7 @@ public final class TreeSet23<E> implements ImmSortedSet<E> {
      * <p>This operation is O(1).
      * <pre>
      * Example:
-     *     assert SortedSet23.singleton(6).asList().asCollection().equals(Arrays.asList(6));
+     *     assert TreeSet23.singleton(6).asList().asCollection().equals(Arrays.asList(6));
      * </pre>
 	 * @param <E> The element type
 	 * @param element The singleton element
@@ -62,7 +61,7 @@ public final class TreeSet23<E> implements ImmSortedSet<E> {
      * <p>This operation is O(1).
      * <pre>
      * Example:
-     *     assert SortedSet23.empty(Integer::compare).asList().asCollection().equals(Arrays.asList());
+     *     assert TreeSet23.empty(Integer::compare).asList().asCollection().equals(Arrays.asList());
      * </pre>
      * @param comparator The comparator which defines ordering.
      * @param <E> The element type
@@ -77,7 +76,7 @@ public final class TreeSet23<E> implements ImmSortedSet<E> {
      * <p>This operation is O(1).
      * <pre>
      * Example:
-     *     assert SortedSet23.empty().asList().asCollection().equals(Arrays.asList());
+     *     assert TreeSet23.empty().asList().asCollection().equals(Arrays.asList());
      * </pre>
      * @param <E> The element type
      * @return An empty set.
@@ -91,7 +90,7 @@ public final class TreeSet23<E> implements ImmSortedSet<E> {
      * <p>This operation is O(n log n).
      * <pre>
      * Example:
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).asList().asCollection().equals(Arrays.asList(2, 3, 4));
+     *     assert TreeSet23.of(Arrays.asList(4, 2, 3)).asList().asCollection().equals(Arrays.asList(2, 3, 4));
      * </pre>
      * @param <E> The element type
      * @param elements The array of elements
@@ -106,7 +105,7 @@ public final class TreeSet23<E> implements ImmSortedSet<E> {
      * <p>This operation is O(n log n).
      * <pre>
      * Example:
-     *     assert SortedSet23.of(SortedSet23.of(Arrays.asList(4, 2, 3)).asCollection()).asList().asCollection().equals(Arrays.asList(2, 3, 4));
+     *     assert TreeSet23.of(TreeSet23.of(Arrays.asList(4, 2, 3)).asCollection()).asList().asCollection().equals(Arrays.asList(2, 3, 4));
      * </pre>
      * @param <E> The element type
      * @param sortedSet The set of elements
@@ -122,8 +121,8 @@ public final class TreeSet23<E> implements ImmSortedSet<E> {
      * <pre>
      * Example:
      *     Comparator&lt;Integer&gt; comp = Integer::compare;
-     *     assert SortedSet23.of(comp, Arrays.asList(4, 2, 3)).asList().asCollection().equals(Arrays.asList(2, 3, 4));
-     *     assert SortedSet23.of(comp.reversed(), Arrays.asList(4, 2, 3)).asList().asCollection().equals(Arrays.asList(4, 3, 2));
+     *     assert TreeSet23.of(comp, Arrays.asList(4, 2, 3)).asList().asCollection().equals(Arrays.asList(2, 3, 4));
+     *     assert TreeSet23.of(comp.reversed(), Arrays.asList(4, 2, 3)).asList().asCollection().equals(Arrays.asList(4, 3, 2));
      * </pre>
      * @param <E> The element type
      * @param comparator The comparator of elements
@@ -134,103 +133,31 @@ public final class TreeSet23<E> implements ImmSortedSet<E> {
     	return new TreeSet23<E>(comparator, TreeList23.ofSortedUnique(comparator, elements));
     }
     
-    /**
-	 * Returns the size of this set.
-     * <p>This operation is O(1).
-     * <pre>
-     * Example:
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).size() == 3;
-     * </pre>
-	 * @return The size of this set
-	 */
     @Override
 	public int size() {
 		return elements.size();
 	}
 	
-	/**
-	 * Returns true if the set contains <code>element</code>.
-     * <p>This operation is O(log n).
-     * <pre>
-     * Example:
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).contains(2) == true;
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).contains(5) == false;
-     * </pre>
-	 * @param element The element to look for.
-	 * @return true if the set contains the given element
-	 */
     @Override
 	public boolean contains(final E element) {
 	    return indexOf(element) >= 0;
 	}
 
-    /**
-     * Returns the index of <code>element</code> in the set.
-     * <p>This operation is O(log n).
-     * <pre>
-     * Example:
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).indexOf(2) == 0;
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).indexOf(4) == 2;
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).indexOf(5) == -1;
-     * </pre>
-     * @param element The element to look for.
-     * @return The index of the given element in the set, -1 of not found.
-     */
     @Override
     public int indexOf(final E element) {
         return elements.getIndexOf(e -> comparator.compare(element, e));
     }
     
-    /**
-     * Returns the set of all elements in this set in range &gt;= <code>element</code>.
-     * <p>This operation is O(log n).
-     * <pre>
-     * Example:
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).ge(2).asList().asCollection().equals(Arrays.asList(2, 3, 4));
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).ge(4).asList().asCollection().equals(Arrays.asList(4));
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).ge(0).asList().asCollection().equals(Arrays.asList(2, 3, 4));
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).ge(5).asList().asCollection().equals(Arrays.asList());
-     * </pre>
-     * @param element The comparison element (inclusive)
-     * @return The set of all elements in this set &gt;= element
-     */
     @Override
 	public TreeSet23<E> ge(final E element) {
 		return new TreeSet23<E>(comparator, elements.tailAt(elements.naturalPosition(e -> comparator.compare(element, e))));
 	}
 
-    /**
-     * Returns the set of all elements in this set &lt; <code>element</code>.
-     * <p>This operation is O(log n).
-     * <pre>
-     * Example:
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).lt(2).asList().asCollection().equals(Arrays.asList());
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).lt(4).asList().asCollection().equals(Arrays.asList(2, 3));
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).lt(0).asList().asCollection().equals(Arrays.asList());
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).lt(5).asList().asCollection().equals(Arrays.asList(2, 3, 4));
-     * </pre>
-     * @param element The comparison element (exclusive)
-     * @return The set of all elements in this set &lt; element
-     */
     @Override
 	public TreeSet23<E> lt(final E element) {
 		return new TreeSet23<E>(comparator, elements.headAt(elements.naturalPosition(e -> comparator.compare(element, e))));
 	}
 
-    /**
-     * Returns the set of all elements not in range <code>[low, high)</code>.
-     * <p>This operation is O(log n).
-     * <pre>
-     * Example:
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).exclude(2, 3).asList().asCollection().equals(Arrays.asList(3, 4));
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).exclude(2, 4).asList().asCollection().equals(Arrays.asList(4));
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).exclude(0, 4).asList().asCollection().equals(Arrays.asList(4));
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).exclude(0, 5).asList().asCollection().equals(Arrays.asList());
-     * </pre>
-     * @param low The low element (exclusive)
-     * @param high The high element (inclusive)
-     * @return The set of all elements in this set &lt; low or &gt;= high
-     */
     @Override
     public TreeSet23<E> exclude(final E low, final E high) {
         int cmp = comparator.compare(low, high);
@@ -245,21 +172,6 @@ public final class TreeSet23<E> implements ImmSortedSet<E> {
                 elements.naturalPosition(e -> comparator.compare(high, e))));
     }
 
-    /**
-     * Returns the set of all elements in this set in range <code>[low, high)</code>.
-     * <p>This operation is O(log n).
-     * <pre>
-     * Example:
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).subSet(2, 3).asList().asCollection().equals(Arrays.asList(2));
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).subSet(2, 4).asList().asCollection().equals(Arrays.asList(2, 3));
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).subSet(0, 4).asList().asCollection().equals(Arrays.asList(2, 3));
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).subSet(0, 5).asList().asCollection().equals(Arrays.asList(2, 3, 4));
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).subSet(3, 3).asList().asCollection().equals(Arrays.asList());
-     * </pre>
-     * @param low The low element (inclusive)
-     * @param high The high element (exclusive)
-     * @return The set of all elements in this set &lt; element
-     */
     @Override
 	public TreeSet23<E> subSet(final E low, final E high) {
         int cmp = comparator.compare(low, high);
@@ -274,17 +186,6 @@ public final class TreeSet23<E> implements ImmSortedSet<E> {
 		        elements.naturalPosition(e -> comparator.compare(high, e))));
 	}
 
-	/**
-	 * Returns a set with <code>element</code> added.
-     * <p>This operation is O(log n).
-     * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
-     * <pre>
-     * Example:
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).add(5).asList().asCollection().equals(Arrays.asList(2, 3, 4, 5));
-     * </pre>
-	 * @param element The element to add.
-	 * @return A set with the given element added.
-	 */
     @Override
 	public TreeSet23<E> add(final E element) {
 	    if (contains(element)) {
@@ -293,17 +194,6 @@ public final class TreeSet23<E> implements ImmSortedSet<E> {
 	    return new TreeSet23<>(comparator, elements.insertAt(elements.naturalPosition(e -> comparator.compare(element, e)), element));
 	}
 	
-    /**
-     * Returns a set that is the union of this set with <code>other</code>.
-     * <p>This operation is O(m * log n).
-     * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
-     * <pre>
-     * Example:
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).union(SortedSet23.of(Arrays.asList(5, 6))).asList().asCollection().equals(Arrays.asList(2, 3, 4, 5, 6));
-     * </pre>
-     * @param other The elements to remove.
-     * @return A set with the given element removed.
-     */
     @Override
 	public TreeSet23<E> union(final ImmSet<E> other) {
 	    TreeSet23<E> s = this;
@@ -313,82 +203,28 @@ public final class TreeSet23<E> implements ImmSortedSet<E> {
 	    return s;
 	}
 
-    /**
-     * Returns a set with the elements in reverse order.
-     * <p>This operation is O(1).
-     * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
-     * <pre>
-     * Example:
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).reversed().asList().asCollection().equals(Arrays.asList(4, 3, 2));
-     * </pre>
-     * @return A set with the elements reversed
-     */
     @Override
 	public TreeSet23<E> reversed() {
 		return new TreeSet23<E>(comparator.reversed(), elements.reversed());
 	}
 
-    /**
-     * Returns a set with <code>element</code> removed.
-     * <p>This operation is O(log n).
-     * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
-     * <pre>
-     * Example:
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).remove(2).asList().asCollection().equals(Arrays.asList(3, 4));
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).remove(5).asList().asCollection().equals(Arrays.asList(2, 3, 4));
-     * </pre>
-     * @param element The element to remove
-     * @return A set with the given element removed
-     */
     @Override
 	public TreeSet23<E> remove(final E element) {
 	    int index = indexOf(element);
 	    return index < 0 ? this : new TreeSet23<>(comparator, elements.removeAt(index));
 	}
 	
-    /**
-     * Returns a set with only the elements that match <code>filter</code>.
-     * <p>This operation is O(n * log n).
-     * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
-     * <pre>
-     * Example:
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).filter(e -&gt; e &lt; 4).asList().asCollection().equals(Arrays.asList(2, 3));
-     * </pre>
-     * @param filter The filter to apply
-     * @return A set with the given element removed
-     */
     @Override
     public TreeSet23<E> filter(final Predicate<E> filter) {
         return new TreeSet23<>(comparator, elements.filter(filter));
     }
 	
-    /**
-     * Returns a set that is the intersection of this set with <code>other</code>.
-     * <p>This operation is O((m + n) * log (m + n)).
-     * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
-     * <pre>
-     * Example:
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).retain(SortedSet23.of(Arrays.asList(1,2,4))).asList().asCollection().equals(Arrays.asList(2, 4));
-     * </pre>
-     * @param other The set to intersection with
-     * @return A set with the given element removed
-     */
     @Override
     public TreeSet23<E> retain(final Iterable<? extends E> other) {
         final HashSet23<E> hs = HashSet23.of(other);
         return filter(hs::contains);
     }
-    /**
-     * Returns a set that is the subtraction of this set with <code>other</code>.
-     * <p>This operation is O(m * log n).
-     * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
-     * <pre>
-     * Example:
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).removeAllIn(SortedSet23.of(Arrays.asList(2,4))).asList().asCollection().equals(Arrays.asList(3));
-     * </pre>
-     * @param other The elements to remove.
-     * @return A set with the given element removed.
-     */
+
     @Override
     public TreeSet23<E> removeAllIn(final Iterable<? extends E> other) {
         TreeSet23<E> m = this;
@@ -398,61 +234,21 @@ public final class TreeSet23<E> implements ImmSortedSet<E> {
         return m;
     }
   
-	/**
-	 * Return the element at the given index.
-     * <p>This operation is O(log n).
-     * <pre>
-     * Example:
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).getAt(0) == 2;
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).getAt(2) == 4;
-     * </pre>
-	 * @param index The index.
-	 * @return The element at the given index.
-     * @throws IndexOutOfBoundsException if out of bounds
-	 */
     @Override
     public E getAt(final int index) {
         return elements.getAt(index);
     }
     
-    /**
-     * Returns a set with the element at the given index removed.
-     * <p>This operation is O(log n).
-     * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
-     * <pre>
-     * Example:
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).removeAt(0).asList().asCollection().equals(Arrays.asList(3, 4));
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).removeAt(2).asList().asCollection().equals(Arrays.asList(2, 3));
-     * </pre>
-     * @param index The index of the element to remove.
-     * @return A set with the element at the given index removed
-     */
     @Override
     public TreeSet23<E> removeAt(final int index) {
         return new TreeSet23<E>(comparator, elements.removeAt(index));
     }
 
-	/**
-     * Returns the read-only {@link Set} view of this set.
-     * <pre>
-     * Example:
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).asList().asCollection().equals(Arrays.asList(2, 3, 4));
-     * </pre>
-     * @return the {@link SortedSet} view of this set
-     */
     @Override
 	public SortedSet23Set<E> asCollection() {
 		return new SortedSet23Set<>(this);
 	}
 	
-    /**
-     * Returns the {@link ImmList} view of this set.
-     * <pre>
-     * Example:
-     *     assert SortedSet23.of(Arrays.asList(4, 2, 3)).asList().asCollection().equals(Arrays.asList(2, 3, 4));
-     * </pre>
-     * @return the {@link ImmList} view of this set
-     */
     @Override
 	public TreeList23<E> asList() {
 		return elements;
