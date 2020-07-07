@@ -6,17 +6,12 @@ import java.util.SortedSet;
 import java.util.function.Predicate;
 
 /**
- * Represents an Immutable ordered set of elements using a {@link ImmList} as a backing store.
- * Set membership and ordering is implemented with a comparator.
- * <p>*ALL OPERATIONS ARE IMMUTABLE*.  The object is not modified in any way.
- * <p>
- * Since operations on a List23 are log n, we can represent a set
- * relatively easily as a sorted list of elements, doing straightforward
- * binary searches.   subSet, head, tail, and exclude are also O(log n),
- * guaranteeing O(log n) operations on their results.
- * <p>
- * This version of a set is immutable.   All operations on a set, leave the original
- * set unchanged.
+ * Represents an Immutable sorted set.   Entries are arranged
+ * in order.
+ * <p>*ALL OPERATIONS ARE IMMUTABLE*.
+ * Operations like add, remove, subSet return sorted sets with the specified
+ * operation applied, leaving the original sorted set unmodified.   In addition,
+ * these operations are *performant*, usually taking no more than O(log n).
  *
  * @param <E> The type of the elements.
  */

@@ -5,9 +5,12 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 /**
- * Represents an Immutable collection of items backed by a {@link ImmList}.
- * <p>*ALL OPERATIONS ARE IMMUTABLE*.  The object is not modified in any way.
- *
+ * Represents a generic Immutable collection of items.   There is no guarantee
+ * of the order in which they are arranged.   (i.e. HashSet)
+ * <p>*ALL OPERATIONS ARE IMMUTABLE*.
+ * Operations like add, remove, retain return collections with the specified
+ * operation applied, leaving the original list unmodified.
+ * 
  * @param <E> The type of the elements contained by this collection.
  */
 public interface ImmCollection<E> extends Iterable<E> {

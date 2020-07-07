@@ -6,24 +6,13 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 /**
- * Represents an Immutable list as a 23-tree.
- * <p>*ALL OPERATIONS ARE IMMUTABLE*.  The object is not modified in any way.
- * <p>A 23-tree is a semi-balanced tree, each branch has 2 or 3 nodes.
- * The nodes are ordered such that the leftmost side of the list
- * is in the left-most branch, and the rightmost side of the list is in the right-most branch.
- * <p>
- * This version of a 23-tree is immutable.   All operations on a tree leave the original
- * tree unchanged.
- * <p>
- * The following operations are all O(log n) worst case:
- * <ul>
- *     <li>{@link ImmList#insertAt(int, Object)}</li>
- *     <li>{@link ImmList#removeRange(int, int)}</li>
- *     <li>{@link ImmList#appendList(ImmList)}</li>
- *     <li>{@link ImmList#getAt(int)}</li>
- * </ul>
+ * Represents an Immutable list.   Elements are arranged as they
+ * are in an array, indexed by integer.
+ * <p>*ALL OPERATIONS ARE IMMUTABLE*.
+ * Operations like add, remove, insertListAt return lists with the specified
+ * operation applied, leaving the original list unmodified.   In addition,
+ * these operations are *performant*, usually taking no more than O(log n).
  * 
- * Which is significant, there is no need for a builder.
  * @param <E> The type of the elements.
  */
 public interface ImmList<E> extends ImmCollection<E> {

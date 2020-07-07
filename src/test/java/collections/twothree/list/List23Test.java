@@ -207,22 +207,6 @@ public class List23Test {
     }
 
     @Test
-    public void testOfSorted() {
-        assertEquals(TreeList23.ofSorted(Arrays.asList(4, 1, 5, 1 , 6, 2)), of(1, 1, 2, 4, 5, 6));
-        assertEquals(TreeList23.ofSorted(Arrays.asList(4)), of(4));
-        assertEquals(TreeList23.ofSorted(Arrays.asList()), TreeList23.empty());
-        assertEquals(TreeList23.ofSorted(Arrays.asList(4, 1, null, 1 , 6, null)), of(null, null, 1, 1, 4, 6));
-    }
-    
-    @Test
-    public void testOfSortedUnique() {
-        assertEquals(TreeList23.ofSortedUnique(Arrays.asList(4, 1, 5, 1 , 6, 2)), of(1, 2, 4, 5, 6));
-        assertEquals(TreeList23.ofSortedUnique(Arrays.asList(4)), of(4));
-        assertEquals(TreeList23.ofSortedUnique(Arrays.asList()), TreeList23.empty());
-        assertEquals(TreeList23.ofSortedUnique(Arrays.asList(4, 1, null, 1 , 6, null)), of(null, 1, 4, 6));
-    }
-    
-    @Test
     public void testMakeBranch() {
         {
             Node23<Integer> l2 = new Branch<>(new Leaf<>(1), new Leaf<>(2));
@@ -534,9 +518,6 @@ public class List23Test {
 		assertEquals(new Leaf<Integer>(5).size(), 1);
 		List<Integer> lnull = null;
         assertThrows(UnsupportedOperationException.class, () -> branch("1","2").leafValue());
-        assertThrows(IllegalArgumentException.class, () -> TreeList23.ofSorted(null,lnull));
-        assertThrows(IllegalArgumentException.class, () -> TreeList23.ofSorted(Integer::compare,lnull));
-        assertThrows(IllegalArgumentException.class, () -> TreeList23.ofSorted(lnull));
         assertThrows(IllegalArgumentException.class, () -> TreeList23.of(lnull));
         assertThrows(IllegalArgumentException.class, () -> of(1, 2).appendList(null));
         assertThrows(IllegalArgumentException.class, () -> of(1, 2).insertListAt(0, null));

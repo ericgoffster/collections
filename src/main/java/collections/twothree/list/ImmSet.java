@@ -4,8 +4,12 @@ import java.util.Set;
 import java.util.function.Predicate;
 
 /**
- * Represents an Immutable set of items backed by a {@link ImmList}.
- * <p>*ALL OPERATIONS ARE IMMUTABLE*.  The object is not modified in any way.
+ * Represents an Immutable set.   There is no guarantee
+ * on the order of entries (i.e. HashSet).
+ * <p>*ALL OPERATIONS ARE IMMUTABLE*.
+ * Operations like add, remove return sets with the specified
+ * operation applied, leaving the original set unmodified.   In addition,
+ * these operations are *performant*, usually taking no more than O(log n).
  *
  * @param <E> The type of the elements contained by this set.
  */

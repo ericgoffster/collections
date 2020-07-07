@@ -8,10 +8,11 @@ import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
 /**
- * Represents an Immutable map where objects are ordered by a comparator on the keys in a {@link ImmList}.
- * <p>*ALL OPERATIONS ARE IMMUTABLE*.  The object is not modified in any way.
- * <p>that all operations are O(log n), but the results of those
- * operations are also guaranteed to be O(log n)
+ * Represents an Immutable sorted mapping of keys to values.   Entries are arranged
+ * in order of their keys.
+ * <p>*ALL OPERATIONS ARE IMMUTABLE*.
+ * Operations such as put and removeKey return map's with the specified operation
+ * applied leaving the origin map unmodified.
  *
  * @param <K> The key type
  * @param <V> The value type

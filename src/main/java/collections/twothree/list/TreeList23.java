@@ -48,222 +48,53 @@ public final class TreeList23<E> implements ImmList<E> {
 		this.root = root;
 	}
 
-    /**
-     * Returns a new list with <code>function</code> applied to all elements of this list.
-     * <p>This operation is O(1).
-     * <p>THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
-     * <pre>
-     * Example:
-     *     assert List23.of(Arrays.asList(3, 4, 5)).map(a -&gt; a + 1).asCollection().equals(Arrays.asList(4,5,6));
-     * </pre>
-     * @param <F> The new type of the elements.
-     * @param function The mapping function
-     * @return A new List23 representing the map of this one
-     */
-    public <F> TreeList23<F> map(final Function<E, F> function) {
-        return root == null ? empty() : new TreeList23<>(root.map(function));
-    }
-
-    /**
-     * The empty list.
-     * <p>This operation is O(1).
-     * <pre>
-     * Example:
-     *     assert List23.empty().asCollection().equals(Arrays.asList());
-     * </pre>
-     * @param <E> The type of the elements.
-     * @return The List23 representation of empty
-     */
-    public static <E> TreeList23<E> empty() {
+    static <E> TreeList23<E> empty() {
         return new TreeList23<>(null);
     }
 
-    /**
-     * Construction of a single list of <code>element</code>.
-     * <p>This operation is O(1).
-     * <pre>
-     * Example:
-     *     assert List23.singleton(5).asCollection().equals(Arrays.asList(5));
-     * </pre>
-     * @param <E> The type of the element.
-     * @param element The element
-     * @return The List23 representation of the element
-     */
-    public static <E> TreeList23<E> singleton(final E element) {
+    static <E> TreeList23<E> singleton(final E element) {
         return new TreeList23<>(new Leaf<>(element));
     }
 
-	/**
-	 * Easy construction of list.
-     * <p>This operation is O(n log n) where n = |elements|.
-     * <pre>
-     * Example:
-     *     assert List23.of(Arrays.asList(5, 7, 9)).asCollection().equals(Arrays.asList(5, 7, 9));
-     *     assert List23.of(Arrays.asList(5, 7, 5)).asCollection().equals(Arrays.asList(5, 7, 5));
-     * </pre>
-     * @param <E> The type of the elements.
-	 * @param elements The array of elements
-	 * @return The List23 representation of "elements"
-	 */
-	public static <E> TreeList23<E> of(final Iterable<? extends E> elements) {
+	static <E> TreeList23<E> of(final Iterable<? extends E> elements) {
         Requirements.require(elements, Requirements.notNull(), () -> "elements");
         return quickConstruct(new LeafIterator<>(elements));
 	}
 
-	/**
-	 * Construction of a list formed by filtering another list.
-     * @param <E> The type of the elements.
-	 * @param filter The filter
-	 * @param elements The elements to filter
-	 * @return The List23 representation of the filtered "elements"
-	 */
-    public static <E> TreeList23<E> ofFiltered(final Predicate<E> filter, final Iterable<? extends E> elements) {
+	static <E> TreeList23<E> ofFiltered(final Predicate<E> filter, final Iterable<? extends E> elements) {
         Requirements.require(filter, Requirements.notNull(), () -> "filter");
         Requirements.require(elements, Requirements.notNull(), () -> "elements");
         return quickConstruct(new FilteredIterator<>(new LeafIterator<>(elements), filter));
     }
 
-    /**
-     * Easy construction of a sorted list, with dups removed, using a custom comparator.
-     * Creates a list23 represents of the elements sorted by a comparator.
-     * <p>This operation is O(n log n) where n = |elements|.
-     * <pre>
-     * Example:
-     *     assert List23.ofSortedUnique(Integer::compare, Arrays.asList(6, 1, 6, 8)).asCollection().equals(Arrays.asList(1, 6, 8));
-     * </pre>
-     * @param <E> The type of the elements.
-     * @param comparator The element comparator
-     * @param elements The collections of elements
-     * @return The sorted List23 representation of "elements"
-     */
-    public static <E> TreeList23<E> ofSortedUnique(final Comparator<? super E> comparator,final Iterable<? extends E> elements) {
+    static <E> TreeList23<E> ofSortedUnique(final Comparator<? super E> comparator,final Iterable<? extends E> elements) {
         Requirements.require(comparator, Requirements.notNull(), () -> "comparator");
         Requirements.require(elements, Requirements.notNull(), () -> "elements");
         return quickConstruct(new RemoveDupsIterator<>(sortLeaves(comparator, new LeafIterator<>(elements)), comparator));
     }
 
-    /**
-     * Easy construction of a sorted list, with dups removed.
-     * Creates a list23 represents of the elements sorted by the natural comparator of the elements.
-     * <p>This operation is O(n log n) where n = |elements|.
-     * <pre>
-     * Example:
-     *     assert List23.ofSortedUnique(Integer::compare, Arrays.asList(6, 1, 6, 8)).asCollection().equals(Arrays.asList(1, 6, 8));
-     * </pre>
-     * @param <E> The type of the elements.
-     * @param elements The collections of elements
-     * @return The sorted List23 representation of "elements"
-     */
-    public static <E extends Comparable<E>> TreeList23<E> ofSortedUnique(final Iterable<? extends E> elements) {
-        return ofSortedUnique(TreeList23::naturalCompare, elements);
+    public <F> TreeList23<F> map(final Function<E, F> function) {
+        return root == null ? empty() : new TreeList23<>(root.map(function));
     }
-	
-	/**
-	 * Easy construction of a sorted list, using a custom comparator.
-	 * Creates a list23 represents of the elements sorted by a comparator.
-     * <p>This operation is O(n log n) where n = |elements|.
-     * <pre>
-     * Example:
-     *     assert List23.ofSorted(Integer::compare, Arrays.asList(6, 1, 6, 8)).asCollection().equals(Arrays.asList(1, 6, 6, 8));
-     * </pre>
-     * @param <E> The type of the elements.
-     * @param comparator The element comparator
-	 * @param elements The collections of elements
-	 * @return The sorted List23 representation of "elements"
-	 */
-	public static <E> TreeList23<E> ofSorted(final Comparator<? super E> comparator, final Iterable<? extends E> elements) {
-	    Requirements.require(comparator, Requirements.notNull(), () -> "comparator");
-        Requirements.require(elements, Requirements.notNull(), () -> "elements");
-        return quickConstruct(sortLeaves(comparator, new LeafIterator<>(elements)));
-	}
 
-	/**
-     * Easy construction of a sorted list.
-     * Creates a List23 representation of elements sorted by a comparator.
-     * <p>This operation is O(n log n) where n = |elements|.
-     * <pre>
-     * Example:
-     *     assert List23.ofSorted(Arrays.asList(6, 1, 6, 8)).asCollection().equals(Arrays.asList(1, 6, 6, 8));
-     * </pre>
-     * @param <E> The type of the elements
-	 * @param elements The collection of elements
-	 * @return The sorted List23 representation of "elements"
-	 */
-	public static <E extends Comparable<E>> TreeList23<E> ofSorted(final Iterable<? extends E> elements) {
-        Requirements.require(elements, Requirements.notNull(), () -> "elements");
-		return ofSorted(TreeList23::naturalCompare, elements);
-	}
-
-	/**
-	 * Returns a classic "read only java List" view of the list.
-	 * <p>This operation is O(1).
-     * <pre>
-     * Example:
-     *     assert List23.of(Arrays.asList(6, 1, 6, 8)).asCollection().equals(Arrays.asList(6, 1, 6, 8));
-     * </pre>
-	 * @return A classic "read only java List" view of the list
-	 */
 	public List<E> asCollection() {
 		return new List23List<>(this);
 	}
 	
-	/**
-	 * Returns the number of elements in the list.
-	 * <p>This operation is O(1).
-     * <pre>
-     * Example:
-     *     assert List23.of(Arrays.asList(6, 1, 6, 8)).size() == 4;
-     * </pre>
-	 * @return The number of elements in the list
-	 */
 	@Override
 	public int size() {
 		return root == null ? 0 : root.size();
 	}
 	
-	/**
-	 * Returns <code>list[index]</code>.
-	 * <p>This operation is O(log n) where n = |this|.
-     * <pre>
-     * Example:
-     *     assert List23.of(Arrays.asList(6, 1, 6, 8)).getAt(2) == 6;
-     * </pre>
-     * @param index The index. Must be in range <code>[0, size - 1]</code>.
-	 * @return <code>list[index]</code>
-	 * @throws IndexOutOfBoundsException if index &lt; 0 or index &gt;= size
-	 */
 	public E getAt(final int index) {
 		return root.get(verifyIndex("index", index, 0, size() - 1));
 	}
 	
-    /**
-	 * Returns true if this list contains <code>element</code>.
-	 * <p>This operation is O(n) where n = |this|.
-     * <pre>
-     * Example:
-     *     assert List23.of(Arrays.asList(6, 1, 6, 8)).contains(2) == false;
-     *     assert List23.of(Arrays.asList(6, 1, 6, 8)).contains(6) == true;
-     * </pre>
-	 * @param element The element to look for
-	 * @return true if this list contains <code>element</code>
-	 */
     @Override
     public boolean contains(final E element) {
         return indexOf(element) >= 0;
     }
     
-    /**
-     * Returns the index of the first occurrence of <code>element</code>.
-     * <p>This operation is O(n) where n = |this|.
-     * <pre>
-     * Example:
-     *     assert List23.of(Arrays.asList(6, 1, 6, 8)).indexOf(1) == 1;
-     *     assert List23.of(Arrays.asList(6, 1, 6, 8)).indexOf(6) == 0;
-     *     assert List23.of(Arrays.asList(6, 1, 6, 8)).indexOf(7) == -1;
-     * </pre>
-     * @param element The element to look for
-     * @return The index of <code>element</code>, -1 if not found
-     */
 	public int indexOf(final E element) {
 	    int i = 0;
 	    for(E e: this) {
@@ -275,198 +106,60 @@ public final class TreeList23<E> implements ImmList<E> {
 	    return -1;
 	}
 	
-    /**
-     * Returns the index of the last occurrence of <code>element</code>.
-     * <p>This operation is O(n) where n = |this|.
-     * <pre>
-     * Example:
-     *     assert List23.of(Arrays.asList(6, 1, 6, 8)).lastIndexOf(1) == 1;
-     *     assert List23.of(Arrays.asList(6, 1, 6, 8)).lastIndexOf(6) == 2;
-     *     assert List23.of(Arrays.asList(6, 1, 6, 8)).lastIndexOf(7) == -1;
-     * </pre>
-     * @param element The element to look for
-     * @return The last index of <code>element</code>, -1 if not found
-     */
     public int lastIndexOf(final E element) {
         int pos = reversed().indexOf(element);
         return pos < 0 ? -1 : size() - 1 - pos;
     }
     
-    /**
-     * Returns a list with the first element matching <code>element</code> removed.
-     * <p>This operation is O(n) where n = |this|.
-     * <p>THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
-     * <pre>
-     * Example:
-     *     assert List23.of(Arrays.asList(6, 1, 6, 8)).remove(1).asCollection().equals(Arrays.asList(6, 6, 8));
-     *     assert List23.of(Arrays.asList(6, 1, 6, 8)).remove(6).asCollection().equals(Arrays.asList(1, 6, 8));
-     *     assert List23.of(Arrays.asList(6, 1, 6, 8)).remove(7).asCollection().equals(Arrays.asList(6, 1, 6, 8));
-     * </pre>
-     * @param element The element to remove
-     * @return A list with <code>element</code> removed
-     */
     @Override
     public TreeList23<E> remove(final E element) {
         int index = indexOf(element);
         return index < 0 ? this : removeAt(index);
     }
     
-    /**
-     * Returns a list with only items that match <code>filter</code>.
-     * <p>This operation is O(n log n + n * k) where n = |this| and k = O(filter.test).
-     * <p>THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
-     * <pre>
-     * Example:
-     *     assert List23.of(Arrays.asList(6, 1, 6, 8)).filter(e -&gt; e != 6 ).asCollection().equals(Arrays.asList(1, 8));
-     * </pre>
-     * @param filter The filter to apply
-     * @return A list with <code>filter</code> applied
-     */
     @Override
     public TreeList23<E> filter(final Predicate<E> filter) {
         return TreeList23.ofFiltered(filter, this);
     }
 
-   /**
-     * Returns a list whose items also appear <code>other</code>.
-     * <p>This operation is O(n log n) where n = |this| + |other|.
-     * <p>THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
-     * <pre>
-     * Example:
-     *     assert List23.of(Arrays.asList(6, 1, 6, 8)).retain(Arrays.asList(6,1)).asCollection().equals(Arrays.asList(6, 1, 6));
-     * </pre>
-     * @param other The items to match.
-     * @return a list whose items also appear in another list
-     */
     @Override
     public TreeList23<E> retain(final Iterable<? extends E> other) {
         final HashSet23<E> hs = HashSet23.of(other);
         return filter(hs::contains);
     }
     
-    /**
-     * Returns a list whose items don't appear <code>other</code>.
-     * <p>This operation is O(n log n) where n = |this| + |other|.
-     * <p>THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
-     * <pre>
-     * Example:
-     *     assert List23.of(Arrays.asList(6, 1, 6, 8)).removeAllIn(Arrays.asList(1)).asCollection().equals(Arrays.asList(6, 6, 8));
-     * </pre>
-     * @param other The items to match.
-     * @return a list whose items don't appear in another list
-     */
     @Override
     public TreeList23<E> removeAllIn(final Iterable<? extends E> other) {
         final HashSet23<E> hs = HashSet23.of(other);
         return filter(e -> !hs.contains(e));
     }
     
-    /**
-	 * Returns a list with <code>element</code> added to the end.
-	 * <p>This operation is O(log n) where n = |this|.
-	 * <p>THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
-     * <pre>
-     * Example:
-     *     assert List23.of(Arrays.asList(6, 1, 6, 8)).add(9).asCollection().equals(Arrays.asList(6, 1, 6, 8, 9));
-     *     assert List23.of(Arrays.asList(6, 1, 6, 8)).add(1).asCollection().equals(Arrays.asList(6, 1, 6, 8, 1));
-     * </pre>
-	 * @param element The element to add.
-	 * @return A list with <code>element</code> added to the end
-	 */
     @Override
 	public TreeList23<E> add(final E element) {
         return replaceRange(size(), size(), TreeList23.singleton(element));
 	}
 	
-    /**
-	 * Returns a new list with <code>list[index] == element</code>.
-     * <p>This operation is O(log n) where n = |this|.
-	 * <p>THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
-     * <pre>
-     * Example:
-     *     assert List23.of(Arrays.asList(6, 1, 6, 8)).setAt(2, 3).asCollection().equals(Arrays.asList(6, 1, 3, 8));
-     * </pre>
-     * @param index The index. Must be in range <code>[0, size]</code>.
-	 * @param element The element to set
-	 * @return A new list with <code>list[index] == element</code>
-     * @throws IndexOutOfBoundsException if index &lt; 0 or index &gt;= size.
-	 */
 	public TreeList23<E> setAt(final int index, final E element) {
 	    verifyIndex("index", index, 0, size() - 1);
 	    return replaceRange(index, index + 1, TreeList23.singleton(element));
 	}
 	
-	/**
-	 * Returns a list with <code>element</code> inserted at <code>index</code>.
-     * <p>This operation is O(log n) where n = |this|.
-	 * <p>THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
-     * <pre>
-     * Example:
-     *     assert List23.of(Arrays.asList(6, 1, 6, 8)).insertAt(2, 3).asCollection().equals(Arrays.asList(6, 1, 3, 6, 8));
-     * </pre>
-     * @param index The index. Must be in range <code>[0, size]</code>.
-	 * @param element The element to insert
-	 * @return A list with the given element set at the specified index
-     * @throws IndexOutOfBoundsException if index &lt; 0 or index &gt; size.
-	 */
 	public TreeList23<E> insertAt(final int index, final E element) {
         verifyIndex("index", index, 0, size());
         return replaceRange(index, index, TreeList23.singleton(element));
 	}
 	
-	/**
-	 * Returns a list with <code>index</code> removed.
-     * <p>This operation is O(log n) where n = |this|.
-	 * <p>THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
-     * <pre>
-     * Example:
-     *     assert List23.of(Arrays.asList(6, 1, 6, 8)).removeAt(2).asCollection().equals(Arrays.asList(6, 1, 8));
-     * </pre>
-     * @param index The index. Must be in range <code>[0, size - 1]</code>
-	 * @return A list with the given index removed
-     * @throws IndexOutOfBoundsException if index &lt; 0 or index &gt;= size.
-	 */
 	public TreeList23<E> removeAt(final int index) {
        verifyIndex("index", index, 0, size() - 1);
        return replaceRange(index, index + 1, empty());
 	}
 	
-    /**
-     * Returns a list with range <code>[low, high - 1]</code> removed.
-     * <p>This operation is O(log n) where n = |this|.
-     * <p>THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
-     * <pre>
-     * Example:
-     *     assert List23.of(Arrays.asList(6, 1, 6, 8)).removeRange(1,3).asCollection().equals(Arrays.asList(6, 8));
-     *     assert List23.of(Arrays.asList(6, 1, 6, 8)).removeRange(1,1).asCollection().equals(Arrays.asList(6, 1, 6, 8));
-     *     assert List23.of(Arrays.asList(6, 1, 6, 8)).removeRange(0,4).asCollection().equals(Arrays.asList());
-     * </pre>
-     * @param low The low index (inclusive).   Must be in range <code>[0, high]</code>
-     * @param high The high index (exclusive).   Must be in range <code>[0, size]</code>
-     * @return A list with the given list appended to the end
-     * @throws IndexOutOfBoundsException if low &lt; 0 or low &gt; high or high &gt; size
-     */
     public TreeList23<E> removeRange(final int low, final int high) {
         verifyIndex("high", high, 0, size());
         verifyIndex("log", low, 0, high);
         return replaceRange(low, high, empty());
     }
     
-    /**
-     * Returns a list with range <code>[low, high - 1]</code> replaced with <code>other</code>.
-     * <p>This operation is O(log n) where n = |this| + |other|.
-     * <p>THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
-     * <pre>
-     * Example:
-     *     assert List23.of(Arrays.asList(6, 1, 6, 8)).replaceRange(1,3,List23.singleton(7)).asCollection().equals(Arrays.asList(6, 7, 8));
-     *     assert List23.of(Arrays.asList(6, 1, 6, 8)).replaceRange(1,3,List23.of(Arrays.asList(7,5,3))).asCollection().equals(Arrays.asList(6, 7, 5, 3, 8));
-     * </pre>
-     * @param low The low index (inclusive).   Must be in range <code>[0, high]</code>
-     * @param high The high index (exclusive).   Must be in range <code>[0, size]</code>
-     * @param other The list to insert
-     * @return A list with the given range replaced with another list
-     * @throws IndexOutOfBoundsException if low &lt; 0 or low &gt; high or high &gt; size
-     */
     public TreeList23<E> replaceRange(final int low, final int high, final ImmList<E> other) {
         verifyIndex("high", high, 0, size());
         verifyIndex("low", low, 0, high);
@@ -476,38 +169,12 @@ public final class TreeList23<E> implements ImmList<E> {
             headAt(low).appendList(other).appendList(tailAt(high));
     }
     
-    /**
-     * Returns a list with <code>other</code> inserted at <code>index</code>. 
-     * <p>This operation is O(log n) where n = |this| + |other|.
-     * <p>THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
-     * <pre>
-     * Example:
-     *     assert List23.of(Arrays.asList(6, 1, 6, 8)).insertListAt(2,List23.singleton(7)).asCollection().equals(Arrays.asList(6, 1, 7, 6, 8));
-     *     assert List23.of(Arrays.asList(6, 1, 6, 8)).insertListAt(2,List23.of(Arrays.asList(7,5,3))).asCollection().equals(Arrays.asList(6, 1, 7, 5, 3, 6, 8));
-     * </pre>
-     * @param index The index.   Must be in range <code>[0, size]</code>
-     * @param other The list to insert
-     * @return A list with another list inserted at the specified index
-     * @throws IndexOutOfBoundsException if index &lt; 0 or index &gt; size.
-     */
     public TreeList23<E> insertListAt(final int index, final ImmList<E> other) {
         verifyIndex("index", index, 0, size());
         Requirements.require(other, Requirements.notNull(), () -> "other");
         return replaceRange(index, index, other);
     }
 	
-	/**
-	 * Returns a list with <code>other</code> appended to the end.
-     * <p>This operation is O(log n) where n = |this| + |other|.
-	 * <p>THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
-     * <pre>
-     * Example:
-     *     assert List23.of(Arrays.asList(6, 1, 6, 8)).appendList(List23.singleton(7)).asCollection().equals(Arrays.asList(6, 1, 6, 8, 7));
-     *     assert List23.of(Arrays.asList(6, 1, 6, 8)).appendList(List23.of(Arrays.asList(7,5,3))).asCollection().equals(Arrays.asList(6, 1, 6, 8, 7, 5, 3));
-     * </pre>
-	 * @param other The list to append
-	 * @return A list with the given list appended to the end
-	 */
 	public TreeList23<E> appendList(final ImmList<E> other) {
 		Requirements.require(other, Requirements.notNull(), () -> "other");
 		if (!(other instanceof TreeList23)) {
@@ -519,20 +186,6 @@ public final class TreeList23<E> implements ImmList<E> {
 		       new TreeList23<>(concat(root, tother.root));
 	}
 	
-	/**
-	 * Returns a list with all indexes &gt;= <code>index</code>.
-	 * <p>This operation is O(log n) where n = |this|.
-     * <p>THIS OPERATION IS IMMUTABLE. The original list is left unchanged.
-     * <pre>
-     * Example:
-     *     assert List23.of(Arrays.asList(6, 1, 6, 8)).tailAt(2).asCollection().equals(Arrays.asList(6,8));
-     *     assert List23.of(Arrays.asList(6, 1, 6, 8)).tailAt(4).asCollection().equals(Arrays.asList());
-     *     assert List23.of(Arrays.asList(6, 1, 6,  8)).tailAt(0).asCollection().equals(Arrays.asList(6, 1, 6, 8));
-     * </pre>
-	 * @param index The chopping point (inclusive).  Must be in range <code>[0, size]</code>
-	 * @return A list with all indexes &gt;= the specified index
-     * @throws IndexOutOfBoundsException if index &lt; 0 or index &gt; size
-	 */
 	public TreeList23<E> tailAt(final int index) {
 	    verifyIndex("index", index, 0, size());
 	    return index == 0 ? this :
@@ -540,54 +193,17 @@ public final class TreeList23<E> implements ImmList<E> {
 	               new TreeList23<>(root.tail(index));
 	}
 	
-	/**
-	 * Returns a list with all indexes &lt; <code>index</code>.
-     * <p>This operation is O(log n) where n = |this|.
-     * <p>THIS OPERATION IS IMMUTABLE. The original list is left unchanged.
-     * <pre>
-     * Example:
-     *     assert List23.of(Arrays.asList(6, 1, 6, 8)).headAt(2).asCollection().equals(Arrays.asList(6, 1));
-     *     assert List23.of(Arrays.asList(6, 1, 6, 8)).headAt(4).asCollection().equals(Arrays.asList(6, 1, 6, 8));
-     *     assert List23.of(Arrays.asList(6, 1, 6, 8)).headAt(0).asCollection().equals(Arrays.asList());
-     * </pre>
-	 * @param index The chopping point (exclusive).  Must be in range <code>[0, size]</code>
-	 * @return A list with all indexes &lt; the specified index
-     * @throws IndexOutOfBoundsException if index &lt; 0 or index &gt; size
-	 */
 	public TreeList23<E> headAt(final int index) {
         verifyIndex("index", index, 0, size());
 		return index == size() ?  this : index == 0 ? empty(): new TreeList23<>(root.head(index));
 	}
 	
-	/**
-	 * Returns a list with all indexes that fall in range <code>[low, high - 1]</code>.
-     * <p>This operation is O(log n) where n = |this|.
-     * <p>THIS OPERATION IS IMMUTABLE. The original list is left unchanged.
-     * <pre>
-     * Example:
-     *     assert List23.of(Arrays.asList(6, 1, 6, 8)).getRange(1, 3).asCollection().equals(Arrays.asList(1, 6));
-     * </pre>
-     * @param low The low index (inclusive).   Must be in range <code>[0, high]</code>
-     * @param high The high index (exclusive).   Must be in range <code>[0, size]</code>
-	 * @return A list with all indexes &gt;= from and &lt; to
-     * @throws IndexOutOfBoundsException if low &lt; 0 or low &gt; high or high &gt; size
-	 */
 	public TreeList23<E> getRange(final int low, final int high) {
         verifyIndex("high", high, 0, size());
 	    verifyIndex("low", low, 0, high);
 		return tailAt(low).headAt(high - low);
 	}
 	
-	/**
-	 * Returns a list that is the original list reversed.
-	 * <p>This operation is O(1).
-	 * <p>THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
-     * <pre>
-     * Example:
-     *     assert List23.of(Arrays.asList(6, 1, 6, 8)).reversed().asCollection().equals(Arrays.asList(8, 6, 1, 6));
-     * </pre>
-	 * @return A list that is the original list reversed
-	 */
 	public TreeList23<E> reversed() {
 	    if (size() < 2) {
 	        return this;
@@ -631,10 +247,6 @@ public final class TreeList23<E> implements ImmList<E> {
         return root.spliterator();
     }
 
-    /**
-     * Returns the elements as a stream.
-     * @return The elements as a stream
-     */
     @Override
     public Stream<E> stream() {
         return StreamSupport.stream(spliterator(), false);

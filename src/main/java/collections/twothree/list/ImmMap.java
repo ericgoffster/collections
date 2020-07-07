@@ -9,8 +9,12 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 /**
- * Represents an Immutable mapping of keys to values backed by a {@link ImmList} of entries.
- * <p>*ALL OPERATIONS ARE IMMUTABLE*.  The object is not modified in any way.
+ * Represents an Immutable mapping of keys to values.   There is no guarantee
+ * on the order of entries (i.e. HashMap).
+ * <p>*ALL OPERATIONS ARE IMMUTABLE*.
+ * Operations such as put and removeKey return map's with the specified operation
+ * applied leaving the origin map unmodified.   In addition,
+ * these operations are *performant*, usually taking no more than O(log n).
  *
  * @param <K> The key type
  * @param <V> The value type
