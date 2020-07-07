@@ -1,6 +1,7 @@
 package collections.twothree.list;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.SortedMap;
@@ -18,6 +19,9 @@ public final class ImmCollections {
         return TreeList23.of(elements);
     }
 
+    public static <E> ImmSet<E> emptySet() {
+        return HashSet23.empty();
+    }
     @SafeVarargs
     public static <E> ImmSet<E> asSet(E... elements) {
         return HashSet23.of(Arrays.asList(elements));
@@ -26,12 +30,22 @@ public final class ImmCollections {
         return HashSet23.of(elements);
     }
 
+    public static <E extends Comparable<E>> ImmSortedSet<E> emptySortedSet() {
+        return TreeSet23.empty();
+    }
     @SafeVarargs
     public static <E extends Comparable<E>> ImmSortedSet<E> asSortedSet(E... elements) {
         return TreeSet23.of(Arrays.asList(elements));
     }
     public static <E extends Comparable<E>> ImmSortedSet<E> asSortedSet(final Iterable<E> elements) {
         return TreeSet23.of(elements);
+    }
+
+    public static <E> ImmSortedSet<E> emptySortedSet(Comparator<? super E> comparator) {
+        return TreeSet23.empty(comparator);
+    }
+    public static <E> ImmSortedSet<E> asSortedSet(Comparator<? super E> comparator, final Iterable<E> elements) {
+        return TreeSet23.of(comparator, elements);
     }
 
     public static <K, V> ImmMap<K, V> emptyMap() {
@@ -68,7 +82,14 @@ public final class ImmCollections {
     public static <K extends Comparable<K>, V> ImmSortedMap<K, V> asSortedMap(final Iterable<Entry<K,V>> elements) {
         return TreeMap23.of(elements);
     }
-    public static <K extends Comparable<K>, V> ImmMap<K, V> asSortedMap(final SortedMap<K,V> map) {
+    public static <K, V> ImmMap<K, V> asSortedMap(final SortedMap<K,V> map) {
         return TreeMap23.ofSorted(map);
+    }
+
+    public static <K, V> ImmSortedMap<K, V> emptySortedMap(Comparator<? super K> comparator) {
+        return TreeMap23.empty(comparator);
+    }
+    public static <K, V> ImmSortedMap<K, V> asSortedMap(Comparator<? super K> comparator, final Iterable<Entry<K,V>> elements) {
+        return TreeMap23.of(comparator, elements);
     }
 }

@@ -41,95 +41,27 @@ public final class TreeSet23<E> implements ImmSortedSet<E> {
 		this.comparator = Requirements.require(comparator, Requirements.notNull(), () -> "comparator");
 	}
 	
-	/**
-	 * Returns a single set of <code>element</code>.
-     * <p>This operation is O(1).
-     * <pre>
-     * Example:
-     *     assert TreeSet23.singleton(6).asList().asCollection().equals(Arrays.asList(6));
-     * </pre>
-	 * @param <E> The element type
-	 * @param element The singleton element
-	 * @return A set of exactly one element
-	 */
-    public static <E extends Comparable<E>> TreeSet23<E> singleton(final E element) {
+    static <E extends Comparable<E>> TreeSet23<E> singleton(final E element) {
         return new TreeSet23<E>(TreeList23::naturalCompare, TreeList23.singleton(element));
     }
 
-    /**
-     * Returns the empty set, using a custom ordering.
-     * <p>This operation is O(1).
-     * <pre>
-     * Example:
-     *     assert TreeSet23.empty(Integer::compare).asList().asCollection().equals(Arrays.asList());
-     * </pre>
-     * @param comparator The comparator which defines ordering.
-     * @param <E> The element type
-     * @return An empty set.
-     */
-    public static <E> TreeSet23<E> empty(Comparator<? super E> comparator) {
+    static <E> TreeSet23<E> empty(Comparator<? super E> comparator) {
         return new TreeSet23<E>(comparator, TreeList23.empty());
     }
 
-    /**
-     * Returns the empty set.
-     * <p>This operation is O(1).
-     * <pre>
-     * Example:
-     *     assert TreeSet23.empty().asList().asCollection().equals(Arrays.asList());
-     * </pre>
-     * @param <E> The element type
-     * @return An empty set.
-     */
-    public static <E extends Comparable<E>> TreeSet23<E> empty() {
+    static <E extends Comparable<E>> TreeSet23<E> empty() {
         return empty(TreeList23::naturalCompare);
     }
 
-    /**
-     * Returns a set containing an initial list of elements, using natural ordering.
-     * <p>This operation is O(n log n).
-     * <pre>
-     * Example:
-     *     assert TreeSet23.of(Arrays.asList(4, 2, 3)).asList().asCollection().equals(Arrays.asList(2, 3, 4));
-     * </pre>
-     * @param <E> The element type
-     * @param elements The array of elements
-     * @return A set containing an initial list of elements
-     */
-    public static <E extends Comparable<E>> TreeSet23<E> of(final Iterable<? extends E> elements) {
+    static <E extends Comparable<E>> TreeSet23<E> of(final Iterable<? extends E> elements) {
     	return of(TreeList23::naturalCompare, elements);
     }
     
-    /**
-     * Returns a set containing an initial list of elements from <code>sortedSet</code>.
-     * <p>This operation is O(n log n).
-     * <pre>
-     * Example:
-     *     assert TreeSet23.of(TreeSet23.of(Arrays.asList(4, 2, 3)).asCollection()).asList().asCollection().equals(Arrays.asList(2, 3, 4));
-     * </pre>
-     * @param <E> The element type
-     * @param sortedSet The set of elements
-     * @return A set containing an initial list of elements
-     */
-    public static <E> TreeSet23<E> ofSorted(final SortedSet<E> sortedSet) {
+    static <E> TreeSet23<E> ofSorted(final SortedSet<E> sortedSet) {
         return new TreeSet23<>(getComparator(sortedSet), TreeList23.of(sortedSet));
     }
 
-    /**
-     * Returns a set containing an initial list of elements, using custom ordering.
-     * <p>This operation is O(n log n).
-     * <pre>
-     * Example:
-     *     Comparator&lt;Integer&gt; comp = Integer::compare;
-     *     assert TreeSet23.of(comp, Arrays.asList(4, 2, 3)).asList().asCollection().equals(Arrays.asList(2, 3, 4));
-     *     assert TreeSet23.of(comp.reversed(), Arrays.asList(4, 2, 3)).asList().asCollection().equals(Arrays.asList(4, 3, 2));
-     * </pre>
-     * @param <E> The element type
-     * @param comparator The comparator of elements
-     * @param elements The array of elements
-     * @return A set containing an initial list of elements
-     */
-    public static <E> TreeSet23<E> of(final Comparator<? super E> comparator, final Iterable<? extends E> elements) {
+    static <E> TreeSet23<E> of(final Comparator<? super E> comparator, final Iterable<? extends E> elements) {
     	return new TreeSet23<E>(comparator, TreeList23.ofSortedUnique(comparator, elements));
     }
     
