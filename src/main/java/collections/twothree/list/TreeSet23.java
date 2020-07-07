@@ -25,15 +25,8 @@ import org.granitesoft.requirement.Requirements;
  *
  * @param <E> The type of the elements.
  */
-public final class TreeSet23<E> implements ImmSortedSet<E> {
-    /**
-     * The comparator for elements in the set.   Defines the ordering.
-     */
+final class TreeSet23<E> implements ImmSortedSet<E> {
 	final Comparator<? super E> comparator;
-
-	/**
-	 * The list of elements
-	 */
 	final TreeList23<E> elements;
 
 	TreeSet23(final Comparator<? super E> comparator, final TreeList23<E> elements) {

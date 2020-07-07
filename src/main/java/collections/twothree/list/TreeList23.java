@@ -37,7 +37,7 @@ import org.granitesoft.requirement.Requirements;
  * Which is significant, there is no need for a builder.
  * @param <E> The type of the elements.
  */
-public final class TreeList23<E> implements ImmList<E> {
+final class TreeList23<E> implements ImmList<E> {
     /**
      * The root of the tree.
      */

@@ -23,7 +23,7 @@ import java.util.stream.StreamSupport;
  * @param <K> The key type
  * @param <V> The value type
  */
-public final class TreeMap23<K, V> implements ImmSortedMap<K, V> {
+final class TreeMap23<K, V> implements ImmSortedMap<K, V> {
     final Comparator<? super K> keyComparator;
 	final TreeList23<Entry<K, V>> entries;
 
@@ -34,133 +34,31 @@ public final class TreeMap23<K, V> implements ImmSortedMap<K, V> {
 		this.entries = entries;
 	}
 
-	/**
-	 * Returns an empty sorted map with a a custom key comparator.
-     * <p>This operation is O(1).
-     * <pre>
-     * Example:
-     *     SortedMap23.empty(Integer::compare) == {}
-     * </pre>
-     * @param <K> The key type
-     * @param <V> The value type
-	 * @param keyComparator The custom key comparator
-	 * @return an empty sorted map with a a custom key comparator
-	 */
-    public static <K,V> TreeMap23<K,V> empty(final Comparator<? super K> keyComparator) {
+    static <K,V> TreeMap23<K,V> empty(final Comparator<? super K> keyComparator) {
         return new TreeMap23<K, V>(keyComparator, TreeList23.empty());
     }
 
-    /**
-     * Returns an empty sorted map using the natural comparator associated with the keys.
-     * <p>This operation is O(1).
-     * <pre>
-     * Example:
-     *     SortedMap23.empty() == {}
-     * </pre>
-     * @param <K> The key type
-     * @param <V> The value type
-     * @return an empty sorted map using the natural comparator associated with the keys.
-     */
-    public static <K extends Comparable<K>,V> TreeMap23<K,V> empty() {
+    static <K extends Comparable<K>,V> TreeMap23<K,V> empty() {
         return empty(TreeList23::naturalCompare);
     }
    
-    /**
-     * Returns a sorted map with a single entry using the natural comparator associated with the key.
-     * <p>This operation is O(1).
-     * <pre>
-     * Example:
-     *     SortedMap23.singleton(4, 1) == {4 =&gt; 1}
-     * </pre>
-     * @param key initial key
-     * @param value initial value
-     * @param <K> The key type
-     * @param <V> The value type
-     * @return an empty sorted map using the natural comparator associated with the keys.
-     */
-    public static <K extends Comparable<K>,V> TreeMap23<K,V> singleton(final K key, final V value) {
+    static <K extends Comparable<K>,V> TreeMap23<K,V> singleton(final K key, final V value) {
         return new TreeMap23<K, V>(TreeList23::naturalCompare, TreeList23.singleton(new AbstractMap.SimpleImmutableEntry<>(key, value)));
     }
 
-    /**
-     * Returns a sorted map populated from a java sorted map.
-     * <p>This operation is O(n log n).
-     * <pre>
-     * Example:
-     *     TreeMap&lt;Integer,Integer&gt; tm = new TreeMap&lt;&gt;();
-     *     tm.put(4,1);
-     *     tm.put(2,2);
-     *     tm.put(3,3);
-     *     SortedMap23.of(tm) == {2=&gt;2,3=&gt;3,4=&gt;1}
-     * </pre>
-     * @param <K> The key type
-     * @param <V> The value type
-     * @param sortedMap The map to get entries from
-     * @return a sorted map populated from a java sorted map.
-     */
-    public static <K,V> TreeMap23<K,V> ofSorted(final SortedMap<K, V> sortedMap) {
+    static <K,V> TreeMap23<K,V> ofSorted(final SortedMap<K, V> sortedMap) {
         return of(getComparator(sortedMap), sortedMap.entrySet());
     }
 
-    /**
-     * Returns a sorted map populated from a java map and a custom comparator.
-     * <p>This operation is O(n log n).
-     * <pre>
-     * Example:
-     *     TreeMap&lt;Integer,Integer&gt; tm = new TreeMap&lt;&gt;();
-     *     tm.put(4,1);
-     *     tm.put(2,2);
-     *     tm.put(3,3);
-     *     SortedMap23.of(Integer::compare, tm) == {2=&gt;2,3=&gt;3,4=&gt;1}
-     * </pre>
-     * @param <K> The key type
-     * @param <V> The value type
-     * @param keyComparator The custom key comparator
-     * @param map The map to get entries from
-     * @return a sorted map populated from a java map.
-     */
-    public static <K,V> TreeMap23<K,V> of(final Comparator<? super K> keyComparator, final Map<K, V> map) {
+    static <K,V> TreeMap23<K,V> of(final Comparator<? super K> keyComparator, final Map<K, V> map) {
         return of(keyComparator, map.entrySet());
     }
     
-    /**
-     * Returns a sorted map populated from a list of entries and a custom comparator.
-     * <p>This operation is O(n log n).
-     * <pre>
-     * Example:
-     *     TreeMap&lt;Integer,Integer&gt; tm = new TreeMap&lt;&gt;();
-     *     tm.put(4,1);
-     *     tm.put(2,2);
-     *     tm.put(3,3);
-     *     SortedMap23.of(Integer::compare, tm.entrySet()) == {2=&gt;2,3=&gt;3,4=&gt;1}
-     * </pre>
-     * @param <K> The key type
-     * @param <V> The value type
-     * @param keyComparator The key comparator
-     * @param entries The list of entries
-     * @return a sorted map populated from a list of entries and a custom comparator
-     */
-	public static <K,V> TreeMap23<K,V> of(final Comparator<? super K> keyComparator, final Iterable<? extends Entry<K, V>> entries) {
+    static <K,V> TreeMap23<K,V> of(final Comparator<? super K> keyComparator, final Iterable<? extends Entry<K, V>> entries) {
 	    return new TreeMap23<K, V>(keyComparator, TreeList23.ofSortedUnique((a,b) -> keyComparator.compare(a.getKey(), b.getKey()), entries));
 	}
 	
-	/**
-     * Returns a sorted map populated from a list of entries and the natural key comparator.
-     * <p>This operation is O(n log n).
-     * <pre>
-     * Example:
-     *     TreeMap&lt;Integer,Integer&gt; tm = new TreeMap&lt;&gt;();
-     *     tm.put(4,1);
-     *     tm.put(2,2);
-     *     tm.put(3,3);
-     *     SortedMap23.of(tm.entrySet()) == {2=&gt;2,3=&gt;3,4=&gt;1}
-     * </pre>
-     * @param <K> The key type
-     * @param <V> The value type
-     * @param entries The list of entries
-	 * @return a sorted map populated from a list of entries and a natural comparator
-	 */
-    public static <K extends Comparable<K>,V> TreeMap23<K,V> of(final Iterable<? extends Entry<K, V>> entries) {
+	static <K extends Comparable<K>,V> TreeMap23<K,V> of(final Iterable<? extends Entry<K, V>> entries) {
         return of(TreeList23::naturalCompare, entries);
     }
 	

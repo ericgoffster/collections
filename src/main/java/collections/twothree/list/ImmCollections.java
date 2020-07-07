@@ -92,4 +92,7 @@ public final class ImmCollections {
     public static <K, V> ImmSortedMap<K, V> asSortedMap(Comparator<? super K> comparator, final Iterable<Entry<K,V>> elements) {
         return TreeMap23.of(comparator, elements);
     }
+    public static <K, V> ImmSortedMap<K, V> asSortedMap(Comparator<? super K> comparator, final Map<K,V> map) {
+        return TreeMap23.of(comparator, map);
+    }
 }

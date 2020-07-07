@@ -23,10 +23,7 @@ import org.granitesoft.requirement.Requirements;
  *
  * @param <E> The type of the elements.
  */
-public final class HashSet23<E> implements ImmSet<E> {
-	/**
-	 * The list of elements
-	 */
+final class HashSet23<E> implements ImmSet<E> {
 	final TreeList23<E> elements;
 
 	HashSet23(final TreeList23<E> elements) {
@@ -34,93 +31,29 @@ public final class HashSet23<E> implements ImmSet<E> {
 		this.elements = elements;
 	}
 	
-	/**
-	 * Returns a single set of <code>element</code>.
-     * <p>This operation is O(1).
-     * <pre>
-     * Example:
-     *     assert HashSet23.singleton(6).asCollection().equals(new HashSet&lt;&gt;(Arrays.asList(6)));
-     * </pre>
-	 * @param <E> The element type
-	 * @param element The singleton element
-	 * @return A set of exactly one element
-	 */
-    public static <E> HashSet23<E> singleton(final E element) {
+	static <E> HashSet23<E> singleton(final E element) {
         return new HashSet23<E>(TreeList23.singleton(element));
     }
 
-    /**
-     * Returns the empty hashset.
-     * <p>This operation is O(1).
-     * <pre>
-     * Example:
-     *     assert HashSet23.empty().asCollection().equals(new HashSet&lt;&gt;(Arrays.asList()));
-     * </pre>
-     * @param <E> The element type
-     * @return An empty set.
-     */
-    public static <E> HashSet23<E> empty() {
+    static <E> HashSet23<E> empty() {
         return new HashSet23<E>(TreeList23.empty());
     }
 
-    /**
-     * Returns a hashset containing an initial list of elements.
-     * <p>This operation is O(n log n).
-     * <pre>
-     * Example:
-     *     assert HashSet23.of(Arrays.asList(4, 2, 3)).asCollection().equals(new HashSet&lt;&gt;(Arrays.asList(2, 3, 4)));
-     * </pre>
-     * @param <E> The element typer
-     * @param elements The array of elements
-     * @return A set containing an initial list of elements
-     */
-    public static <E> HashSet23<E> of(final Iterable<? extends E> elements) {
+    static <E> HashSet23<E> of(final Iterable<? extends E> elements) {
         Requirements.require(elements, Requirements.notNull(), () -> "elements");
         return new HashSet23<E>(TreeList23.ofSortedUnique(HashSet23::compare, elements));
     }
 
-    /**
-	 * Returns the size of this set.
-     * <p>This operation is O(1).
-     * <pre>
-     * Example:
-     *     assert HashSet23.of(Arrays.asList(4,2,3)).size() == 3;
-     * </pre>
-	 * @return The size of this set
-	 */
     @Override
 	public int size() {
 		return elements.size();
 	}
 	
-	/**
-	 * Returns true if the set contains <code>element</code>.
-     * <p>This operation is O(log n).
-     * <pre>
-     * Example:
-     *     assert HashSet23.of(Arrays.asList(4,2,3)).contains(2) == true;
-     *     assert HashSet23.of(Arrays.asList(4,2,3)).contains(5) == false;
-     * </pre>
-	 * @param element The element to look for.
-	 * @return true if the set contains the given element
-	 */
     @Override
 	public boolean contains(final E element) {
 	    return elements.getIndexOf(e -> compare(element, e)) >= 0;
 	}
 
-    /**
-	 * Returns a set with <code>element</code> added.
-     * <p>This operation is O(log n).
-     * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
-     * <pre>
-     * Example:
-     *     assert HashSet23.of(Arrays.asList(4,2,3)).add(5).asCollection().equals(new HashSet&lt;&gt;(Arrays.asList(2, 3, 4, 5)));
-     *     assert HashSet23.of(Arrays.asList(4, 2, 3, 5)).add(5).asCollection().equals(new HashSet&lt;&gt;(Arrays.asList(2, 3, 4, 5)));
-     * </pre>
-	 * @param element The element to add.
-	 * @return A set with the given element added.
-	 */
     @Override
 	public HashSet23<E> add(final E element) {
 	    if (contains(element)) {
@@ -129,17 +62,6 @@ public final class HashSet23<E> implements ImmSet<E> {
 	    return new HashSet23<>(elements.insertAt(elements.naturalPosition(e -> compare(element, e)), element));
 	}
 	
-    /**
-     * Returns a set that is the union of this set with <code>other</code>.
-     * <p>This operation is O(m * log n).
-     * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
-     * <pre>
-     * Example:
-     *     assert HashSet23.of(Arrays.asList(4,2,3)).union(HashSet23.of(Arrays.asList(4, 5, 6))).asCollection().equals(new HashSet&lt;&gt;(Arrays.asList(2, 3, 4, 5, 6)));
-     * </pre>
-     * @param other The elements to remove.
-     * @return A set with the given element removed.
-     */
     @Override
 	public HashSet23<E> union(final ImmSet<E> other) {
 	    HashSet23<E> s = this;
@@ -149,67 +71,23 @@ public final class HashSet23<E> implements ImmSet<E> {
 	    return s;
 	}
 
-    /**
-     * Returns a set with <code>element</code> removed.
-     * <p>This operation is O(log n).
-     * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
-     * <pre>
-     * Example:
-     *     assert HashSet23.of(Arrays.asList(4,2,3)).remove(2).asCollection().equals(new HashSet&lt;&gt;(Arrays.asList(3, 4)));
-     *     assert HashSet23.of(Arrays.asList(4,2,3)).remove(5).asCollection().equals(new HashSet&lt;&gt;(Arrays.asList(2, 3, 4)));
-     * </pre>
-     * @param element The element to remove
-     * @return A set with the given element removed
-     */
     @Override
 	public HashSet23<E> remove(final E element) {
         final int index = elements.getIndexOf(e -> compare(element, e));
 	    return index < 0 ? this : new HashSet23<>(elements.removeAt(index));
 	}
 	
-    /**
-     * Returns a set with only the elements that match <code>filter</code>.
-     * <p>This operation is O(n * log n).
-     * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
-     * <pre>
-     * Example:
-     *     assert HashSet23.of(Arrays.asList(4,2,3)).filter(e -&gt; e &lt; 4).asCollection().equals(new HashSet&lt;&gt;(Arrays.asList(2, 3)));
-     * </pre>
-     * @param filter The filter to apply
-     * @return A set with the given element removed
-     */
     @Override
     public HashSet23<E> filter(final Predicate<E> filter) {
         return new HashSet23<>(elements.filter(filter));
     }
 	
-    /**
-     * Returns a set that is the intersection of this set with <code>other</code>.
-     * <p>This operation is O((m + n) * log (m + n)).
-     * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
-     * <pre>
-     * Example:
-     *     HashSet23.of(Arrays.asList(4,2,3)).retain(Set.of(1,2,4)).asCollection().equals(new HashSet&lt;&gt;(Arrays.asList(4, 2)));
-     * </pre>
-     * @param other The set to intersection with
-     * @return A set with the given element removed
-     */
     @Override
     public HashSet23<E> retain(final Iterable<? extends E> other) {
         final HashSet23<E> hs = HashSet23.of(other);
         return filter(hs::contains);
     }
-    /**
-     * Returns a set that is the subtraction of this set with <code>other</code>.
-     * <p>This operation is O(m * log n).
-     * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
-     * <pre>
-     * Example:
-     *     assert HashSet23.of(Arrays.asList(4,2,3)).removeAllIn(HashSet23.of(Arrays.asList(2,4))).asCollection().equals(new HashSet&lt;&gt;(Arrays.asList(3)));
-     * </pre>
-     * @param other The elements to remove.
-     * @return A set with the given element removed.
-     */
+
     @Override
     public HashSet23<E> removeAllIn(final Iterable<? extends E> other) {
         HashSet23<E> m = this;
@@ -219,14 +97,6 @@ public final class HashSet23<E> implements ImmSet<E> {
         return m;
     }
   
-	/**
-     * Returns the read-only {@link Set} view of this set.
-     * <pre>
-     * Example:
-     *     assert HashSet23.of(Arrays.asList(4,2,3)).asCollection().equals(new HashSet&lt;&gt;(Arrays.asList(2, 3, 4)));
-     * </pre>
-     * @return the {@link Set} view of this set
-     */
     @Override
 	public Set<E> asCollection() {
 		return new Set23Set<>(this);

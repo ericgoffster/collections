@@ -24,7 +24,7 @@ import java.util.stream.StreamSupport;
  * @param <K> The key type
  * @param <V> The value type
  */
-public final class HashMap23<K, V> implements ImmMap<K, V> {
+final class HashMap23<K, V> implements ImmMap<K, V> {
 	final TreeList23<Entry<K, V>> entries;
 
 	HashMap23(final TreeList23<Entry<K, V>> entries) {
@@ -32,73 +32,19 @@ public final class HashMap23<K, V> implements ImmMap<K, V> {
 		this.entries = entries;
 	}
 
-	/**
-     * Returns the empty hashmap.
-     * <p>This operation is O(1).
-     * <pre>
-     * Example:
-     *     assert HashMap23.empty().asMap().equals(Collections.emptyMap());
-     * </pre>
-     * @param <K> The key type
-     * @param <V> The value type
-	 * @return the empty hashmap
-	 */
-    public static <K,V> HashMap23<K,V> empty() {
+	static <K,V> HashMap23<K,V> empty() {
         return new HashMap23<>(TreeList23.empty());
     }
    
-    /**
-     * Returns a hashmap23 with a single entry.
-     * <p>This operation is O(1).
-     * <pre>
-     * Example:
-     *     assert HashMap23.singleton(4, 1).asMap().equals(Collections.singletonMap(4, 1));
-     * </pre>
-     * @param key initial key
-     * @param value initial value
-     * @param <K> The key type
-     * @param <V> The value type
-     * @return an empty hashmap23 using the natural comparator associated with the keys.
-     */
-    public static <K,V> HashMap23<K,V> singleton(final K key, final V value) {
+    static <K,V> HashMap23<K,V> singleton(final K key, final V value) {
         return new HashMap23<>(TreeList23.singleton(new AbstractMap.SimpleImmutableEntry<>(key, value)));
     }
 
-    /**
-     * Returns a hashmap23 seeded from another <code>Map</code>.
-     * <p>This operation is O(n log n), where n = |entries|.
-     * <pre>
-     * Example:
-     *     HashMap&lt;Integer, String&gt; hm = new HashMap&lt;&gt;();
-     *     hm.put(1, "2");
-     *     hm.put(3, "4");
-     *     assert HashMap23.of(hm).asMap().equals(hm);
-     * </pre>
-     * @param map map of items to copy
-     * @param <K> The key type
-     * @param <V> The value type
-     * @return a hashmap23 seeded from another <code>Map</code>
-     */
-    public static <K,V> HashMap23<K,V> of(final Map<K, V> map) {
+    static <K,V> HashMap23<K,V> of(final Map<K, V> map) {
         return of(map.entrySet());
     }
 
-    /**
-     * Returns a hashmap23 seeded from another collection of entries.
-     * <p>This operation is O(n log n), where n = |entries|.
-     * <pre>
-     * Example:
-     *     HashMap&lt;Integer, String&gt; hm = new HashMap&lt;&gt;();
-     *     hm.put(1, "2");
-     *     hm.put(3, "4");
-     *     assert HashMap23.of(hm.entrySet()).asMap().equals(hm);
-     * </pre>
-     * @param entries set of items to copy
-     * @param <K> The key type
-     * @param <V> The value type
-     * @return a hashmap23 seeded from another <code>Map</code>
-     */
-	public static <K,V> HashMap23<K,V> of(final Iterable<? extends Entry<K, V>> entries) {
+    static <K,V> HashMap23<K,V> of(final Iterable<? extends Entry<K, V>> entries) {
 	    return new HashMap23<K, V>(TreeList23.ofSortedUnique((a,b) -> HashSet23.compare(a.getKey(), b.getKey()), entries));
 	}
 
