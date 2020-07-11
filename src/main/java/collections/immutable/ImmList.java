@@ -28,7 +28,7 @@ public interface ImmList<E> extends ImmCollection<E> {
      * @param function The mapping function
      * @return A new List23 representing the map of this one
      */
-    public <F> ImmList<F> map(final Function<E, F> function);
+    <F> ImmList<F> map(Function<E, F> function);
 
 	/**
 	 * Returns a classic "read only java List" view of the list.
@@ -39,7 +39,7 @@ public interface ImmList<E> extends ImmCollection<E> {
      * </pre>
 	 * @return A classic "read only java List" view of the list
 	 */
-	public List<E> asCollection();
+	List<E> asCollection();
 	
 	/**
 	 * Returns <code>list[index]</code>.
@@ -52,7 +52,7 @@ public interface ImmList<E> extends ImmCollection<E> {
 	 * @return <code>list[index]</code>
 	 * @throws IndexOutOfBoundsException if index &lt; 0 or index &gt;= size
 	 */
-	public E getAt(final int index);
+	E getAt(int index);
 	
     /**
      * Returns a list with only items that match <code>filter</code>.
@@ -66,7 +66,7 @@ public interface ImmList<E> extends ImmCollection<E> {
      * @return A list with <code>filter</code> applied
      */
     @Override
-    public ImmList<E> filter(final Predicate<E> filter);
+    ImmList<E> filter(Predicate<E> filter);
 
    /**
      * Returns a list whose items also appear <code>other</code>.
@@ -80,7 +80,7 @@ public interface ImmList<E> extends ImmCollection<E> {
      * @return a list whose items also appear in another list
      */
     @Override
-    public ImmList<E> retain(final Iterable<? extends E> other);
+    ImmList<E> retain(Iterable<? extends E> other);
     
     /**
      * Returns a list whose items don't appear <code>other</code>.
@@ -94,7 +94,7 @@ public interface ImmList<E> extends ImmCollection<E> {
      * @return a list whose items don't appear in another list
      */
     @Override
-    public ImmList<E> removeAllIn(final Iterable<? extends E> other);
+    ImmList<E> removeAllIn(Iterable<? extends E> other);
     
     /**
 	 * Returns a list with <code>element</code> added to the end.
@@ -109,7 +109,7 @@ public interface ImmList<E> extends ImmCollection<E> {
 	 * @return A list with <code>element</code> added to the end
 	 */
     @Override
-	public ImmList<E> add(final E element);
+	ImmList<E> add(E element);
 	
     /**
 	 * Returns a new list with <code>list[index] == element</code>.
@@ -124,7 +124,7 @@ public interface ImmList<E> extends ImmCollection<E> {
 	 * @return A new list with <code>list[index] == element</code>
      * @throws IndexOutOfBoundsException if index &lt; 0 or index &gt;= size.
 	 */
-	public ImmList<E> setAt(final int index, final E element);
+	ImmList<E> setAt(int index, E element);
 	
 	/**
 	 * Returns a list with <code>element</code> inserted at <code>index</code>.
@@ -139,7 +139,7 @@ public interface ImmList<E> extends ImmCollection<E> {
 	 * @return A list with the given element set at the specified index
      * @throws IndexOutOfBoundsException if index &lt; 0 or index &gt; size.
 	 */
-	public ImmList<E> insertAt(final int index, final E element);
+	ImmList<E> insertAt(int index, E element);
 	
 	/**
 	 * Returns a list with <code>index</code> removed.
@@ -153,7 +153,7 @@ public interface ImmList<E> extends ImmCollection<E> {
 	 * @return A list with the given index removed
      * @throws IndexOutOfBoundsException if index &lt; 0 or index &gt;= size.
 	 */
-	public ImmList<E> removeAt(final int index);
+	ImmList<E> removeAt(int index);
 	
     /**
      * Returns a list with range <code>[low, high - 1]</code> removed.
@@ -170,7 +170,7 @@ public interface ImmList<E> extends ImmCollection<E> {
      * @return A list with the given list appended to the end
      * @throws IndexOutOfBoundsException if low &lt; 0 or low &gt; high or high &gt; size
      */
-    public ImmList<E> removeRange(final int low, final int high);
+    ImmList<E> removeRange(int low, int high);
     
     /**
      * Returns a list with range <code>[low, high - 1]</code> replaced with <code>other</code>.
@@ -187,7 +187,7 @@ public interface ImmList<E> extends ImmCollection<E> {
      * @return A list with the given range replaced with another list
      * @throws IndexOutOfBoundsException if low &lt; 0 or low &gt; high or high &gt; size
      */
-    public ImmList<E> replaceRange(final int low, final int high, final ImmList<E> other);
+    ImmList<E> replaceRange(int low, int high, ImmList<E> other);
     
     /**
      * Returns a list with <code>other</code> inserted at <code>index</code>. 
@@ -203,7 +203,7 @@ public interface ImmList<E> extends ImmCollection<E> {
      * @return A list with another list inserted at the specified index
      * @throws IndexOutOfBoundsException if index &lt; 0 or index &gt; size.
      */
-    public ImmList<E> insertListAt(final int index, final ImmList<E> other);
+    ImmList<E> insertListAt(int index, ImmList<E> other);
 	
 	/**
 	 * Returns a list with <code>other</code> appended to the end.
@@ -217,7 +217,7 @@ public interface ImmList<E> extends ImmCollection<E> {
 	 * @param other The list to append
 	 * @return A list with the given list appended to the end
 	 */
-	public ImmList<E> appendList(final ImmList<E> other);
+	ImmList<E> appendList(ImmList<E> other);
 	
 	/**
 	 * Returns a list with all indexes &gt;= <code>index</code>.
@@ -233,7 +233,7 @@ public interface ImmList<E> extends ImmCollection<E> {
 	 * @return A list with all indexes &gt;= the specified index
      * @throws IndexOutOfBoundsException if index &lt; 0 or index &gt; size
 	 */
-	public ImmList<E> tailAt(final int index);
+	ImmList<E> tailAt(int index);
 	
 	/**
 	 * Returns a list with all indexes &lt; <code>index</code>.
@@ -249,7 +249,7 @@ public interface ImmList<E> extends ImmCollection<E> {
 	 * @return A list with all indexes &lt; the specified index
      * @throws IndexOutOfBoundsException if index &lt; 0 or index &gt; size
 	 */
-	public ImmList<E> headAt(final int index);
+	ImmList<E> headAt(int index);
 	
 	/**
 	 * Returns a list with all indexes that fall in range <code>[low, high - 1]</code>.
@@ -264,7 +264,7 @@ public interface ImmList<E> extends ImmCollection<E> {
 	 * @return A list with all indexes &gt;= from and &lt; to
      * @throws IndexOutOfBoundsException if low &lt; 0 or low &gt; high or high &gt; size
 	 */
-	public ImmList<E> getRange(final int low, final int high);
+	ImmList<E> getRange(int low, int high);
 	
 	/**
 	 * Returns a list that is the original list reversed.
@@ -276,7 +276,7 @@ public interface ImmList<E> extends ImmCollection<E> {
      * </pre>
 	 * @return A list that is the original list reversed
 	 */
-	public ImmList<E> reversed();
+	ImmList<E> reversed();
 	
 	@Override
 	ListIterator<E> iterator();

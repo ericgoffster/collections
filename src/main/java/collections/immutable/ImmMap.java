@@ -73,7 +73,7 @@ public interface ImmMap<K,V> extends Iterable<Entry<K,V>> {
      * @param value The value to add
      * @return a new map23 with <code>key</code> associated with <code>value</code>
      */
-    ImmMap<K, V> put(final K key, final V value);
+    ImmMap<K, V> put(K key, V value);
     
     /**
      * Returns true if this map contains <code>key</code>.
@@ -87,7 +87,7 @@ public interface ImmMap<K,V> extends Iterable<Entry<K,V>> {
      * @param key The key
      * @return true if this map contains <code>key</code>
      */
-    boolean containsKey(final K key);
+    boolean containsKey(K key);
 
     /**
      * Returns a new map23 with <code>key</code> removed.
@@ -102,7 +102,7 @@ public interface ImmMap<K,V> extends Iterable<Entry<K,V>> {
      * @param key The key to remove
      * @return  a new map23 with <code>key</code> removed
      */
-    ImmMap<K, V> removeKey(final K key);
+    ImmMap<K, V> removeKey(K key);
     
     /**
      * Returns a new map23 with only the keys contained in <code>keys</code>.
@@ -117,7 +117,7 @@ public interface ImmMap<K,V> extends Iterable<Entry<K,V>> {
      * @param keys The key list.
      * @return a new map23 with only the keys contained in <code>keys</code>
      */
-    ImmMap<K, V> retainAllKeys(final Iterable<? extends K> keys);
+    ImmMap<K, V> retainAllKeys(Iterable<? extends K> keys);
 
     /**
      * Returns a new map23 with only the keys than are *not* in <code>keys</code>.
@@ -132,7 +132,7 @@ public interface ImmMap<K,V> extends Iterable<Entry<K,V>> {
      * @param keys The key list.
      * @return a new map23 with only the keys than are *not* in <code>keys</code>
      */
-    ImmMap<K, V> removeAllKeysIn(final Iterable<? extends K> keys);
+    ImmMap<K, V> removeAllKeysIn(Iterable<? extends K> keys);
     
     /**
      * Returns the value associated with <code>key</code>, null if not found.
@@ -146,7 +146,7 @@ public interface ImmMap<K,V> extends Iterable<Entry<K,V>> {
      * @param key The key to lookup
      * @return the value associated with <code>key</code>, null if not found.
      */
-    V get(final K key);
+    V get(K key);
 
     /**
      * Returns the value associated with <code>key</code>, using a default if not found.
@@ -161,7 +161,7 @@ public interface ImmMap<K,V> extends Iterable<Entry<K,V>> {
      * @param defaultSupplier The supplier of the default
      * @return the value associated with the key, using a default if not found.
      */
-    V getOrDefault(final K key, final Supplier<V> defaultSupplier);
+    V getOrDefault(K key, Supplier<V> defaultSupplier);
     
     /**
      * Returns a classic read-only {@link Map} view of this Map23.
@@ -213,7 +213,7 @@ public interface ImmMap<K,V> extends Iterable<Entry<K,V>> {
      * @param keyFilter The key filter
      * @return A map23 will all keys matching <code>keyFilter</code>.
      */
-    public ImmMap<K, V> filterKeys(final Predicate<K> keyFilter);
+    public ImmMap<K, V> filterKeys(Predicate<K> keyFilter);
 
     /**
      * Return A map23 with entries that match <code>filter</code>.
@@ -225,7 +225,7 @@ public interface ImmMap<K,V> extends Iterable<Entry<K,V>> {
      * @param filter The entry filter
      * @return  A map23 with entries that match <code>filter</code>
      */
-    ImmMap<K, V> filter(final BiPredicate<K,V> filter);
+    ImmMap<K, V> filter(BiPredicate<K,V> filter);
     
     /**
      * Streams the entries.
