@@ -22,14 +22,6 @@ public interface ImmCollection<E> extends Iterable<E> {
     int size();
     
     /**
-     * Returns true if the collection contains <code>element</code>.
-     * <p>This operation is O(log n) or O(n) depending in implementation, where n = |this|.
-     * @param element The element to look for.
-     * @return true if the collection contains the given element
-     */
-    boolean contains(E element);
-
-    /**
      * Returns a collection with <code>element</code> added.
      * <p>This operation is O(log n), where n = |this|.
      * <p>THIS OPERATION IS IMMUTABLE.  The original collection is left unchanged.
@@ -37,15 +29,6 @@ public interface ImmCollection<E> extends Iterable<E> {
      * @return A collection with the given element added.
      */
     ImmCollection<E> add(E element);
-    
-    /**
-     * Returns a collection with <code>element</code> removed.
-     * <p>This operation is O(log n) or O(n) depending in implementation, where n = |this|.
-     * <p>THIS OPERATION IS IMMUTABLE.  The original collection is left unchanged.
-     * @param element The element to remove
-     * @return A collection with the given element removed
-     */
-    ImmCollection<E> remove(E element);
     
     /**
      * Returns a collection with only the elements that match <code>filter</code>.

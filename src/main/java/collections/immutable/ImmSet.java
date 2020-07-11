@@ -30,6 +30,20 @@ public interface ImmSet<E> extends ImmCollection<E> {
     ImmSet<E> add(E element);
     
     /**
+     * Returns true if the set contains <code>element</code>.
+     * <p>This operation is O(log n), where n = |this|.
+     * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
+     * <pre>
+     * Example:
+     *     assert ImmCollections.asSet(4,2,3).contains(5) == false;
+     *     assert ImmCollections.asSet(4,2,3).contains(4) == true;
+     * </pre>
+     * @param element The element to add
+     * @return A set with the given element added
+     */
+    boolean contains(E element);
+
+    /**
      * Returns a set with <code>element</code> removed.
      * The order of elements is not defined.
      * <p>This operation is O(log n), where n = |this|.

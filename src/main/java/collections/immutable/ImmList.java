@@ -55,50 +55,6 @@ public interface ImmList<E> extends ImmCollection<E> {
 	public E getAt(final int index);
 	
     /**
-     * Returns the index of the first occurrence of <code>element</code>.
-     * <p>This operation is O(n) where n = |this|.
-     * <pre>
-     * Example:
-     *     assert ImmCollections.asList(6, 1, 6, 8).indexOf(1) == 1;
-     *     assert ImmCollections.asList(6, 1, 6, 8).indexOf(6) == 0;
-     *     assert ImmCollections.asList(6, 1, 6, 8).indexOf(7) == -1;
-     * </pre>
-     * @param element The element to look for
-     * @return The index of <code>element</code>, -1 if not found
-     */
-	public int indexOf(final E element);
-	
-    /**
-     * Returns the index of the last occurrence of <code>element</code>.
-     * <p>This operation is O(n) where n = |this|.
-     * <pre>
-     * Example:
-     *     assert ImmCollections.asList(6, 1, 6, 8).lastIndexOf(1) == 1;
-     *     assert ImmCollections.asList(6, 1, 6, 8).lastIndexOf(6) == 2;
-     *     assert ImmCollections.asList(6, 1, 6, 8).lastIndexOf(7) == -1;
-     * </pre>
-     * @param element The element to look for
-     * @return The last index of <code>element</code>, -1 if not found
-     */
-    public int lastIndexOf(final E element);
-    
-    /**
-     * Returns a list with the first element matching <code>element</code> removed.
-     * <p>This operation is O(n) where n = |this|.
-     * <p>THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
-     * <pre>
-     * Example:
-     *     assert ImmCollections.asList(6, 1, 6, 8).remove(1).asCollection().equals(Arrays.asList(6, 6, 8));
-     *     assert ImmCollections.asList(6, 1, 6, 8).remove(6).asCollection().equals(Arrays.asList(1, 6, 8));
-     *     assert ImmCollections.asList(6, 1, 6, 8).remove(7).asCollection().equals(Arrays.asList(6, 1, 6, 8));
-     * </pre>
-     * @param element The element to remove
-     * @return A list with <code>element</code> removed
-     */
-    @Override
-    public ImmList<E> remove(final E element);
-    
-    /**
      * Returns a list with only items that match <code>filter</code>.
      * <p>This operation is O(n log n + n * k) where n = |this| and k = O(filter.test).
      * <p>THIS OPERATION IS IMMUTABLE.  The original list is left unchanged.
@@ -111,6 +67,7 @@ public interface ImmList<E> extends ImmCollection<E> {
      */
     @Override
     public ImmList<E> filter(final Predicate<E> filter);
+
    /**
      * Returns a list whose items also appear <code>other</code>.
      * <p>This operation is O(n log n) where n = |this| + |other|.

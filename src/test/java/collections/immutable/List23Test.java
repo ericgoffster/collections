@@ -33,18 +33,12 @@ public class List23Test {
     @Test
     public void testMap() {
         assertEquals(of("1","2",null).map(x -> x == null ? null : Integer.parseInt(x)),of(1,2,null));
-        assertEquals(of("1","2",null).map(x -> x == null ? null : Integer.parseInt(x)).indexOf(1),0);
-        assertEquals(of("1","2",null).map(x -> x == null ? null : Integer.parseInt(x)).indexOf(2),1);
-        assertEquals(of("1","2",null).map(x -> x == null ? null : Integer.parseInt(x)).indexOf(null),2);
         assertEquals(of("1","2",null).map(x -> x == null ? null : Integer.parseInt(x)).reversed(),of(null, 2, 1));
        
         assertEquals(of("1","2").map(x -> x == null ? null : Integer.parseInt(x)),of(1,2));
-        assertEquals(of("1","2").map(x -> x == null ? null : Integer.parseInt(x)).indexOf(1),0);
-        assertEquals(of("1","2").map(x -> x == null ? null : Integer.parseInt(x)).indexOf(2),1);
         assertEquals(of("1","2").map(x -> x == null ? null : Integer.parseInt(x)).reversed(),of(2, 1));
         
         assertEquals(of("1").map(x -> x == null ? null : Integer.parseInt(x)),of(1));
-        assertEquals(of("1").map(x -> x == null ? null : Integer.parseInt(x)).indexOf(1),0);
         assertEquals(of("1").map(x -> x == null ? null : Integer.parseInt(x)).reversed(),of(1));
     }
   
@@ -118,13 +112,6 @@ public class List23Test {
 			}
 		}
 	}
-
-    @Test
-    public void testRemove() {
-        ImmList<Integer> l = of(1,2,3,4,5,6);
-        assertEquals(l.remove(2), of(1,3,4,5,6));
-        assertEquals(l.remove(7), of(1,2,3,4,5,6));
-    }
 
     @Test
     public void testExclude() {
@@ -213,34 +200,6 @@ public class List23Test {
             assertNotNull(l2.getBranch(0));
             assertNotNull(l2.getBranch(1));
         }
-    }
-
-    @Test
-    public void testContains() {
-        ImmList<Integer> l = of(1,2,3,1,5,1);
-        assertTrue(l.contains(3));
-        assertTrue(l.contains(1));
-        assertFalse(l.contains(7));
-    }
-
-    @Test
-    public void testIndexOf() {
-        ImmList<Integer> l = of(1,2,3,1,5,1,8);
-        assertEquals(l.indexOf(3), 2);
-        assertEquals(l.indexOf(1), 0);
-        assertEquals(l.indexOf(-1), -1);
-        assertEquals(l.indexOf(7), -1);
-        assertEquals(l.indexOf(9), -1);
-        assertEquals(TreeList23.empty().indexOf(7), -1);
-    }
-
-    @Test
-    public void testLastIndexOf() {
-        ImmList<Integer> l = of(1,2,3,1,5,1);
-        assertEquals(l.lastIndexOf(3), 2);
-        assertEquals(l.lastIndexOf(1), 5);
-        assertEquals(l.lastIndexOf(7), -1);
-        assertEquals(TreeList23.empty().lastIndexOf(7), -1);
     }
 
     @Test

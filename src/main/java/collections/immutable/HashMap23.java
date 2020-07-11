@@ -75,7 +75,7 @@ final class HashMap23<K, V> implements ImmMap<K, V> {
 
     @Override
 	public HashMap23<K, V> removeKey(final K key) {
-        final int index = keys().elements.indexOf(key);
+        final int index = keys().elements.getIndexOf(e -> HashSet23.compare(key, e));
         return index < 0 ? this : new HashMap23<K, V>(entries.removeAt(index));
 	}
 	
@@ -106,7 +106,7 @@ final class HashMap23<K, V> implements ImmMap<K, V> {
 
     @Override
     public V getOrDefault(final K key, final Supplier<V> defaultSupplier) {
-        final int index = keys().elements.indexOf(key);
+        final int index = keys().elements.getIndexOf(e -> HashSet23.compare(key, e));
         return index < 0 ? defaultSupplier.get() : entries.getAt(index).getValue();
     }
     

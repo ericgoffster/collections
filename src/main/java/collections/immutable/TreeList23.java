@@ -6,7 +6,6 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.Objects;
 import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.function.Function;
@@ -93,35 +92,6 @@ final class TreeList23<E> implements ImmList<E> {
 		return root.get(verifyIndex("index", index, 0, size() - 1));
 	}
 	
-    @Override
-    public boolean contains(final E element) {
-        return indexOf(element) >= 0;
-    }
-    
-    @Override
-	public int indexOf(final E element) {
-	    int i = 0;
-	    for(E e: this) {
-	        if (Objects.equals(e,element)) {
-	            return i;
-	        }
-	        i++;
-	    }
-	    return -1;
-	}
-	
-    @Override
-    public int lastIndexOf(final E element) {
-        int pos = reversed().indexOf(element);
-        return pos < 0 ? -1 : size() - 1 - pos;
-    }
-    
-    @Override
-    public TreeList23<E> remove(final E element) {
-        int index = indexOf(element);
-        return index < 0 ? this : removeAt(index);
-    }
-    
     @Override
     public TreeList23<E> filter(final Predicate<E> filter) {
         return TreeList23.ofFiltered(filter, this);
