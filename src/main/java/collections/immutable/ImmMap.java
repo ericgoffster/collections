@@ -153,9 +153,9 @@ public interface ImmMap<K,V> extends Iterable<Entry<K,V>> {
      * <p>This operation is O(log n), where n = |this|.
      * <pre>
      * Example:
-     *     assert ImmCollections.emptyMap().getOrDefault(3, () -> 1).equals(1);
-     *     assert ImmCollections.asMap(1,2,  3,4).getOrDefault(2, () -> 1).equals(1);
-     *     assert ImmCollections.asMap(1,2,  3,4).getOrDefault(1, () -> 1).equals(2);
+     *     assert ImmCollections.emptyMap().getOrDefault(3, () -&gt; 1).equals(1);
+     *     assert ImmCollections.asMap(1,2,  3,4).getOrDefault(2, () -&gt; 1).equals(1);
+     *     assert ImmCollections.asMap(1,2,  3,4).getOrDefault(1, () -&gt; 1).equals(2);
      * </pre>
      * @param key The key to lookup
      * @param defaultSupplier The supplier of the default
@@ -206,9 +206,9 @@ public interface ImmMap<K,V> extends Iterable<Entry<K,V>> {
      * <p>This operation is O(n * log n), where n = |this|.
      * <pre>
      * Example:
-     *     assert ImmCollections.asMap(1,2,  3,4).filterKeys(k -> k > 0).equals(ImmCollections.asMap(1,2,  3,4));
-     *     assert ImmCollections.asMap(1,2,  3,4).filterKeys(k -> k > 1).equals(ImmCollections.asMap(3,4));
-     *     assert ImmCollections.asMap(1,2,  3,4).filterKeys(k -> k > 3).equals(ImmCollections.emptyMap());
+     *     assert ImmCollections.asMap(1,2,  3,4).filterKeys(k -&gt; k &gt; 0).equals(ImmCollections.asMap(1,2,  3,4));
+     *     assert ImmCollections.asMap(1,2,  3,4).filterKeys(k -&gt; k &gt; 1).equals(ImmCollections.asMap(3,4));
+     *     assert ImmCollections.asMap(1,2,  3,4).filterKeys(k -&gt; k &gt; 3).equals(ImmCollections.emptyMap());
      * </pre>
      * @param keyFilter The key filter
      * @return A map23 will all keys matching <code>keyFilter</code>.
@@ -220,7 +220,7 @@ public interface ImmMap<K,V> extends Iterable<Entry<K,V>> {
      * <p>This operation is O(n * log n), where n = |this|.
      * <pre>
      * Example:
-     *     assert ImmCollections.asMap(1,2,  3,1).filter((k,v) -> k > v).equals(ImmCollections.asMap(3,1));
+     *     assert ImmCollections.asMap(1,2,  3,1).filter((k,v) -&gt; k &gt; v).equals(ImmCollections.asMap(3,1));
      * </pre>
      * @param filter The entry filter
      * @return  A map23 with entries that match <code>filter</code>
