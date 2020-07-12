@@ -30,8 +30,10 @@ final class TreeSet23<E> implements ImmSortedSet<E> {
 	final TreeList23<E> elements;
 
 	TreeSet23(final Comparator<? super E> comparator, final TreeList23<E> elements) {
-		this.elements = Requirements.require(elements, Requirements.notNull(), () -> "elements");
-		this.comparator = Requirements.require(comparator, Requirements.notNull(), () -> "comparator");
+	    assert elements != null;
+        assert comparator != null;
+		this.elements = elements;
+		this.comparator = comparator;
 	}
 	
     static <E extends Comparable<E>> TreeSet23<E> singleton(final E element) {
@@ -120,7 +122,8 @@ final class TreeSet23<E> implements ImmSortedSet<E> {
 	
     @Override
 	public TreeSet23<E> union(final ImmSet<E> other) {
-	    TreeSet23<E> s = this;
+        Requirements.require(other, Requirements.notNull(), () -> "other");
+        TreeSet23<E> s = this;
 	    for(E e: other) {
 	        s = s.add(e);
 	    }
@@ -140,17 +143,19 @@ final class TreeSet23<E> implements ImmSortedSet<E> {
 	
     @Override
     public TreeSet23<E> filter(final Predicate<E> filter) {
+        Requirements.require(filter, Requirements.notNull(), () -> "filter");
         return new TreeSet23<>(comparator, elements.filter(filter));
     }
 	
     @Override
     public TreeSet23<E> retain(final Iterable<? extends E> other) {
-        final HashSet23<E> hs = HashSet23.of(other);
+        final HashSet23<E> hs = HashSet23.of(Requirements.require(other, Requirements.notNull(), () -> "other"));
         return filter(hs::contains);
     }
 
     @Override
     public TreeSet23<E> removeAllIn(final Iterable<? extends E> other) {
+        Requirements.require(other, Requirements.notNull(), () -> "other");
         TreeSet23<E> m = this;
         for(E e: other) {
             m = m.remove(e);
@@ -174,11 +179,11 @@ final class TreeSet23<E> implements ImmSortedSet<E> {
 	}
 	
 	@Override
-	public boolean equals(final Object obj) {
-		if (!(obj instanceof ImmSet)) {
+	public boolean equals(final Object otherObject) {
+		if (!(otherObject instanceof ImmSet)) {
 			return false;
 		}
-		final ImmSet<?> other = (ImmSet<?>)obj;
+		final ImmSet<?> other = (ImmSet<?>)otherObject;
 		return asCollection().equals(other.asCollection());
 	}
 	

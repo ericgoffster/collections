@@ -12,6 +12,8 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+import org.granitesoft.requirement.Requirements;
+
 //
 // Represents a hashmap as a list of entries ordered by the hash of the key.
 // This is different than a standard hashmap in that lookup's are O(log n).
@@ -49,6 +51,7 @@ final class HashMap23<K, V> implements ImmMap<K, V> {
 	
     @Override
     public HashMap23<K, V> addAll(final Iterable<? extends Entry<K ,V>> entries) {
+        Requirements.require(entries, Requirements.notNull(), () -> "entries");
         HashMap23<K, V> m = this;
         for(Entry<K,V> e: entries) {
             m = m.put(e.getKey(), e.getValue());
@@ -58,6 +61,7 @@ final class HashMap23<K, V> implements ImmMap<K, V> {
 
     @Override
     public HashMap23<K, V> addAll(final Map<K ,V> map) {
+        Requirements.require(map, Requirements.notNull(), () -> "map");
         return addAll(map.entrySet());
     }
 
@@ -81,17 +85,19 @@ final class HashMap23<K, V> implements ImmMap<K, V> {
 	
     @Override
     public HashMap23<K, V> retainAllKeys(final Iterable<? extends K> keys) {
-        final HashSet23<K> hs = HashSet23.of(keys);
+        final HashSet23<K> hs = HashSet23.of(Requirements.require(keys, Requirements.notNull(), () -> "keys"));
         return filter((k, v) -> hs.contains(k));
     }
     
     @Override
     public HashMap23<K, V> filterKeys(final Predicate<K> keyFilter) {
+        Requirements.require(keyFilter, Requirements.notNull(), () -> "keyFilter");
         return filter((k, v) -> keyFilter.test(k));
     }
 
     @Override
     public HashMap23<K, V> removeAllKeysIn(final Iterable<? extends K> keys) {
+        Requirements.require(keys, Requirements.notNull(), () -> "keys");
         HashMap23<K, V> m = this;
         for(K key: keys) {
             m = m.removeKey(key);
@@ -106,6 +112,7 @@ final class HashMap23<K, V> implements ImmMap<K, V> {
 
     @Override
     public V getOrDefault(final K key, final Supplier<V> defaultSupplier) {
+        Requirements.require(defaultSupplier, Requirements.notNull(), () -> "defaultSupplier");
         final int index = keys().elements.getIndexOf(e -> HashSet23.compare(key, e));
         return index < 0 ? defaultSupplier.get() : entries.getAt(index).getValue();
     }
@@ -127,6 +134,7 @@ final class HashMap23<K, V> implements ImmMap<K, V> {
 	
     @Override
     public HashMap23<K, V> filter(final BiPredicate<K, V> filter) {
+        Requirements.require(filter, Requirements.notNull(), () -> "filter");
         return new HashMap23<>(entries.filter(e -> filter.test(e.getKey(), e.getValue())));
     }
     
@@ -136,11 +144,11 @@ final class HashMap23<K, V> implements ImmMap<K, V> {
 	}
 	
 	@Override
-	public boolean equals(final Object obj) {
-		if (!(obj instanceof ImmMap)) {
+	public boolean equals(final Object otherObject) {
+		if (!(otherObject instanceof ImmMap)) {
 			return false;
 		}
-		final ImmMap<?, ?> other = (ImmMap<?, ?>)obj;
+		final ImmMap<?, ?> other = (ImmMap<?, ?>)otherObject;
 		return asMap().equals(other.asMap());
 	}
 	
@@ -165,8 +173,9 @@ final class HashMap23<K, V> implements ImmMap<K, V> {
     }
     
     @Override
-    public void forEach(final BiConsumer<K, V> cond) {
-        stream().forEach(e -> cond.accept(e.getKey(), e.getValue()));
+    public void forEach(final BiConsumer<K, V> consumer) {
+        Requirements.require(consumer, Requirements.notNull(), () -> "consumer");
+        stream().forEach(e -> consumer.accept(e.getKey(), e.getValue()));
     }
 
     ImmSet<Entry<K,V>> asSet23() {

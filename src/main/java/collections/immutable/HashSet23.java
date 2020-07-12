@@ -98,11 +98,11 @@ final class HashSet23<E> implements ImmSet<E> {
 	}
 	
 	@Override
-	public boolean equals(final Object obj) {
-		if (!(obj instanceof ImmSet)) {
+	public boolean equals(final Object otherObject) {
+		if (!(otherObject instanceof ImmSet)) {
 			return false;
 		}
-		final ImmSet<?> other = (ImmSet<?>)obj;
+		final ImmSet<?> other = (ImmSet<?>)otherObject;
 		return asCollection().equals(other.asCollection());
 	}
 

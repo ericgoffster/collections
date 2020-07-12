@@ -237,7 +237,7 @@ public interface ImmMap<K,V> extends Iterable<Entry<K,V>> {
     /**
      * ForEach on the keys and values.
      * <p>This operation is O(n log n).
-     * @param cons The consumer
+     * @param consumer The consumer
      */
-    void forEach(BiConsumer<K, V> cons);
+    void forEach(BiConsumer<K, V> consumer);
 }

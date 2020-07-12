@@ -14,6 +14,8 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+import org.granitesoft.requirement.Requirements;
+
 /**
  * Represents an Immutable map where objects are ordered by a comparator on the keys in a {@link ImmList}.
  * <p>*ALL OPERATIONS ARE IMMUTABLE*.  The object is not modified in any way.
@@ -68,17 +70,19 @@ final class TreeMap23<K, V> implements ImmSortedMap<K, V> {
 	}
 	
     @Override
-    public TreeMap23<K, V> addAll(Iterable<? extends Entry<K ,V>> items) {
+    public TreeMap23<K, V> addAll(final Iterable<? extends Entry<K ,V>> entries) {
+        Requirements.require(entries, Requirements.notNull(), () -> "entries");
         TreeMap23<K, V> m = this;
-        for(Entry<K,V> e: items) {
+        for(Entry<K,V> e: entries) {
             m = m.put(e.getKey(), e.getValue());
         }
         return m;
     }
 
     @Override
-    public TreeMap23<K, V> addAll(Map<K ,V> items) {
-        return addAll(items.entrySet());
+    public TreeMap23<K, V> addAll(final Map<K ,V> map) {
+        Requirements.require(map, Requirements.notNull(), () -> "map");
+        return addAll(map.entrySet());
     }
 
     @Override
@@ -151,12 +155,13 @@ final class TreeMap23<K, V> implements ImmSortedMap<K, V> {
     
     @Override
     public TreeMap23<K, V> retainAllKeys(final Iterable<? extends K> keys) {
-        HashSet23<K> hs = HashSet23.of(keys);
+        HashSet23<K> hs = HashSet23.of(Requirements.require(keys, Requirements.notNull(), () -> "keys"));
         return filter((k, v) -> hs.contains(k));
     }
 
     @Override
     public TreeMap23<K, V> removeAllKeysIn(final Iterable<? extends K> keys) {
+        Requirements.require(keys, Requirements.notNull(), () -> "keys");
         TreeMap23<K, V> m = this;
         for(K key: keys) {
             m = m.removeKey(key);
@@ -165,8 +170,9 @@ final class TreeMap23<K, V> implements ImmSortedMap<K, V> {
     }
 	
     @Override
-    public TreeMap23<K, V> filterKeys(final Predicate<K> filter) {
-        return filter((k, v) -> filter.test(k));
+    public TreeMap23<K, V> filterKeys(final Predicate<K> keyFilter) {
+        Requirements.require(keyFilter, Requirements.notNull(), () -> "keyFilter");
+        return filter((k, v) -> keyFilter.test(k));
     }
 
     @Override
@@ -175,9 +181,10 @@ final class TreeMap23<K, V> implements ImmSortedMap<K, V> {
     }
 
     @Override
-    public V getOrDefault(final K key, final Supplier<V> supplier) {
+    public V getOrDefault(final K key, final Supplier<V> defaultSupplier) {
+        Requirements.require(defaultSupplier, Requirements.notNull(), () -> "defaultSupplier");
         final int index = indexOfKey(key);
-        return index < 0 ? supplier.get() : entries.getAt(index).getValue();
+        return index < 0 ? defaultSupplier.get() : entries.getAt(index).getValue();
     }
     
     @Override
@@ -197,6 +204,7 @@ final class TreeMap23<K, V> implements ImmSortedMap<K, V> {
 	
     @Override
     public TreeMap23<K, V> filter(final BiPredicate<K,V> filter) {
+        Requirements.require(filter, Requirements.notNull(), () -> "filter");
         return new TreeMap23<>(keyComparator, entries.filter(e -> filter.test(e.getKey(), e.getValue())));
     }
     
@@ -206,11 +214,11 @@ final class TreeMap23<K, V> implements ImmSortedMap<K, V> {
 	}
 	
 	@Override
-	public boolean equals(final Object obj) {
-		if (!(obj instanceof ImmMap)) {
+	public boolean equals(final Object otherObject) {
+		if (!(otherObject instanceof ImmMap)) {
 			return false;
 		}
-		final ImmMap<?, ?> other = (ImmMap<?, ?>)obj;
+		final ImmMap<?, ?> other = (ImmMap<?, ?>)otherObject;
 		return asMap().equals(other.asMap());
 	}
 	
@@ -240,8 +248,9 @@ final class TreeMap23<K, V> implements ImmSortedMap<K, V> {
     }
     
     @Override
-    public void forEach(BiConsumer<K, V> cond) {
-        stream().forEach(e -> cond.accept(e.getKey(), e.getValue()));
+    public void forEach(final BiConsumer<K, V> consumer) {
+        Requirements.require(consumer, Requirements.notNull(), () -> "consumer");
+        stream().forEach(e -> consumer.accept(e.getKey(), e.getValue()));
     }
     
     @Override

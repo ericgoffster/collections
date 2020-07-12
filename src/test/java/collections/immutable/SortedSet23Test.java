@@ -195,9 +195,5 @@ public class SortedSet23Test {
             t.addAll(Arrays.asList("1", "2", "3", "4", "5"));
             assertEquals(of("1","2","3","4","5"), TreeSet23.ofSorted(t));
         }
-		
-		assertThrows(IllegalArgumentException.class, () -> new TreeSet23<>(null,null));
-        assertThrows(IllegalArgumentException.class, () -> new TreeSet23<>(null,TreeList23.empty()));
-        assertThrows(IllegalArgumentException.class, () -> new TreeSet23<>(Integer::compare,null));
 	}
 }

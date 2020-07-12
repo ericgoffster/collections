@@ -84,83 +84,98 @@ final class TreeList23<E> implements ImmList<E> {
 	
     @Override
 	public E getAt(final int index) {
-		return root.get(Requirements.require(index,  Requirements.and(Requirements.ge(0), Requirements.lt(size())), (i, p) -> new IndexOutOfBoundsException("index: " + p)));
+		return root.get(validateIndex(index));
 	}
+
+    private int validateIndex(final int index) {
+        return Requirements.require(index,  Requirements.and(Requirements.ge(0), Requirements.lt(size())), (i, p) -> new IndexOutOfBoundsException("index: " + p));
+    }
 	
     @Override
     public TreeList23<E> filter(final Predicate<E> filter) {
-        return TreeList23.ofFiltered(filter, this);
+        return TreeList23.ofFiltered(Requirements.require(filter, Requirements.notNull(), () -> "filter"), this);
     }
 
     @Override
     public TreeList23<E> retain(final Iterable<? extends E> other) {
-        final HashSet23<E> hs = HashSet23.of(other);
+        final HashSet23<E> hs = HashSet23.of(Requirements.require(other, Requirements.notNull(), () -> "other"));
         return filter(hs::contains);
     }
     
     @Override
     public TreeList23<E> removeAllIn(final Iterable<? extends E> other) {
-        final HashSet23<E> hs = HashSet23.of(other);
+        final HashSet23<E> hs = HashSet23.of(Requirements.require(other, Requirements.notNull(), () -> "other"));
         return filter(e -> !hs.contains(e));
     }
     
     @Override
 	public TreeList23<E> add(final E element) {
-        return replaceRange(size(), size(), TreeList23.singleton(element));
+        return replaceRangeInt(size(), size(), TreeList23.singleton(element));
 	}
 	
     @Override
 	public TreeList23<E> setAt(final int index, final E element) {
-        Requirements.require(index,  Requirements.and(Requirements.ge(0), Requirements.lt(size())), (i, p) -> new IndexOutOfBoundsException("index: " + p));
-	    return replaceRange(index, index + 1, TreeList23.singleton(element));
+        validateIndex(index);
+	    return replaceRangeInt(index, index + 1, TreeList23.singleton(element));
 	}
 	
     @Override
 	public TreeList23<E> insertAt(final int index, final E element) {
-        Requirements.require(index,  Requirements.and(Requirements.ge(0), Requirements.le(size())), (i, p) -> new IndexOutOfBoundsException("index: " + p));
-        return replaceRange(index, index, TreeList23.singleton(element));
+        final int i = Requirements.require(index,  Requirements.and(Requirements.ge(0), Requirements.le(size())), (ind, p) -> new IndexOutOfBoundsException("index: " + p));
+        return replaceRangeInt(i, i, TreeList23.singleton(element));
 	}
 	
     @Override
 	public TreeList23<E> removeAt(final int index) {
-        Requirements.require(index,  Requirements.and(Requirements.ge(0), Requirements.lt(size())), (i, p) -> new IndexOutOfBoundsException("index: " + p));
-       return replaceRange(index, index + 1, empty());
+       final int i = validateIndex(index);
+       return replaceRangeInt(i, i + 1, empty());
 	}
 	
     @Override
     public TreeList23<E> removeRange(final int low, final int high) {
-        Requirements.require(high,  Requirements.and(Requirements.ge(0), Requirements.le(size())), (i, p) -> new IndexOutOfBoundsException("high: " + p));
-        Requirements.require(low,  Requirements.and(Requirements.ge(0), Requirements.le(high)), (i, p) -> new IndexOutOfBoundsException("low: " + p));
-        return replaceRange(low, high, empty());
+        return replaceRangeInt(validateRangeLow(low, high), validateRangeHigh(high), empty());
+    }
+
+    private int validateRangeLow(final int low, final int high) {
+        return Requirements.require(low,  Requirements.and(Requirements.ge(0), Requirements.le(high)), (i, p) -> new IndexOutOfBoundsException("low: " + p));
+    }
+
+    private int validateRangeHigh(final int high) {
+        return Requirements.require(high,  Requirements.and(Requirements.ge(0), Requirements.le(size())), (i, p) -> new IndexOutOfBoundsException("high: " + p));
     }
     
     @Override
     public TreeList23<E> replaceRange(final int low, final int high, final ImmList<E> other) {
-        Requirements.require(high,  Requirements.and(Requirements.ge(0), Requirements.le(size())), (i, p) -> new IndexOutOfBoundsException("high: " + p));
-        Requirements.require(low,  Requirements.and(Requirements.ge(0), Requirements.le(high)), (i, p) -> new IndexOutOfBoundsException("low: " + p));
-        Requirements.require(other, Requirements.notNull(), () -> "other");
-        return low == high && other.size() == 0 ?
+        return replaceRangeInt(validateRangeLow(low, high), validateRangeHigh(high), Requirements.require(other, Requirements.notNull(), () -> "other"));
+    }
+
+    private TreeList23<E> replaceRangeInt(final int l, final int h, final ImmList<E> other) {
+        return l == h && other.size() == 0 ?
             this:
-            headAt(low).appendList(other).appendList(tailAt(high));
+            headAt(l).appendList(other).appendList(tailAt(h));
     }
     
     @Override
     public TreeList23<E> insertListAt(final int index, final ImmList<E> other) {
-        Requirements.require(index,  Requirements.and(Requirements.ge(0), Requirements.le(size())), (i, p) -> new IndexOutOfBoundsException("index: " + p));
-        Requirements.require(other, Requirements.notNull(), () -> "other");
-        return replaceRange(index, index, other);
+        final int i = Requirements.require(index,  Requirements.and(Requirements.ge(0), Requirements.le(size())), (i1, p) -> new IndexOutOfBoundsException("index: " + p));
+        return replaceRange(i, i, Requirements.require(other, Requirements.notNull(), () -> "other"));
     }
 	
     @Override
 	public TreeList23<E> appendList(final ImmList<E> other) {
-		Requirements.require(other, Requirements.notNull(), () -> "other");
-		if (!(other instanceof TreeList23)) {
-		    throw new UnsupportedOperationException("Can only append other TreeList23's");
+        final ImmList<E> otherList = Requirements.require(other, Requirements.notNull(), () -> "other");
+        if (otherList instanceof TreeList23) {
+	        final TreeList23<E> tother = (TreeList23<E>)other;
+	        return tother.root == null ? this:
+	               root == null ? tother:
+	               new TreeList23<>(concat(root, tother.root));
+		} else {
+		    TreeList23<E> t = this;
+		    for(E e: other) {
+		        t = t.add(e);
+		    }
+		    return t;
 		}
-		TreeList23<E> tother = (TreeList23<E>)other;
-		return tother.root == null ? this:
-		       root == null ? tother:
-		       new TreeList23<>(concat(root, tother.root));
 	}
 	
     @Override
@@ -179,8 +194,8 @@ final class TreeList23<E> implements ImmList<E> {
 	
     @Override
 	public TreeList23<E> getRange(final int low, final int high) {
-        Requirements.require(high,  Requirements.and(Requirements.ge(0), Requirements.le(size())), (i, p) -> new IndexOutOfBoundsException("high: " + p));
-        Requirements.require(low,  Requirements.and(Requirements.ge(0), Requirements.le(high)), (i, p) -> new IndexOutOfBoundsException("low: " + p));
+        validateRangeHigh(high);
+        validateRangeLow(low, high);
 		return tailAt(low).headAt(high - low);
 	}
 	
@@ -199,11 +214,11 @@ final class TreeList23<E> implements ImmList<E> {
     }
 
     @Override
-    public boolean equals(final Object obj) {
-    	if (!(obj instanceof TreeList23)) {
+    public boolean equals(final Object otherObject) {
+    	if (!(otherObject instanceof TreeList23)) {
     		return false;
     	}
-    	final TreeList23<?> other = (TreeList23<?>)obj;
+    	final TreeList23<?> other = (TreeList23<?>)otherObject;
     	return asCollection().equals(other.asCollection());
     }
 
@@ -214,18 +229,12 @@ final class TreeList23<E> implements ImmList<E> {
 
     @Override
     public ListIterator<E> iterator() {
-        if (root == null) {
-            return Collections.emptyListIterator();
-        }
-    	return root.iterator();
+        return root == null ? Collections.emptyListIterator() : root.iterator();
     }
     
     @Override
     public Spliterator<E> spliterator() {
-        if (root == null) {
-            return Spliterators.emptySpliterator();
-        }
-        return root.spliterator();
+        return root == null ? Spliterators.emptySpliterator() : root.spliterator();
     }
 
     @Override
@@ -343,19 +352,13 @@ final class TreeList23<E> implements ImmList<E> {
 
     // Warning, all elements in this list must follow order governed by this comparator
     int getIndexOf(final Function<? super E, Integer> comparator) {
-        if (root == null) {
-            return -1;
-        }
-        return root.binarySearch(comparator, (leaf, i) -> comparator.apply(leaf) == 0 ? i : -1);
+        return root == null ? -1 : root.binarySearch(comparator, (leaf, i) -> comparator.apply(leaf) == 0 ? i : -1);
     }
     
     // Returns the position where the element belongs
     // Warning, all elements in this list must follow order governed by this comparator
     int naturalPosition(final Function<? super E, Integer> comparator) {
-        if (root == null) {
-            return 0;
-        }
-        return root.binarySearch(comparator, (leaf, i) -> comparator.apply(leaf) > 0 ? (i + 1) : i);
+        return root == null ? 0 : root.binarySearch(comparator, (leaf, i) -> comparator.apply(leaf) > 0 ? (i + 1) : i);
     }
 
     static <E> Iterator<Leaf<E>> sortLeaves(final Comparator<? super E> comparator,

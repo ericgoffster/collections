@@ -162,7 +162,7 @@ final class Branch<E> implements Node23<E> {
         return hc();
     }
     @Override
-    public boolean equals(Object obj) {
-        return eq(obj);
+    public boolean equals(Object otherObject) {
+        return eq(otherObject);
     }
 }
