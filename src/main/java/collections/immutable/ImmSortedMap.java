@@ -131,38 +131,15 @@ public interface ImmSortedMap<K, V> extends ImmMap<K, V> {
     @Override
     ImmSortedMap<K, V> filterKeys(Predicate<K> filter);
 
-    /**
-     * Returns the entry at the given index.
-     * <p>This operation is O(log n).
-     * <p>Example:
-     * <pre>{@code
-     *     assert ImmCollections.asSortedMap(4,1,  2,2,  3,3).getAt(0).getKey() == 2;
-     *     assert ImmCollections.asSortedMap(4,1,  2,2,  3,3).getAt(1).getKey() == 3;
-     *     assert ImmCollections.asSortedMap(4,1,  2,2,  3,3).getAt(2).getKey() == 4;
-     * }</pre>
-     * @param index The index
-     * @return  the entry at the given index
-     */
-    Entry<K,V> getAt(int index);
-    
-    /**
-     * Returns a map with the entry at the given index removed.
-     * <p>This operation is O(log n).
-     * <p>Example:
-     * <pre>{@code
-     *     assert ImmCollections.asSortedMap(4,1,  2,2,  3,3).removeAt(0).equals(ImmCollections.asSortedMap(4,1,  3,3));
-     *     assert ImmCollections.asSortedMap(4,1,  2,2,  3,3).removeAt(1).equals(ImmCollections.asSortedMap(4,1,  2,2));
-     *     assert ImmCollections.asSortedMap(4,1,  2,2,  3,3).removeAt(2).equals(ImmCollections.asSortedMap(3,3,  2,2));
-     * }</pre>
-     * <p>*THIS OPERATION IS IMMUTABLE, THE PREVIOUS Map23 IS UNCHANGED!*.
-     * @param index The index
-     * @return a map with the entry at the given index removed
-     */
-    ImmSortedMap<K, V> removeAt(int index);
-
     @Override
 	SortedMap<K, V> asMap();
-	
+
+    /**
+     * Returns the {@link ImmList} view of this map.
+     * @return the {@link ImmList} view of this map
+     */
+    ImmList<Entry<K ,V>> asList();
+
 	@Override
 	ImmSortedSet<K> keys();
 

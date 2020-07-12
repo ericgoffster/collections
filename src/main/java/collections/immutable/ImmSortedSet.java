@@ -164,32 +164,6 @@ public interface ImmSortedSet<E> extends ImmSet<E> {
     @Override
     ImmSortedSet<E> removeAllIn(Iterable<? extends E> other);
   
-    /**
-     * Returns a set with the element at the given index removed.
-     * <p>This operation is O(log n).
-     * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
-     * <p>Example:<pre>{@code
-     *     assert ImmCollections.asSortedSet(4, 2, 3).removeAt(0).asList().asCollection().equals(Arrays.asList(3, 4));
-     *     assert ImmCollections.asSortedSet(4, 2, 3).removeAt(2).asList().asCollection().equals(Arrays.asList(2, 3));
-     * }</pre>
-     * @param index The index of the element to remove.
-     * @return A set with the element at the given index removed
-     */
-    ImmSortedSet<E> removeAt(int index);
-
-    /**
-     * Return the element at the given index.
-     * <p>This operation is O(log n).
-     * <p>Example:<pre>{@code
-     *     assert ImmCollections.asSortedSet(4, 2, 3).getAt(0) == 2;
-     *     assert ImmCollections.asSortedSet(4, 2, 3).getAt(2) == 4;
-     * }</pre>
-     * @param index The index.
-     * @return The element at the given index.
-     * @throws IndexOutOfBoundsException if out of bounds
-     */
-    E getAt(int index);
-
 	/**
      * Returns the read-only {@link Set} view of this set.
      * <p>Example:<pre>{@code

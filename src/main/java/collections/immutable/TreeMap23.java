@@ -83,7 +83,7 @@ final class TreeMap23<K, V> implements ImmSortedMap<K, V> {
 
     @Override
 	public TreeMap23<K, V> put(final K key, final V value) {
-        TreeMap23<K, V> m = removeKey(key);
+        final TreeMap23<K, V> m = removeKey(key);
         final int index = m.keys().asList().naturalPosition(e -> keyComparator.compare(key, e));
         return new TreeMap23<>(keyComparator, m.entries.insertAt(index, new AbstractMap.SimpleImmutableEntry<>(key, value)));
 	}
@@ -104,7 +104,7 @@ final class TreeMap23<K, V> implements ImmSortedMap<K, V> {
         if (cmp > 0) {
             throw new IllegalArgumentException("low must be <= high");
         }
-        if (keyComparator.compare(lowKey, highKey) == 0) {
+        if (cmp == 0) {
             return this;
         }
         final TreeSet23<K> keys = keys();
@@ -119,7 +119,7 @@ final class TreeMap23<K, V> implements ImmSortedMap<K, V> {
         if (cmp > 0) {
             throw new IllegalArgumentException("low must be <= high");
         }
-        if (keyComparator.compare(lowKey, highKey) == 0) {
+        if (cmp == 0) {
             return new TreeMap23<>(keyComparator, TreeList23.empty());
         }
         final TreeSet23<K> keys = keys();
@@ -146,9 +146,9 @@ final class TreeMap23<K, V> implements ImmSortedMap<K, V> {
     @Override
 	public TreeMap23<K, V> removeKey(final K key) {
         int index = indexOfKey(key);
-        return index < 0 ? this : removeAt(index);
+        return index < 0 ? this : new TreeMap23<K, V>(keyComparator, entries.removeAt(index));
 	}
-	
+    
     @Override
     public TreeMap23<K, V> retainAllKeys(final Iterable<? extends K> keys) {
         HashSet23<K> hs = HashSet23.of(keys);
@@ -170,26 +170,16 @@ final class TreeMap23<K, V> implements ImmSortedMap<K, V> {
     }
 
     @Override
-    public Entry<K,V> getAt(final int index) {
-        return entries.getAt(index);
-    }
-    
-    @Override
     public V get(final K key) {
         return getOrDefault(key, () -> null);
     }
 
     @Override
     public V getOrDefault(final K key, final Supplier<V> supplier) {
-        int index = indexOfKey(key);
+        final int index = indexOfKey(key);
         return index < 0 ? supplier.get() : entries.getAt(index).getValue();
     }
     
-    @Override
-    public TreeMap23<K, V> removeAt(final int index) {
-        return new TreeMap23<K, V>(keyComparator, entries.removeAt(index));
-    }
-
     @Override
 	public SortedMap23Map<K, V> asMap() {
 		return new SortedMap23Map<>(this);
@@ -220,7 +210,7 @@ final class TreeMap23<K, V> implements ImmSortedMap<K, V> {
 		if (!(obj instanceof ImmMap)) {
 			return false;
 		}
-		ImmMap<?, ?> other = (ImmMap<?, ?>)obj;
+		final ImmMap<?, ?> other = (ImmMap<?, ?>)obj;
 		return asMap().equals(other.asMap());
 	}
 	
@@ -232,6 +222,11 @@ final class TreeMap23<K, V> implements ImmSortedMap<K, V> {
     @Override
     public Spliterator<Entry<K,V>> spliterator() {
         return entries.spliterator();
+    }
+
+    @Override
+    public ImmList<Entry<K, V>> asList() {
+        return entries;
     }
 
     @Override
@@ -259,18 +254,12 @@ final class TreeMap23<K, V> implements ImmSortedMap<K, V> {
     }
 
     int entryCompare(final Entry<K,V> a, final Entry<K,V> b) {
-        int cmp = keyComparator.compare(a.getKey(), b.getKey());
-        if (cmp != 0) {
-            return cmp;
-        }
-        return HashSet23.compare(a.getValue(), b.getValue());
+        final int cmp = keyComparator.compare(a.getKey(), b.getKey());
+        return cmp != 0 ? cmp : HashSet23.compare(a.getValue(), b.getValue());
     }
 
     static <K, V> Comparator<? super K> getComparator(final SortedMap<K, V> items) {
         final Comparator<? super K> comparator = items.comparator();
-        if (comparator == null) {
-            return TreeSet23::unNaturalCompare;
-        }
-        return comparator;
+        return comparator == null ? TreeSet23::unNaturalCompare : comparator;
     }
 }

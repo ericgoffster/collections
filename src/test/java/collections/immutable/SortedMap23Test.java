@@ -177,12 +177,6 @@ public class SortedMap23Test {
 	}
 	
     @Test
-    public void testGetAt() {
-        assertEquals(TreeMap23.singleton(1, 2).put(3, 4).getAt(0), makeEntry(1, 2));
-        assertEquals(TreeMap23.singleton(1, 2).put(3, 4).getAt(1), makeEntry(3, 4));
-    }
-
-    @Test
     public void testEntries() {
         assertTrue(TreeMap23.singleton(1, 2).put(3, 4).asSet23()
                 .contains(makeEntry(1, 2)));
@@ -208,10 +202,6 @@ public class SortedMap23Test {
         assertEquals(TreeMap23.singleton(1, 2).put(3, 4).values(), TreeList23.singleton(2).add(4));
     }
 
-    @Test
-    public void testRemoveAt() {
-        assertEquals(TreeMap23.singleton(1, 2).put(3, 4).removeAt(0), TreeMap23.singleton(3, 4));
-    }
     @Test
     public void testStream() {
         Map<Integer, Integer> m = new HashMap<>();

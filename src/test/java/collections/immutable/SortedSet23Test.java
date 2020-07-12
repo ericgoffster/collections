@@ -152,19 +152,6 @@ public class SortedSet23Test {
     }
 
     @Test
-    public void testGetAt() {
-        ImmSortedSet<Integer> l = of(3,2,1,4,5,6);
-        assertEquals(l.getAt(0).intValue(), 1);
-        assertEquals(l.getAt(1).intValue(), 2);
-        assertEquals(l.getAt(2).intValue(), 3);
-    }
-
-    @Test
-    public void testRemoveAt() {
-        ImmSortedSet<Integer> l = of(3,2,1,4,5,6);
-        assertEquals(l.removeAt(0), of(2,3,4,5,6));
-    }
-    @Test
     public void testExclude() {
         ImmSortedSet<Integer> l = of(3,2,1,4,5,6);
         assertEquals(l.exclude(2,4), of(1,4,5,6));

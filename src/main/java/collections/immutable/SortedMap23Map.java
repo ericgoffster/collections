@@ -58,7 +58,7 @@ final class SortedMap23Map<K, V> extends AbstractMap<K, V> implements SortedMap<
         if (map.size() == 0) {
             throw new NoSuchElementException();
         }
-        return map.getAt(0).getKey();
+        return map.asList().getAt(0).getKey();
     }
 
     @Override
@@ -66,6 +66,6 @@ final class SortedMap23Map<K, V> extends AbstractMap<K, V> implements SortedMap<
         if (map.size() == 0) {
             throw new NoSuchElementException();
         }
-        return map.getAt(map.size() - 1).getKey();
+        return map.asList().getAt(map.size() - 1).getKey();
     }
 }

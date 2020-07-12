@@ -85,11 +85,11 @@ final class TreeSet23<E> implements ImmSortedSet<E> {
 
     @Override
     public TreeSet23<E> exclude(final E low, final E high) {
-        int cmp = comparator.compare(low, high);
+        final int cmp = comparator.compare(low, high);
         if (cmp > 0) {
             throw new IllegalArgumentException("low must be <= high");
         }
-        if (comparator.compare(low, high) == 0) {
+        if (cmp == 0) {
             return this;
         }
         return new TreeSet23<E>(comparator, elements.removeRange(
@@ -99,11 +99,11 @@ final class TreeSet23<E> implements ImmSortedSet<E> {
 
     @Override
 	public TreeSet23<E> subSet(final E low, final E high) {
-        int cmp = comparator.compare(low, high);
+        final int cmp = comparator.compare(low, high);
         if (cmp > 0) {
             throw new IllegalArgumentException("low must be <= high");
         }
-        if (comparator.compare(low, high) == 0) {
+        if (cmp == 0) {
             return new TreeSet23<E>(comparator, TreeList23.empty());
         }
 		return new TreeSet23<E>(comparator, elements.getRange(
@@ -113,10 +113,9 @@ final class TreeSet23<E> implements ImmSortedSet<E> {
 
     @Override
 	public TreeSet23<E> add(final E element) {
-	    if (contains(element)) {
-	        return this;
-	    }
-	    return new TreeSet23<>(comparator, elements.insertAt(elements.naturalPosition(e -> comparator.compare(element, e)), element));
+        return contains(element) ?
+                this :
+                new TreeSet23<>(comparator, elements.insertAt(elements.naturalPosition(e -> comparator.compare(element, e)), element));
 	}
 	
     @Override
@@ -135,7 +134,7 @@ final class TreeSet23<E> implements ImmSortedSet<E> {
 
     @Override
 	public TreeSet23<E> remove(final E element) {
-	    int index = indexOf(element);
+	    final int index = indexOf(element);
 	    return index < 0 ? this : new TreeSet23<>(comparator, elements.removeAt(index));
 	}
 	
@@ -160,16 +159,6 @@ final class TreeSet23<E> implements ImmSortedSet<E> {
     }
   
     @Override
-    public E getAt(final int index) {
-        return elements.getAt(index);
-    }
-    
-    @Override
-    public TreeSet23<E> removeAt(final int index) {
-        return new TreeSet23<E>(comparator, elements.removeAt(index));
-    }
-
-    @Override
 	public SortedSet23Set<E> asCollection() {
 		return new SortedSet23Set<>(this);
 	}
@@ -189,7 +178,7 @@ final class TreeSet23<E> implements ImmSortedSet<E> {
 		if (!(obj instanceof ImmSet)) {
 			return false;
 		}
-		ImmSet<?> other = (ImmSet<?>)obj;
+		final ImmSet<?> other = (ImmSet<?>)obj;
 		return asCollection().equals(other.asCollection());
 	}
 	
@@ -220,10 +209,7 @@ final class TreeSet23<E> implements ImmSortedSet<E> {
 
     static <E> Comparator<? super E> getComparator(final SortedSet<E> sortedSet) {
         final Comparator<? super E> comparator = sortedSet.comparator();
-        if (comparator == null) {
-            return TreeSet23::unNaturalCompare;
-        }
-        return comparator;
+        return comparator == null ? TreeSet23::unNaturalCompare : comparator;
     }
 
     /// Compares two elements, allowing for null.
