@@ -56,19 +56,14 @@ final class TreeList23<E> implements ImmList<E> {
     }
 
 	static <E> TreeList23<E> of(final Iterable<? extends E> elements) {
-        Requirements.require(elements, Requirements.notNull(), () -> "elements");
         return quickConstruct(new LeafIterator<>(elements));
 	}
 
 	static <E> TreeList23<E> ofFiltered(final Predicate<E> filter, final Iterable<? extends E> elements) {
-        Requirements.require(filter, Requirements.notNull(), () -> "filter");
-        Requirements.require(elements, Requirements.notNull(), () -> "elements");
         return quickConstruct(new FilteredIterator<>(new LeafIterator<>(elements), filter));
     }
 
     static <E> TreeList23<E> ofSortedUnique(final Comparator<? super E> comparator,final Iterable<? extends E> elements) {
-        Requirements.require(comparator, Requirements.notNull(), () -> "comparator");
-        Requirements.require(elements, Requirements.notNull(), () -> "elements");
         return quickConstruct(new RemoveDupsIterator<>(sortLeaves(comparator, new LeafIterator<>(elements)), comparator));
     }
 
@@ -89,7 +84,7 @@ final class TreeList23<E> implements ImmList<E> {
 	
     @Override
 	public E getAt(final int index) {
-		return root.get(verifyIndex("index", index, 0, size() - 1));
+		return root.get(Requirements.require(index,  Requirements.and(Requirements.ge(0), Requirements.lt(size())), (i, p) -> new IndexOutOfBoundsException("index: " + p)));
 	}
 	
     @Override
@@ -116,33 +111,33 @@ final class TreeList23<E> implements ImmList<E> {
 	
     @Override
 	public TreeList23<E> setAt(final int index, final E element) {
-	    verifyIndex("index", index, 0, size() - 1);
+        Requirements.require(index,  Requirements.and(Requirements.ge(0), Requirements.lt(size())), (i, p) -> new IndexOutOfBoundsException("index: " + p));
 	    return replaceRange(index, index + 1, TreeList23.singleton(element));
 	}
 	
     @Override
 	public TreeList23<E> insertAt(final int index, final E element) {
-        verifyIndex("index", index, 0, size());
+        Requirements.require(index,  Requirements.and(Requirements.ge(0), Requirements.le(size())), (i, p) -> new IndexOutOfBoundsException("index: " + p));
         return replaceRange(index, index, TreeList23.singleton(element));
 	}
 	
     @Override
 	public TreeList23<E> removeAt(final int index) {
-       verifyIndex("index", index, 0, size() - 1);
+        Requirements.require(index,  Requirements.and(Requirements.ge(0), Requirements.lt(size())), (i, p) -> new IndexOutOfBoundsException("index: " + p));
        return replaceRange(index, index + 1, empty());
 	}
 	
     @Override
     public TreeList23<E> removeRange(final int low, final int high) {
-        verifyIndex("high", high, 0, size());
-        verifyIndex("log", low, 0, high);
+        Requirements.require(high,  Requirements.and(Requirements.ge(0), Requirements.le(size())), (i, p) -> new IndexOutOfBoundsException("high: " + p));
+        Requirements.require(low,  Requirements.and(Requirements.ge(0), Requirements.le(high)), (i, p) -> new IndexOutOfBoundsException("low: " + p));
         return replaceRange(low, high, empty());
     }
     
     @Override
     public TreeList23<E> replaceRange(final int low, final int high, final ImmList<E> other) {
-        verifyIndex("high", high, 0, size());
-        verifyIndex("low", low, 0, high);
+        Requirements.require(high,  Requirements.and(Requirements.ge(0), Requirements.le(size())), (i, p) -> new IndexOutOfBoundsException("high: " + p));
+        Requirements.require(low,  Requirements.and(Requirements.ge(0), Requirements.le(high)), (i, p) -> new IndexOutOfBoundsException("low: " + p));
         Requirements.require(other, Requirements.notNull(), () -> "other");
         return low == high && other.size() == 0 ?
             this:
@@ -151,7 +146,7 @@ final class TreeList23<E> implements ImmList<E> {
     
     @Override
     public TreeList23<E> insertListAt(final int index, final ImmList<E> other) {
-        verifyIndex("index", index, 0, size());
+        Requirements.require(index,  Requirements.and(Requirements.ge(0), Requirements.le(size())), (i, p) -> new IndexOutOfBoundsException("index: " + p));
         Requirements.require(other, Requirements.notNull(), () -> "other");
         return replaceRange(index, index, other);
     }
@@ -170,7 +165,7 @@ final class TreeList23<E> implements ImmList<E> {
 	
     @Override
 	public TreeList23<E> tailAt(final int index) {
-	    verifyIndex("index", index, 0, size());
+        Requirements.require(index,  Requirements.and(Requirements.ge(0), Requirements.le(size())), (i, p) -> new IndexOutOfBoundsException("index: " + p));
 	    return index == 0 ? this :
 	           index == size() ? empty() :
 	               new TreeList23<>(root.tail(index));
@@ -178,14 +173,14 @@ final class TreeList23<E> implements ImmList<E> {
 	
     @Override
 	public TreeList23<E> headAt(final int index) {
-        verifyIndex("index", index, 0, size());
+        Requirements.require(index,  Requirements.and(Requirements.ge(0), Requirements.le(size())), (i, p) -> new IndexOutOfBoundsException("index: " + p));
 		return index == size() ?  this : index == 0 ? empty(): new TreeList23<>(root.head(index));
 	}
 	
     @Override
 	public TreeList23<E> getRange(final int low, final int high) {
-        verifyIndex("high", high, 0, size());
-	    verifyIndex("low", low, 0, high);
+        Requirements.require(high,  Requirements.and(Requirements.ge(0), Requirements.le(size())), (i, p) -> new IndexOutOfBoundsException("high: " + p));
+        Requirements.require(low,  Requirements.and(Requirements.ge(0), Requirements.le(high)), (i, p) -> new IndexOutOfBoundsException("low: " + p));
 		return tailAt(low).headAt(high - low);
 	}
 	
@@ -236,13 +231,6 @@ final class TreeList23<E> implements ImmList<E> {
     @Override
     public Stream<E> stream() {
         return StreamSupport.stream(spliterator(), false);
-    }
-
-    static int verifyIndex(final String name, final int index, final int low, final int high) {
-        if (index < low || index > high) {
-            throw new IndexOutOfBoundsException(String.format("%s: %d, Low: %d, High %d", name, index, low, high));
-        }
-        return index;
     }
 
     /// Compares two elements, allowing for null.

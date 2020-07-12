@@ -3,7 +3,6 @@ package collections.immutable;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
@@ -148,7 +147,6 @@ public class HashSet23Test {
 	}
     @Test
     public void testBasic() {
-        assertThrows(IllegalArgumentException.class, () -> HashSet23.of((List<?>)null));
         HashSet23<String> l1 = of("1","2","3","4","5",null);
         assertTrue(l1.contains(null));
         

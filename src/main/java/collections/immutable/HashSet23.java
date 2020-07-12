@@ -8,8 +8,6 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import org.granitesoft.requirement.Requirements;
-
 //
 //Represents a hashset as a list of elements ordered by their hash.
 //This is different than a standard hashset in that lookup's are O(log n).
@@ -33,7 +31,6 @@ final class HashSet23<E> implements ImmSet<E> {
     }
 
     static <E> HashSet23<E> of(final Iterable<? extends E> elements) {
-        Requirements.require(elements, Requirements.notNull(), () -> "elements");
         return new HashSet23<E>(TreeList23.ofSortedUnique(HashSet23::compare, elements));
     }
 

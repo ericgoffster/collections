@@ -475,9 +475,7 @@ public class List23Test {
 	public void testErrors() {
 		assertTrue(new Leaf<Integer>(5).isLeaf());
 		assertEquals(new Leaf<Integer>(5).size(), 1);
-		List<Integer> lnull = null;
         assertThrows(UnsupportedOperationException.class, () -> branch("1","2").leafValue());
-        assertThrows(IllegalArgumentException.class, () -> TreeList23.of(lnull));
         assertThrows(IllegalArgumentException.class, () -> of(1, 2).appendList(null));
         assertThrows(IllegalArgumentException.class, () -> of(1, 2).insertListAt(0, null));
         assertThrows(IllegalArgumentException.class, () -> of(1, 2).replaceRange(0, 0, null));
