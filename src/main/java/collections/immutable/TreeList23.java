@@ -56,6 +56,21 @@ final class TreeList23<E> implements ImmList<E> {
     }
 
 	static <E> TreeList23<E> of(final Iterable<? extends E> elements) {
+	    if (elements instanceof TreeList23) {
+	        @SuppressWarnings("unchecked")
+            TreeList23<E> elements2 = (TreeList23<E>)elements;
+            return elements2;
+	    }
+        if (elements instanceof TreeSet23) {
+            @SuppressWarnings("unchecked")
+            TreeList23<E> elements2 = ((TreeSet23<E>)elements).elements;
+            return elements2;
+        }
+        if (elements instanceof HashSet23) {
+            @SuppressWarnings("unchecked")
+            TreeList23<E> elements2 = ((HashSet23<E>)elements).elements;
+            return elements2;
+        }
         return quickConstruct(new LeafIterator<>(elements));
 	}
 
@@ -98,13 +113,13 @@ final class TreeList23<E> implements ImmList<E> {
 
     @Override
     public TreeList23<E> retain(final Iterable<? extends E> other) {
-        final HashSet23<E> hs = HashSet23.of(Requirements.require(other, Requirements.notNull(), () -> "other"));
+        final ImmSet<E> hs = ImmCollections.asSet(Requirements.require(other, Requirements.notNull(), () -> "other"));
         return filter(hs::contains);
     }
     
     @Override
     public TreeList23<E> removeAllIn(final Iterable<? extends E> other) {
-        final HashSet23<E> hs = HashSet23.of(Requirements.require(other, Requirements.notNull(), () -> "other"));
+        final ImmSet<E> hs = ImmCollections.asSet(Requirements.require(other, Requirements.notNull(), () -> "other"));
         return filter(e -> !hs.contains(e));
     }
     
@@ -163,19 +178,10 @@ final class TreeList23<E> implements ImmList<E> {
 	
     @Override
 	public TreeList23<E> appendList(final ImmList<E> other) {
-        final ImmList<E> otherList = Requirements.require(other, Requirements.notNull(), () -> "other");
-        if (otherList instanceof TreeList23) {
-	        final TreeList23<E> tother = (TreeList23<E>)other;
-	        return tother.root == null ? this:
-	               root == null ? tother:
-	               new TreeList23<>(concat(root, tother.root));
-		} else {
-		    TreeList23<E> t = this;
-		    for(E e: other) {
-		        t = t.add(e);
-		    }
-		    return t;
-		}
+        final TreeList23<E> tother = TreeList23.of(Requirements.require(other, Requirements.notNull(), () -> "other"));
+        return tother.root == null ? this:
+            root == null ? tother:
+            new TreeList23<>(concat(root, tother.root));
 	}
 	
     @Override

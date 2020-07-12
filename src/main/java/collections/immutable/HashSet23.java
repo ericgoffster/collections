@@ -8,6 +8,8 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+import org.granitesoft.requirement.Requirements;
+
 //
 //Represents a hashset as a list of elements ordered by their hash.
 //This is different than a standard hashset in that lookup's are O(log n).
@@ -46,14 +48,12 @@ final class HashSet23<E> implements ImmSet<E> {
 
     @Override
 	public HashSet23<E> add(final E element) {
-	    if (contains(element)) {
-	        return this;
-	    }
-	    return new HashSet23<>(elements.insertAt(elements.naturalPosition(e -> compare(element, e)), element));
+	    return contains(element) ? this : new HashSet23<>(elements.insertAt(elements.naturalPosition(e -> compare(element, e)), element));
 	}
 	
     @Override
 	public HashSet23<E> union(final ImmSet<E> other) {
+        Requirements.require(other, Requirements.notNull(), () -> "other");
 	    HashSet23<E> s = this;
 	    for(E e: other) {
 	        s = s.add(e);
@@ -69,17 +69,19 @@ final class HashSet23<E> implements ImmSet<E> {
 	
     @Override
     public HashSet23<E> filter(final Predicate<E> filter) {
+        Requirements.require(filter, Requirements.notNull(), () -> "filter");
         return new HashSet23<>(elements.filter(filter));
     }
 	
     @Override
     public HashSet23<E> retain(final Iterable<? extends E> other) {
-        final HashSet23<E> hs = HashSet23.of(other);
+        final HashSet23<E> hs = HashSet23.of(Requirements.require(other, Requirements.notNull(), () -> "other"));
         return filter(hs::contains);
     }
 
     @Override
     public HashSet23<E> removeAllIn(final Iterable<? extends E> other) {
+        Requirements.require(other, Requirements.notNull(), () -> "other");
         HashSet23<E> m = this;
         for(E e: other) {
             m = m.remove(e);

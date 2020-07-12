@@ -18,7 +18,7 @@ public final class ImmCollections {
     public static <E> ImmList<E> asList(E... elements) {
         return TreeList23.of(Arrays.asList(elements));
     }
-    public static <E> ImmList<E> asList(final Iterable<E> elements) {
+    public static <E> ImmList<E> asList(final Iterable<? extends E> elements) {
         return TreeList23.of(Requirements.require(elements, Requirements.notNull(), () -> "elements"));
     }
 
@@ -29,7 +29,7 @@ public final class ImmCollections {
     public static <E> ImmSet<E> asSet(E... elements) {
         return HashSet23.of(Arrays.asList(elements));
     }
-    public static <E> ImmSet<E> asSet(final Iterable<E> elements) {
+    public static <E> ImmSet<E> asSet(final Iterable<? extends E> elements) {
         return HashSet23.of(Requirements.require(elements, Requirements.notNull(), () -> "elements"));
     }
 
@@ -40,14 +40,14 @@ public final class ImmCollections {
     public static <E extends Comparable<E>> ImmSortedSet<E> asSortedSet(E... elements) {
         return TreeSet23.of(Arrays.asList(elements));
     }
-    public static <E extends Comparable<E>> ImmSortedSet<E> asSortedSet(final Iterable<E> elements) {
+    public static <E extends Comparable<E>> ImmSortedSet<E> asSortedSet(final Iterable<? extends  E> elements) {
         return TreeSet23.of(Requirements.require(elements, Requirements.notNull(), () -> "elements"));
     }
 
     public static <E> ImmSortedSet<E> emptySortedSet(final Comparator<? super E> comparator) {
         return TreeSet23.empty(Requirements.require(comparator, Requirements.notNull(), () -> "comparator"));
     }
-    public static <E> ImmSortedSet<E> asSortedSet(final Comparator<? super E> comparator, final Iterable<E> elements) {
+    public static <E> ImmSortedSet<E> asSortedSet(final Comparator<? super E> comparator, final Iterable<? extends E> elements) {
         return TreeSet23.of(Requirements.require(comparator, Requirements.notNull(), () -> "comparator"),
                 Requirements.require(elements, Requirements.notNull(), () -> "elements"));
     }
@@ -69,7 +69,7 @@ public final class ImmCollections {
             final K key3, final V value3) {
         return asMap(key1, value1, key2, value2).put(key3, value3);
     }
-    public static <K, V> ImmMap<K, V> asMap(final Iterable<Entry<K,V>> elements) {
+    public static <K, V> ImmMap<K, V> asMap(final Iterable<? extends Entry<K,V>> elements) {
         return HashMap23.of(elements);
     }
     public static <K, V> ImmMap<K, V> asMap(final Map<K,V> map) {
@@ -93,7 +93,7 @@ public final class ImmCollections {
             final K key3, final V value3) {
         return asSortedMap(key1, value1, key2, value2).put(key3, value3);
     }
-    public static <K extends Comparable<K>, V> ImmSortedMap<K, V> asSortedMap(final Iterable<Entry<K,V>> elements) {
+    public static <K extends Comparable<K>, V> ImmSortedMap<K, V> asSortedMap(final Iterable<? extends Entry<K,V>> elements) {
         return TreeMap23.of(Requirements.require(elements, Requirements.notNull(), () -> "elements"));
     }
     public static <K, V> ImmMap<K, V> asSortedMap(final SortedMap<K,V> map) {
@@ -103,7 +103,7 @@ public final class ImmCollections {
     public static <K, V> ImmSortedMap<K, V> emptySortedMap(final Comparator<? super K> comparator) {
         return TreeMap23.empty(Requirements.require(comparator, Requirements.notNull(), () -> "comparator"));
     }
-    public static <K, V> ImmSortedMap<K, V> asSortedMap(final Comparator<? super K> comparator, final Iterable<Entry<K,V>> elements) {
+    public static <K, V> ImmSortedMap<K, V> asSortedMap(final Comparator<? super K> comparator, final Iterable<? extends Entry<K,V>> elements) {
         return TreeMap23.of(Requirements.require(comparator, Requirements.notNull(), () -> "comparator"),
                 Requirements.require(elements, Requirements.notNull(), () -> "elements"));
     }
