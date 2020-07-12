@@ -4,10 +4,9 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.SortedSet;
 
 import org.granitesoft.requirement.Requirements;
-
-import java.util.SortedMap;
 
 @SuppressWarnings("varargs")
 public final class ImmCollections {
@@ -30,17 +29,25 @@ public final class ImmCollections {
         return HashSet23.of(Arrays.asList(elements));
     }
     public static <E> ImmSet<E> asSet(final Iterable<? extends E> elements) {
+        if (elements instanceof ImmSet) {
+            @SuppressWarnings("unchecked")
+            final ImmSet<E> elements2 = (ImmSet<E>)elements;
+            return elements2;
+        }
+        if (elements instanceof SortedSet) {
+            return TreeSet23.of(elements);
+        }
         return HashSet23.of(Requirements.require(elements, Requirements.notNull(), () -> "elements"));
     }
 
-    public static <E extends Comparable<E>> ImmSortedSet<E> emptySortedSet() {
+    public static <E> ImmSortedSet<E> emptySortedSet() {
         return TreeSet23.empty();
     }
     @SafeVarargs
-    public static <E extends Comparable<E>> ImmSortedSet<E> asSortedSet(E... elements) {
+    public static <E> ImmSortedSet<E> asSortedSet(E... elements) {
         return TreeSet23.of(Arrays.asList(elements));
     }
-    public static <E extends Comparable<E>> ImmSortedSet<E> asSortedSet(final Iterable<? extends  E> elements) {
+    public static <E> ImmSortedSet<E> asSortedSet(final Iterable<? extends E> elements) {
         return TreeSet23.of(Requirements.require(elements, Requirements.notNull(), () -> "elements"));
     }
 
@@ -76,30 +83,26 @@ public final class ImmCollections {
         return HashMap23.of(map);
     }
 
-    public static <K extends Comparable<K>, V> ImmSortedMap<K, V> emptySortedMap() {
+    public static <K, V> ImmSortedMap<K, V> emptySortedMap() {
         return TreeMap23.empty();
     }
-    public static <K extends Comparable<K>, V> ImmSortedMap<K, V> asSortedMap(final K key, final V value) {
+    public static <K, V> ImmSortedMap<K, V> asSortedMap(final K key, final V value) {
         return TreeMap23.singleton(key, value);
     }
-    public static <K extends Comparable<K>, V> ImmSortedMap<K, V> asSortedMap(
+    public static <K, V> ImmSortedMap<K, V> asSortedMap(
             final K key1, final V value1,
             final K key2, final V value2) {
         return asSortedMap(key1, value1).put(key2, value2);
     }
-    public static <K extends Comparable<K>, V> ImmSortedMap<K, V> asSortedMap(
+    public static <K, V> ImmSortedMap<K, V> asSortedMap(
             final K key1, final V value1,
             final K key2, final V value2,
             final K key3, final V value3) {
         return asSortedMap(key1, value1, key2, value2).put(key3, value3);
     }
-    public static <K extends Comparable<K>, V> ImmSortedMap<K, V> asSortedMap(final Iterable<? extends Entry<K,V>> elements) {
+    public static <K, V> ImmSortedMap<K, V> asSortedMap(final Iterable<? extends Entry<K,V>> elements) {
         return TreeMap23.of(Requirements.require(elements, Requirements.notNull(), () -> "elements"));
     }
-    public static <K, V> ImmMap<K, V> asSortedMap(final SortedMap<K,V> map) {
-        return TreeMap23.ofSorted(Requirements.require(map, Requirements.notNull(), () -> "map"));
-    }
-
     public static <K, V> ImmSortedMap<K, V> emptySortedMap(final Comparator<? super K> comparator) {
         return TreeMap23.empty(Requirements.require(comparator, Requirements.notNull(), () -> "comparator"));
     }

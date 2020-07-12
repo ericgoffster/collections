@@ -32,7 +32,7 @@ public class SortedSet23Test {
         assertEquals(TreeSet23.of(comp, Arrays.asList(4, 6, 5)).asList(), TreeList23.singleton(4).add(5).add(6));
         assertEquals(TreeSet23.of(comp.reversed(), Arrays.asList(4, 6, 5)).asList(), TreeList23.singleton(6).add(5).add(4));
         assertEquals(TreeSet23.of(of(4, 6, 5)).asList(), TreeList23.singleton(4).add(5).add(6));
-        assertEquals(TreeSet23.ofSorted(of(4, 6, 5).reversed().asCollection()).asList(), TreeList23.singleton(6).add(5).add(4));
+        assertEquals(TreeSet23.of(of(4, 6, 5).reversed().asCollection()).asList(), TreeList23.singleton(6).add(5).add(4));
     }
 
 	@Test
@@ -193,7 +193,7 @@ public class SortedSet23Test {
         {
             TreeSet<String> t = new TreeSet<>();
             t.addAll(Arrays.asList("1", "2", "3", "4", "5"));
-            assertEquals(of("1","2","3","4","5"), TreeSet23.ofSorted(t));
+            assertEquals(of("1","2","3","4","5"), TreeSet23.of(t));
         }
 	}
 }

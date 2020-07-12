@@ -36,26 +36,32 @@ final class TreeSet23<E> implements ImmSortedSet<E> {
 		this.comparator = comparator;
 	}
 	
-    static <E extends Comparable<E>> TreeSet23<E> singleton(final E element) {
-        return new TreeSet23<E>(TreeList23::naturalCompare, TreeList23.singleton(element));
+    static <E> TreeSet23<E> singleton(final E element) {
+        return new TreeSet23<E>(TreeSet23::unNaturalCompare, TreeList23.singleton(element));
     }
 
     static <E> TreeSet23<E> empty(Comparator<? super E> comparator) {
         return new TreeSet23<E>(comparator, TreeList23.empty());
     }
 
-    static <E extends Comparable<E>> TreeSet23<E> empty() {
-        return empty(TreeList23::naturalCompare);
+    static <E> TreeSet23<E> empty() {
+        return empty(TreeSet23::unNaturalCompare);
     }
 
-    static <E extends Comparable<E>> TreeSet23<E> of(final Iterable<? extends E> elements) {
-    	return of(TreeList23::naturalCompare, elements);
+    static <E> TreeSet23<E> of(final Iterable<? extends E> elements) {
+        if (elements instanceof SortedSet) {
+            @SuppressWarnings("unchecked")
+            final SortedSet<E> elements2 = (SortedSet<E>)elements;
+            return new TreeSet23<>(getComparator(elements2), TreeList23.of(elements));
+        }
+        if (elements instanceof TreeSet23) {
+            @SuppressWarnings("unchecked")
+            final TreeSet23<E> elements2 = (TreeSet23<E>)elements;
+            return elements2;
+        }
+    	return of(TreeSet23::unNaturalCompare, elements);
     }
     
-    static <E> TreeSet23<E> ofSorted(final SortedSet<E> sortedSet) {
-        return new TreeSet23<>(getComparator(sortedSet), TreeList23.of(sortedSet));
-    }
-
     static <E> TreeSet23<E> of(final Comparator<? super E> comparator, final Iterable<? extends E> elements) {
     	return new TreeSet23<E>(comparator, TreeList23.ofSortedUnique(comparator, elements));
     }

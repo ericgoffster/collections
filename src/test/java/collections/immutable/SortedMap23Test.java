@@ -146,8 +146,8 @@ public class SortedMap23Test {
         assertTrue(same(TreeMap23.of(ts.entrySet()),TreeList23.singleton(makeEntry(1,2)).add(makeEntry(3,4))));
         assertTrue(same(TreeMap23.<Integer,Integer>empty().addAll(ts.entrySet()),TreeList23.singleton(makeEntry(1,2)).add(makeEntry(3,4))));
         assertTrue(same(TreeMap23.of((i,j) -> j.compareTo(i), ts),TreeList23.singleton(makeEntry(3,4)).add(makeEntry(1,2))));
-        assertTrue(same(TreeMap23.ofSorted(ts),TreeList23.singleton(makeEntry(1,2)).add(makeEntry(3,4))));
-        assertTrue(same(TreeMap23.ofSorted(ts2),TreeList23.singleton(makeEntry(1,2)).add(makeEntry(3,4))));
+        assertTrue(same(TreeMap23.of(ts),TreeList23.singleton(makeEntry(1,2)).add(makeEntry(3,4))));
+        assertTrue(same(TreeMap23.of(ts2),TreeList23.singleton(makeEntry(1,2)).add(makeEntry(3,4))));
         assertTrue(same(TreeMap23.empty().reversed(),TreeList23.empty()));
      }
 

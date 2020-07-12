@@ -56,6 +56,7 @@ final class TreeList23<E> implements ImmList<E> {
     }
 
 	static <E> TreeList23<E> of(final Iterable<? extends E> elements) {
+	    // If we already have a ready TreeList23 handy then use it
 	    if (elements instanceof TreeList23) {
 	        @SuppressWarnings("unchecked")
             TreeList23<E> elements2 = (TreeList23<E>)elements;
