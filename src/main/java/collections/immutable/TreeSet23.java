@@ -37,7 +37,7 @@ final class TreeSet23<E> implements ImmSortedSet<E> {
 	}
 	
     static <E> TreeSet23<E> singleton(final E element) {
-        return new TreeSet23<E>(TreeSet23::unNaturalCompare, TreeList23.singleton(element));
+        return new TreeSet23<E>(TreeList23::naturalCompare, TreeList23.singleton(element));
     }
 
     static <E> TreeSet23<E> empty(Comparator<? super E> comparator) {
@@ -45,7 +45,7 @@ final class TreeSet23<E> implements ImmSortedSet<E> {
     }
 
     static <E> TreeSet23<E> empty() {
-        return empty(TreeSet23::unNaturalCompare);
+        return empty(TreeList23::naturalCompare);
     }
 
     static <E> TreeSet23<E> of(final Iterable<? extends E> elements) {
@@ -59,7 +59,7 @@ final class TreeSet23<E> implements ImmSortedSet<E> {
             final TreeSet23<E> elements2 = (TreeSet23<E>)elements;
             return elements2;
         }
-    	return of(TreeSet23::unNaturalCompare, elements);
+    	return of(TreeList23::naturalCompare, elements);
     }
     
     static <E> TreeSet23<E> of(final Comparator<? super E> comparator, final Iterable<? extends E> elements) {
@@ -220,20 +220,6 @@ final class TreeSet23<E> implements ImmSortedSet<E> {
 
     static <E> Comparator<? super E> getComparator(final SortedSet<E> sortedSet) {
         final Comparator<? super E> comparator = sortedSet.comparator();
-        return comparator == null ? TreeSet23::unNaturalCompare : comparator;
-    }
-
-    /// Compares two elements, allowing for null.
-    static <E> int unNaturalCompare(final E a, final E b) {
-        if (a == null) {
-            return (b == null) ? 0 : -1;
-        }
-        if (b == null) {
-            return 1;
-        }
-        
-        @SuppressWarnings("unchecked")
-        final Comparable<? super E> ea = (Comparable<? super E>) a;
-        return ea.compareTo(b);
+        return comparator == null ? TreeList23::naturalCompare : comparator;
     }
 }

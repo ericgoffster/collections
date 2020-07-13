@@ -41,11 +41,11 @@ final class TreeMap23<K, V> implements ImmSortedMap<K, V> {
     }
 
     static <K,V> TreeMap23<K,V> empty() {
-        return empty(TreeSet23::unNaturalCompare);
+        return empty(TreeList23::naturalCompare);
     }
    
     static <K,V> TreeMap23<K,V> singleton(final K key, final V value) {
-        return new TreeMap23<K, V>(TreeSet23::unNaturalCompare, TreeList23.singleton(new AbstractMap.SimpleImmutableEntry<>(key, value)));
+        return new TreeMap23<K, V>(TreeList23::naturalCompare, TreeList23.singleton(new AbstractMap.SimpleImmutableEntry<>(key, value)));
     }
 
     static <K,V> TreeMap23<K,V> of(final Map<K, V> map) {
@@ -54,7 +54,7 @@ final class TreeMap23<K, V> implements ImmSortedMap<K, V> {
             final SortedMap<K, V> sortedMap = (SortedMap<K, V>)map;
             return of(getComparator(sortedMap), sortedMap.entrySet());
         }
-        return of(TreeSet23::unNaturalCompare, map.entrySet());
+        return of(TreeList23::naturalCompare, map.entrySet());
     }
 
     static <K,V> TreeMap23<K,V> of(final Comparator<? super K> keyComparator, final Map<K, V> map) {
@@ -66,7 +66,7 @@ final class TreeMap23<K, V> implements ImmSortedMap<K, V> {
 	}
 	
 	static <K,V> TreeMap23<K,V> of(final Iterable<? extends Entry<K, V>> entries) {
-        return of(TreeSet23::unNaturalCompare, entries);
+        return of(TreeList23::naturalCompare, entries);
     }
 	
     @Override
@@ -274,6 +274,6 @@ final class TreeMap23<K, V> implements ImmSortedMap<K, V> {
 
     static <K, V> Comparator<? super K> getComparator(final SortedMap<K, V> items) {
         final Comparator<? super K> comparator = items.comparator();
-        return comparator == null ? TreeSet23::unNaturalCompare : comparator;
+        return comparator == null ? TreeList23::naturalCompare : comparator;
     }
 }

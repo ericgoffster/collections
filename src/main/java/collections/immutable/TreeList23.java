@@ -250,10 +250,17 @@ final class TreeList23<E> implements ImmList<E> {
     }
 
     /// Compares two elements, allowing for null.
-	static <E extends Comparable<E>> int naturalCompare(final E a, final E b) {
-		return a == null ?
-				((b == null) ? 0 : -1):
-				(b == null) ? 1 : a.compareTo(b);
+	static <E> int naturalCompare(final E a, final E b) {
+        if (a == null) {
+            return (b == null) ? 0 : -1;
+        }
+        if (b == null) {
+            return 1;
+        }
+        
+        @SuppressWarnings("unchecked")
+        final Comparable<? super E> ea = (Comparable<? super E>) a;
+        return ea.compareTo(b);
 	}
 
 	// Quickly constructs a list from a collection of nodes.
