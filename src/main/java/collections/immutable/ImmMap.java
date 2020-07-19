@@ -168,7 +168,7 @@ public interface ImmMap<K,V> extends Iterable<Entry<K,V>> {
      * <p>This operation is O(1).
      * <p>Example:
      * <pre>{@code
-     *     HashMap<Integer, String> hm = new HashMap<>();
+     *     HashMap<Integer, Integer> hm = new HashMap<>();
      *     hm.put(1, 2);
      *     hm.put(3, 4);
      *     assert ImmCollections.asMap(1,2,  3,4).asMap().equals(hm);

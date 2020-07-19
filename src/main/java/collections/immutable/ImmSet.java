@@ -93,7 +93,7 @@ public interface ImmSet<E> extends ImmCollection<E> {
      * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * <p>Example:
      * <pre>{@code
-     *     ImmCollections.asSet(4,2,3).retain(ImmCollections.asSet(1,2,4).asCollection().equals(new HashSet<>(Arrays.asList(4, 2)));
+     *     ImmCollections.asSet(4,2,3).retain(ImmCollections.asSet(1,2,4)).asCollection().equals(new HashSet<>(Arrays.asList(4, 2)));
      * }</pre>
      * @param other The set to intersection with
      * @return A set with the given element removed

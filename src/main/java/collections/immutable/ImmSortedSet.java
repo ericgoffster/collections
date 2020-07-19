@@ -131,7 +131,7 @@ public interface ImmSortedSet<E> extends ImmSet<E> {
      * <p>This operation is O(n * log n).
      * <p>THIS OPERATION IS IMMUTABLE.  The original set is left unchanged.
      * <p>Example:<pre>{@code
-     *     assert ImmCollections.asSortedSet(4, 2, 3).filter(e -&gt; e &lt; 4).asList().asCollection().equals(Arrays.asList(2, 3));
+     *     assert ImmCollections.asSortedSet(4, 2, 3).filter(e -> e < 4).asList().asCollection().equals(Arrays.asList(2, 3));
      * }</pre>
      * @param filter The filter to apply
      * @return A set with the given element removed

@@ -82,7 +82,7 @@ public final class ImmCollections {
      * Creates an {@link ImmSet immutable set} from an {@link Iterable iterable} of elements.
      * <p>Example:
      * <pre>{@code
-     *    ImmSet<Integer> l = ImmCollections.asSet(Arras.asList(1,2,3));
+     *    ImmSet<Integer> l = ImmCollections.asSet(Arrays.asList(1,2,3));
      * }</pre>
      * @param <E> The element type
      * @param elements The iterable of elements
@@ -160,7 +160,7 @@ public final class ImmCollections {
      * Creates an {@link ImmSortedSet immutable sorted set} with a custom {@link Comparator comparator} from an {@link Iterable iterable} of elements.
      * <p>Example:
      * <pre>{@code
-     *    ImmSortedSet<Integer> l = ImmCollections.emptySortedSet(Integer::compare, Arrays.asList(1,2,3));
+     *    ImmSortedSet<Integer> l = ImmCollections.asSortedSet(Integer::compare, Arrays.asList(1,2,3));
      * }</pre>
      * @param <E> The element type
      * @param comparator The comparator
@@ -372,7 +372,7 @@ public final class ImmCollections {
      *    m.put(1, "a");
      *    m.put(2, "b");
      *    m.put(3, "c");
-     *    ImmSortedMap<Integer, String> l = ImmCollections.asSortedMap(m);
+     *    ImmSortedMap<Integer, String> l = ImmCollections.asSortedMap(m.entrySet());
      * }</pre>
      * @param <K> The key type
      * @param <V> The value type
