@@ -1,6 +1,5 @@
 package collections.immutable;
 
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -22,6 +21,19 @@ public final class ImmCollections {
     }
 
     /**
+     * Creates an empty {@link ImmList immutable list}.
+     * <p>Example:
+     * <pre>{@code
+     *    ImmList<Integer> l = ImmCollections.emptyList();
+     * }</pre>
+     * @param <E> The element type
+     * @return An empty {@link ImmList immutable list}
+     */
+    public static <E> ImmList<E> emptyList() {
+        return TreeList23.empty();
+    }
+    
+    /**
      * Creates an {@link ImmList immutable list} from a varargs array of elements.
      * <p>Example:
      * <pre>{@code
@@ -33,7 +45,98 @@ public final class ImmCollections {
      */
     @SafeVarargs
     public static <E> ImmList<E> asList(E... elements) {
-        return TreeList23.of(Arrays.asList(elements));
+        return TreeList23.of(new ArrayIterable<>(elements));
+    }
+    
+    /**
+     * Creates an {@link ImmList immutable list} from an array of bytes.
+     * <p>Example:
+     * <pre>{@code
+     *    ImmList<Byte> l = ImmCollections.asList(1,2,3);
+     * }</pre>
+     * @param elements The array of elements
+     * @return An {@link ImmList immutable list} from an array of bytes
+     */
+    public static ImmList<Byte> asList(byte[] elements) {
+        return TreeList23.of(new ArrayIterable<>(elements));
+    }
+    
+    /**
+     * Creates an {@link ImmList immutable list} from an array of characters.
+     * <p>Example:
+     * <pre>{@code
+     *    ImmList<Character> l = ImmCollections.asList('1','2','3');
+     * }</pre>
+     * @param elements The array of elements
+     * @return An {@link ImmList immutable list} from an array of characters
+     */
+    public static ImmList<Character> asList(char[] elements) {
+        return TreeList23.of(new ArrayIterable<>(elements));
+    }
+    
+    /**
+     * Creates an {@link ImmList immutable list} from an array of shorts.
+     * <p>Example:
+     * <pre>{@code
+     *    ImmList<Short> l = ImmCollections.asList(1, 2, 3);
+     * }</pre>
+     * @param elements The array of elements
+     * @return An {@link ImmList immutable list} from an array of shorts
+     */
+    public static ImmList<Short> asList(short[] elements) {
+        return TreeList23.of(new ArrayIterable<>(elements));
+    }
+    
+    /**
+     * Creates an {@link ImmList immutable list} from an array of ints.
+     * <p>Example:
+     * <pre>{@code
+     *    ImmList<Integer> l = ImmCollections.asList(1,2,3);
+     * }</pre>
+     * @param elements The array of elements
+     * @return An {@link ImmList immutable list} from an array of ints
+     */
+    public static ImmList<Integer> asList(int[] elements) {
+        return TreeList23.of(new ArrayIterable<>(elements));
+    }
+    
+    /**
+     * Creates an {@link ImmList immutable list} from an array of floats.
+     * <p>Example:
+     * <pre>{@code
+     *    ImmList<Float> l = ImmCollections.asList(1.0F,2.0F,3.0F);
+     * }</pre>
+     * @param elements The array of elements
+     * @return An {@link ImmList immutable list} from an array of floats
+     */
+    public static ImmList<Float> asList(float[] elements) {
+        return TreeList23.of(new ArrayIterable<>(elements));
+    }
+    
+    /**
+     * Creates an {@link ImmList immutable list} from an array of doubles.
+     * <p>Example:
+     * <pre>{@code
+     *    ImmList<Double> l = ImmCollections.asList(1.0,2.0,3.0);
+     * }</pre>
+     * @param elements The array of elements
+     * @return An {@link ImmList immutable list} from an array of doubles
+     */
+    public static ImmList<Double> asList(double[] elements) {
+        return TreeList23.of(new ArrayIterable<>(elements));
+    }
+    
+    /**
+     * Creates an {@link ImmList immutable list} from an array of booleans.
+     * <p>Example:
+     * <pre>{@code
+     *    ImmList<Boolean> l = ImmCollections.asList(true, false, true);
+     * }</pre>
+     * @param elements The array of elements
+     * @return An {@link ImmList immutable list} from an array of booleans
+     */
+    public static ImmList<Boolean> asList(boolean[] elements) {
+        return TreeList23.of(new ArrayIterable<>(elements));
     }
     
     /**
@@ -75,7 +178,98 @@ public final class ImmCollections {
      */
     @SafeVarargs
     public static <E> ImmSet<E> asSet(E... elements) {
-        return HashSet23.of(Arrays.asList(elements));
+        return HashSet23.of(new ArrayIterable<>(elements));
+    }
+    
+    /**
+     * Creates an {@link ImmSet immutable set} from an array of bytes.
+     * <p>Example:
+     * <pre>{@code
+     *    ImmSet<Byte> l = ImmCollections.asSet((byte)1,(byte)2,(byte)3);
+     * }</pre>
+     * @param elements The array of elements
+     * @return An {@link ImmSet immutable set} from an array of bytes
+     */
+    public static ImmSet<Byte> asSet(byte[] elements) {
+        return HashSet23.of(new ArrayIterable<>(elements));
+    }
+    
+    /**
+     * Creates an {@link ImmSet immutable set} from an array of shorts.
+     * <p>Example:
+     * <pre>{@code
+     *    ImmSet<Short> l = ImmCollections.asSet((byte)1,(byte)2,(byte)3);
+     * }</pre>
+     * @param elements The array of elements
+     * @return An {@link ImmSet immutable set} from an array of shorts
+     */
+    public static ImmSet<Short> asSet(short[] elements) {
+        return HashSet23.of(new ArrayIterable<>(elements));
+    }
+    
+    /**
+     * Creates an {@link ImmSet immutable set} from an array of shorts.
+     * <p>Example:
+     * <pre>{@code
+     *    ImmSet<Integer> l = ImmCollections.asSet((int)1,(int)2,(int)3);
+     * }</pre>
+     * @param elements The array of elements
+     * @return An {@link ImmSet immutable set} from an array of shorts
+     */
+    public static ImmSet<Integer> asSet(int[] elements) {
+        return HashSet23.of(new ArrayIterable<>(elements));
+    }
+    
+    /**
+     * Creates an {@link ImmSet immutable set} from an array of float.
+     * <p>Example:
+     * <pre>{@code
+     *    ImmSet<Integer> l = ImmCollections.asSet((float)1,(float)2,(float)3);
+     * }</pre>
+     * @param elements The array of elements
+     * @return An {@link ImmSet immutable set} from an array of float
+     */
+    public static ImmSet<Float> asSet(float[] elements) {
+        return HashSet23.of(new ArrayIterable<>(elements));
+    }
+    
+    /**
+     * Creates an {@link ImmSet immutable set} from an array of double.
+     * <p>Example:
+     * <pre>{@code
+     *    ImmSet<Integer> l = ImmCollections.asSet((double)1,(double)2,(double)3);
+     * }</pre>
+     * @param elements The array of elements
+     * @return An {@link ImmSet immutable set} from an array of double
+     */
+    public static ImmSet<Double> asSet(double[] elements) {
+        return HashSet23.of(new ArrayIterable<>(elements));
+    }
+    
+    /**
+     * Creates an {@link ImmSet immutable set} from an array of char.
+     * <p>Example:
+     * <pre>{@code
+     *    ImmSet<Integer> l = ImmCollections.asSet((char)1,(char)2,(char)3);
+     * }</pre>
+     * @param elements The array of elements
+     * @return An {@link ImmSet immutable set} from an array of char
+     */
+    public static ImmSet<Character> asSet(char[] elements) {
+        return HashSet23.of(new ArrayIterable<>(elements));
+    }
+    
+    /**
+     * Creates an {@link ImmSet immutable set} from an array of boolean.
+     * <p>Example:
+     * <pre>{@code
+     *    ImmSet<Boolean> l = ImmCollections.asSet(true, false);
+     * }</pre>
+     * @param elements The array of elements
+     * @return An {@link ImmSet immutable set} from an array of boolean
+     */
+    public static ImmSet<Boolean> asSet(boolean[] elements) {
+        return HashSet23.of(new ArrayIterable<>(elements));
     }
     
     /**
@@ -125,7 +319,98 @@ public final class ImmCollections {
      */
     @SafeVarargs
     public static <E> ImmSortedSet<E> asSortedSet(E... elements) {
-        return TreeSet23.of(Arrays.asList(elements));
+        return TreeSet23.of(new ArrayIterable<>(elements));
+    }
+
+    /**
+     * Creates an {@link ImmSortedSet immutable sorted set} from an array of bytes.
+     * <p>Example:
+     * <pre>{@code
+     *    ImmSortedSet<Byte> l = ImmCollections.asSortedSet((byte)1,(byte)2,(byte)3);
+     * }</pre>
+     * @param elements The array of elements
+     * @return An {@link ImmSortedSet immutable sorted set} from an array of bytes
+     */
+    public static ImmSortedSet<Byte> asSortedSet(byte[] elements) {
+        return TreeSet23.of(new ArrayIterable<>(elements));
+    }
+
+    /**
+     * Creates an {@link ImmSortedSet immutable sorted set} from an array of shorts.
+     * <p>Example:
+     * <pre>{@code
+     *    ImmSortedSet<Short> l = ImmCollections.asSortedSet((short)1,(short)2,(short)3);
+     * }</pre>
+     * @param elements The array of elements
+     * @return An {@link ImmSortedSet immutable sorted set} from an array of shorts
+     */
+    public static ImmSortedSet<Short> asSortedSet(short[] elements) {
+        return TreeSet23.of(new ArrayIterable<>(elements));
+    }
+
+    /**
+     * Creates an {@link ImmSortedSet immutable sorted set} from an array of ints.
+     * <p>Example:
+     * <pre>{@code
+     *    ImmSortedSet<Integer> l = ImmCollections.asSortedSet((int)1,(int)2,(int)3);
+     * }</pre>
+     * @param elements The array of elements
+     * @return An {@link ImmSortedSet immutable sorted set} from an array of ints
+     */
+    public static ImmSortedSet<Integer> asSortedSet(int[] elements) {
+        return TreeSet23.of(new ArrayIterable<>(elements));
+    }
+
+    /**
+     * Creates an {@link ImmSortedSet immutable sorted set} from an array of floats.
+     * <p>Example:
+     * <pre>{@code
+     *    ImmSortedSet<Float> l = ImmCollections.asSortedSet((float)1,(float)2,(float)3);
+     * }</pre>
+     * @param elements The array of elements
+     * @return An {@link ImmSortedSet immutable sorted set} from an array of floats
+     */
+    public static ImmSortedSet<Float> asSortedSet(float[] elements) {
+        return TreeSet23.of(new ArrayIterable<>(elements));
+    }
+
+    /**
+     * Creates an {@link ImmSortedSet immutable sorted set} from an array of doubles.
+     * <p>Example:
+     * <pre>{@code
+     *    ImmSortedSet<Double> l = ImmCollections.asSortedSet((double)1,(double)2,(double)3);
+     * }</pre>
+     * @param elements The array of elements
+     * @return An {@link ImmSortedSet immutable sorted set} from an array of doubles
+     */
+    public static ImmSortedSet<Double> asSortedSet(double[] elements) {
+        return TreeSet23.of(new ArrayIterable<>(elements));
+    }
+
+    /**
+     * Creates an {@link ImmSortedSet immutable sorted set} from an array of char.
+     * <p>Example:
+     * <pre>{@code
+     *    ImmSortedSet<Character> l = ImmCollections.asSortedSet((char)1,(char)2,(char)3);
+     * }</pre>
+     * @param elements The array of elements
+     * @return An {@link ImmSortedSet immutable sorted set} from an array of char
+     */
+    public static ImmSortedSet<Character> asSortedSet(char[] elements) {
+        return TreeSet23.of(new ArrayIterable<>(elements));
+    }
+
+    /**
+     * Creates an {@link ImmSortedSet immutable sorted set} from an array of boolean.
+     * <p>Example:
+     * <pre>{@code
+     *    ImmSortedSet<Boolean> l = ImmCollections.asSortedSet((char)1,(char)2,(char)3);
+     * }</pre>
+     * @param elements The array of elements
+     * @return An {@link ImmSortedSet immutable sorted set} from an array of boolean
+     */
+    public static ImmSortedSet<Boolean> asSortedSet(boolean[] elements) {
+        return TreeSet23.of(new ArrayIterable<>(elements));
     }
 
     /**

@@ -1,14 +1,15 @@
 package collections.immutable;
 
+import java.lang.reflect.Array;
 import java.util.Iterator;
 
 //Fast iterable of an array.
 final class ArrayIterable<E> implements Iterable<E> {
-    final E[] elements;
+    final Object array;
 
-    public ArrayIterable(E[] elements) {
+    public ArrayIterable(Object array) {
         super();
-        this.elements = elements;
+        this.array = array;
     }
 
     @Override
@@ -25,12 +26,14 @@ final class ArrayIterable<E> implements Iterable<E> {
         
         @Override
         public boolean hasNext() {
-            return i < elements.length;
+            return i < Array.getLength(array);
         }
 
         @Override
         public E next() {
-            return elements[i++];
+            @SuppressWarnings("unchecked")
+            E e = (E)Array.get(array, i++);
+            return e;
         }
 
 
