@@ -3,7 +3,7 @@
    <modelVersion>4.0.0</modelVersion>
    <groupId>org.granitesoft</groupId>
    <artifactId>collections</artifactId>
-   <version>1.5</version>
+   <version>1.6-SNAPSHOT</version>
    <name>Collections</name>
    <url>https://github.com/ericgoffster/collections</url>
    <description>Java code for the collections package.</description>
@@ -34,7 +34,7 @@
       <connection>scm:git:git://github.com/ericgoffster/collections.git</connection>
       <developerConnection>scm:git:git@github.com:ericgoffster/collections.git</developerConnection>
       <url>https://github.com/ericgoffster/collections</url>
-      <tag>collections-1.5</tag>
+      <tag>collections-1.2</tag>
    </scm>
    <dependencies>
       <dependency>
