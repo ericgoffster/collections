@@ -16,6 +16,7 @@ public class CollectionsTests {
             int[] arr = {1,2,3};
             assertEquals(ImmCollections.asList(arr).asCollection(), Arrays.asList(1, 2, 3));
         }
+        assertEquals(ImmCollections.asList((long)1, (long)2, (long)3).asCollection(), Arrays.asList((long)1, (long)2, (long)3));
         assertEquals(ImmCollections.asList((short)1, (short)2, (short)3).asCollection(), Arrays.asList((short)1, (short)2, (short)3));
         assertEquals(ImmCollections.asList((byte)1, (byte)2, (byte)3).asCollection(), Arrays.asList((byte)1, (byte)2, (byte)3));
         assertEquals(ImmCollections.asList((float)1, (float)2, (float)3).asCollection(), Arrays.asList((float)1, (float)2, (float)3));
@@ -29,6 +30,7 @@ public class CollectionsTests {
             int[] arr = {1,2,3};
             assertEquals(ImmCollections.asSet(arr).asCollection(), new HashSet<>(Arrays.asList(1, 2, 3)));
         }
+        assertEquals(ImmCollections.asSet((long)1, (long)2, (long)3).asCollection(), new HashSet<>(Arrays.asList((long)1, (long)2, (long)3)));
         assertEquals(ImmCollections.asSet((short)1, (short)2, (short)3).asCollection(), new HashSet<>(Arrays.asList((short)1, (short)2, (short)3)));
         assertEquals(ImmCollections.asSet((byte)1, (byte)2, (byte)3).asCollection(), new HashSet<>(Arrays.asList((byte)1, (byte)2, (byte)3)));
         assertEquals(ImmCollections.asSet((float)1, (float)2, (float)3).asCollection(), new HashSet<>(Arrays.asList((float)1, (float)2, (float)3)));
@@ -42,6 +44,7 @@ public class CollectionsTests {
             int[] arr = {1,2,3};
             assertEquals(ImmCollections.asSortedSet(arr).asCollection(), new TreeSet<>(Arrays.asList(1, 2, 3)));
         }
+        assertEquals(ImmCollections.asSortedSet((long)1, (long)2, (long)3).asCollection(), new TreeSet<>(Arrays.asList((long)1, (long)2, (long)3)));
         assertEquals(ImmCollections.asSortedSet((short)1, (short)2, (short)3).asCollection(), new TreeSet<>(Arrays.asList((short)1, (short)2, (short)3)));
         assertEquals(ImmCollections.asSortedSet((byte)1, (byte)2, (byte)3).asCollection(), new TreeSet<>(Arrays.asList((byte)1, (byte)2, (byte)3)));
         assertEquals(ImmCollections.asSortedSet((float)1, (float)2, (float)3).asCollection(), new TreeSet<>(Arrays.asList((float)1, (float)2, (float)3)));

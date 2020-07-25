@@ -101,6 +101,19 @@ public final class ImmCollections {
     }
     
     /**
+     * Creates an {@link ImmList immutable list} from an array of longs.
+     * <p>Example:
+     * <pre>{@code
+     *    ImmList<Long> l = ImmCollections.asList((long)1,(long)2,(long)3);
+     * }</pre>
+     * @param elements The array of elements
+     * @return An {@link ImmList immutable list} from an array of longs
+     */
+    public static ImmList<Long> asList(long[] elements) {
+        return TreeList23.of(new ArrayIterable<>(elements));
+    }
+    
+    /**
      * Creates an {@link ImmList immutable list} from an array of floats.
      * <p>Example:
      * <pre>{@code
@@ -217,6 +230,19 @@ public final class ImmCollections {
      * @return An {@link ImmSet immutable set} from an array of shorts
      */
     public static ImmSet<Integer> asSet(int[] elements) {
+        return HashSet23.of(new ArrayIterable<>(elements));
+    }
+    
+    /**
+     * Creates an {@link ImmSet immutable set} from an array of shorts.
+     * <p>Example:
+     * <pre>{@code
+     *    ImmSet<Long> l = ImmCollections.asSet((long)1,(long)2,(long)3);
+     * }</pre>
+     * @param elements The array of elements
+     * @return An {@link ImmSet immutable set} from an array of shorts
+     */
+    public static ImmSet<Long> asSet(long[] elements) {
         return HashSet23.of(new ArrayIterable<>(elements));
     }
     
@@ -358,6 +384,19 @@ public final class ImmCollections {
      * @return An {@link ImmSortedSet immutable sorted set} from an array of ints
      */
     public static ImmSortedSet<Integer> asSortedSet(int[] elements) {
+        return TreeSet23.of(new ArrayIterable<>(elements));
+    }
+
+    /**
+     * Creates an {@link ImmSortedSet immutable sorted set} from an array of longs.
+     * <p>Example:
+     * <pre>{@code
+     *    ImmSortedSet<Long> l = ImmCollections.asSortedSet((long)1,(long)2,(long)3);
+     * }</pre>
+     * @param elements The array of elements
+     * @return An {@link ImmSortedSet immutable sorted set} from an array of longs
+     */
+    public static ImmSortedSet<Long> asSortedSet(long[] elements) {
         return TreeSet23.of(new ArrayIterable<>(elements));
     }
 
